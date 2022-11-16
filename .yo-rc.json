@@ -1,0 +1,41 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "campaign",
+      "nativeLanguage": "vi"
+    },
+    "jhipsterVersion": "6.7.1",
+    "applicationType": "microservice",
+    "baseName": "halopesa",
+    "packageName": "campaign",
+    "packageFolder": "campaign",
+    "serverPort": "8081",
+    "authenticationType": "jwt",
+    "cacheProvider": "hazelcast",
+    "enableHibernateCache": true,
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "oracle",
+    "prodDatabaseType": "oracle",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "NjA0YmFiM2MzNDE2OGU0NmJkMmI5ZjFiNjQ4ZjcwMDg1ZDI1YTY5Mjk4NjM1NWQ5NTdlNGJjNWFkZDkxZTc0ODEzMWM0NTE3ZWU1NGQzYzRlZmUxZTJmZjA5NjQwMjk1Y2JmZTc0MzQ5NjMwM2FlOGI4YmEwYmY1YTY5ZTE2N2U=",
+    "embeddableLaunchScript": false,
+    "creationTimestamp": 1668566322021,
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": true,
+    "clientPackageManager": "npm",
+    "nativeLanguage": "vi",
+    "languages": ["vi"],
+    "blueprints": [],
+    "skipClient": true,
+    "skipUserManagement": true
+  }
+}
