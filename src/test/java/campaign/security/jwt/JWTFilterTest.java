@@ -48,7 +48,7 @@ public class JWTFilterTest {
         );
         String jwt = tokenProvider.createToken(authentication, false);
         MockHttpServletRequest request = new MockHttpServletRequest();
-        request.addHeader(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+        request.addHeader(JWTConfigurer.AUTHORIZATION_HEADER, "Bearer " + jwt);
         request.setRequestURI("/api/test");
         MockHttpServletResponse response = new MockHttpServletResponse();
         MockFilterChain filterChain = new MockFilterChain();
@@ -62,7 +62,7 @@ public class JWTFilterTest {
     public void testJWTFilterInvalidToken() throws Exception {
         String jwt = "wrong_jwt";
         MockHttpServletRequest request = new MockHttpServletRequest();
-        request.addHeader(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+        request.addHeader(JWTConfigurer.AUTHORIZATION_HEADER, "Bearer " + jwt);
         request.setRequestURI("/api/test");
         MockHttpServletResponse response = new MockHttpServletResponse();
         MockFilterChain filterChain = new MockFilterChain();
@@ -85,7 +85,7 @@ public class JWTFilterTest {
     @Test
     public void testJWTFilterMissingToken() throws Exception {
         MockHttpServletRequest request = new MockHttpServletRequest();
-        request.addHeader(JWTFilter.AUTHORIZATION_HEADER, "Bearer ");
+        request.addHeader(JWTConfigurer.AUTHORIZATION_HEADER, "Bearer ");
         request.setRequestURI("/api/test");
         MockHttpServletResponse response = new MockHttpServletResponse();
         MockFilterChain filterChain = new MockFilterChain();
@@ -103,7 +103,7 @@ public class JWTFilterTest {
         );
         String jwt = tokenProvider.createToken(authentication, false);
         MockHttpServletRequest request = new MockHttpServletRequest();
-        request.addHeader(JWTFilter.AUTHORIZATION_HEADER, "Basic " + jwt);
+        request.addHeader(JWTConfigurer.AUTHORIZATION_HEADER, "Basic " + jwt);
         request.setRequestURI("/api/test");
         MockHttpServletResponse response = new MockHttpServletResponse();
         MockFilterChain filterChain = new MockFilterChain();
