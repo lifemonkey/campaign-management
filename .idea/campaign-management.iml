@@ -9,6 +9,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/annotations" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/target/generated-test-sources/test-annotations" isTestSource="true" generated="true" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -247,6 +248,8 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: io.prometheus:simpleclient_common:0.7.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: io.prometheus:simpleclient:0.8.1" level="project" />
     <orderEntry type="library" name="Maven: io.dropwizard.metrics:metrics-core:4.1.2" level="project" />
+    <orderEntry type="library" name="Maven: mysql:mysql-connector-java:8.0.19" level="project" />
+    <orderEntry type="library" name="Maven: com.google.protobuf:protobuf-java:3.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-undertow:2.2.4.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: io.undertow:undertow-core:2.0.29.Final" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.xnio:xnio-api:3.3.8.Final" level="project" />

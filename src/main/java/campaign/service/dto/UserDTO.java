@@ -18,7 +18,7 @@ public class UserDTO {
     private String username;
 
     @NotBlank
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 60)
     private String password;
 
     @Size(max = 200)
@@ -29,6 +29,8 @@ public class UserDTO {
     private String lastname;
 
     private Instant expiredDate;
+
+    private String imageUrl;
 
     private String role;
 
@@ -43,6 +45,7 @@ public class UserDTO {
         this.firstname = user.getFirstname();
         this.lastname = user.getLastname();
         this.expiredDate = user.getExpiredDate();
+        this.imageUrl = user.getImageUrl();
         if (user.getRole() != null) {
             this.role = user.getRole().getName();
         }
@@ -104,6 +107,14 @@ public class UserDTO {
         this.role = role;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     @Override
     public String toString() {
         return "UserDTO{" +
@@ -113,7 +124,8 @@ public class UserDTO {
             ", firstname='" + firstname + '\'' +
             ", lastname='" + lastname + '\'' +
             ", expiredDate=" + expiredDate +
-            ", role=" + role +
+            ", imageUrl='" + imageUrl + '\'' +
+            ", role='" + role + '\'' +
             '}';
     }
 }

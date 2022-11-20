@@ -81,6 +81,16 @@ public class TokenProvider {
             .compact();
     }
 
+    public String createRefreshToken(String userName) {
+
+        return Jwts.builder()
+            .setSubject(userName)
+            .claim(AUTHORITIES_KEY, "")
+            .signWith(key, SignatureAlgorithm.HS512)
+            .setExpiration(new Date(System.currentTimeMillis() + this.tokenValidityInMillisecondsForRememberMe))
+            .compact();
+    }
+
     public Authentication getAuthentication(String token) {
         Claims claims = Jwts.parser()
             .setSigningKey(key)

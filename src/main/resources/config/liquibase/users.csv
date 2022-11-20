@@ -1,0 +1,4 @@
+id;username;password;first_name;last_name;expired_date;role_id;image_url;created_by;last_modified_by
+1;tainguyen91@gmail.com;$2a$12$5.LOOqD3L.7prOSJkJ3EGOnysTdIZvPO2vJuxSMPuZEHb2lCQupXK;Nguyen;Huu Tai;;1;;system;system
+2;tainguyen91_bo@gmail.com;$2a$12$9/f4a30MofuDLu9CsHpCl.A0QfKDA7jeLhSWX8G5XPvbDdU97AEJi;Nguyen;Huu_Tai_Bo;;1;;system;system
+3;tainguyen91_fin@gmail.com;$2a$12$j7daLGYUo/yPBf.osFl.NuB21IvmMyL.GkIFbZoH0uj18zr144sUO;Nguyen;Huu_Tai_Fin;;1;;system;system

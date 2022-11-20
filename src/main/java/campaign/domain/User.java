@@ -31,26 +31,30 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "username", length = 50, unique = true, nullable = false)
     private String username;
 
+    @JsonIgnore
     @NotBlank
-    @Size(max = 50)
-    @Column(name = "password", length = 50)
+    @Size(max = 60)
+    @Column(name = "password", length = 60)
     private String password;
 
     @Size(max = 200)
-    @Column(name = "firstname", length = 200)
+    @Column(name = "first_name", length = 200)
     private String firstname;
 
     @NotBlank
     @Size(max = 200)
-    @Column(name = "lastname", length = 200)
+    @Column(name = "last_name", length = 200)
     private String lastname;
 
-    @Column(name = "expiredDate")
+    @Column(name = "expired_date")
     private Instant expiredDate = null;
 
+    @Column(name = "image_url", length = 255)
+    private String imageUrl = null;
+
     @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinTable(	name = "roles", joinColumns = {@JoinColumn(name = "roleid", referencedColumnName = "id")})
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @BatchSize(size = 20)
     private Role role;
@@ -118,6 +122,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.role = role;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -127,6 +139,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
             ", firstname='" + firstname + '\'' +
             ", lastname='" + lastname + '\'' +
             ", expiredDate=" + expiredDate +
+            ", imageUrl='" + imageUrl + '\'' +
             ", role=" + role +
             '}';
     }

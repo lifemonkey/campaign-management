@@ -1,29 +1,21 @@
 package campaign.service;
 
-import campaign.config.Constants;
 import campaign.domain.Role;
 import campaign.domain.User;
 import campaign.repository.RoleRepository;
 import campaign.repository.UserRepository;
-import campaign.security.AuthoritiesConstants;
-import campaign.security.SecurityUtils;
 import campaign.service.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service

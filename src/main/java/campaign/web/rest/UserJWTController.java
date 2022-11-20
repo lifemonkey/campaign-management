@@ -12,10 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -35,7 +32,7 @@ public class UserJWTController {
         this.authenticationManager = authenticationManager;
     }
 
-    @PostMapping("/authenticate")
+    @PostMapping("/login")
     @Timed
     public ResponseEntity<JWTToken> authorize(@Valid @RequestBody LoginVM loginVM) {
 
@@ -48,7 +45,9 @@ public class UserJWTController {
         String jwt = tokenProvider.createToken(authentication, rememberMe);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JWTConfigurer.AUTHORIZATION_HEADER, "Bearer " + jwt);
-        return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
+
+        String refreshToken = rememberMe ? tokenProvider.createRefreshToken(authentication.getName()) : "refreshToken";
+        return new ResponseEntity<>(new JWTToken(jwt, refreshToken), httpHeaders, HttpStatus.OK);
     }
 
     /**
@@ -57,18 +56,29 @@ public class UserJWTController {
     static class JWTToken {
 
         private String idToken;
+        private String refreshToken;
 
-        JWTToken(String idToken) {
+        JWTToken(String idToken, String refreshToken) {
             this.idToken = idToken;
+            this.refreshToken = refreshToken;
         }
 
-        @JsonProperty("id_token")
+        @JsonProperty("accessToken")
         String getIdToken() {
             return idToken;
         }
 
         void setIdToken(String idToken) {
             this.idToken = idToken;
+        }
+
+        @JsonProperty("refreshToken")
+        String getRefreshToken() {
+            return refreshToken;
+        }
+
+        void setRefreshToken(String refreshToken) {
+            this.refreshToken = refreshToken;
         }
     }
 }

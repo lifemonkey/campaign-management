@@ -55,6 +55,57 @@
                                  constraintName="fk_evt_pers_audit_evt_data"
                                  referencedColumnNames="event_id"
                                  referencedTableName="jhi_persistent_audit_event"/>
+
+        <createTable tableName="users">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="varchar(50)"/>
+            <column name="password" type="varchar(60)"/>
+            <column name="first_name" type="varchar(200)"/>
+            <column name="last_name" type="varchar(200)"/>
+            <column name="expired_date" type="timestamp"/>
+            <column name="image_url" type="varchar(255)" />
+            <column name="role_id" type="bigint" />
+            <!-- Auditing fields -->
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(50)" />
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+
+        <createTable tableName="roles">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(20)"/>
+            <column name="description" type="varchar(255)"/>
+            <column name="can_approve_reward" type="varchar(2)"/>
+            <column name="can_reject_reward" type="varchar(2)"/>
+            <column name="campaign_management" type="varchar(2)"/>
+            <column name="rule_management" type="varchar(2)"/>
+            <column name="prize_management" type="varchar(2)"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="role_id"
+                                 baseTableName="users"
+                                 constraintName="fk_user_role"
+                                 referencedColumnNames="id"
+                                 referencedTableName="roles"/>
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/roles.csv"
+                  separator=";"
+                  tableName="roles"/>
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/users.csv"
+                  separator=";"
+                  tableName="users"/>
     </changeSet>
 
     <changeSet author="jhipster" id="00000000000002" context="test">
