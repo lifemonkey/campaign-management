@@ -18,8 +18,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Optional;
 
@@ -62,13 +66,19 @@ public class UserJWTController {
 
     @PostMapping("/logout")
     @Timed
-    public ResponseEntity<String> logout() {
+    public ResponseEntity<String> logout(final HttpServletRequest request, final HttpServletResponse response) {
         Optional<String> userOpt = SecurityUtils.getCurrentUserLogin();
 
         if (!userOpt.get().isEmpty()) {
-            SecurityContextHolder.getContext().setAuthentication(null);
-            int response = refreshTokenService.revokeUserAuthentication(userOpt.get());
-            return ResponseEntity.ok("User has been logout successfully!");
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth != null){
+                new SecurityContextLogoutHandler().logout(request, response, auth);
+
+                int result = refreshTokenService.revokeUserAuthentication(userOpt.get());
+                if (result == 1) {
+                    return ResponseEntity.ok("User has been logout successfully!");
+                }
+            }
         }
 
         return ResponseEntity.ok("User is not valid!");
