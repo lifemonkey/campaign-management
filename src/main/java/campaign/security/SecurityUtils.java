@@ -1,11 +1,14 @@
 package campaign.security;
 
+import campaign.security.jwt.JWTConfigurer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -82,4 +85,11 @@ public final class SecurityUtils {
             .map(GrantedAuthority::getAuthority);
     }
 
+    public static String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(JWTConfigurer.AUTHORIZATION_HEADER);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
 }

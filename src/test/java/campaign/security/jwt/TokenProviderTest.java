@@ -5,6 +5,7 @@ import campaign.security.AuthoritiesConstants;
 import java.security.Key;
 import java.util.*;
 
+import campaign.service.TokenBlackListService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,10 +28,11 @@ public class TokenProviderTest {
 
     private Key key;
     private TokenProvider tokenProvider;
+    private TokenBlackListService tokenBlackListService;
 
     @BeforeEach
     public void setup() {
-        tokenProvider = new TokenProvider( new JHipsterProperties());
+        tokenProvider = new TokenProvider( new JHipsterProperties(), tokenBlackListService);
         key = Keys.hmacShaKeyFor(Decoders.BASE64
             .decode("fd54a45s65fds737b9aafcb3412e07ed99b267f33413274720ddbb7f6c5e64e9f14075f2d7ed041592f0b7657baf8"));
 

@@ -1,30 +1,37 @@
 package campaign.web.rest;
 
 import campaign.domain.RefreshToken;
+import campaign.domain.TokenBlackList;
 import campaign.security.SecurityUtils;
 import campaign.security.jwt.JWTConfigurer;
 import campaign.security.jwt.TokenProvider;
 import campaign.security.jwt.TokenRefreshException;
 import campaign.service.RefreshTokenService;
-import campaign.service.UserDetailsImpl;
+import campaign.service.TokenBlackListService;
 import campaign.web.rest.vm.LoginVM;
 import campaign.web.rest.vm.TokenRefreshRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.micrometer.core.annotation.Timed;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -34,16 +41,21 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class UserJWTController {
 
+    private final Logger log = LoggerFactory.getLogger(UserJWTController.class);
+
     private final TokenProvider tokenProvider;
 
     private final AuthenticationManager authenticationManager;
 
     private final RefreshTokenService refreshTokenService;
 
-    public UserJWTController(TokenProvider tokenProvider, AuthenticationManager authenticationManager, RefreshTokenService refreshTokenService) {
+    private final TokenBlackListService tokenBlackListService;
+
+    public UserJWTController(TokenProvider tokenProvider, AuthenticationManager authenticationManager, RefreshTokenService refreshTokenService, TokenBlackListService tokenBlackListService) {
         this.tokenProvider = tokenProvider;
         this.authenticationManager = authenticationManager;
         this.refreshTokenService = refreshTokenService;
+        this.tokenBlackListService = tokenBlackListService;
     }
 
     @PostMapping("/login")
@@ -66,18 +78,18 @@ public class UserJWTController {
 
     @PostMapping("/logout")
     @Timed
-    public ResponseEntity<String> logout(final HttpServletRequest request, final HttpServletResponse response) {
+    public ResponseEntity<String> logout(final HttpServletRequest request) throws ServletException {
         Optional<String> userOpt = SecurityUtils.getCurrentUserLogin();
 
-        if (!userOpt.get().isEmpty()) {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            if (auth != null){
-                new SecurityContextLogoutHandler().logout(request, response, auth);
-
-                int result = refreshTokenService.revokeUserAuthentication(userOpt.get());
-                if (result == 1) {
-                    return ResponseEntity.ok("User has been logout successfully!");
+        if (userOpt.isPresent()) {
+            int result = refreshTokenService.revokeUserAuthentication(userOpt.get());
+            if (result == 1) {
+                this.tokenBlackListService.addTokenToBlackList(SecurityUtils.resolveToken(request));
+                HttpSession httpSession = request.getSession(false);
+                if (httpSession != null) {
+                    httpSession.invalidate();
                 }
+                return ResponseEntity.ok("User has been logout successfully!");
             }
         }
 
@@ -86,8 +98,8 @@ public class UserJWTController {
 
     @PostMapping("/refreshToken")
     @Timed
-    public ResponseEntity<JWTToken> refreshToken(@Valid @RequestBody TokenRefreshRequest request) {
-        String requestRefreshToken = request.getRefreshToken();
+    public ResponseEntity<JWTToken> refreshToken(final HttpServletRequest request, @Valid @RequestBody TokenRefreshRequest tokenRequest) {
+        String requestRefreshToken = tokenRequest.getRefreshToken();
 
         return refreshTokenService.findByToken(requestRefreshToken)
             .map(refreshTokenService::verifyExpiration)
@@ -95,6 +107,8 @@ public class UserJWTController {
             .map(user -> {
                 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
                 String jwt = tokenProvider.createToken(authentication, false);
+                // add old token to black list
+                this.tokenBlackListService.addTokenToBlackList(SecurityUtils.resolveToken(request));
                 HttpHeaders httpHeaders = new HttpHeaders();
                 httpHeaders.add(JWTConfigurer.AUTHORIZATION_HEADER, "Bearer " + jwt);
                 return new ResponseEntity<>(new JWTToken(jwt, requestRefreshToken), httpHeaders, HttpStatus.OK);
@@ -102,6 +116,19 @@ public class UserJWTController {
             .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
                 "Refresh token is not in database!"));
 
+    }
+
+    /**
+     * Not activated users should be automatically deleted after 3 days.
+     * <p>
+     * This is scheduled to get fired every day, at 01:00 (am).
+     */
+    @PostMapping("/cleanToken")
+    @Scheduled(cron = "0 0 1 * * ?")
+    @Timed
+    public void removeNotActivatedUsers() {
+        log.debug("Deleting expired black list tokens {}");
+        tokenBlackListService.deleteExpiredToken();
     }
 
     /**

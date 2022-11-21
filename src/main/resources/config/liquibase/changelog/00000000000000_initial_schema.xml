@@ -100,6 +100,14 @@
             <column name="user_id" type="bigint"/>
         </createTable>
 
+        <createTable tableName="token_black_list">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="token" type="varchar(255)"/>
+            <column name="expired_date" type="timestamp"/>
+        </createTable>
+
         <addForeignKeyConstraint baseColumnNames="role_id"
                                  baseTableName="users"
                                  constraintName="fk_user_role"

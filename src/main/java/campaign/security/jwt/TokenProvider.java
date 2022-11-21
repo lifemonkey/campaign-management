@@ -6,6 +6,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 
+import campaign.domain.TokenBlackList;
+import campaign.service.TokenBlackListService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,8 +38,11 @@ public class TokenProvider {
 
     private final JHipsterProperties jHipsterProperties;
 
-    public TokenProvider(JHipsterProperties jHipsterProperties) {
+    private final TokenBlackListService tokenBlackListService;
+
+    public TokenProvider(JHipsterProperties jHipsterProperties, TokenBlackListService tokenBlackListService) {
         this.jHipsterProperties = jHipsterProperties;
+        this.tokenBlackListService = tokenBlackListService;
     }
 
     @PostConstruct
@@ -81,16 +86,6 @@ public class TokenProvider {
             .compact();
     }
 
-    public String createRefreshToken(String userName) {
-
-        return Jwts.builder()
-            .setSubject(userName)
-            .claim(AUTHORITIES_KEY, "")
-            .signWith(key, SignatureAlgorithm.HS512)
-            .setExpiration(new Date(System.currentTimeMillis() + this.tokenValidityInMillisecondsForRememberMe))
-            .compact();
-    }
-
     public Authentication getAuthentication(String token) {
         Claims claims = Jwts.parser()
             .setSigningKey(key)
@@ -109,6 +104,11 @@ public class TokenProvider {
 
     public boolean validateToken(String authToken) {
         try {
+            boolean isBlacklist = tokenBlackListService.getTokenBlackLists().stream().anyMatch(tokenBlackList -> tokenBlackList.getToken().endsWith(authToken));
+            if (isBlacklist) {
+                return false;
+            }
+
             Jwts.parser().setSigningKey(key).parseClaimsJws(authToken);
             return true;
         } catch (MalformedJwtException e) {

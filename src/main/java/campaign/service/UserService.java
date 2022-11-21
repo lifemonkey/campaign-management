@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class UserService {
-    
+
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
     private static final String USERS_CACHE = "users";
@@ -84,21 +84,4 @@ public class UserService {
     public List<String> getRoles() {
         return roleRepository.findAll().stream().map(Role::getName).collect(Collectors.toList());
     }
-
-
-    /**
-     * Not activated users should be automatically deleted after 3 days.
-     * <p>
-     * This is scheduled to get fired everyday, at 01:00 (am).
-     */
-    /*
-    @Scheduled(cron = "0 0 1 * * ?")
-    public void removeNotActivatedUsers() {
-        List<User> users = userRepository.findAllByActivatedIsFalseAndCreatedDateBefore(Instant.now().minus(3, ChronoUnit.DAYS));
-        for (User user : users) {
-            log.debug("Deleting not activated user {}", user.getLogin());
-            userRepository.delete(user);
-            cacheManager.getCache(USERS_CACHE).evict(user.getLogin());
-        }
-    }*/
 }
