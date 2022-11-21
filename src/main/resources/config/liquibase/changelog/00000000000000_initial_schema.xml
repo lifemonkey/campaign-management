@@ -57,7 +57,7 @@
                                  referencedTableName="jhi_persistent_audit_event"/>
 
         <createTable tableName="users">
-            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="username" type="varchar(50)"/>
@@ -79,7 +79,7 @@
         </createTable>
 
         <createTable tableName="roles">
-            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(20)"/>
@@ -92,7 +92,7 @@
         </createTable>
 
         <createTable tableName="refresh_token">
-            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+            <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="token" type="varchar(255)"/>

@@ -1,6 +1,7 @@
 package campaign.service;
 
 import campaign.domain.RefreshToken;
+import campaign.domain.User;
 import campaign.repository.RefreshTokenRepository;
 import campaign.repository.UserRepository;
 import campaign.security.jwt.TokenRefreshException;
@@ -53,7 +54,12 @@ public class RefreshTokenService {
     }
 
     @Transactional
-    public int deleteByUserId(Long userId) {
-        return refreshTokenRepository.deleteByUser(userRepository.findById(userId).get());
+    public int revokeUserAuthentication(String userName) {
+        Optional<User> userOpt = userRepository.findByUsername(userName);
+        if (userOpt.isPresent()) {
+            return refreshTokenRepository.deleteByUser(userOpt.get());
+        }
+
+        return 0;
     }
 }

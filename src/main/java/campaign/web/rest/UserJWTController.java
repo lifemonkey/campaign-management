@@ -1,6 +1,7 @@
 package campaign.web.rest;
 
 import campaign.domain.RefreshToken;
+import campaign.security.SecurityUtils;
 import campaign.security.jwt.JWTConfigurer;
 import campaign.security.jwt.TokenProvider;
 import campaign.security.jwt.TokenRefreshException;
@@ -20,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 /**
  * Controller to authenticate users.
@@ -42,7 +44,7 @@ public class UserJWTController {
 
     @PostMapping("/login")
     @Timed
-    public ResponseEntity<JWTToken> authorize(@Valid @RequestBody LoginVM loginVM) {
+    public ResponseEntity<JWTToken> login(@Valid @RequestBody LoginVM loginVM) {
 
         UsernamePasswordAuthenticationToken authenticationToken =
             new UsernamePasswordAuthenticationToken(loginVM.getUsername(), loginVM.getPassword());
@@ -56,6 +58,20 @@ public class UserJWTController {
 
         RefreshToken refreshToken = this.refreshTokenService.createRefreshToken(loginVM.getUsername());
         return new ResponseEntity<>(new JWTToken(jwt, refreshToken.getToken()), httpHeaders, HttpStatus.OK);
+    }
+
+    @PostMapping("/logout")
+    @Timed
+    public ResponseEntity<String> logout() {
+        Optional<String> userOpt = SecurityUtils.getCurrentUserLogin();
+
+        if (!userOpt.get().isEmpty()) {
+            SecurityContextHolder.getContext().setAuthentication(null);
+            int response = refreshTokenService.revokeUserAuthentication(userOpt.get());
+            return ResponseEntity.ok("User has been logout successfully!");
+        }
+
+        return ResponseEntity.ok("User is not valid!");
     }
 
     @PostMapping("/refreshToken")

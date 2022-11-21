@@ -5,11 +5,12 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.Instant;
 
 @Entity
-@Table(name = "refreshToken")
+@Table(name = "refresh_token")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class RefreshToken implements Serializable {
 
@@ -19,15 +20,17 @@ public class RefreshToken implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @NotBlank
+    @Column(name = "token", length = 255, unique = true, nullable = false)
     private String token;
 
-    @Column(nullable = false)
+    @Column(name = "expired_date", nullable = false)
     private Instant expiredDate;
 
     @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private User user;
 
     public RefreshToken() {
