@@ -364,6 +364,11 @@
             <artifactId>ojdbc8</artifactId>
             <version>21.5.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>javax.interceptor</groupId>
+            <artifactId>javax.interceptor-api</artifactId>
+            <version>1.2</version>
+        </dependency>
 
         <!-- jhipster-needle-maven-add-dependency -->
     </dependencies>
