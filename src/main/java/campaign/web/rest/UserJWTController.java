@@ -1,8 +1,13 @@
 package campaign.web.rest;
 
+import campaign.domain.RefreshToken;
 import campaign.security.jwt.JWTConfigurer;
 import campaign.security.jwt.TokenProvider;
+import campaign.security.jwt.TokenRefreshException;
+import campaign.service.RefreshTokenService;
+import campaign.service.UserDetailsImpl;
 import campaign.web.rest.vm.LoginVM;
+import campaign.web.rest.vm.TokenRefreshRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.micrometer.core.annotation.Timed;
 import org.springframework.http.HttpHeaders;
@@ -27,9 +32,12 @@ public class UserJWTController {
 
     private final AuthenticationManager authenticationManager;
 
-    public UserJWTController(TokenProvider tokenProvider, AuthenticationManager authenticationManager) {
+    private final RefreshTokenService refreshTokenService;
+
+    public UserJWTController(TokenProvider tokenProvider, AuthenticationManager authenticationManager, RefreshTokenService refreshTokenService) {
         this.tokenProvider = tokenProvider;
         this.authenticationManager = authenticationManager;
+        this.refreshTokenService = refreshTokenService;
     }
 
     @PostMapping("/login")
@@ -46,8 +54,28 @@ public class UserJWTController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JWTConfigurer.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        String refreshToken = rememberMe ? tokenProvider.createRefreshToken(authentication.getName()) : "refreshToken";
-        return new ResponseEntity<>(new JWTToken(jwt, refreshToken), httpHeaders, HttpStatus.OK);
+        RefreshToken refreshToken = this.refreshTokenService.createRefreshToken(loginVM.getUsername());
+        return new ResponseEntity<>(new JWTToken(jwt, refreshToken.getToken()), httpHeaders, HttpStatus.OK);
+    }
+
+    @PostMapping("/refreshToken")
+    @Timed
+    public ResponseEntity<JWTToken> refreshToken(@Valid @RequestBody TokenRefreshRequest request) {
+        String requestRefreshToken = request.getRefreshToken();
+
+        return refreshTokenService.findByToken(requestRefreshToken)
+            .map(refreshTokenService::verifyExpiration)
+            .map(RefreshToken::getUser)
+            .map(user -> {
+                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                String jwt = tokenProvider.createToken(authentication, false);
+                HttpHeaders httpHeaders = new HttpHeaders();
+                httpHeaders.add(JWTConfigurer.AUTHORIZATION_HEADER, "Bearer " + jwt);
+                return new ResponseEntity<>(new JWTToken(jwt, requestRefreshToken), httpHeaders, HttpStatus.OK);
+            })
+            .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
+                "Refresh token is not in database!"));
+
     }
 
     /**

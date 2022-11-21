@@ -91,6 +91,15 @@
             <column name="prize_management" type="varchar(2)"/>
         </createTable>
 
+        <createTable tableName="refresh_token">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="token" type="varchar(255)"/>
+            <column name="expired_date" type="timestamp"/>
+            <column name="user_id" type="bigint"/>
+        </createTable>
+
         <addForeignKeyConstraint baseColumnNames="role_id"
                                  baseTableName="users"
                                  constraintName="fk_user_role"
