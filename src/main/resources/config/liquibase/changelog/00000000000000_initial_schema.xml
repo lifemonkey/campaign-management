@@ -162,12 +162,22 @@
             <column name="image_blob" type="longblob" />
             <!-- constraints -->
             <column name="campaign_id" type="bigint"/>
+            <!-- Auditing fields -->
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(50)" />
+            <column name="last_modified_date" type="timestamp"/>
         </createTable>
 
         <createTable tableName="target_list">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="name" type="varchar(255)"/>
             <column name="description" type="varchar(4000)"/>
             <column name="target_type" type="int"/>
             <!-- Auditing fields -->
@@ -197,7 +207,7 @@
             <column name="target_list_id" type="bigint"/>
         </createTable>
 
-        <createTable tableName="account">
+        <createTable tableName="accounts">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -264,7 +274,7 @@
                                  baseTableName="account_target_list"
                                  constraintName="fk_account_target_list_account_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="account"/>
+                                 referencedTableName="accounts"/>
 
         <addForeignKeyConstraint baseColumnNames="target_list_id"
                                  baseTableName="account_target_list"
@@ -281,6 +291,41 @@
                   file="config/liquibase/users.csv"
                   separator=";"
                   tableName="users"/>
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/accounts.csv"
+                  separator=";"
+                  tableName="accounts"/>
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/target_list.csv"
+                  separator=";"
+                  tableName="target_list"/>
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/account_target_list.csv"
+                  separator=";"
+                  tableName="account_target_list"/>
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/status.csv"
+                  separator=";"
+                  tableName="status"/>
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/campaign.csv"
+                  separator=";"
+                  tableName="campaign"/>
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/campaign_target_list.csv"
+                  separator=";"
+                  tableName="campaign_target_list"/>
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/files.csv"
+                  separator=";"
+                  tableName="files"/>
     </changeSet>
 
     <changeSet author="jhipster" id="00000000000002" context="test">

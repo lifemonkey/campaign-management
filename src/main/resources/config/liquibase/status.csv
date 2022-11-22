@@ -1,0 +1,8 @@
+id;name
+1;Running
+2;Pending Approve
+3;Initialization
+4;Paused
+5;Cancelled
+6;Completed
+7;Rejected

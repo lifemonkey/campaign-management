@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "account")
+@Table(name = "accounts")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Account extends AbstractAuditingEntity implements Serializable {
 
@@ -20,7 +20,7 @@ public class Account extends AbstractAuditingEntity implements Serializable {
     private Long id;
 
     @Column(name = "external_id", length = 22)
-    private Long externalId;
+    private String externalId;
 
     @Size(max = 200)
     @Column(name = "first_name", length = 200)
@@ -36,7 +36,7 @@ public class Account extends AbstractAuditingEntity implements Serializable {
     public Account() {
     }
 
-    public Account(Long externalId, String firstname, String lastname) {
+    public Account(String externalId, String firstname, String lastname) {
         this.externalId = externalId;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -50,11 +50,11 @@ public class Account extends AbstractAuditingEntity implements Serializable {
         this.id = id;
     }
 
-    public Long getExternalId() {
+    public String getExternalId() {
         return externalId;
     }
 
-    public void setExternalId(Long externalId) {
+    public void setExternalId(String externalId) {
         this.externalId = externalId;
     }
 

@@ -20,6 +20,9 @@ public class TargetList extends AbstractAuditingEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name")
+    private String name;
+
     @JsonIgnore
     @NotBlank
     @Column(name = "description", length = 4000)
@@ -43,7 +46,8 @@ public class TargetList extends AbstractAuditingEntity implements Serializable {
     public TargetList() {
     }
 
-    public TargetList(String description, Integer targetType) {
+    public TargetList(String name, String description, Integer targetType) {
+        this.name = name;
         this.description = description;
         this.targetType = targetType;
     }
@@ -54,6 +58,14 @@ public class TargetList extends AbstractAuditingEntity implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -92,6 +104,7 @@ public class TargetList extends AbstractAuditingEntity implements Serializable {
     public String toString() {
         return "TargetList{" +
             "id=" + id +
+            ", name='" + name + '\'' +
             ", description='" + description + '\'' +
             ", targetType=" + targetType +
             ", campaignList=" + campaignList +
