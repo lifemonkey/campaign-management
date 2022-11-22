@@ -1,6 +1,5 @@
 package campaign.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -12,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "refresh_token")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class RefreshToken implements Serializable {
+public class RefreshToken extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -21,13 +20,12 @@ public class RefreshToken implements Serializable {
     private Long id;
 
     @NotBlank
-    @Column(name = "token", length = 255, unique = true, nullable = false)
+    @Column(name = "token", unique = true, nullable = false)
     private String token;
 
     @Column(name = "expired_date", nullable = false)
     private LocalDateTime expiredDate;
 
-    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)

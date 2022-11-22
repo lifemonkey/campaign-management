@@ -2,12 +2,12 @@ package campaign.domain;
 
 import campaign.config.Constants;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cache;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -15,7 +15,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(	name = "users" )
+@Table(name = "users")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class User extends AbstractAuditingEntity implements Serializable {
 
@@ -49,15 +49,21 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "expired_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime expiredDate = null;
 
+    @JsonIgnore
     @Column(name = "image_url", length = 255)
     private String imageUrl = null;
 
-    @JsonIgnore
+    @Column(name = "image_blob", columnDefinition = "BLOB")
+    @Lob
+    private byte[]  imageBlob;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @BatchSize(size = 20)
     private Role role;
+
+    @OneToOne(mappedBy = "approvedRejectedBy")
+    private Campaign campaign;
 
     public User() { }
 
@@ -130,6 +136,22 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.imageUrl = imageUrl;
     }
 
+    public byte[] getImageBlob() {
+        return imageBlob;
+    }
+
+    public void setImageBlob(byte[] imageBlob) {
+        this.imageBlob = imageBlob;
+    }
+
+    public Campaign getCampaign() {
+        return campaign;
+    }
+
+    public void setCampaign(Campaign campaign) {
+        this.campaign = campaign;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -140,7 +162,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
             ", lastname='" + lastname + '\'' +
             ", expiredDate=" + expiredDate +
             ", imageUrl='" + imageUrl + '\'' +
+            ", imageBlob=" + Arrays.toString(imageBlob) +
             ", role=" + role +
+            ", campaign=" + campaign +
             '}';
     }
 }

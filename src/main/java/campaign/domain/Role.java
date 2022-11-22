@@ -20,7 +20,7 @@ public class Role implements Serializable {
     @Column(length = 100)
     private String name;
 
-    @Column(length = 255)
+    @Column(length = 4000)
     private String description;
 
     @Column(name = "can_approve_reward", length = 2)

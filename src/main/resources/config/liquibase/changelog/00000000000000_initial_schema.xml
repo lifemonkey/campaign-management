@@ -66,6 +66,8 @@
             <column name="last_name" type="varchar(200)"/>
             <column name="expired_date" type="timestamp"/>
             <column name="image_url" type="varchar(255)" />
+            <column name="image_blob" type="longblob" />
+            <!-- constraints -->
             <column name="role_id" type="bigint" />
             <!-- Auditing fields -->
             <column name="created_by" type="varchar(50)">
@@ -83,12 +85,12 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(20)"/>
-            <column name="description" type="varchar(255)"/>
-            <column name="can_approve_reward" type="varchar(2)"/>
-            <column name="can_reject_reward" type="varchar(2)"/>
-            <column name="campaign_management" type="varchar(2)"/>
-            <column name="rule_management" type="varchar(2)"/>
-            <column name="prize_management" type="varchar(2)"/>
+            <column name="description" type="varchar(4000)"/>
+            <column name="can_approve_reward" type="int"/>
+            <column name="can_reject_reward" type="int"/>
+            <column name="campaign_management" type="int"/>
+            <column name="rule_management" type="int"/>
+            <column name="prize_management" type="int"/>
         </createTable>
 
         <createTable tableName="refresh_token">
@@ -97,7 +99,17 @@
             </column>
             <column name="token" type="varchar(255)"/>
             <column name="expired_date" type="timestamp"/>
+            <!-- constraints -->
             <column name="user_id" type="bigint"/>
+            <!-- Auditing fields -->
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(50)" />
+            <column name="last_modified_date" type="timestamp"/>
         </createTable>
 
         <createTable tableName="token_black_list">
@@ -108,6 +120,102 @@
             <column name="expired_date" type="timestamp"/>
         </createTable>
 
+        <createTable tableName="status">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(30)"/>
+        </createTable>
+
+        <createTable tableName="campaign">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+            <column name="description" type="varchar(4000)"/>
+            <column name="from_date" type="timestamp"/>
+            <column name="end_date" type="timestamp"/>
+            <column name="campaign_type" type="int"/>
+            <column name="notes" type="varchar(4000)"/>
+            <!-- constraints -->
+            <column name="status_id" type="bigint"/>
+            <column name="approved_rejected_by" type="bigint"/>
+            <!-- Auditing fields -->
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(50)" />
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+
+        <createTable tableName="files">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(200)"/>
+            <column name="description" type="varchar(4000)"/>
+            <column name="file_type" type="int"/>
+            <column name="image_url" type="varchar(255)"/>
+            <column name="image_blob" type="longblob" />
+            <!-- constraints -->
+            <column name="campaign_id" type="bigint"/>
+        </createTable>
+
+        <createTable tableName="target_list">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="description" type="varchar(4000)"/>
+            <column name="target_type" type="int"/>
+            <!-- Auditing fields -->
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(50)" />
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+
+        <createTable tableName="campaign_target_list">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="campaign_id" type="bigint"/>
+            <column name="target_list_id" type="bigint"/>
+        </createTable>
+
+        <createTable tableName="account_target_list">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="account_id" type="bigint"/>
+            <column name="target_list_id" type="bigint"/>
+        </createTable>
+
+        <createTable tableName="account">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="external_id" type="bigint" />
+            <column name="first_name" type="varchar(200)"/>
+            <column name="last_name" type="varchar(200)"/>
+            <!-- Auditing fields -->
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(50)" />
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+
+        <!-- Config relationship -->
         <addForeignKeyConstraint baseColumnNames="role_id"
                                  baseTableName="users"
                                  constraintName="fk_user_role"
@@ -119,6 +227,50 @@
                                  constraintName="fk_refresh_token_user"
                                  referencedColumnNames="id"
                                  referencedTableName="users"/>
+
+        <addForeignKeyConstraint baseColumnNames="status_id"
+                                 baseTableName="campaign"
+                                 constraintName="fk_campaign_status_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="status"/>
+
+        <addForeignKeyConstraint baseColumnNames="approved_rejected_by"
+                                 baseTableName="campaign"
+                                 constraintName="fk_campaign_approved_rejected_by"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+
+        <addForeignKeyConstraint baseColumnNames="campaign_id"
+                                 baseTableName="files"
+                                 constraintName="fk_campaign_files"
+                                 referencedColumnNames="id"
+                                 referencedTableName="campaign"/>
+
+        <!-- Config ManyToMany for campaign vs target_list -->
+        <addForeignKeyConstraint baseColumnNames="campaign_id"
+                                 baseTableName="campaign_target_list"
+                                 constraintName="fk_campaign_target_list_campaign"
+                                 referencedColumnNames="id"
+                                 referencedTableName="campaign"/>
+
+        <addForeignKeyConstraint baseColumnNames="target_list_id"
+                                 baseTableName="campaign_target_list"
+                                 constraintName="fk_campaign_target_list_target_list"
+                                 referencedColumnNames="id"
+                                 referencedTableName="target_list"/>
+
+        <!-- Config ManyToMany for campaign vs target_list -->
+        <addForeignKeyConstraint baseColumnNames="account_id"
+                                 baseTableName="account_target_list"
+                                 constraintName="fk_account_target_list_account_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="account"/>
+
+        <addForeignKeyConstraint baseColumnNames="target_list_id"
+                                 baseTableName="account_target_list"
+                                 constraintName="fk_account_target_list_target_list_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="target_list"/>
 
         <loadData encoding="UTF-8"
                   file="config/liquibase/roles.csv"

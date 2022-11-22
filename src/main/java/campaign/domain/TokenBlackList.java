@@ -20,7 +20,7 @@ public class TokenBlackList implements Serializable {
     private Long id;
 
     @NotBlank
-    @Column(name = "token", length = 255, unique = true, nullable = false)
+    @Column(name = "token", unique = true, nullable = false)
     private String token;
 
     @Column(name = "expired_date", columnDefinition = "TIMESTAMP")
