@@ -14,9 +14,9 @@ import javax.transaction.Transactional;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -51,15 +51,14 @@ public class TokenBlackListService {
             expiration = new Date();
         }
         if (!token.isEmpty()) {
-            tokenBlackListRepository.save(new TokenBlackList(token, expiration.toInstant()));
+            tokenBlackListRepository.save(new TokenBlackList(token, ServiceUtils.convertToLocalDateTime(expiration)));
         }
     }
 
 
     public void deleteExpiredToken() {
-        List<TokenBlackList> tokenBlackLists = tokenBlackListRepository.findByExpiredDateBefore(Instant.now());
-        if (tokenBlackLists != null && tokenBlackLists.size() > 0) {
-            tokenBlackListRepository.deleteAll(tokenBlackLists);
-        }
+        // TODO: update query for expired date token
+        Instant now = Instant.now().plus(2, ChronoUnit.DAYS);
+        tokenBlackListRepository.deleteAllByExpiredDateBefore(ServiceUtils.convertToLocalDateTime(now));
     }
 }

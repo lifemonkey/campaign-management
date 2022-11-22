@@ -6,7 +6,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "token_black_list")
@@ -23,13 +23,13 @@ public class TokenBlackList implements Serializable {
     @Column(name = "token", length = 255, unique = true, nullable = false)
     private String token;
 
-    @Column(name = "expired_date")
-    private Instant expiredDate;
+    @Column(name = "expired_date", columnDefinition = "TIMESTAMP")
+    private LocalDateTime expiredDate;
 
     public TokenBlackList() {
     }
 
-    public TokenBlackList(String token, Instant expiredDate) {
+    public TokenBlackList(String token, LocalDateTime expiredDate) {
         this.token = token;
         this.expiredDate = expiredDate;
     }
@@ -50,11 +50,11 @@ public class TokenBlackList implements Serializable {
         this.token = token;
     }
 
-    public Instant getExpiredDate() {
+    public LocalDateTime getExpiredDate() {
         return expiredDate;
     }
 
-    public void setExpiredDate(Instant expiredDate) {
+    public void setExpiredDate(LocalDateTime expiredDate) {
         this.expiredDate = expiredDate;
     }
 

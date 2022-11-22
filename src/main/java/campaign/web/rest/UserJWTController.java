@@ -127,7 +127,6 @@ public class UserJWTController {
     @Scheduled(cron = "0 0 1 * * ?")
     @Timed
     public void removeNotActivatedUsers() {
-        log.debug("Deleting expired black list tokens {}");
         tokenBlackListService.deleteExpiredToken();
     }
 

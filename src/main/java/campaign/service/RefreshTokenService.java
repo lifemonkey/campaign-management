@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -37,7 +38,8 @@ public class RefreshTokenService {
         RefreshToken refreshToken = new RefreshToken();
 
         refreshToken.setUser(userRepository.findByUsername(userName).get());
-        refreshToken.setExpiredDate(Instant.now().plusMillis(jHipsterProperties.getSecurity().getAuthentication().getJwt().getTokenValidityInSecondsForRememberMe()));
+        Instant expiredDate = Instant.now().plusMillis(jHipsterProperties.getSecurity().getAuthentication().getJwt().getTokenValidityInSecondsForRememberMe());
+        refreshToken.setExpiredDate(ServiceUtils.convertToLocalDateTime(expiredDate));
         refreshToken.setToken(UUID.randomUUID().toString());
 
         refreshToken = refreshTokenRepository.save(refreshToken);
@@ -45,7 +47,7 @@ public class RefreshTokenService {
     }
 
     public RefreshToken verifyExpiration(RefreshToken token) {
-        if (token.getExpiredDate().compareTo(Instant.now()) < 0) {
+        if (token.getExpiredDate().compareTo(LocalDateTime.now()) < 0) {
             refreshTokenRepository.delete(token);
             throw new TokenRefreshException(token.getToken(), "Refresh token was expired. Please make a new signin request");
         }

@@ -6,7 +6,7 @@ import campaign.domain.User;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 public class UserDTO {
 
@@ -28,7 +28,7 @@ public class UserDTO {
     @Size(min = 1, max = 200)
     private String lastname;
 
-    private Instant expiredDate;
+    private LocalDateTime expiredDate;
 
     private String imageUrl;
 
@@ -91,11 +91,11 @@ public class UserDTO {
         this.lastname = lastname;
     }
 
-    public Instant getExpiredDate() {
+    public LocalDateTime getExpiredDate() {
         return expiredDate;
     }
 
-    public void setExpiredDate(Instant expiredDate) {
+    public void setExpiredDate(LocalDateTime expiredDate) {
         this.expiredDate = expiredDate;
     }
 

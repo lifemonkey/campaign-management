@@ -114,6 +114,12 @@
                                  referencedColumnNames="id"
                                  referencedTableName="roles"/>
 
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="refresh_token"
+                                 constraintName="fk_refresh_token_user"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+
         <loadData encoding="UTF-8"
                   file="config/liquibase/roles.csv"
                   separator=";"

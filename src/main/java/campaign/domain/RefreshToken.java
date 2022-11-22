@@ -7,7 +7,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "refresh_token")
@@ -25,7 +25,7 @@ public class RefreshToken implements Serializable {
     private String token;
 
     @Column(name = "expired_date", nullable = false)
-    private Instant expiredDate;
+    private LocalDateTime expiredDate;
 
     @JsonIgnore
     @OneToOne
@@ -36,7 +36,7 @@ public class RefreshToken implements Serializable {
     public RefreshToken() {
     }
 
-    public RefreshToken(String token, Instant expiredDate, User user) {
+    public RefreshToken(String token, LocalDateTime expiredDate, User user) {
         this.token = token;
         this.expiredDate = expiredDate;
         this.user = user;
@@ -58,11 +58,11 @@ public class RefreshToken implements Serializable {
         this.token = token;
     }
 
-    public Instant getExpiredDate() {
+    public LocalDateTime getExpiredDate() {
         return expiredDate;
     }
 
-    public void setExpiredDate(Instant expiryDate) {
+    public void setExpiredDate(LocalDateTime expiryDate) {
         this.expiredDate = expiryDate;
     }
 

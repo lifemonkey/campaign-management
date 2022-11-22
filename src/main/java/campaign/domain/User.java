@@ -7,7 +7,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cache;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -46,8 +46,8 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "last_name", length = 200)
     private String lastname;
 
-    @Column(name = "expired_date")
-    private Instant expiredDate = null;
+    @Column(name = "expired_date", columnDefinition = "TIMESTAMP")
+    private LocalDateTime expiredDate = null;
 
     @Column(name = "image_url", length = 255)
     private String imageUrl = null;
@@ -106,11 +106,11 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.lastname = lastname;
     }
 
-    public Instant getExpiredDate() {
+    public LocalDateTime getExpiredDate() {
         return expiredDate;
     }
 
-    public void setExpiredDate(Instant expiredDate) {
+    public void setExpiredDate(LocalDateTime expiredDate) {
         this.expiredDate = expiredDate;
     }
 
