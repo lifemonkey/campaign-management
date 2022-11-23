@@ -89,7 +89,7 @@ public class Account extends AbstractAuditingEntity implements Serializable {
             ", externalId=" + externalId +
             ", firstname='" + firstname + '\'' +
             ", lastname='" + lastname + '\'' +
-            ", targetLists=" + targetLists +
+//            ", targetLists=" + targetLists +
             '}';
     }
 }

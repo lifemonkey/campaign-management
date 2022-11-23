@@ -1,5 +1,6 @@
 package campaign.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -23,6 +24,7 @@ public class RefreshToken extends AbstractAuditingEntity implements Serializable
     @Column(name = "token", unique = true, nullable = false)
     private String token;
 
+    @JsonIgnore
     @Column(name = "expired_date", nullable = false)
     private LocalDateTime expiredDate;
 

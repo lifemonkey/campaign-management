@@ -7,7 +7,6 @@ import org.hibernate.annotations.Cache;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -29,6 +28,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @NotBlank
     @Pattern(regexp = Constants.LOGIN_REGEX)
     @Size(max = 50)
+    @Email
     @Column(name = "username", length = 50, unique = true, nullable = false)
     private String username;
 
@@ -62,9 +62,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Role role;
-
-    @OneToOne(mappedBy = "approvedRejectedBy")
-    private Campaign campaign;
 
     public User() { }
 
@@ -145,14 +142,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.imageBlob = imageBlob;
     }
 
-    public Campaign getCampaign() {
-        return campaign;
-    }
-
-    public void setCampaign(Campaign campaign) {
-        this.campaign = campaign;
-    }
-
     @Override
     public String toString() {
         return "User{" +
@@ -163,9 +152,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
             ", lastname='" + lastname + '\'' +
             ", expiredDate=" + expiredDate +
             ", imageUrl='" + imageUrl + '\'' +
-            ", imageBlob=" + Arrays.toString(imageBlob) +
             ", role=" + role +
-            ", campaign=" + campaign +
             '}';
     }
 }

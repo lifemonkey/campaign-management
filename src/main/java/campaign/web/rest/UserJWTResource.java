@@ -1,7 +1,6 @@
 package campaign.web.rest;
 
 import campaign.domain.RefreshToken;
-import campaign.domain.TokenBlackList;
 import campaign.security.SecurityUtils;
 import campaign.security.jwt.JWTConfigurer;
 import campaign.security.jwt.TokenProvider;
@@ -26,12 +25,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -39,9 +34,9 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api")
-public class UserJWTController {
+public class UserJWTResource {
 
-    private final Logger log = LoggerFactory.getLogger(UserJWTController.class);
+    private final Logger log = LoggerFactory.getLogger(UserJWTResource.class);
 
     private final TokenProvider tokenProvider;
 
@@ -51,7 +46,7 @@ public class UserJWTController {
 
     private final TokenBlackListService tokenBlackListService;
 
-    public UserJWTController(TokenProvider tokenProvider, AuthenticationManager authenticationManager, RefreshTokenService refreshTokenService, TokenBlackListService tokenBlackListService) {
+    public UserJWTResource(TokenProvider tokenProvider, AuthenticationManager authenticationManager, RefreshTokenService refreshTokenService, TokenBlackListService tokenBlackListService) {
         this.tokenProvider = tokenProvider;
         this.authenticationManager = authenticationManager;
         this.refreshTokenService = refreshTokenService;
@@ -96,12 +91,12 @@ public class UserJWTController {
         return ResponseEntity.ok("User is not valid!");
     }
 
-    @PostMapping("/refreshToken")
+    @PostMapping("/refresh-token")
     @Timed
     public ResponseEntity<JWTToken> refreshToken(final HttpServletRequest request, @Valid @RequestBody TokenRefreshRequest tokenRequest) {
         String requestRefreshToken = tokenRequest.getRefreshToken();
 
-        return refreshTokenService.findByToken(requestRefreshToken)
+        return refreshTokenService.getRefreshTokenByToken(requestRefreshToken)
             .map(refreshTokenService::verifyExpiration)
             .map(RefreshToken::getUser)
             .map(user -> {
@@ -123,7 +118,7 @@ public class UserJWTController {
      * <p>
      * This is scheduled to get fired every day, at 01:00 (am).
      */
-    @PostMapping("/cleanToken")
+    @PostMapping("/clean-token")
     @Scheduled(cron = "0 0 1 * * ?")
     @Timed
     public void removeNotActivatedUsers() {

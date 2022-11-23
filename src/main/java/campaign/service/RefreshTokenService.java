@@ -30,7 +30,7 @@ public class RefreshTokenService {
         this.userRepository = userRepository;
     }
 
-    public Optional<RefreshToken> findByToken(String token) {
+    public Optional<RefreshToken> getRefreshTokenByToken(String token) {
         return refreshTokenRepository.findByToken(token);
     }
 

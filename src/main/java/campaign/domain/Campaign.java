@@ -29,9 +29,11 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
     @Column(name = "description", length = 4000)
     private String description;
 
+    @JsonIgnore
     @Column(name = "from_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime fromDate;
 
+    @JsonIgnore
     @Column(name = "end_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime endDate;
 
@@ -168,9 +170,9 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
             ", campaignType=" + campaignType +
             ", notes='" + notes + '\'' +
             ", statusId=" + statusId +
-            ", approvedRejectedBy=" + approvedRejectedBy +
-            ", targetLists=" + targetLists +
-            ", filesList=" + filesList +
+            ", approvedRejectedBy=" + approvedRejectedBy.getUsername()+
+//            ", targetLists=" + targetLists +
+//            ", filesList=" + filesList +
             '}';
     }
 }

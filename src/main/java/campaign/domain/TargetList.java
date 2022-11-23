@@ -1,6 +1,5 @@
 package campaign.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -23,7 +22,6 @@ public class TargetList extends AbstractAuditingEntity implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @JsonIgnore
     @NotBlank
     @Column(name = "description", length = 4000)
     private String description;

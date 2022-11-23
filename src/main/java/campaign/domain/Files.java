@@ -24,7 +24,6 @@ public class Files extends AbstractAuditingEntity implements Serializable {
     @Column(name = "name", length = 200)
     private String name;
 
-    @JsonIgnore
     @Column(name = "description", length = 4000)
     private String description;
 
@@ -32,7 +31,6 @@ public class Files extends AbstractAuditingEntity implements Serializable {
     @Column(name = "file_type", length = 1)
     private Integer fileType;
 
-    @JsonIgnore
     @Column(name = "image_url")
     private String imageUrl = null;
 
@@ -41,7 +39,6 @@ public class Files extends AbstractAuditingEntity implements Serializable {
     @Lob
     private byte[]  imageBlob;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "campaign_id", referencedColumnName = "id")
     private Campaign campaign;
