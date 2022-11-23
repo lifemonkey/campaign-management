@@ -4,7 +4,6 @@ import campaign.domain.Account;
 import campaign.domain.TargetList;
 import campaign.repository.AccountRepository;
 import campaign.repository.TargetListRepository;
-import campaign.service.dto.AccountDTO;
 import campaign.service.dto.TargetListDTO;
 import campaign.service.mapper.TargetListMapper;
 import campaign.web.rest.vm.TargetListVM;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -40,30 +40,46 @@ public class TargetListService {
         return targetListRepository.findAll(pageable).map(TargetListDTO::new);
     }
 
-    @Transactional
-    public TargetListDTO createTargetList(TargetListVM targetListVM) {
-        TargetList targetList = targetListMapper.targetListVMToTargetList(targetListVM);
-        if (targetList != null) {
-            List<Account> accountList = accountRepository.findByIdIn(targetListVM.getAccountList());
-            if (accountList != null) {
-                targetList.setAccountList(accountList);
-                TargetList savedTargetList = targetListRepository.save(targetList);
-                return targetListMapper.targetListToTargetListDTO(savedTargetList);
-            }
+    @Transactional(readOnly = true)
+    public TargetListDTO getTargetListById(Long id) {
+        Optional<TargetList> targetListOpt = targetListRepository.findById(id);
+        if (targetListOpt.isPresent()) {
+            return new TargetListDTO(targetListOpt.get());
         }
 
         return new TargetListDTO();
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
+    public TargetListDTO createTargetList(TargetListVM targetListVM) {
+        TargetList targetList = targetListMapper.targetListVMToTargetList(targetListVM);
+        if (targetList != null) {
+            targetListRepository.save(targetList);
+
+            // find related accounts
+            List<Account> accountList = targetListVM.getAccountList() != null
+                ? accountRepository.findByIdIn(targetListVM.getAccountList())
+                : null;
+            if (accountList != null) {
+                targetList.setAccountList(accountList);
+                targetListRepository.save(targetList);
+            }
+
+            return targetListMapper.targetListToTargetListDTO(targetList);
+        }
+
+        return new TargetListDTO();
+    }
+
+    @Transactional(rollbackFor = Exception.class)
     public TargetListDTO updateTargetList(Long id, TargetListVM targetListVM) {
         TargetList targetList = targetListMapper.targetListVMToTargetList(targetListVM);
         targetList.setId(id);
-        TargetList updatedTargetList = targetListRepository.save(targetList);
-        return targetListMapper.targetListToTargetListDTO(updatedTargetList);
+        targetListRepository.save(targetList);
+        return targetListMapper.targetListToTargetListDTO(targetList);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void deleteTargetList(Long id) {
         targetListRepository.deleteById(id);
     }

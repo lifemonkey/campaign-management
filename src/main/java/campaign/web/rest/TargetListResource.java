@@ -17,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -44,6 +45,19 @@ public class TargetListResource {
         Page<TargetListDTO> page = targetListService.getAllTargetList(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/target-list");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET /target-list/{id} : get target-list by id
+     *
+     * @PathParm pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and with body all users
+     */
+    @GetMapping("/target-list/{id}")
+    @Timed
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    public ResponseEntity<TargetListDTO> getTargetListById(@Valid @PathVariable Long id) {
+        return new ResponseEntity<>(targetListService.getTargetListById(id), new HttpHeaders(), HttpStatus.OK);
     }
 
     /**

@@ -51,7 +51,7 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
     @JoinColumn(name = "approved_rejected_by", referencedColumnName = "id")
     private User approvedRejectedBy;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "campaign_target_list",
         joinColumns = @JoinColumn(name = "target_list_id", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "campaign_id", referencedColumnName = "id"))

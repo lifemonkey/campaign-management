@@ -32,14 +32,9 @@ public class Account extends AbstractAuditingEntity implements Serializable {
     @Column(name = "last_name", length = 200)
     private String lastname;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-        cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-        },
-        mappedBy = "accountList")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "accountList")
     @JsonIgnore
-    List<TargetList> targetLists = new ArrayList<>();;
+    List<TargetList> targetLists = new ArrayList<>();
 
     public Account() {
     }

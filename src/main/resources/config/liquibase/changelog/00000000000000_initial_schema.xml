@@ -266,33 +266,38 @@
                                  baseTableName="files"
                                  constraintName="fk_campaign_files_campaign_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="campaign"/>
+                                 referencedTableName="campaign"
+                                 onDelete="CASCADE"/>
 
         <!-- Config ManyToMany for campaign vs target_list -->
         <addForeignKeyConstraint baseColumnNames="campaign_id"
                                  baseTableName="campaign_target_list"
                                  constraintName="fk_campaign_target_list_campaign_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="campaign"/>
+                                 referencedTableName="campaign"
+                                 onDelete="CASCADE"/>
 
         <addForeignKeyConstraint baseColumnNames="target_list_id"
                                  baseTableName="campaign_target_list"
                                  constraintName="fk_campaign_target_list_target_list_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="target_list"/>
+                                 referencedTableName="target_list"
+                                 onDelete="CASCADE"/>
 
-        <!-- Config ManyToMany for campaign vs target_list -->
+        <!-- Config ManyToMany for target_list vs account -->
         <addForeignKeyConstraint baseColumnNames="account_id"
                                  baseTableName="target_list_account"
                                  constraintName="fk_target_list_account_account_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="accounts"/>
+                                 referencedTableName="accounts"
+                                 onDelete="CASCADE"/>
 
         <addForeignKeyConstraint baseColumnNames="target_list_id"
                                  baseTableName="target_list_account"
                                  constraintName="fk_target_list_account_target_list_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="target_list"/>
+                                 referencedTableName="target_list"
+                                 onDelete="CASCADE"/>
 
         <loadData encoding="UTF-8"
                   file="config/liquibase/roles.csv"

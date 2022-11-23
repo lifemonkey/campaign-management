@@ -1,7 +1,6 @@
 package campaign.web.rest;
 
 import campaign.config.Constants;
-import campaign.repository.UserRepository;
 import campaign.security.AuthoritiesConstants;
 import campaign.service.UserService;
 import campaign.service.dto.UserDTO;
@@ -15,10 +14,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -27,12 +26,9 @@ public class UserResource {
 
     private final Logger log = LoggerFactory.getLogger(UserResource.class);
 
-    private final UserRepository userRepository;
-
     private final UserService userService;
 
-    public UserResource(UserRepository userRepository, UserService userService) {
-        this.userRepository = userRepository;
+    public UserResource(UserService userService) {
         this.userService = userService;
     }
 
@@ -49,6 +45,19 @@ public class UserResource {
         final Page<UserDTO> page = userService.getAllUsers(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET /user/{id} : get user by Id
+     *
+     * @PathVariable id of user
+     * @return the ResponseEntity with status 200 (OK) and with body all users
+     */
+    @GetMapping("/user/{id}")
+    @Timed
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    public ResponseEntity<UserDTO> getUserById(@Valid @PathVariable Long id) {
+        return new ResponseEntity<>(userService.getUserById(id), new HttpHeaders(), HttpStatus.OK);
     }
 
     /**
