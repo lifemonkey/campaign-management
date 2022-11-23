@@ -209,7 +209,7 @@
             <column name="target_list_id" type="bigint"/>
         </createTable>
 
-        <createTable tableName="account_target_list">
+        <createTable tableName="target_list_account">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -221,7 +221,7 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="external_id" type="bigint" />
+            <column name="external_id" type="varchar(22)" />
             <column name="first_name" type="varchar(200)"/>
             <column name="last_name" type="varchar(200)"/>
             <!-- Auditing fields -->
@@ -240,57 +240,57 @@
         <!-- Config relationship -->
         <addForeignKeyConstraint baseColumnNames="role_id"
                                  baseTableName="users"
-                                 constraintName="fk_user_role"
+                                 constraintName="fk_user_role_role_id"
                                  referencedColumnNames="id"
                                  referencedTableName="roles"/>
 
         <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="refresh_token"
-                                 constraintName="fk_refresh_token_user"
+                                 constraintName="fk_refresh_token_user_user_id"
                                  referencedColumnNames="id"
                                  referencedTableName="users"/>
 
         <addForeignKeyConstraint baseColumnNames="status_id"
                                  baseTableName="campaign"
-                                 constraintName="fk_campaign_status_id"
+                                 constraintName="fk_campaign_status_status_id"
                                  referencedColumnNames="id"
                                  referencedTableName="status"/>
 
         <addForeignKeyConstraint baseColumnNames="approved_rejected_by"
                                  baseTableName="campaign"
-                                 constraintName="fk_campaign_approved_rejected_by"
+                                 constraintName="fk_campaign_approved_rejected_by_user_id"
                                  referencedColumnNames="id"
                                  referencedTableName="users"/>
 
         <addForeignKeyConstraint baseColumnNames="campaign_id"
                                  baseTableName="files"
-                                 constraintName="fk_campaign_files"
+                                 constraintName="fk_campaign_files_campaign_id"
                                  referencedColumnNames="id"
                                  referencedTableName="campaign"/>
 
         <!-- Config ManyToMany for campaign vs target_list -->
         <addForeignKeyConstraint baseColumnNames="campaign_id"
                                  baseTableName="campaign_target_list"
-                                 constraintName="fk_campaign_target_list_campaign"
+                                 constraintName="fk_campaign_target_list_campaign_id"
                                  referencedColumnNames="id"
                                  referencedTableName="campaign"/>
 
         <addForeignKeyConstraint baseColumnNames="target_list_id"
                                  baseTableName="campaign_target_list"
-                                 constraintName="fk_campaign_target_list_target_list"
+                                 constraintName="fk_campaign_target_list_target_list_id"
                                  referencedColumnNames="id"
                                  referencedTableName="target_list"/>
 
         <!-- Config ManyToMany for campaign vs target_list -->
         <addForeignKeyConstraint baseColumnNames="account_id"
-                                 baseTableName="account_target_list"
-                                 constraintName="fk_account_target_list_account_id"
+                                 baseTableName="target_list_account"
+                                 constraintName="fk_target_list_account_account_id"
                                  referencedColumnNames="id"
                                  referencedTableName="accounts"/>
 
         <addForeignKeyConstraint baseColumnNames="target_list_id"
-                                 baseTableName="account_target_list"
-                                 constraintName="fk_account_target_list_target_list_id"
+                                 baseTableName="target_list_account"
+                                 constraintName="fk_target_list_account_target_list_id"
                                  referencedColumnNames="id"
                                  referencedTableName="target_list"/>
 
@@ -315,9 +315,9 @@
                   tableName="target_list"/>
 
         <loadData encoding="UTF-8"
-                  file="config/liquibase/account_target_list.csv"
+                  file="config/liquibase/target_list_account.csv"
                   separator=";"
-                  tableName="account_target_list"/>
+                  tableName="target_list_account"/>
 
         <loadData encoding="UTF-8"
                   file="config/liquibase/status.csv"

@@ -6,6 +6,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,27 +20,24 @@ public class TargetList extends AbstractAuditingEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     @Column(name = "name")
     private String name;
 
-    @NotBlank
     @Column(name = "description", length = 4000)
     private String description;
 
     @Column(name = "target_type", length = 1)
     private Integer targetType;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "campaign_target_list",
-        joinColumns = @JoinColumn(name = "campaign_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "target_list_id", referencedColumnName = "id"))
-    private List<Campaign> campaignList;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "targetLists")
+    private List<Campaign> campaignList = new ArrayList<>();;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "account_target_list",
-        joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "target_list_id", referencedColumnName = "id"))
-    private List<Account> accountList;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(name = "target_list_account",
+        joinColumns = @JoinColumn(name = "account_id", nullable = false, referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "target_list_id", nullable = false, referencedColumnName = "id"))
+    private List<Account> accountList = new ArrayList<>();
 
     public TargetList() {
     }
@@ -105,8 +103,8 @@ public class TargetList extends AbstractAuditingEntity implements Serializable {
             ", name='" + name + '\'' +
             ", description='" + description + '\'' +
             ", targetType=" + targetType +
-            ", campaignList=" + campaignList +
-            ", accountList=" + accountList +
+//            ", campaignList=" + campaignList +
+//            ", accountList=" + accountList +
             '}';
     }
 }

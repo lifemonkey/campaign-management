@@ -2,6 +2,7 @@ package campaign.service.mapper;
 
 import campaign.domain.TargetList;
 import campaign.service.dto.TargetListDTO;
+import campaign.web.rest.vm.TargetListVM;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -56,5 +57,25 @@ public class TargetListMapper {
             .filter(Objects::nonNull)
             .map(this::targetListDTOToTargetList)
             .collect(Collectors.toList());
+    }
+
+    public TargetList targetListVMToTargetList(TargetListVM targetListVM) {
+        if (targetListVM == null) {
+            return null;
+        } else {
+            TargetList targetList = new TargetList();
+
+            if (targetListVM.getName() != null) {
+                targetList.setName(targetListVM.getName());
+            }
+            if (targetListVM.getDescription() != null) {
+                targetList.setDescription(targetListVM.getDescription());
+            }
+            if (targetListVM.getTargetType() != null) {
+                targetList.setTargetType(targetListVM.getTargetType());
+            }
+
+            return targetList;
+        }
     }
 }

@@ -39,7 +39,7 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:mysql://localhost:3306/lucky?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
     username: root
-    password: root
+    password: Learnbyheart11h
 #    url: jdbc:oracle:thin:@//163.172.153.153:49161/xe
 #    driver-class-name: oracle.jdbc.OracleDriver
 #    username: sys as sysdba

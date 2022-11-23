@@ -39,7 +39,7 @@ public class Files extends AbstractAuditingEntity implements Serializable {
     @Lob
     private byte[]  imageBlob;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "campaign_id", referencedColumnName = "id")
     private Campaign campaign;
 

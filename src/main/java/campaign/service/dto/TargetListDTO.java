@@ -16,7 +16,7 @@ public class TargetListDTO {
     @NotBlank
     private String name;
 
-    @Size(min = 1, max = 4000)
+    @Size(max = 4000)
     private String description;
 
     private Integer targetType;

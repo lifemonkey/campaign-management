@@ -1,7 +1,6 @@
 package campaign.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -9,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -47,15 +47,18 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
     @JoinColumn(name = "status_id", referencedColumnName = "id")
     private Status statusId;
 
-    @OneToOne
+    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "approved_rejected_by", referencedColumnName = "id")
     private User approvedRejectedBy;
 
-    @ManyToMany(mappedBy = "campaignList")
-    private List<TargetList> targetLists;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(name = "campaign_target_list",
+        joinColumns = @JoinColumn(name = "target_list_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "campaign_id", referencedColumnName = "id"))
+    private List<TargetList> targetLists = new ArrayList<>();;
 
-    @OneToMany(mappedBy = "campaign")
-    private List<Files> filesList;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "campaign")
+    private List<Files> filesList = new ArrayList<>();;
 
     public Campaign() {
     }
@@ -170,7 +173,7 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
             ", campaignType=" + campaignType +
             ", notes='" + notes + '\'' +
             ", statusId=" + statusId +
-            ", approvedRejectedBy=" + approvedRejectedBy.getUsername()+
+//            ", approvedRejectedBy=" + approvedRejectedBy.getUsername() +
 //            ", targetLists=" + targetLists +
 //            ", filesList=" + filesList +
             '}';

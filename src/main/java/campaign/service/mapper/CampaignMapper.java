@@ -1,7 +1,9 @@
 package campaign.service.mapper;
 
 import campaign.domain.Campaign;
+import campaign.domain.TargetList;
 import campaign.service.dto.CampaignDTO;
+import campaign.web.rest.vm.CampaignVM;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,7 +52,7 @@ public class CampaignMapper {
             }
             campaign.setCampaignType(campaignDTO.getCampaignType());
             campaign.setNotes(campaignDTO.getNotes());
-            campaignDTO.setStatusId(campaignDTO.getStatusId());
+            campaign.setStatusId(campaignDTO.getStatusId());
             if (campaignDTO.getApprovedRejectedBy() != null) {
                 campaign.setApprovedRejectedBy(userMapper.userDTOToUser(campaignDTO.getApprovedRejectedBy()));
             }
@@ -65,6 +67,38 @@ public class CampaignMapper {
             campaign.setCreatedDate(campaignDTO.getCreatedDate());
             campaign.setLastModifiedBy(campaignDTO.getLastModifiedBy());
             campaign.setLastModifiedDate(campaignDTO.getLastModifiedDate());
+
+            return campaign;
+        }
+    }
+
+    public Campaign campaignVMToCampaign(CampaignVM campaignVM) {
+        if (campaignVM == null) {
+            return null;
+        } else {
+            Campaign campaign = new Campaign();
+
+            if (campaignVM.getName() != null) {
+                campaign.setName(campaignVM.getName());
+            }
+            if (campaignVM.getDescription() != null) {
+                campaign.setDescription(campaignVM.getDescription());
+            }
+            if (campaignVM.getFromDate() != null) {
+                campaign.setFromDate(campaignVM.getFromDate());
+            }
+            if (campaignVM.getEndDate() != null) {
+                campaign.setEndDate(campaignVM.getEndDate());
+            }
+            if (campaignVM.getCampaignType() != null) {
+                campaign.setCampaignType(campaignVM.getCampaignType());
+            }
+            if (campaignVM.getNotes() != null) {
+                campaign.setNotes(campaignVM.getNotes());
+            }
+            if (campaignVM.getStatusId() != null) {
+                campaign.setStatusId(campaignVM.getStatusId());
+            }
 
             return campaign;
         }

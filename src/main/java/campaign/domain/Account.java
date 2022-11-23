@@ -1,11 +1,13 @@
 package campaign.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,8 +32,14 @@ public class Account extends AbstractAuditingEntity implements Serializable {
     @Column(name = "last_name", length = 200)
     private String lastname;
 
-    @ManyToMany(mappedBy = "accountList")
-    List<TargetList> targetLists;
+    @ManyToMany(fetch = FetchType.LAZY,
+        cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+        },
+        mappedBy = "accountList")
+    @JsonIgnore
+    List<TargetList> targetLists = new ArrayList<>();;
 
     public Account() {
     }
