@@ -11,6 +11,12 @@ import java.util.stream.Collectors;
 @Service
 public class TargetListMapper {
 
+    private final AccountMapper accountMapper;
+
+    public TargetListMapper(AccountMapper accountMapper) {
+        this.accountMapper = accountMapper;
+    }
+
     public TargetListDTO targetListToTargetListDTO(TargetList targetList) {
         return new TargetListDTO(targetList);
     }
@@ -33,7 +39,7 @@ public class TargetListMapper {
             targetList.setTargetType(targetListDTO.getTargetType());
 
             if (targetListDTO.getAccountList() != null) {
-                targetList.setAccountList(targetListDTO.getAccountList());
+                targetList.setAccountList(accountMapper.accountDTOToAccounts(targetListDTO.getAccountList()));
             }
 
             targetList.setCreatedBy(targetListDTO.getCreatedBy());

@@ -39,4 +39,11 @@ public class AccountMapper {
             return account;
         }
     }
+
+    public List<Account> accountDTOToAccounts(List<AccountDTO> accountDTOs) {
+        return accountDTOs.stream()
+            .filter(Objects::nonNull)
+            .map(this::accountDTOToAccount)
+            .collect(Collectors.toList());
+    }
 }

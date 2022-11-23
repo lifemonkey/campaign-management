@@ -13,9 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,7 +30,7 @@ public class TargetListResource {
     }
 
     /**
-     * GET /targetList : get all target list.
+     * GET /target-list : get all target list.
      *
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and with body all users
@@ -46,4 +44,16 @@ public class TargetListResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    /**
+     * POST /target-list : Create target list
+     *
+     * @body pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and with body all users
+     */
+    @PostMapping("/target-list")
+    @Timed
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "')")
+    public ResponseEntity<TargetListDTO> createTargetList(@RequestBody TargetListDTO targetListDTO) {
+        return new ResponseEntity<> (targetListService.createTargetList(targetListDTO), new HttpHeaders(), HttpStatus.OK);
+    }
 }
