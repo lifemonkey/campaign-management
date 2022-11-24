@@ -267,6 +267,7 @@
                                  constraintName="fk_campaign_files_campaign_id"
                                  referencedColumnNames="id"
                                  referencedTableName="campaign"
+                                 onUpdate="CASCADE"
                                  onDelete="CASCADE"/>
 
         <!-- Config ManyToMany for campaign vs target_list -->
@@ -275,6 +276,7 @@
                                  constraintName="fk_campaign_target_list_campaign_id"
                                  referencedColumnNames="id"
                                  referencedTableName="campaign"
+                                 onUpdate="CASCADE"
                                  onDelete="CASCADE"/>
 
         <addForeignKeyConstraint baseColumnNames="target_list_id"
@@ -282,6 +284,7 @@
                                  constraintName="fk_campaign_target_list_target_list_id"
                                  referencedColumnNames="id"
                                  referencedTableName="target_list"
+                                 onUpdate="CASCADE"
                                  onDelete="CASCADE"/>
 
         <!-- Config ManyToMany for target_list vs account -->
@@ -290,6 +293,7 @@
                                  constraintName="fk_target_list_account_account_id"
                                  referencedColumnNames="id"
                                  referencedTableName="accounts"
+                                 onUpdate="CASCADE"
                                  onDelete="CASCADE"/>
 
         <addForeignKeyConstraint baseColumnNames="target_list_id"
@@ -297,6 +301,7 @@
                                  constraintName="fk_target_list_account_target_list_id"
                                  referencedColumnNames="id"
                                  referencedTableName="target_list"
+                                 onUpdate="CASCADE"
                                  onDelete="CASCADE"/>
 
         <loadData encoding="UTF-8"

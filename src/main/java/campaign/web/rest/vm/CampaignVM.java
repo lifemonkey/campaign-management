@@ -2,13 +2,18 @@ package campaign.web.rest.vm;
 
 import campaign.domain.Status;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class CampaignVM {
 
+    @NotNull
+    @Size(min = 1, max = 255)
     private String name;
 
+    @Size(max = 4000)
     private String description;
 
     private LocalDateTime fromDate;
@@ -17,6 +22,7 @@ public class CampaignVM {
 
     private Integer campaignType;
 
+    @Size(max = 4000)
     private String notes;
 
     private Status statusId;
@@ -95,16 +101,16 @@ public class CampaignVM {
         return targetLists;
     }
 
-    public void setTargetLists(List<Long> targetLists) {
-        this.targetLists = targetLists;
+    public void addTargetLists(List<Long> targetLists) {
+        this.targetLists.addAll(targetLists);
     }
 
     public List<Long> getFilesList() {
         return filesList;
     }
 
-    public void setFilesList(List<Long> filesList) {
-        this.filesList = filesList;
+    public void addFilesList(List<Long> filesList) {
+        this.filesList.addAll(filesList);
     }
 
     @Override

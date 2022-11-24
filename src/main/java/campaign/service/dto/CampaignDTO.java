@@ -154,16 +154,16 @@ public class CampaignDTO {
         return targetLists;
     }
 
-    public void setTargetLists(List<TargetListDTO> targetLists) {
-        this.targetLists = targetLists;
+    public void addTargetLists(List<TargetListDTO> targetLists) {
+        this.targetLists.addAll(targetLists);
     }
 
     public List<FilesDTO> getFilesList() {
         return filesList;
     }
 
-    public void setFilesList(List<FilesDTO> filesList) {
-        this.filesList = filesList;
+    public void addFilesList(List<FilesDTO> filesList) {
+        this.filesList.addAll(filesList);
     }
 
     public String getCreatedBy() {

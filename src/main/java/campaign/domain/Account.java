@@ -32,7 +32,7 @@ public class Account extends AbstractAuditingEntity implements Serializable {
     @Column(name = "last_name", length = 200)
     private String lastname;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "accountList")
+    @ManyToMany(mappedBy = "accountList", fetch = FetchType.LAZY)
     @JsonIgnore
     List<TargetList> targetLists = new ArrayList<>();
 
@@ -81,7 +81,7 @@ public class Account extends AbstractAuditingEntity implements Serializable {
         return targetLists;
     }
 
-    public void setTargetLists(List<TargetList> targetLists) {
+    public void addTargetLists(List<TargetList> targetLists) {
         this.targetLists = targetLists;
     }
 

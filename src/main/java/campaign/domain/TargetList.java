@@ -30,13 +30,13 @@ public class TargetList extends AbstractAuditingEntity implements Serializable {
     @Column(name = "target_type", length = 1)
     private Integer targetType;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "targetLists")
+    @ManyToMany(mappedBy = "targetLists", fetch = FetchType.LAZY)
     private List<Campaign> campaignList = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     @JoinTable(name = "target_list_account",
-        joinColumns = @JoinColumn(name = "account_id", nullable = false, referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "target_list_id", nullable = false, referencedColumnName = "id"))
+        joinColumns = @JoinColumn(name = "account_id", nullable = false, updatable = false, referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "target_list_id", nullable = false, updatable = false, referencedColumnName = "id"))
     private List<Account> accountList = new ArrayList<>();
 
     public TargetList() {
@@ -84,16 +84,16 @@ public class TargetList extends AbstractAuditingEntity implements Serializable {
         return campaignList;
     }
 
-    public void setCampaignList(List<Campaign> campaignList) {
-        this.campaignList = campaignList;
+    public void addCampaignList(List<Campaign> campaignList) {
+        this.campaignList.addAll(campaignList);
     }
 
     public List<Account> getAccountList() {
         return accountList;
     }
 
-    public void setAccountList(List<Account> accountList) {
-        this.accountList = accountList;
+    public void addAccountList(List<Account> accountList) {
+        this.accountList.addAll(accountList);
     }
 
     @Override

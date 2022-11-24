@@ -40,7 +40,7 @@ public class TargetListMapper {
             targetList.setTargetType(targetListDTO.getTargetType());
 
             if (targetListDTO.getAccountList() != null) {
-                targetList.setAccountList(accountMapper.accountDTOToAccounts(targetListDTO.getAccountList()));
+                targetList.addAccountList(accountMapper.accountDTOToAccounts(targetListDTO.getAccountList()));
             }
 
             targetList.setCreatedBy(targetListDTO.getCreatedBy());

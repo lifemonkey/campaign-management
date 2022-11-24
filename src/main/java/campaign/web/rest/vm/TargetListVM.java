@@ -1,11 +1,16 @@
 package campaign.web.rest.vm;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 public class TargetListVM {
 
+    @NotNull
+    @Size(min = 1, max = 255)
     private String name;
 
+    @Size(max = 4000)
     private String description;
 
     private Integer targetType;
@@ -40,7 +45,7 @@ public class TargetListVM {
         return accountList;
     }
 
-    public void setAccountList(List<Long> accountList) {
-        this.accountList = accountList;
+    public void addAccountList(List<Long> accountList) {
+        this.accountList.addAll(accountList);
     }
 }

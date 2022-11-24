@@ -78,7 +78,6 @@ public class CampaignService {
                 : null;
             if (userOpt.isPresent()) {
                 campaign.setApprovedRejectedBy(userOpt.get());
-//                campaignRepository.save(campaign);
             }
 
             // handle target list
@@ -86,7 +85,7 @@ public class CampaignService {
                 ? targetListRepository.findAllById(campaignVM.getTargetLists())
                 :null;
             if (targetLists != null && !targetLists.isEmpty()) {
-                campaign.setTargetLists(targetLists);
+                campaign.addTargetLists(targetLists);
             }
 
             // handle file list
@@ -94,7 +93,7 @@ public class CampaignService {
                 ? filesRepository.findAllById(campaignVM.getFilesList())
                 : null;
             if (fileList != null && !fileList.isEmpty()) {
-                campaign.setFilesList(fileList);
+                campaign.addFilesList(fileList);
             }
 
             campaignRepository.save(campaign);

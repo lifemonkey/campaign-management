@@ -47,14 +47,14 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
     @JoinColumn(name = "status_id", referencedColumnName = "id")
     private Status statusId;
 
-    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @OneToOne()
     @JoinColumn(name = "approved_rejected_by", referencedColumnName = "id")
     private User approvedRejectedBy;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     @JoinTable(name = "campaign_target_list",
-        joinColumns = @JoinColumn(name = "target_list_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "campaign_id", referencedColumnName = "id"))
+        joinColumns = @JoinColumn(name = "target_list_id", nullable = false, updatable = false, referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "campaign_id", nullable = false, updatable = false, referencedColumnName = "id"))
     private List<TargetList> targetLists = new ArrayList<>();;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "campaign")
@@ -150,16 +150,16 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
         return targetLists;
     }
 
-    public void setTargetLists(List<TargetList> targetLists) {
-        this.targetLists = targetLists;
+    public void addTargetLists(List<TargetList> targetLists) {
+        this.targetLists.addAll(targetLists);
     }
 
     public List<Files> getFilesList() {
         return filesList;
     }
 
-    public void setFilesList(List<Files> filesList) {
-        this.filesList = filesList;
+    public void addFilesList(List<Files> filesList) {
+        this.filesList.addAll(filesList);
     }
 
     @Override

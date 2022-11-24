@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +30,10 @@ public class TargetListService {
 
     private final TargetListMapper targetListMapper;
 
-    public TargetListService(TargetListRepository targetListRepository, AccountRepository accountRepository, TargetListMapper targetListMapper) {
+    public TargetListService(
+        TargetListRepository targetListRepository,
+        AccountRepository accountRepository,
+        TargetListMapper targetListMapper) {
         this.targetListRepository = targetListRepository;
         this.targetListMapper = targetListMapper;
         this.accountRepository = accountRepository;
@@ -60,8 +64,9 @@ public class TargetListService {
             List<Account> accountList = targetListVM.getAccountList() != null
                 ? accountRepository.findByIdIn(targetListVM.getAccountList())
                 : null;
+
             if (accountList != null) {
-                targetList.setAccountList(accountList);
+                targetList.addAccountList(accountList);
                 targetListRepository.save(targetList);
             }
 

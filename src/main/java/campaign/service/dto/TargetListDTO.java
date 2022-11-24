@@ -87,8 +87,8 @@ public class TargetListDTO {
         return accountList;
     }
 
-    public void setAccountList(List<AccountDTO> accountList) {
-        this.accountList = accountList;
+    public void addAccountList(List<AccountDTO> accountList) {
+        this.accountList.addAll(accountList);
     }
 
     public String getCreatedBy() {
