@@ -205,16 +205,24 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="campaign_id" type="bigint"/>
-            <column name="target_list_id" type="bigint"/>
+            <column name="campaign_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="target_list_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
 
         <createTable tableName="target_list_account">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="account_id" type="bigint"/>
-            <column name="target_list_id" type="bigint"/>
+            <column name="account_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="target_list_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
 
         <createTable tableName="accounts">

@@ -104,12 +104,17 @@ public class TokenProvider {
 
     public boolean validateToken(String authToken) {
         try {
-            boolean isBlacklist = tokenBlackListService.getTokenBlackLists().stream().anyMatch(tokenBlackList -> tokenBlackList.getToken().endsWith(authToken));
+            boolean isBlacklist = tokenBlackListService.getTokenBlackLists().stream().
+                anyMatch(tokenBlackList -> tokenBlackList.getToken().endsWith(authToken));
             if (isBlacklist) {
                 return false;
             }
 
-            Jwts.parser().setSigningKey(key).parseClaimsJws(authToken);
+            Jws<Claims> claims = Jwts.parser().setSigningKey(key).parseClaimsJws(authToken);
+            // token already expired
+            if (claims.getBody().getExpiration().before(new Date())) {
+                return false;
+            }
             return true;
         } catch (MalformedJwtException e) {
             log.info("Invalid JWT token.");
