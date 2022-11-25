@@ -25,7 +25,7 @@ public class CampaignVM {
     @Size(max = 4000)
     private String notes;
 
-    private Status statusId;
+    private Long statusId;
 
     private Long approvedRejectedBy;
 
@@ -81,11 +81,11 @@ public class CampaignVM {
         this.notes = notes;
     }
 
-    public Status getStatusId() {
+    public Long getStatusId() {
         return statusId;
     }
 
-    public void setStatusId(Status statusId) {
+    public void setStatusId(Long statusId) {
         this.statusId = statusId;
     }
 

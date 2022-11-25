@@ -1,13 +1,7 @@
 package campaign.service;
 
-import campaign.domain.Campaign;
-import campaign.domain.Files;
-import campaign.domain.TargetList;
-import campaign.domain.User;
-import campaign.repository.CampaignRepository;
-import campaign.repository.FilesRepository;
-import campaign.repository.TargetListRepository;
-import campaign.repository.UserRepository;
+import campaign.domain.*;
+import campaign.repository.*;
 import campaign.service.dto.CampaignDTO;
 import campaign.service.mapper.CampaignMapper;
 import campaign.web.rest.vm.CampaignVM;
@@ -35,18 +29,22 @@ public class CampaignService {
 
     private final FilesRepository filesRepository;
 
+    private final StatusRepository statusRepository;
+
     private final CampaignMapper campaignMapper;
 
     public CampaignService(CampaignRepository campaignRepository,
                            UserRepository userRepository,
                            TargetListRepository targetListRepository,
                            FilesRepository filesRepository,
+                           StatusRepository statusRepository,
                            CampaignMapper campaignMapper
     ) {
         this.campaignRepository = campaignRepository;
         this.userRepository = userRepository;
         this.targetListRepository =targetListRepository;
         this.filesRepository = filesRepository;
+        this.statusRepository = statusRepository;
         this.campaignMapper = campaignMapper;
     }
 
@@ -107,6 +105,30 @@ public class CampaignService {
     public CampaignDTO updateCampaign(Long id, CampaignVM campaignVM) {
         Campaign campaign = campaignMapper.campaignVMToCampaign(campaignVM);
         campaign.setId(id);
+
+        // handle status
+        Optional<Status> statusOpt = campaignVM.getStatusId() != null
+            ? statusRepository.findById(campaignVM.getStatusId())
+            : null;
+        if (statusOpt.isPresent()) {
+            campaign.setStatusId(statusOpt.get());
+        }
+        // handle target list
+        List<TargetList> targetLists = campaignVM.getTargetLists() != null
+            ? targetListRepository.findAllById(campaignVM.getTargetLists())
+            :null;
+        if (targetLists != null && !targetLists.isEmpty()) {
+            campaign.addTargetLists(targetLists);
+        }
+
+        // handle file list
+        List<Files> fileList = campaignVM.getFilesList() != null
+            ? filesRepository.findAllById(campaignVM.getFilesList())
+            : null;
+        if (fileList != null && !fileList.isEmpty()) {
+            campaign.addFilesList(fileList);
+        }
+
         campaignRepository.save(campaign);
         return campaignMapper.campaignToCampaignDTO(campaign);
     }

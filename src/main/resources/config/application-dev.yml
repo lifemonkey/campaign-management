@@ -38,7 +38,6 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/lucky?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
     username: root
     password: root
@@ -69,10 +68,13 @@ spring:
       hibernate.cache.hazelcast.instance_name: halopesa
       hibernate.cache.use_minimal_puts: true
       hibernate.cache.hazelcast.use_lite_member: true
+      hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
+      hibernate.storage_engine: innodb
 #      hibernate.dialect: org.hibernate.dialect.Oracle10gDialect
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
     contexts: dev, faker
+    enabled: false
   mail:
     host: localhost
     port: 25

@@ -50,9 +50,10 @@ public class CampaignMapper {
             if (campaignDTO.getEndDate() != null) {
                 campaign.setEndDate(campaignDTO.getEndDate());
             }
+
             campaign.setCampaignType(campaignDTO.getCampaignType());
             campaign.setNotes(campaignDTO.getNotes());
-            campaign.setStatusId(campaignDTO.getStatusId());
+
             if (campaignDTO.getApprovedRejectedBy() != null) {
                 campaign.setApprovedRejectedBy(userMapper.userDTOToUser(campaignDTO.getApprovedRejectedBy()));
             }
@@ -95,9 +96,6 @@ public class CampaignMapper {
             }
             if (campaignVM.getNotes() != null) {
                 campaign.setNotes(campaignVM.getNotes());
-            }
-            if (campaignVM.getStatusId() != null) {
-                campaign.setStatusId(campaignVM.getStatusId());
             }
 
             return campaign;
