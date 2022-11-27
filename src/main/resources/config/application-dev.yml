@@ -39,19 +39,19 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     initialization-mode: always
-    # Postgre
-    url: jdbc:postgres://yigfhtwwzerdes:f3b1b81b7d203a1e567698285cf1877c110e56daab65454d0a64c388cfe81fc9@ec2-44-199-22-207.compute-1.amazonaws.com:5432/d6f3a70gu615t7
-    username: yigfhtwwzerdes
-    password: f3b1b81b7d203a1e567698285cf1877c110e56daab65454d0a64c388cfe81fc9
+#    # Postgre
+#    url: jdbc:postgres://yigfhtwwzerdes:f3b1b81b7d203a1e567698285cf1877c110e56daab65454d0a64c388cfe81fc9@ec2-44-199-22-207.compute-1.amazonaws.com:5432/d6f3a70gu615t7
+#    username: yigfhtwwzerdes
+#    password: f3b1b81b7d203a1e567698285cf1877c110e56daab65454d0a64c388cfe81fc9
 #    # MYSQL
 #    url: jdbc:mysql://localhost:3306/lucky?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
 #    username: root
 #    password: root
-#    # Oracle
-#    url: jdbc:oracle:thin:@//163.172.153.153:49161/xe
-#    driver-class-name: oracle.jdbc.OracleDriver
-#    username: sys as sysdba
-#    password: oracle
+    # Oracle
+    url: jdbc:oracle:thin:@//163.172.153.153:49161/xe
+    driver-class-name: oracle.jdbc.OracleDriver
+    username: sys as sysdba
+    password: oracle
     hikari:
       poolName: Hikari
       auto-commit: false
@@ -77,8 +77,8 @@ spring:
       hibernate.cache.hazelcast.use_lite_member: true
       hibernate.storage_engine: innodb
 #      hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
-      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
-#      hibernate.dialect: org.hibernate.dialect.Oracle10gDialect
+#      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+      hibernate.dialect: org.hibernate.dialect.Oracle12cDialect
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
     contexts: dev, faker
