@@ -40,7 +40,6 @@ public class TargetListResource {
      */
     @GetMapping("/target-list")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
     public ResponseEntity<List<TargetListDTO>> getAllTargetList(Pageable pageable) {
         Page<TargetListDTO> page = targetListService.getAllTargetList(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/target-list");
@@ -55,7 +54,6 @@ public class TargetListResource {
      */
     @GetMapping("/target-list/{id}")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
     public ResponseEntity<TargetListDTO> getTargetListById(@Valid @PathVariable Long id) {
         return new ResponseEntity<>(targetListService.getTargetListById(id), new HttpHeaders(), HttpStatus.OK);
     }
@@ -68,7 +66,7 @@ public class TargetListResource {
      */
     @PostMapping("/target-list")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
     public ResponseEntity<TargetListDTO> createTargetList(@RequestBody TargetListVM targetListVM) {
         return new ResponseEntity<> (targetListService.createTargetList(targetListVM), new HttpHeaders(), HttpStatus.OK);
     }
@@ -81,7 +79,7 @@ public class TargetListResource {
      */
     @PutMapping("/target-list/{id}")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
     public ResponseEntity<TargetListDTO> updateTargetList(@Validated @PathVariable Long id, @RequestBody TargetListVM targetListVM) {
         return new ResponseEntity<> (targetListService.updateTargetList(id, targetListVM), new HttpHeaders(), HttpStatus.OK);
     }

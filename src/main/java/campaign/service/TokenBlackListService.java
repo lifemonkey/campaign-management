@@ -13,8 +13,6 @@ import org.springframework.util.StringUtils;
 import javax.transaction.Transactional;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
@@ -55,10 +53,7 @@ public class TokenBlackListService {
         }
     }
 
-
     public void deleteExpiredToken() {
-        // TODO: update query for expired date token
-        Instant now = Instant.now().plus(2, ChronoUnit.DAYS);
-        tokenBlackListRepository.deleteAllByExpiredDateBefore(ServiceUtils.convertToLocalDateTime(now));
+        tokenBlackListRepository.deleteAllByExpiredDateBefore(ServiceUtils.convertToLocalDateTime(new Date()));
     }
 }

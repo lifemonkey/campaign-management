@@ -39,7 +39,6 @@ public class CampaignResource {
      */
     @GetMapping("/campaigns")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
     public ResponseEntity<List<CampaignDTO>> getAllCampaigns(Pageable pageable) {
         Page<CampaignDTO> page = campaignService.getAllCampaign(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/campaigns");
@@ -54,7 +53,6 @@ public class CampaignResource {
      */
     @GetMapping("/campaign/{id}")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
     public ResponseEntity<CampaignDTO> getCampaignById(@Valid @PathVariable Long id) {
         CampaignDTO campaign = campaignService.getCampaignById(id);
         return ResponseEntity.ok(campaign);
@@ -68,7 +66,7 @@ public class CampaignResource {
      */
     @PostMapping("/campaign")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
     public ResponseEntity<CampaignDTO> createCampaign(@RequestBody CampaignVM campaignVM) {
         return new ResponseEntity<> (campaignService.createCampaign(campaignVM), new HttpHeaders(), HttpStatus.OK);
     }
@@ -81,7 +79,7 @@ public class CampaignResource {
      */
     @PutMapping("/campaign/{id}")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
     public ResponseEntity<CampaignDTO> updateCampaign(@Valid @PathVariable Long id, @RequestBody CampaignVM campaignVM) {
         return new ResponseEntity<> (campaignService.updateCampaign(id, campaignVM), new HttpHeaders(), HttpStatus.OK);
     }

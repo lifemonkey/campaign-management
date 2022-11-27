@@ -55,7 +55,6 @@ public class UserResource {
      */
     @GetMapping("/user/{id}")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
     public ResponseEntity<UserDTO> getUserById(@Valid @PathVariable Long id) {
         return new ResponseEntity<>(userService.getUserById(id), new HttpHeaders(), HttpStatus.OK);
     }
@@ -65,7 +64,7 @@ public class UserResource {
      */
     @GetMapping("/users/roles")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
     public List<String> getRoles() {
         return userService.getRoles();
     }
