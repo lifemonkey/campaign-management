@@ -40,9 +40,9 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     initialization-mode: always
     # Postgre
-    url: jdbc:postgres://qfyurjzilneijz:3267539ba19000e1f318cfcf57bbb1f3bec4115a0911ccee1ce0f75c8cc353bc@ec2-54-157-16-196.compute-1.amazonaws.com:5432/dbh1cbaung9liu
-    username: qfyurjzilneijz
-    password: 3267539ba19000e1f318cfcf57bbb1f3bec4115a0911ccee1ce0f75c8cc353bc
+    url: jdbc:postgres://yigfhtwwzerdes:f3b1b81b7d203a1e567698285cf1877c110e56daab65454d0a64c388cfe81fc9@ec2-44-199-22-207.compute-1.amazonaws.com:5432/d6f3a70gu615t7
+    username: yigfhtwwzerdes
+    password: f3b1b81b7d203a1e567698285cf1877c110e56daab65454d0a64c388cfe81fc9
 #    # MYSQL
 #    url: jdbc:mysql://localhost:3306/lucky?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
 #    username: root
