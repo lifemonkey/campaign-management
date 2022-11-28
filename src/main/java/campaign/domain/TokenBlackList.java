@@ -19,15 +19,15 @@ public class TokenBlackList implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "token_black_list_sequence_generator")
-//    @SequenceGenerator(name = "token_black_list_sequence_generator", sequenceName = "token_black_list_id_sequence", allocationSize = 1)
-    @GenericGenerator(name = "token_black_list_sequence_generator",
-        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-        parameters = {
-            @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
-            @org.hibernate.annotations.Parameter(name = "increment_size", value = "1"),
-            @org.hibernate.annotations.Parameter(name = SequenceStyleGenerator.SEQUENCE_PARAM, value = "token_black_list_sequence_generator"),
-        }
-    )
+    @SequenceGenerator(name = "token_black_list_sequence_generator", sequenceName = "token_black_list_id_sequence", allocationSize = 1)
+//    @GenericGenerator(name = "token_black_list_sequence_generator",
+//        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+//        parameters = {
+//            @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+//            @org.hibernate.annotations.Parameter(name = "increment_size", value = "1"),
+//            @org.hibernate.annotations.Parameter(name = SequenceStyleGenerator.SEQUENCE_PARAM, value = "token_black_list_sequence_generator"),
+//        }
+//    )
     private Long id;
 
     @NotBlank

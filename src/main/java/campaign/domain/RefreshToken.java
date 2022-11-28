@@ -20,15 +20,15 @@ public class RefreshToken extends AbstractAuditingEntity implements Serializable
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "refresh_token_sequence_generator")
-//    @SequenceGenerator(name = "refresh_token_sequence_generator", sequenceName = "refresh_token_id_sequence", allocationSize = 1)
-    @GenericGenerator(name = "refresh_token_sequence_generator",
-        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-        parameters = {
-            @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
-            @org.hibernate.annotations.Parameter(name = "increment_size", value = "1"),
-            @org.hibernate.annotations.Parameter(name = SequenceStyleGenerator.SEQUENCE_PARAM, value = "refresh_token_sequence_generator"),
-        }
-    )
+    @SequenceGenerator(name = "refresh_token_sequence_generator", sequenceName = "refresh_token_id_sequence", allocationSize = 1)
+//    @GenericGenerator(name = "refresh_token_sequence_generator",
+//        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+//        parameters = {
+//            @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+//            @org.hibernate.annotations.Parameter(name = "increment_size", value = "1"),
+//            @org.hibernate.annotations.Parameter(name = SequenceStyleGenerator.SEQUENCE_PARAM, value = "refresh_token_sequence_generator"),
+//        }
+//    )
     private Long id;
 
     @NotBlank

@@ -23,15 +23,15 @@ public class PersistentAuditEvent implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "audit_sequence_generator")
-//    @SequenceGenerator(name = "audit_sequence_generator", sequenceName = "audit_id_sequence", allocationSize = 1)
-    @GenericGenerator(name = "audit_sequence_generator",
-        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-        parameters = {
-            @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
-            @org.hibernate.annotations.Parameter(name = "increment_size", value = "1"),
-            @org.hibernate.annotations.Parameter(name = SequenceStyleGenerator.SEQUENCE_PARAM, value = "audit_sequence_generator"),
-        }
-    )
+    @SequenceGenerator(name = "audit_sequence_generator", sequenceName = "audit_id_sequence", allocationSize = 1)
+//    @GenericGenerator(name = "audit_sequence_generator",
+//        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+//        parameters = {
+//            @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+//            @org.hibernate.annotations.Parameter(name = "increment_size", value = "1"),
+//            @org.hibernate.annotations.Parameter(name = SequenceStyleGenerator.SEQUENCE_PARAM, value = "audit_sequence_generator"),
+//        }
+//    )
     @Column(name = "event_id")
     private Long id;
 

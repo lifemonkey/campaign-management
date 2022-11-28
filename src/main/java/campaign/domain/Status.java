@@ -18,15 +18,15 @@ public class Status implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "status_sequence_generator")
-//    @SequenceGenerator(name = "status_sequence_generator", sequenceName = "status_id_sequence", allocationSize = 1)
-    @GenericGenerator(name = "status_sequence_generator",
-        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-        parameters = {
-            @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
-            @org.hibernate.annotations.Parameter(name = "increment_size", value = "1"),
-            @org.hibernate.annotations.Parameter(name = SequenceStyleGenerator.SEQUENCE_PARAM, value = "status_sequence_generator"),
-        }
-    )
+    @SequenceGenerator(name = "status_sequence_generator", sequenceName = "status_id_sequence", allocationSize = 1)
+//    @GenericGenerator(name = "status_sequence_generator",
+//        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+//        parameters = {
+//            @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+//            @org.hibernate.annotations.Parameter(name = "increment_size", value = "1"),
+//            @org.hibernate.annotations.Parameter(name = SequenceStyleGenerator.SEQUENCE_PARAM, value = "status_sequence_generator"),
+//        }
+//    )
     private Long id;
 
     @NotBlank
