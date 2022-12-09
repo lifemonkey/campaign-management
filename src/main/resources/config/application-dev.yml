@@ -82,9 +82,9 @@ spring:
       hibernate.cache.use_minimal_puts: true
       hibernate.cache.hazelcast.use_lite_member: true
       hibernate.storage_engine: innodb
-      hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
+#      hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
 #      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
-#      hibernate.dialect: org.hibernate.dialect.Oracle10gDialect
+      hibernate.dialect: org.hibernate.dialect.Oracle10gDialect
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
     contexts: dev, faker

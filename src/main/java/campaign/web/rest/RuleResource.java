@@ -2,9 +2,12 @@ package campaign.web.rest;
 
 import campaign.security.AuthoritiesConstants;
 import campaign.service.CampaignService;
+import campaign.service.RuleService;
 import campaign.service.dto.CampaignDTO;
+import campaign.service.dto.RuleDTO;
 import campaign.web.rest.util.PaginationUtil;
 import campaign.web.rest.vm.CampaignVM;
+import campaign.web.rest.vm.RuleVM;
 import io.micrometer.core.annotation.Timed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,80 +24,80 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class CampaignResource {
+public class RuleResource {
 
-    private final Logger log = LoggerFactory.getLogger(CampaignResource.class);
+    private final Logger log = LoggerFactory.getLogger(RuleResource.class);
 
-    private final CampaignService campaignService;
+    private final RuleService ruleService;
 
-    public CampaignResource(CampaignService campaignService) {
-        this.campaignService = campaignService;
+    public RuleResource(RuleService ruleService) {
+        this.ruleService = ruleService;
     }
 
     /**
-     * GET /campaigns : get all target list.
+     * GET /rules : get all rules
      *
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and with body all users
      */
-    @GetMapping("/campaigns")
+    @GetMapping("/rules")
     @Timed
-    public ResponseEntity<List<CampaignDTO>> getAllCampaigns(Pageable pageable) {
-        Page<CampaignDTO> page = campaignService.getAllCampaign(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/campaigns");
+    public ResponseEntity<List<RuleDTO>> getAllRules(Pageable pageable) {
+        Page<RuleDTO> page = ruleService.getAllRules(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/rules");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
-     * GET /campaigns : get all target list.
+     * GET /rule : get rule by id
      *
-     * @PathVariable id campaign id
+     * @PathVariable id rule id
      * @return the ResponseEntity with status 200 (OK) and with body all users
      */
-    @GetMapping("/campaign/{id}")
+    @GetMapping("/rule/{id}")
     @Timed
-    public ResponseEntity<CampaignDTO> getCampaignById(@Valid @PathVariable Long id) {
-        CampaignDTO campaign = campaignService.getCampaignById(id);
-        return ResponseEntity.ok(campaign);
+    public ResponseEntity<RuleDTO> getRuleById(@Valid @PathVariable Long id) {
+        RuleDTO ruleDTO = ruleService.getRuleById(id);
+        return ResponseEntity.ok(ruleDTO);
     }
 
     /**
-     * POST /campaign : Create campaign
+     * POST /rule : Create rule
      *
-     * @RequestBody campaign information to be created
+     * @RequestBody rule information to be created
      * @return the ResponseEntity with status 200 (OK) and with body all users
      */
-    @PostMapping("/campaign")
-    @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
-    public ResponseEntity<CampaignDTO> createCampaign(@RequestBody CampaignVM campaignVM) {
-        return new ResponseEntity<> (campaignService.createCampaign(campaignVM), new HttpHeaders(), HttpStatus.OK);
-    }
-
-    /**
-     * PUT /campaign : Update campaign
-     *
-     * @RequestBody campaign information to be updated
-     * @return the ResponseEntity with status 200 (OK) and with body all users
-     */
-    @PutMapping("/campaign/{id}")
+    @PostMapping("/rule")
     @Timed
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
-    public ResponseEntity<CampaignDTO> updateCampaign(@Valid @PathVariable Long id, @RequestBody CampaignVM campaignVM) {
-        return new ResponseEntity<> (campaignService.updateCampaign(id, campaignVM), new HttpHeaders(), HttpStatus.OK);
+    public ResponseEntity<RuleDTO> createRule(@RequestBody RuleVM ruleVM) {
+        return new ResponseEntity<> (ruleService.createRule(ruleVM), new HttpHeaders(), HttpStatus.OK);
     }
 
     /**
-     * DELETE /campaign : Update target list
+     * PUT /rule : Update rule
      *
-     * @PathVariable id of campaign
+     * @RequestBody rule information to be updated
      * @return the ResponseEntity with status 200 (OK) and with body all users
      */
-    @DeleteMapping("/campaign/{id}")
+    @PutMapping("/rule/{id}")
+    @Timed
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    public ResponseEntity<RuleDTO> updateCampaign(@Valid @PathVariable Long id, @RequestBody RuleVM ruleVM) {
+        return new ResponseEntity<> (ruleService.updateRule(id, ruleVM), new HttpHeaders(), HttpStatus.OK);
+    }
+
+    /**
+     * DELETE /rule : Delete rule
+     *
+     * @PathVariable id of rule
+     * @return the ResponseEntity with status 200 (OK) and with body all users
+     */
+    @DeleteMapping("/rule/{id}")
     @Timed
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "')")
-    public ResponseEntity<String> deleteCampaign(@Valid @PathVariable Long id) {
-        campaignService.deleteCampaign(id);
+    public ResponseEntity<String> deleteRule(@Valid @PathVariable Long id) {
+        ruleService.deleteRule(id);
         return new ResponseEntity<> ("Delete successfully", new HttpHeaders(), HttpStatus.OK);
     }
 }

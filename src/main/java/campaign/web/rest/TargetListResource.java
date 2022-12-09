@@ -24,7 +24,7 @@ import java.util.List;
 @RequestMapping("/api")
 public class TargetListResource {
 
-    private final Logger log = LoggerFactory.getLogger(UserResource.class);
+    private final Logger log = LoggerFactory.getLogger(TargetListResource.class);
 
     private final TargetListService targetListService;
 

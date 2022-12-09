@@ -29,6 +29,10 @@ public class RuleConfiguration extends AbstractAuditingEntity implements Seriali
     public RuleConfiguration() {
     }
 
+    public RuleConfiguration(String name) {
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }

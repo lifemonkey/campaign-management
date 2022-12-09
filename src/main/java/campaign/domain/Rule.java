@@ -41,12 +41,15 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
     @JoinColumn(name = "transaction_type_id", referencedColumnName = "id")
     private TransactionType transactionType;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "campaign_id", referencedColumnName = "id")
+    private Campaign campaign;
+
     public Rule() {
     }
 
-    public Rule(String name, String description) {
+    public Rule(String name) {
         this.name = name;
-        this.description = description;
     }
 
     public Long getId() {
@@ -111,6 +114,14 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
 
     public void setRuleConfiguration(RuleConfiguration ruleConfiguration) {
         this.ruleConfiguration = ruleConfiguration;
+    }
+
+    public Campaign getCampaign() {
+        return campaign;
+    }
+
+    public void setCampaign(Campaign campaign) {
+        this.campaign = campaign;
     }
 
     @Override

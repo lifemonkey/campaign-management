@@ -31,6 +31,8 @@ public class CampaignService {
 
     private final StatusRepository statusRepository;
 
+    private final RuleRepository ruleRepository;
+
     private final CampaignMapper campaignMapper;
 
     public CampaignService(CampaignRepository campaignRepository,
@@ -38,6 +40,7 @@ public class CampaignService {
                            TargetListRepository targetListRepository,
                            FilesRepository filesRepository,
                            StatusRepository statusRepository,
+                           RuleRepository ruleRepository,
                            CampaignMapper campaignMapper
     ) {
         this.campaignRepository = campaignRepository;
@@ -45,6 +48,7 @@ public class CampaignService {
         this.targetListRepository =targetListRepository;
         this.filesRepository = filesRepository;
         this.statusRepository = statusRepository;
+        this.ruleRepository = ruleRepository;
         this.campaignMapper = campaignMapper;
     }
 
@@ -86,6 +90,14 @@ public class CampaignService {
                 campaign.addTargetLists(targetLists);
             }
 
+            // handle rule list
+            List<Rule> ruleList = campaignVM.getRuleList() != null
+                ? ruleRepository.findAllById(campaignVM.getRuleList())
+                : null;
+            if(ruleList != null && !ruleList.isEmpty()) {
+                campaign.addRuleList(ruleList);
+            }
+
             // handle file list
             List<Files> fileList = campaignVM.getFilesList() != null
                 ? filesRepository.findAllById(campaignVM.getFilesList())
@@ -119,6 +131,14 @@ public class CampaignService {
             :null;
         if (targetLists != null && !targetLists.isEmpty()) {
             campaign.addTargetLists(targetLists);
+        }
+
+        // handle rule list
+        List<Rule> ruleList = campaignVM.getRuleList() != null
+            ? ruleRepository.findAllById(campaignVM.getRuleList())
+            : null;
+        if(ruleList != null && !ruleList.isEmpty()) {
+            campaign.addRuleList(ruleList);
         }
 
         // handle file list

@@ -36,6 +36,8 @@ public class CampaignDTO {
 
     private List<FilesDTO> filesList;
 
+    private List<RuleDTO> ruleList;
+
     private String createdBy;
 
     private LocalDateTime createdDate;
@@ -70,6 +72,10 @@ public class CampaignDTO {
         }
         if (campaign.getFilesList() != null) {
             this.filesList = campaign.getFilesList().stream().map(FilesDTO::new).collect(Collectors.toList());
+        }
+
+        if (campaign.getRuleList() != null) {
+            this.ruleList = campaign.getRuleList().stream().map(RuleDTO::new).collect(Collectors.toList());
         }
 
         this.createdBy = campaign.getCreatedBy();
@@ -164,6 +170,14 @@ public class CampaignDTO {
 
     public void addFilesList(List<FilesDTO> filesList) {
         this.filesList.addAll(filesList);
+    }
+
+    public List<RuleDTO> getRuleList() {
+        return ruleList;
+    }
+
+    public void addRuleList(List<RuleDTO> ruleList) {
+        this.ruleList.addAll(ruleList);
     }
 
     public String getCreatedBy() {

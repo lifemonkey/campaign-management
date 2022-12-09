@@ -58,10 +58,13 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
     @JoinTable(name = "campaign_target_list",
         joinColumns = @JoinColumn(name = "target_list_id", nullable = false, referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "campaign_id", nullable = false, referencedColumnName = "id"))
-    private List<TargetList> targetLists = new ArrayList<>();;
+    private List<TargetList> targetLists = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "campaign")
-    private List<Files> filesList = new ArrayList<>();;
+    private List<Files> filesList = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "campaign")
+    private List<Rule> ruleList = new ArrayList<>();
 
     public Campaign() {
     }
@@ -165,20 +168,25 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
         this.filesList.addAll(filesList);
     }
 
+    public List<Rule> getRuleList() {
+        return ruleList;
+    }
+
+    public void addRuleList(List<Rule> ruleList) {
+        this.ruleList.addAll(ruleList);
+    }
+
     @Override
     public String toString() {
         return "Campaign{" +
             "id=" + id +
             ", name='" + name + '\'' +
             ", description='" + description + '\'' +
-            ", fromDate=" + fromDate +
-            ", endDate=" + endDate +
-            ", campaignType=" + campaignType +
+            ", fromDate=" + fromDate + '\'' +
+            ", endDate=" + endDate + '\'' +
+            ", campaignType=" + campaignType + '\'' +
             ", notes='" + notes + '\'' +
             ", statusId=" + statusId +
-//            ", approvedRejectedBy=" + approvedRejectedBy.getUsername() +
-//            ", targetLists=" + targetLists +
-//            ", filesList=" + filesList +
             '}';
     }
 }

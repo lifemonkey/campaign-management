@@ -1,7 +1,5 @@
 package campaign.web.rest.vm;
 
-import campaign.domain.Status;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -32,6 +30,8 @@ public class CampaignVM {
     private List<Long> targetLists;
 
     private List<Long> filesList;
+
+    private List<Long> ruleList;
 
     public String getName() {
         return name;
@@ -113,6 +113,14 @@ public class CampaignVM {
         this.filesList.addAll(filesList);
     }
 
+    public List<Long> getRuleList() {
+        return ruleList;
+    }
+
+    public void addRuleList(List<Long> ruleList) {
+        this.ruleList.addAll(ruleList);
+    }
+
     @Override
     public String toString() {
         return "CampaignVM{" +
@@ -125,6 +133,7 @@ public class CampaignVM {
             ", statusId=" + statusId +
             ", approvedRejectedBy=" + approvedRejectedBy +
             ", targetLists=" + targetLists +
+            ", filesList=" + filesList +
             ", filesList=" + filesList +
             '}';
     }
