@@ -22,14 +22,6 @@ public class Account extends AbstractAuditingEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_sequence_generator")
     @SequenceGenerator(name = "account_sequence_generator", sequenceName = "account_id_sequence", allocationSize = 1)
-//    @GenericGenerator(name = "account_sequence_generator",
-//        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-//        parameters = {
-//            @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
-//            @org.hibernate.annotations.Parameter(name = "increment_size", value = "1"),
-//            @org.hibernate.annotations.Parameter(name = SequenceStyleGenerator.SEQUENCE_PARAM, value = "account_sequence_generator"),
-//        }
-//    )
     private Long id;
 
     @Column(name = "external_id", length = 22)

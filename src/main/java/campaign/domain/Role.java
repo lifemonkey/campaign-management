@@ -18,14 +18,6 @@ public class Role implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_sequence_generator")
     @SequenceGenerator(name = "role_sequence_generator", sequenceName = "role_id_sequence", allocationSize = 1)
-//    @GenericGenerator(name = "role_sequence_generator",
-//        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-//        parameters = {
-//            @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
-//            @org.hibernate.annotations.Parameter(name = "increment_size", value = "1"),
-//            @org.hibernate.annotations.Parameter(name = SequenceStyleGenerator.SEQUENCE_PARAM, value = "role_sequence_generator"),
-//        }
-//    )
     private Long id;
 
     @Column(length = 100)

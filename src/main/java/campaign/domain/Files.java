@@ -21,14 +21,6 @@ public class Files extends AbstractAuditingEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "file_sequence_generator")
     @SequenceGenerator(name = "file_sequence_generator", sequenceName = "field_id_sequence", allocationSize = 1)
-//    @GenericGenerator(name = "file_sequence_generator",
-//        strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-//        parameters = {
-//            @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
-//            @org.hibernate.annotations.Parameter(name = "increment_size", value = "1"),
-//            @org.hibernate.annotations.Parameter(name = SequenceStyleGenerator.SEQUENCE_PARAM, value = "file_sequence_generator"),
-//        }
-//    )
     private Long id;
 
     @NotBlank
