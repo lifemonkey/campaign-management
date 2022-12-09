@@ -33,12 +33,18 @@ spring:
       enabled: false
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:oracle:thin:@163.172.153.153:49161:xe
-    username: sys as sysdba
-    password: oracle
+    url: jdbc:oracle:thin:@//10.58.244.196:1521/orclpdb
+    driver-class-name: oracle.jdbc.OracleDriver
+    username: LUCKY_DRAW_TANZ
+    password: LUCKY_DRAW_TANZ
     hikari:
-      poolName: Hikari
       auto-commit: false
+      minimumIdle: 5
+      maximumPoolSize: 30
+      idleTimeout: 30000
+      poolName: SpringBootJPAHikariCP
+      maxLifeTime: 2000000
+      connectionTimeout: 60000
   jpa:
     show-sql: false
     properties:
