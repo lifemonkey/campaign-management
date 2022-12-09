@@ -48,7 +48,7 @@ spring:
 #    username: root
 #    password: root
     # Oracle
-    url: jdbc:oracle:thin:@//localhost:1521/orclpdb
+    url: jdbc:oracle:thin:@//10.58.244.196:1521/orclpdb
     driver-class-name: oracle.jdbc.OracleDriver
     username: LUCKY_DRAW_TANZ
     password: LUCKY_DRAW_TANZ
@@ -109,7 +109,7 @@ spring:
         enabled: true
 
 server:
-  port: 8081
+  port: 8181
 
 # ===================================================================
 # JHipster specific properties
