@@ -17,9 +17,9 @@ public class RefreshToken extends AbstractAuditingEntity implements Serializable
     private static final long serialVersionUID = 1L;
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "refresh_token_sequence_generator")
-//    @SequenceGenerator(name = "refresh_token_sequence_generator", sequenceName = "refresh_token_id_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "refresh_token_sequence_generator")
+    @SequenceGenerator(name = "refresh_token_sequence_generator", sequenceName = "refresh_token_id_sequence", initialValue = 100, allocationSize = 1)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank

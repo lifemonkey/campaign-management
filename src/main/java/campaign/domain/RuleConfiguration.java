@@ -15,9 +15,9 @@ public class RuleConfiguration extends AbstractAuditingEntity implements Seriali
     private static final long serialVersionUID = 1L;
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rule_configuration_sequence_generator")
-//    @SequenceGenerator(name = "rule_configuration_sequence_generator", sequenceName = "rule_configuration_id_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rule_configuration_sequence_generator")
+    @SequenceGenerator(name = "rule_configuration_sequence_generator", sequenceName = "rule_configuration_id_sequence", initialValue = 100, allocationSize = 1)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank

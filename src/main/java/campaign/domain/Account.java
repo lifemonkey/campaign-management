@@ -3,8 +3,6 @@ package campaign.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.id.enhanced.SequenceStyleGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -20,9 +18,9 @@ public class Account extends AbstractAuditingEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_sequence_generator")
-//    @SequenceGenerator(name = "account_sequence_generator", sequenceName = "account_id_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_sequence_generator")
+    @SequenceGenerator(name = "account_sequence_generator", sequenceName = "account_id_sequence", initialValue = 100, allocationSize = 1)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "external_id", length = 22)

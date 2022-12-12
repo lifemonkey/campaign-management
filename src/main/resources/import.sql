@@ -138,6 +138,33 @@ INSERT INTO target_list_account (account_id,target_list_id) VALUES (2,4);
 INSERT INTO target_list_account (account_id,target_list_id) VALUES (3,4);
 /*!40000 ALTER TABLE `target_list_account` ENABLE KEYS */;
 
+--
+-- Dumping data for table `rule_configuration`
+--
+/*!40000 ALTER TABLE `rule_configuration` DISABLE KEYS */;
+INSERT INTO rule_configuration (id,name,description,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,'The first transaction','The first transaction description','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO rule_configuration (id,name,description,created_by,created_date,last_modified_by,last_modified_date) VALUES (2,'By numbers of transaction','By numbers of transaction description','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO rule_configuration (id,name,description,created_by,created_date,last_modified_by,last_modified_date) VALUES (3,'By value per one transaction','By value per one transaction description','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO rule_configuration (id,name,description,created_by,created_date,last_modified_by,last_modified_date) VALUES (4,'Total value of transaction','Total value of transaction description','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+/*!40000 ALTER TABLE `rule_configuration` ENABLE KEYS */;
+
+--
+-- Dumping data for table `transaction_type`
+--
+/*!40000 ALTER TABLE `transaction_type` DISABLE KEYS */;
+INSERT INTO transaction_type (id,name,description,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,'Airtime','Airtime description','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO transaction_type (id,name,description,created_by,created_date,last_modified_by,last_modified_date) VALUES (2,'Bundle','Bundle description','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO transaction_type (id,name,description,created_by,created_date,last_modified_by,last_modified_date) VALUES (3,'Reward Condition','Reward Condition description','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+/*!40000 ALTER TABLE `transaction_type` ENABLE KEYS */;
+
+--
+-- Dumping data for table `rules`
+--
+/*!40000 ALTER TABLE `rules` DISABLE KEYS */;
+INSERT INTO rules (id,name,description,duration_type,duration_value,reward_condition,campaign_id,rule_configuration_id,transaction_type_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,'Rule 1','Rule 1 description','DURATION_INSTANT','',0,1,1,1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO rules (id,name,description,duration_type,duration_value,reward_condition,campaign_id,rule_configuration_id,transaction_type_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (2,'Rule 2','Rule 3 description','DURATION_INSTANT','',0,1,1,1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO rules (id,name,description,duration_type,duration_value,reward_condition,campaign_id,rule_configuration_id,transaction_type_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (3,'Rule 3','Rule 3 description','DURATION_INSTANT','',0,1,1,1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+/*!40000 ALTER TABLE `rules` ENABLE KEYS */;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
