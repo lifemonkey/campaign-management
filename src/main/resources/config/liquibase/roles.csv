@@ -1,4 +1,4 @@
 id;name;description;can_approve_reward;can_reject_reward;campaign_management;rule_management;prize_management
-1;admin;;1;1;1;1;1
-2;bo_staff;;0;0;1;1;1
-3;fin_staff;;1;1;0;0;0
+1;ADMIN;;1;1;1;1;1
+2;BO_STAFF;;0;0;1;1;1
+3;FIN_STAFF;;1;1;0;0;0

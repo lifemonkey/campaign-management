@@ -5,8 +5,6 @@ import campaign.repository.*;
 import campaign.service.dto.CampaignDTO;
 import campaign.service.mapper.CampaignMapper;
 import campaign.web.rest.vm.CampaignVM;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,7 +17,7 @@ import java.util.Optional;
 @Transactional
 public class CampaignService {
 
-    private final Logger log = LoggerFactory.getLogger(CampaignService.class);
+//    private final Logger log = LoggerFactory.getLogger(CampaignService.class);
 
     private final CampaignRepository campaignRepository;
 
@@ -123,7 +121,7 @@ public class CampaignService {
             ? statusRepository.findById(campaignVM.getStatusId())
             : null;
         if (statusOpt.isPresent()) {
-            campaign.setStatusId(statusOpt.get());
+            campaign.setStatus(statusOpt.get());
         }
         // handle target list
         List<TargetList> targetLists = campaignVM.getTargetLists() != null

@@ -4,8 +4,6 @@ import campaign.domain.EDuration;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
-import java.util.List;
 
 public class RuleVM {
 
@@ -22,9 +20,9 @@ public class RuleVM {
 
     private Integer rewardCondition;
 
-    private String transactionType;
+    private Long transactionType;
 
-    private String ruleConfiguration;
+    private Long ruleConfiguration;
 
     public String getName() {
         return name;
@@ -66,19 +64,19 @@ public class RuleVM {
         this.rewardCondition = rewardCondition;
     }
 
-    public String getTransactionType() {
+    public Long getTransactionType() {
         return transactionType;
     }
 
-    public void setTransactionType(String transactionType) {
+    public void setTransactionType(Long transactionType) {
         this.transactionType = transactionType;
     }
 
-    public String getRuleConfiguration() {
+    public Long getRuleConfiguration() {
         return ruleConfiguration;
     }
 
-    public void setRuleConfiguration(String ruleConfiguration) {
+    public void setRuleConfiguration(Long ruleConfiguration) {
         this.ruleConfiguration = ruleConfiguration;
     }
 

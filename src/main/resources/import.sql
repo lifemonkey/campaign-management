@@ -19,9 +19,9 @@
 -- Dumping data for table `roles`
 --
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO roles (id,name,description,can_approve_reward,can_reject_reward,campaign_management,rule_management,prize_management) VALUES (1,'admin','admin',1,1,1,1,1);
-INSERT INTO roles (id,name,description,can_approve_reward,can_reject_reward,campaign_management,rule_management,prize_management) VALUES (2,'bo_staff','bo staff',0,0,1,1,1);
-INSERT INTO roles (id,name,description,can_approve_reward,can_reject_reward,campaign_management,rule_management,prize_management) VALUES (3,'fin_staff','fin staff',1,1,0,0,0);
+INSERT INTO roles (id,name,description,can_approve_reward,can_reject_reward,campaign_management,rule_management,prize_management) VALUES (1,'ADMIN','admin',1,1,1,1,1);
+INSERT INTO roles (id,name,description,can_approve_reward,can_reject_reward,campaign_management,rule_management,prize_management) VALUES (2,'BO_STAFF','bo staff',0,0,1,1,1);
+INSERT INTO roles (id,name,description,can_approve_reward,can_reject_reward,campaign_management,rule_management,prize_management) VALUES (3,'FIN_STAFF','fin staff',1,1,0,0,0);
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 
 --

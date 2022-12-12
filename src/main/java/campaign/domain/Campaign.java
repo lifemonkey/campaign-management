@@ -47,7 +47,7 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
 
     @OneToOne
     @JoinColumn(name = "status_id", referencedColumnName = "id")
-    private Status statusId;
+    private Status status;
 
     @OneToOne()
     @JoinColumn(name = "approved_rejected_by", referencedColumnName = "id")
@@ -57,25 +57,25 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
     @JoinTable(name = "campaign_target_list",
         joinColumns = @JoinColumn(name = "target_list_id", nullable = false, referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "campaign_id", nullable = false, referencedColumnName = "id"))
-    private List<TargetList> targetLists = new ArrayList<>();
+    private final List<TargetList> targetLists = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "campaign")
-    private List<Files> filesList = new ArrayList<>();
+    private final List<Files> filesList = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "campaign")
-    private List<Rule> ruleList = new ArrayList<>();
+    private final List<Rule> ruleList = new ArrayList<>();
 
     public Campaign() {
     }
 
-    public Campaign(String name, String description, LocalDateTime fromDate, LocalDateTime endDate, Integer campaignType, String notes, Status statusId, User approvedRejectedBy) {
+    public Campaign(String name, String description, LocalDateTime fromDate, LocalDateTime endDate, Integer campaignType, String notes, Status status, User approvedRejectedBy) {
         this.name = name;
         this.description = description;
         this.fromDate = fromDate;
         this.endDate = endDate;
         this.campaignType = campaignType;
         this.notes = notes;
-        this.statusId = statusId;
+        this.status = status;
         this.approvedRejectedBy = approvedRejectedBy;
     }
 
@@ -135,12 +135,12 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
         this.notes = notes;
     }
 
-    public Status getStatusId() {
-        return statusId;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setStatusId(Status statusId) {
-        this.statusId = statusId;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public User getApprovedRejectedBy() {
@@ -185,7 +185,6 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
             ", endDate=" + endDate + '\'' +
             ", campaignType=" + campaignType + '\'' +
             ", notes='" + notes + '\'' +
-            ", statusId=" + statusId +
             '}';
     }
 }

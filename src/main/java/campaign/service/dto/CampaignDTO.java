@@ -28,7 +28,7 @@ public class CampaignDTO {
     @Size(min = 1, max = 4000)
     private String notes;
 
-    private Long statusId;
+    private String status;
 
     private UserDTO approvedRejectedBy;
 
@@ -62,7 +62,9 @@ public class CampaignDTO {
         }
         this.campaignType = campaign.getCampaignType();
         this.notes = campaign.getNotes();
-//        this.statusId = campaign.getStatusId();
+        if (campaign.getStatus() != null) {
+            this.status = campaign.getStatus().getName();
+        }
         if (campaign.getApprovedRejectedBy() != null) {
             this.approvedRejectedBy = new UserDTO(campaign.getApprovedRejectedBy());
         }
@@ -140,12 +142,12 @@ public class CampaignDTO {
         this.notes = notes;
     }
 
-    public Long getStatusId() {
-        return statusId;
+    public String getStatus() {
+        return status;
     }
 
-    public void setStatusId(Long statusId) {
-        this.statusId = statusId;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public UserDTO getApprovedRejectedBy() {
@@ -222,7 +224,7 @@ public class CampaignDTO {
             ", endDate=" + endDate +
             ", campaignType=" + campaignType +
             ", notes='" + notes + '\'' +
-            ", statusId=" + statusId +
+            ", status=" + status +
 //            ", approvedRejectedBy='" + approvedRejectedBy + '\'' +
 //            ", targetLists=" + targetLists +
 //            ", filesList=" + filesList +

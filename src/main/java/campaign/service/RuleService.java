@@ -63,7 +63,7 @@ public class RuleService {
 
             // handle rule configuration
             if (ruleVM.getRuleConfiguration() != null) {
-                Optional<RuleConfiguration> ruleConfigurationOpt = ruleConfigurationRepository.findByName(ruleVM.getRuleConfiguration());
+                Optional<RuleConfiguration> ruleConfigurationOpt = ruleConfigurationRepository.findById(ruleVM.getRuleConfiguration());
                 if (ruleConfigurationOpt.isPresent()) {
                     rule.setRuleConfiguration(ruleConfigurationOpt.get());
                 }
@@ -71,7 +71,7 @@ public class RuleService {
 
             // handle transaction type
             if (ruleVM.getTransactionType() != null) {
-                Optional<TransactionType> transactionTypeOpt = transactionTypeRepository.findByName(ruleVM.getTransactionType());
+                Optional<TransactionType> transactionTypeOpt = transactionTypeRepository.findById(ruleVM.getTransactionType());
                 if (transactionTypeOpt.isPresent()) {
                     rule.setTransactionType(transactionTypeOpt.get());
                 }
@@ -91,7 +91,7 @@ public class RuleService {
 
         // handle rule configuration
         if (ruleVM.getRuleConfiguration() != null) {
-            Optional<RuleConfiguration> ruleConfigurationOpt = ruleConfigurationRepository.findByName(ruleVM.getRuleConfiguration());
+            Optional<RuleConfiguration> ruleConfigurationOpt = ruleConfigurationRepository.findById(ruleVM.getRuleConfiguration());
             if (ruleConfigurationOpt.isPresent()) {
                 rule.setRuleConfiguration(ruleConfigurationOpt.get());
             }
@@ -99,7 +99,7 @@ public class RuleService {
 
         // handle transaction type
         if (ruleVM.getTransactionType() != null) {
-            Optional<TransactionType> transactionTypeOpt = transactionTypeRepository.findByName(ruleVM.getTransactionType());
+            Optional<TransactionType> transactionTypeOpt = transactionTypeRepository.findById(ruleVM.getTransactionType());
             if (transactionTypeOpt.isPresent()) {
                 rule.setTransactionType(transactionTypeOpt.get());
             }
