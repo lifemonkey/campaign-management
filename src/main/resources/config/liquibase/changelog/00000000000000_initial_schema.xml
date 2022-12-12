@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd
-                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
 
         <changeSet id="00000000000000" author="jhipster">
         <createSequence sequenceName="sequence_generator" startValue="1717" incrementBy="1"/>
@@ -243,7 +241,7 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="name" type="varchar(22)" />
+            <column name="name" type="varchar(200)" />
             <column name="description" type="varchar(4000)"/>
             <!-- Auditing fields -->
             <column name="created_by" type="varchar(50)">
@@ -262,7 +260,7 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="name" type="varchar(22)" />
+            <column name="name" type="varchar(200)" />
             <column name="description" type="varchar(4000)"/>
             <!-- Auditing fields -->
             <column name="created_by" type="varchar(50)">
@@ -281,7 +279,7 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="name" type="varchar(22)" />
+            <column name="name" type="varchar(200)" />
             <column name="description" type="varchar(4000)"/>
             <column name="duration_type" type="int"/>
             <column name="duration_value" type="varchar(200)"/>
@@ -289,6 +287,7 @@
             <!-- constraints -->
             <column name="rule_configuration_id" type="bigint"/>
             <column name="transaction_type_id" type="bigint"/>
+            <column name="campaign_id" type="bigint"/>
             <!-- Auditing fields -->
             <column name="created_by" type="varchar(50)">
                 <constraints nullable="false"/>
@@ -369,6 +368,14 @@
                                  onUpdate="CASCADE"
                                  onDelete="CASCADE"/>
 
+        <addForeignKeyConstraint baseColumnNames="campaign_id"
+                                 baseTableName="rules"
+                                 constraintName="fk_rules_campaign_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="campaign"
+                                 onUpdate="CASCADE"
+                                 onDelete="CASCADE"/>
+
         <addForeignKeyConstraint baseColumnNames="rule_configuration_id"
                                  baseTableName="rules"
                                  constraintName="fk_rule_rule_configuration_id"
@@ -379,56 +386,24 @@
 
         <addForeignKeyConstraint baseColumnNames="transaction_type_id"
                                  baseTableName="rules"
-                                 constraintName="fk_rule_rule_configuration_id"
+                                 constraintName="fk_rule_transaction_type_id"
                                  referencedColumnNames="id"
                                  referencedTableName="transaction_type"
                                  onUpdate="CASCADE"
                                  onDelete="CASCADE"/>
 
-        <loadData encoding="UTF-8"
-                  file="config/liquibase/roles.csv"
-                  separator=";"
-                  tableName="roles"/>
-
-        <loadData encoding="UTF-8"
-                  file="config/liquibase/users.csv"
-                  separator=";"
-                  tableName="users"/>
-
-        <loadData encoding="UTF-8"
-                  file="config/liquibase/accounts.csv"
-                  separator=";"
-                  tableName="accounts"/>
-
-        <loadData encoding="UTF-8"
-                  file="config/liquibase/target_list.csv"
-                  separator=";"
-                  tableName="target_list"/>
-
-        <loadData encoding="UTF-8"
-                  file="config/liquibase/target_list_account.csv"
-                  separator=";"
-                  tableName="target_list_account"/>
-
-        <loadData encoding="UTF-8"
-                  file="config/liquibase/status.csv"
-                  separator=";"
-                  tableName="status"/>
-
-        <loadData encoding="UTF-8"
-                  file="config/liquibase/campaign.csv"
-                  separator=";"
-                  tableName="campaign"/>
-
-        <loadData encoding="UTF-8"
-                  file="config/liquibase/campaign_target_list.csv"
-                  separator=";"
-                  tableName="campaign_target_list"/>
-
-        <loadData encoding="UTF-8"
-                  file="config/liquibase/files.csv"
-                  separator=";"
-                  tableName="files"/>
+        <loadData file="config/liquibase/roles.csv" separator=";" tableName="roles"/>
+        <loadData file="config/liquibase/users.csv" separator=";" tableName="users"/>
+        <loadData file="config/liquibase/accounts.csv" separator=";" tableName="accounts"/>
+        <loadData file="config/liquibase/target_list.csv" separator=";" tableName="target_list"/>
+        <loadData file="config/liquibase/target_list_account.csv" separator=";" tableName="target_list_account"/>
+        <loadData file="config/liquibase/status.csv" separator=";" tableName="status"/>
+        <loadData file="config/liquibase/campaign.csv" separator=";" tableName="campaign"/>
+        <loadData file="config/liquibase/campaign_target_list.csv" separator=";" tableName="campaign_target_list"/>
+        <loadData file="config/liquibase/files.csv" separator=";" tableName="files"/>
+        <loadData file="config/liquibase/rule_configuration.csv"  separator=";" tableName="rule_configuration"/>
+        <loadData file="config/liquibase/transaction_type.csv" separator=";" tableName="transaction_type"/>
+        <loadData file="config/liquibase/rule.csv" separator=";" tableName="rules"/>
     </changeSet>
 
     <changeSet author="jhipster" id="00000000000002" context="test">

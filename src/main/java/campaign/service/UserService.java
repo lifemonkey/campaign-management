@@ -1,6 +1,5 @@
 package campaign.service;
 
-import campaign.domain.Role;
 import campaign.domain.User;
 import campaign.repository.RoleRepository;
 import campaign.repository.UserRepository;
@@ -14,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -92,6 +90,6 @@ public class UserService {
      */
     @Transactional(readOnly = true)
     public List<String> getRoles() {
-        return roleRepository.findAll().stream().map(Role::getName).collect(Collectors.toList());
+        return roleRepository.findAll().stream().map(role -> role.getName().name()).collect(Collectors.toList());
     }
 }

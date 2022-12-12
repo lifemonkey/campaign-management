@@ -20,8 +20,9 @@ public class Account extends AbstractAuditingEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_sequence_generator")
-    @SequenceGenerator(name = "account_sequence_generator", sequenceName = "account_id_sequence", allocationSize = 1)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_sequence_generator")
+//    @SequenceGenerator(name = "account_sequence_generator", sequenceName = "account_id_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "external_id", length = 22)

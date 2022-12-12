@@ -1,5 +1,6 @@
 package campaign.service.dto;
 
+import campaign.domain.EDuration;
 import campaign.domain.Rule;
 
 import javax.validation.constraints.NotBlank;
@@ -14,7 +15,7 @@ public class RuleDTO {
 
     private String description;
 
-    private Integer durationType;
+    private EDuration durationType;
 
     private String durationValue;
 
@@ -75,11 +76,11 @@ public class RuleDTO {
         this.description = description;
     }
 
-    public Integer getDurationType() {
+    public EDuration getDurationType() {
         return durationType;
     }
 
-    public void setDurationType(Integer durationType) {
+    public void setDurationType(EDuration durationType) {
         this.durationType = durationType;
     }
 

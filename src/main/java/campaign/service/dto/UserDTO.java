@@ -1,6 +1,7 @@
 package campaign.service.dto;
 
 import campaign.config.Constants;
+import campaign.domain.ERole;
 import campaign.domain.User;
 
 import javax.validation.constraints.NotBlank;
@@ -35,7 +36,7 @@ public class UserDTO {
 
     private byte[] imageBlob;
 
-    private String role;
+    private ERole role;
 
     public UserDTO() {
         // Empty constructor needed for Jackson.
@@ -103,11 +104,11 @@ public class UserDTO {
         this.expiredDate = expiredDate;
     }
 
-    public String getRole() {
+    public ERole getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(ERole role) {
         this.role = role;
     }
 

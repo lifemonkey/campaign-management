@@ -2,8 +2,6 @@ package campaign.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.id.enhanced.SequenceStyleGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,12 +14,14 @@ public class Role implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_sequence_generator")
-    @SequenceGenerator(name = "role_sequence_generator", sequenceName = "role_id_sequence", allocationSize = 1)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_sequence_generator")
+//    @SequenceGenerator(name = "role_sequence_generator", sequenceName = "role_id_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(length = 100)
-    private String name;
+    private ERole name;
 
     @Column(length = 4000)
     private String description;
@@ -43,7 +43,7 @@ public class Role implements Serializable {
 
     public Role() { }
 
-    public Role(String name) {
+    public Role(ERole name) {
         this.name = name;
     }
 
@@ -55,11 +55,11 @@ public class Role implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
+    public ERole getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(ERole name) {
         this.name = name;
     }
 

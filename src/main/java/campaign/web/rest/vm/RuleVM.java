@@ -1,5 +1,7 @@
 package campaign.web.rest.vm;
 
+import campaign.domain.EDuration;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -14,7 +16,7 @@ public class RuleVM {
     @Size(max = 4000)
     private String description;
 
-    private Integer durationType;
+    private EDuration durationType;
 
     private String durationValue;
 
@@ -40,11 +42,11 @@ public class RuleVM {
         this.description = description;
     }
 
-    public Integer getDurationType() {
+    public EDuration getDurationType() {
         return durationType;
     }
 
-    public void setDurationType(Integer durationType) {
+    public void setDurationType(EDuration durationType) {
         this.durationType = durationType;
     }
 

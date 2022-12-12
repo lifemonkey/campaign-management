@@ -1,0 +1,5 @@
+id;name;description;created_by;last_modified_by
+1;The first transaction;The first transaction description;system;system
+2;By numbers of transaction;By numbers of transaction description;system;system
+3;By value per one transaction;By value per one transaction description;system;system
+4;Total value of transaction;Total value of transaction description;system;system

@@ -1,7 +1,7 @@
 package campaign.domain;
 
 public enum ERole {
-    ROLE_USER,
-    ROLE_MODERATOR,
-    ROLE_ADMIN
+    ADMIN,
+    BO_STAFF,
+    FIN_STAFF
 }

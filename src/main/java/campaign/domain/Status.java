@@ -2,8 +2,6 @@ package campaign.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.id.enhanced.SequenceStyleGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -17,8 +15,9 @@ public class Status implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "status_sequence_generator")
-    @SequenceGenerator(name = "status_sequence_generator", sequenceName = "status_id_sequence", allocationSize = 1)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "status_sequence_generator")
+//    @SequenceGenerator(name = "status_sequence_generator", sequenceName = "status_id_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
