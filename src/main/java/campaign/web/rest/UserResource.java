@@ -5,6 +5,8 @@ import campaign.security.AuthoritiesConstants;
 import campaign.service.UserService;
 import campaign.service.dto.UserDTO;
 import campaign.web.rest.util.PaginationUtil;
+import campaign.web.rest.vm.ResponseCode;
+import campaign.web.rest.vm.ResponseVM;
 import io.github.jhipster.web.util.ResponseUtil;
 import io.micrometer.core.annotation.Timed;
 import org.slf4j.Logger;
@@ -55,8 +57,20 @@ public class UserResource {
      */
     @GetMapping("/user/{id}")
     @Timed
-    public ResponseEntity<UserDTO> getUserById(@Valid @PathVariable Long id) {
-        return new ResponseEntity<>(userService.getUserById(id), new HttpHeaders(), HttpStatus.OK);
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    public ResponseEntity<Object> getUserById(@Valid @PathVariable Long id) {
+        UserDTO user = userService.getUserById(id);
+        if (user != null) {
+            return new ResponseEntity<>(user, new HttpHeaders(), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(
+            new ResponseVM(
+                ResponseCode.RESPONSE_NOT_FOUND,
+                ResponseCode.ERROR_CODE_USER_NOT_FOUND,
+                "User ID:" + id + " not found!"),
+            new HttpHeaders(),
+            HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -79,8 +93,6 @@ public class UserResource {
     @GetMapping("/users/{login:" + Constants.LOGIN_REGEX + "}")
     public ResponseEntity<UserDTO> getUser(@PathVariable String login) {
         log.debug("REST request to get User : {}", login);
-        return ResponseUtil.wrapOrNotFound(
-            userService.getUserWithRoleByUsername(login)
-                .map(UserDTO::new));
+        return new ResponseEntity<>(userService.getUserWithRoleByUsername(login), new HttpHeaders(), HttpStatus.OK);
     }
 }

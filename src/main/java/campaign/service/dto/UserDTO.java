@@ -2,6 +2,7 @@ package campaign.service.dto;
 
 import campaign.config.Constants;
 import campaign.domain.ERole;
+import campaign.domain.EStatus;
 import campaign.domain.User;
 
 import javax.validation.constraints.NotBlank;
@@ -36,7 +37,17 @@ public class UserDTO {
 
     private byte[] imageBlob;
 
+    private EStatus status;
+
     private ERole role;
+
+    private String createdBy;
+
+    private LocalDateTime createdDate;
+
+    private String lastModifiedBy;
+
+    private LocalDateTime lastModifiedDate;
 
     public UserDTO() {
         // Empty constructor needed for Jackson.
@@ -51,6 +62,7 @@ public class UserDTO {
         this.expiredDate = user.getExpiredDate();
         this.imageUrl = user.getImageUrl();
         this.imageBlob = user.getImageBlob();
+        this.status = user.getStatus();
         if (user.getRole() != null) {
             this.role = user.getRole().getName();
         }
@@ -72,9 +84,9 @@ public class UserDTO {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
+//    public String getPassword() {
+//        return password;
+//    }
 
     public void setPassword(String password) {
         this.password = password;
@@ -126,6 +138,50 @@ public class UserDTO {
 
     public void setImageBlob(byte[] imageBlob) {
         this.imageBlob = imageBlob;
+    }
+
+    public EStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(EStatus status) {
+        this.status = status;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public LocalDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     @Override

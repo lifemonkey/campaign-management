@@ -4,6 +4,8 @@ import campaign.security.AuthoritiesConstants;
 import campaign.service.TargetListService;
 import campaign.service.dto.TargetListDTO;
 import campaign.web.rest.util.PaginationUtil;
+import campaign.web.rest.vm.ResponseCode;
+import campaign.web.rest.vm.ResponseVM;
 import campaign.web.rest.vm.TargetListVM;
 import io.micrometer.core.annotation.Timed;
 import org.slf4j.Logger;
@@ -54,8 +56,19 @@ public class TargetListResource {
      */
     @GetMapping("/target-list/{id}")
     @Timed
-    public ResponseEntity<TargetListDTO> getTargetListById(@Valid @PathVariable Long id) {
-        return new ResponseEntity<>(targetListService.getTargetListById(id), new HttpHeaders(), HttpStatus.OK);
+    public ResponseEntity<Object> getTargetListById(@Valid @PathVariable Long id) {
+        TargetListDTO targetList = targetListService.getTargetListById(id);
+        if (targetList != null) {
+            return new ResponseEntity<>(targetList, new HttpHeaders(), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(
+            new ResponseVM(
+                ResponseCode.RESPONSE_NOT_FOUND,
+                ResponseCode.ERROR_CODE_TARGET_LIST_NOT_FOUND,
+                "TargetList ID:" + id + " not found!"),
+            new HttpHeaders(),
+            HttpStatus.NOT_FOUND);
     }
 
     /**

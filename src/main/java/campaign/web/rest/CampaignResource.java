@@ -5,6 +5,8 @@ import campaign.service.CampaignService;
 import campaign.service.dto.CampaignDTO;
 import campaign.web.rest.util.PaginationUtil;
 import campaign.web.rest.vm.CampaignVM;
+import campaign.web.rest.vm.ResponseCode;
+import campaign.web.rest.vm.ResponseVM;
 import io.micrometer.core.annotation.Timed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,9 +55,19 @@ public class CampaignResource {
      */
     @GetMapping("/campaign/{id}")
     @Timed
-    public ResponseEntity<CampaignDTO> getCampaignById(@Valid @PathVariable Long id) {
+    public ResponseEntity<Object> getCampaignById(@Valid @PathVariable Long id) {
         CampaignDTO campaign = campaignService.getCampaignById(id);
-        return ResponseEntity.ok(campaign);
+        if (campaign != null) {
+            return new ResponseEntity<>(campaign, new HttpHeaders(), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(
+            new ResponseVM(
+                ResponseCode.RESPONSE_NOT_FOUND,
+                ResponseCode.ERROR_CODE_CAMPAIGN_NOT_FOUND,
+                "Campaign ID:" + id + " not found!"),
+            new HttpHeaders(),
+            HttpStatus.NOT_FOUND);
     }
 
     /**

@@ -75,14 +75,18 @@ public class UserService {
     public UserDTO getUserById(Long id) {
         Optional<User> userOpt = userRepository.findById(id);
         if (userOpt.isPresent()) {
-            return new UserDTO(userRepository.findById(id).get());
+            return new UserDTO(userOpt.get());
         }
-        return new UserDTO();
+        return null;
     }
 
     @Transactional(readOnly = true)
-    public Optional<User> getUserWithRoleByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public UserDTO getUserWithRoleByUsername(String username) {
+        Optional<User> userOpt = userRepository.findByUsername(username);
+        if (userOpt.isPresent()) {
+            return new UserDTO(userOpt.get());
+        }
+        return null;
     }
 
     /**

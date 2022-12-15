@@ -55,12 +55,16 @@ public class User extends AbstractAuditingEntity implements Serializable {
     private LocalDateTime expiredDate = null;
 
     @JsonIgnore
-    @Column(name = "image_url", length = 255)
+    @Column(name = "image_url")
     private String imageUrl = null;
 
     @Column(name = "image_blob", columnDefinition = "BLOB")
     @Lob
     private byte[]  imageBlob;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private EStatus status;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "role_id", referencedColumnName = "id")
@@ -144,6 +148,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setImageBlob(byte[] imageBlob) {
         this.imageBlob = imageBlob;
+    }
+
+    public EStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(EStatus status) {
+        this.status = status;
     }
 
     @Override

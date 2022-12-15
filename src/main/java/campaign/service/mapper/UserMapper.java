@@ -30,7 +30,6 @@ public class UserMapper {
             User user = new User();
             user.setId(userDTO.getId());
             user.setUsername(userDTO.getUsername());
-            user.setPassword(userDTO.getPassword());
             user.setFirstname(userDTO.getFirstname());
             user.setLastname(userDTO.getLastname());
             user.setExpiredDate(userDTO.getExpiredDate());

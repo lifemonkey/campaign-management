@@ -46,7 +46,6 @@ public class CampaignDTO {
 
     private LocalDateTime lastModifiedDate;
 
-
     public CampaignDTO() {
     }
 

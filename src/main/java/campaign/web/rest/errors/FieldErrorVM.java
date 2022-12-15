@@ -10,11 +10,14 @@ public class FieldErrorVM implements Serializable {
 
     private final String field;
 
+    private final String code;
+
     private final String message;
 
-    public FieldErrorVM(String dto, String field, String message) {
+    public FieldErrorVM(String dto, String field, String code, String message) {
         this.objectName = dto;
         this.field = field;
+        this.code = code;
         this.message = message;
     }
 
@@ -30,4 +33,7 @@ public class FieldErrorVM implements Serializable {
         return message;
     }
 
+    public String getCode() {
+        return code;
+    }
 }

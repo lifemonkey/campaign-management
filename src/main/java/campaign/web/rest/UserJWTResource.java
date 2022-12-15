@@ -46,7 +46,11 @@ public class UserJWTResource {
 
     private final TokenBlackListService tokenBlackListService;
 
-    public UserJWTResource(TokenProvider tokenProvider, AuthenticationManager authenticationManager, RefreshTokenService refreshTokenService, TokenBlackListService tokenBlackListService) {
+    public UserJWTResource(TokenProvider tokenProvider,
+                           AuthenticationManager authenticationManager,
+                           RefreshTokenService refreshTokenService,
+                           TokenBlackListService tokenBlackListService
+    ) {
         this.tokenProvider = tokenProvider;
         this.authenticationManager = authenticationManager;
         this.refreshTokenService = refreshTokenService;

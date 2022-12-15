@@ -5,11 +5,11 @@ package campaign.security;
  */
 public final class AuthoritiesConstants {
 
-    public static final String ADMIN = "admin";
+    public static final String ADMIN = "ADMIN";
 
-    public static final String BO_STAFF = "bo_staff";
+    public static final String BO_STAFF = "BO_STAFF";
 
-    public static final String FIN_STAFF = "fin_staff";
+    public static final String FIN_STAFF = "FIN_STAFF";
 
     public static final String USER = "ROLE_USER";
 

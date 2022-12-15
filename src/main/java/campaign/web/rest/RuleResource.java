@@ -7,6 +7,8 @@ import campaign.service.dto.CampaignDTO;
 import campaign.service.dto.RuleDTO;
 import campaign.web.rest.util.PaginationUtil;
 import campaign.web.rest.vm.CampaignVM;
+import campaign.web.rest.vm.ResponseCode;
+import campaign.web.rest.vm.ResponseVM;
 import campaign.web.rest.vm.RuleVM;
 import io.micrometer.core.annotation.Timed;
 import org.slf4j.Logger;
@@ -56,9 +58,19 @@ public class RuleResource {
      */
     @GetMapping("/rule/{id}")
     @Timed
-    public ResponseEntity<RuleDTO> getRuleById(@Valid @PathVariable Long id) {
-        RuleDTO ruleDTO = ruleService.getRuleById(id);
-        return ResponseEntity.ok(ruleDTO);
+    public ResponseEntity<Object> getRuleById(@Valid @PathVariable Long id) {
+        RuleDTO rule = ruleService.getRuleById(id);
+        if (rule != null) {
+            return new ResponseEntity<>(rule, new HttpHeaders(), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(
+            new ResponseVM(
+                ResponseCode.RESPONSE_NOT_FOUND,
+                ResponseCode.ERROR_CODE_RULE_NOT_FOUND,
+                "Rule ID:" + id + " not found!"),
+            new HttpHeaders(),
+            HttpStatus.NOT_FOUND);
     }
 
     /**
