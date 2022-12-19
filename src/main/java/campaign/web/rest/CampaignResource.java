@@ -34,21 +34,26 @@ public class CampaignResource {
     }
 
     /**
-     * GET /campaigns : get all target list.
+     * GET /campaigns : get all campaigns
      *
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and with body all users
      */
     @GetMapping("/campaigns")
     @Timed
-    public ResponseEntity<List<CampaignDTO>> getAllCampaigns(Pageable pageable) {
-        Page<CampaignDTO> page = campaignService.getAllCampaign(pageable);
+    public ResponseEntity<List<CampaignDTO>> getAllCampaigns(Pageable pageable, @RequestParam String searchValue) {
+        Page<CampaignDTO> page;
+        if (searchValue != null) {
+            page = campaignService.searchCampaigns(pageable, searchValue);
+        } else {
+            page =campaignService.getAllCampaign(pageable);
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/campaigns");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
-     * GET /campaigns : get all target list.
+     * GET /campaigns : get all campaigns
      *
      * @PathVariable id campaign id
      * @return the ResponseEntity with status 200 (OK) and with body all users
@@ -69,6 +74,20 @@ public class CampaignResource {
             new HttpHeaders(),
             HttpStatus.NOT_FOUND);
     }
+
+    /**
+     * GET /campaigns : search campaign by name
+     *
+     * @PathVariable id campaign id
+     * @return the ResponseEntity with status 200 (OK) and with body all users
+     */
+//    @GetMapping("/campaigns")
+//    @Timed
+//    public ResponseEntity<List<CampaignDTO>> search(Pageable pageable, @RequestParam String searchValue) {
+//        Page<CampaignDTO> page = campaignService.searchCampaigns(pageable, searchValue);
+//        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/campaigns");
+//        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+//    }
 
     /**
      * POST /campaign : Create campaign
