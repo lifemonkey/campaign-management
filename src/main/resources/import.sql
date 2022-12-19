@@ -26,18 +26,18 @@ INSERT INTO roles (id,name,description,can_approve_reward,can_reject_reward,camp
 
 --
 -- Dumping data for table `users`
--- tainguyen91@gmail.com/admin123
--- tainguyen91_bo@gmail.com/bo123456
--- tainguyen91_fin@gmail.com/fin12345
--- nguyen.to@gmail.com/nt123456
--- hung.doan@gmail.com/hd123456
+-- tainguyen91@gmail.com/admin@123
+-- tainguyen91_bo@gmail.com/bostaff@123
+-- tainguyen91_fin@gmail.com/finstaff@1234
+-- nguyen.to@gmail.com/nguyen@123
+-- hung.doan@gmail.com/hung@123
 --
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO users (id,username,password,first_name,last_name,expired_date,role_id,image_url,status,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,'tainguyen91@gmail.com','$2a$12$WlGaaoA5QrZgLmVrozSccedDn/WUDOVIeAMEUr.wd.fVboP6MWjIC','Nguyen','Huu Tai',NULL,1,NULL,'ACTIVE','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO users (id,username,password,first_name,last_name,expired_date,role_id,image_url,status,created_by,created_date,last_modified_by,last_modified_date) VALUES (2,'tainguyen91_bo@gmail.com','$2a$12$5o5Sqn1Fa.t/ZLkF3eMo7edutHXIoDI5FOfObYujqIxz5rTxGMDBG','Nguyen','Huu_Tai_Bo',NULL,2,NULL,'ACTIVE','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO users (id,username,password,first_name,last_name,expired_date,role_id,image_url,status,created_by,created_date,last_modified_by,last_modified_date) VALUES (3,'tainguyen91_fin@gmail.com','$2a$12$2ftvBCDZE80uqt4vM.wsMO1j.ogZuIAwSGTIEETlN58wtOvqQdJoi','Nguyen','Huu_Tai_Fin',NULL,3,NULL,'ACTIVE','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO users (id,username,password,first_name,last_name,expired_date,role_id,image_url,status,created_by,created_date,last_modified_by,last_modified_date) VALUES (4,'nguyen.to@gmail.com','$2a$12$dXGJmoUpZNkloYADWBMUEOViipoiSporNOvbPaaK3ZYpf7ZeMw9VW','Nguyen','To',NULL,3,NULL,'INACTIVE','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO users (id,username,password,first_name,last_name,expired_date,role_id,image_url,status,created_by,created_date,last_modified_by,last_modified_date) VALUES (5,'hung.doan@gmail.com','$2a$12$/vJ84HiGgykDtT91GZ5ym.NCY76dtrPDjdgM2HPzThrm4ULaK4pZi','Hung','Doan',NULL,3,NULL,'INACTIVE','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO users (id,username,password,first_name,last_name,expired_date,role_id,image_url,status,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,'tainguyen91@gmail.com','$2a$12$neqT3t7BJzdZTjuGJS6CJ.jG0dQzvj1hBGn0bwrIUCQe0FTeVV4NG','Nguyen','Huu Tai',NULL,1,NULL,1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO users (id,username,password,first_name,last_name,expired_date,role_id,image_url,status,created_by,created_date,last_modified_by,last_modified_date) VALUES (2,'tainguyen91_bo@gmail.com','$2a$12$jHsl2HEmJxAin4FEYomY9ueJHZJhULBCZ3tpdkrcfm1K.fmW1zOme','Nguyen','Huu_Tai_Bo',NULL,2,NULL,1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO users (id,username,password,first_name,last_name,expired_date,role_id,image_url,status,created_by,created_date,last_modified_by,last_modified_date) VALUES (3,'tainguyen91_fin@gmail.com','$2a$12$hZKapjuZKnhJl5uXiUVVZOAyp0umhN94PzhivUdIOl12f3rURUu5S','Nguyen','Huu_Tai_Fin',NULL,3,NULL,1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO users (id,username,password,first_name,last_name,expired_date,role_id,image_url,status,created_by,created_date,last_modified_by,last_modified_date) VALUES (4,'nguyen.to@gmail.com','$2a$12$4FBHF03Apze2h3PtMKFWoO1mN3Pgsl02FcBSpwIQ3uiFAFSBQXo2m','Nguyen','To',NULL,3,NULL,-1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO users (id,username,password,first_name,last_name,expired_date,role_id,image_url,status,created_by,created_date,last_modified_by,last_modified_date) VALUES (5,'hung.doan@gmail.com','$2a$12$eU5a1Rt18csSBqJ18FGY.OJBbcF6Ou0E1MKfzyx9EPOcnURBXio4e','Hung','Doan',NULL,3,NULL,-1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 --

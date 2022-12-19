@@ -6,7 +6,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 
-import campaign.domain.TokenBlackList;
 import campaign.service.TokenBlackListService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,6 +86,10 @@ public class TokenProvider {
     }
 
     public Authentication getAuthentication(String token) {
+        if (!validateToken(token)) {
+            return new UsernamePasswordAuthenticationToken(null, null);
+        }
+
         Claims claims = Jwts.parser()
             .setSigningKey(key)
             .parseClaimsJws(token)
@@ -106,6 +109,7 @@ public class TokenProvider {
         try {
             boolean isBlacklist = tokenBlackListService.getTokenBlackLists().stream().
                 anyMatch(tokenBlackList -> tokenBlackList.getToken().endsWith(authToken));
+
             if (isBlacklist) {
                 return false;
             }

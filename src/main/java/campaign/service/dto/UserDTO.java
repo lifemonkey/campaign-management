@@ -2,7 +2,6 @@ package campaign.service.dto;
 
 import campaign.config.Constants;
 import campaign.domain.ERole;
-import campaign.domain.EStatus;
 import campaign.domain.User;
 
 import javax.validation.constraints.NotBlank;
@@ -37,7 +36,7 @@ public class UserDTO {
 
     private byte[] imageBlob;
 
-    private EStatus status;
+    private Integer status;
 
     private ERole role;
 
@@ -66,6 +65,10 @@ public class UserDTO {
         if (user.getRole() != null) {
             this.role = user.getRole().getName();
         }
+        this.createdBy = user.getCreatedBy();
+        this.createdDate = user.getCreatedDate();
+        this.lastModifiedBy = user.getLastModifiedBy();
+        this.lastModifiedDate = user.getLastModifiedDate();
     }
 
     public Long getId() {
@@ -140,11 +143,11 @@ public class UserDTO {
         this.imageBlob = imageBlob;
     }
 
-    public EStatus getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(EStatus status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

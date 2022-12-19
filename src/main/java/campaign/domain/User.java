@@ -62,9 +62,8 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Lob
     private byte[]  imageBlob;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private EStatus status;
+    private Integer status;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "role_id", referencedColumnName = "id")
@@ -150,11 +149,11 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.imageBlob = imageBlob;
     }
 
-    public EStatus getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(EStatus status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

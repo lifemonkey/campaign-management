@@ -1,6 +1,5 @@
 package campaign.security;
 
-import campaign.domain.EStatus;
 import campaign.domain.User;
 import campaign.repository.UserRepository;
 import org.slf4j.Logger;
@@ -36,7 +35,7 @@ public class DomainUserDetailsService implements UserDetailsService {
         String lowercaseLogin = login.toLowerCase(Locale.ENGLISH);
         Optional<User> userFromDatabase = userRepository.findByUsername(lowercaseLogin);
         return userFromDatabase.map(user -> {
-            if (user.getStatus() == EStatus.INACTIVE) {
+            if (user.getStatus() == -1) {
                 throw new UserNotActivatedException("User " + lowercaseLogin + " was not activated");
             }
             List<GrantedAuthority> grantedAuthorities = Arrays.asList(new SimpleGrantedAuthority(user.getRole().getName().name()));
