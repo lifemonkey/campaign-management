@@ -37,14 +37,15 @@ public class CampaignResource {
      * GET /campaigns : get all campaigns
      *
      * @param pageable the pagination information
+     * @RequestParam searchValue for campaign search by name
      * @return the ResponseEntity with status 200 (OK) and with body all users
      */
     @GetMapping("/campaigns")
     @Timed
-    public ResponseEntity<List<CampaignDTO>> getAllCampaigns(Pageable pageable, @RequestParam String searchValue) {
+    public ResponseEntity<List<CampaignDTO>> getAllCampaigns(Pageable pageable, @RequestParam(required = false) String search) {
         Page<CampaignDTO> page;
-        if (searchValue != null) {
-            page = campaignService.searchCampaigns(pageable, searchValue);
+        if (search != null) {
+            page = campaignService.searchCampaigns(pageable, search);
         } else {
             page =campaignService.getAllCampaign(pageable);
         }

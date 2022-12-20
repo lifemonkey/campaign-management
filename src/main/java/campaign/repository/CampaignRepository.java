@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CampaignRepository extends JpaRepository<Campaign, Long> {
 
-    Page<Campaign> findByNameContaining(String name, Pageable pageable);
+    Page<Campaign> findAllByNameContaining(String name, Pageable pageable);
 }

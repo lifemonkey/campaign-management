@@ -7,7 +7,6 @@ import campaign.service.dto.UserDTO;
 import campaign.web.rest.util.PaginationUtil;
 import campaign.web.rest.vm.ResponseCode;
 import campaign.web.rest.vm.ResponseVM;
-import io.github.jhipster.web.util.ResponseUtil;
 import io.micrometer.core.annotation.Timed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -55,7 +55,6 @@ public class UserDTO {
     public UserDTO(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
-        this.password = user.getPassword();
         this.firstname = user.getFirstname();
         this.lastname = user.getLastname();
         this.expiredDate = user.getExpiredDate();

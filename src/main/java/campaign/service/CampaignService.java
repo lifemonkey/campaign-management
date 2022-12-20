@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,10 +61,10 @@ public class CampaignService {
     }
 
     @Transactional(readOnly = true)
-    public Page<CampaignDTO> searchCampaigns(Pageable pageable, String searchValue) {
-        Page<Campaign> campaignList = campaignRepository.findByNameContaining(searchValue, pageable);
-        return campaignList.map(CampaignDTO::new);
+    public Page<CampaignDTO> searchCampaigns(Pageable pageable, String search) {
+        return campaignRepository.findAllByNameContaining(search, pageable).map(CampaignDTO::new);
     }
+
     @Transactional(readOnly = true)
     public Page<CampaignDTO> getAllCampaign(Pageable pageable) {
         return campaignRepository.findAll(pageable).map(CampaignDTO::new);
