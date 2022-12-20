@@ -66,6 +66,7 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
     private final List<Rule> ruleList = new ArrayList<>();
 
     public Campaign() {
+        this.name = "Default Campaign";
     }
 
     public Campaign(String name, String description, LocalDateTime fromDate, LocalDateTime endDate, Integer campaignType, String notes, Status status, User approvedRejectedBy) {

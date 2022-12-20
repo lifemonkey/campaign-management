@@ -77,20 +77,6 @@ public class CampaignResource {
     }
 
     /**
-     * GET /campaigns : search campaign by name
-     *
-     * @PathVariable id campaign id
-     * @return the ResponseEntity with status 200 (OK) and with body all users
-     */
-//    @GetMapping("/campaigns")
-//    @Timed
-//    public ResponseEntity<List<CampaignDTO>> search(Pageable pageable, @RequestParam String searchValue) {
-//        Page<CampaignDTO> page = campaignService.searchCampaigns(pageable, searchValue);
-//        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/campaigns");
-//        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-//    }
-
-    /**
      * POST /campaign : Create campaign
      *
      * @RequestBody campaign information to be created
@@ -101,6 +87,19 @@ public class CampaignResource {
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
     public ResponseEntity<CampaignDTO> createCampaign(@RequestBody CampaignVM campaignVM) {
         return new ResponseEntity<> (campaignService.createCampaign(campaignVM), new HttpHeaders(), HttpStatus.OK);
+    }
+
+    /**
+     * POST /campaign : Duplicate existing campaign
+     *
+     * @RequestParam to be clone campaign
+     * @return the ResponseEntity with status 200 (OK) and with body all users
+     */
+    @PostMapping("/campaign/clone")
+    @Timed
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    public ResponseEntity<CampaignDTO> createCampaign(@RequestParam Long id) {
+        return new ResponseEntity<> (campaignService.cloneCampaign(id), new HttpHeaders(), HttpStatus.OK);
     }
 
     /**

@@ -117,6 +117,28 @@ public class CampaignService {
     }
 
     @Transactional(rollbackFor = Exception.class)
+    public CampaignDTO cloneCampaign(Long id) {
+        Optional<Campaign> clonedCampaignOpt = campaignRepository.findById(id);
+        Campaign toBeInserted = new Campaign();
+
+        if (clonedCampaignOpt.isPresent()) {
+            toBeInserted.setName(clonedCampaignOpt.get().getName());
+            toBeInserted.setDescription(clonedCampaignOpt.get().getDescription());
+            toBeInserted.setFromDate(clonedCampaignOpt.get().getFromDate());
+            toBeInserted.setEndDate(clonedCampaignOpt.get().getEndDate());
+            toBeInserted.setCampaignType(clonedCampaignOpt.get().getCampaignType());
+            toBeInserted.setNotes(clonedCampaignOpt.get().getNotes());
+            toBeInserted.setStatus(clonedCampaignOpt.get().getStatus());
+            toBeInserted.setApprovedRejectedBy(clonedCampaignOpt.get().getApprovedRejectedBy());
+            toBeInserted.addTargetLists(clonedCampaignOpt.get().getTargetLists());
+            toBeInserted.addFilesList(clonedCampaignOpt.get().getFilesList());
+            toBeInserted.addRuleList(clonedCampaignOpt.get().getRuleList());
+        }
+
+        return campaignMapper.campaignToCampaignDTO(campaignRepository.save(toBeInserted));
+    }
+
+    @Transactional(rollbackFor = Exception.class)
     public CampaignDTO updateCampaign(Long id, CampaignVM campaignVM) {
         Campaign campaign = campaignMapper.campaignVMToCampaign(campaignVM);
         campaign.setId(id);
