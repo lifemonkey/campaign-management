@@ -53,7 +53,7 @@ INSERT INTO target_list (id,name,description,target_type,created_by,created_date
 
 --
 -- Dumping data for table `accounts`
---
+-- TODO: update additional fields description, phone, address, languageId, dob
 /*!40000 ALTER TABLE `accounts` DISABLE KEYS */;
 INSERT INTO accounts (id,external_id,first_name,last_name,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,'ext_id_1','Hung','Doan','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
 INSERT INTO accounts (id,external_id,first_name,last_name,created_by,created_date,last_modified_by,last_modified_date) VALUES (2,'ext_id_2','Nguyen','To','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
