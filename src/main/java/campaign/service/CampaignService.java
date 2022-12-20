@@ -25,7 +25,7 @@ public class CampaignService {
 
     private final TargetListRepository targetListRepository;
 
-    private final FilesRepository filesRepository;
+    private final FileRepository fileRepository;
 
     private final StatusRepository statusRepository;
 
@@ -36,7 +36,7 @@ public class CampaignService {
     public CampaignService(CampaignRepository campaignRepository,
                            UserRepository userRepository,
                            TargetListRepository targetListRepository,
-                           FilesRepository filesRepository,
+                           FileRepository fileRepository,
                            StatusRepository statusRepository,
                            RuleRepository ruleRepository,
                            CampaignMapper campaignMapper
@@ -44,7 +44,7 @@ public class CampaignService {
         this.campaignRepository = campaignRepository;
         this.userRepository = userRepository;
         this.targetListRepository =targetListRepository;
-        this.filesRepository = filesRepository;
+        this.fileRepository = fileRepository;
         this.statusRepository = statusRepository;
         this.ruleRepository = ruleRepository;
         this.campaignMapper = campaignMapper;
@@ -103,7 +103,7 @@ public class CampaignService {
 
             // handle file list
             List<File> fileList = campaignVM.getFilesList() != null
-                ? filesRepository.findAllById(campaignVM.getFilesList())
+                ? fileRepository.findAllById(campaignVM.getFilesList())
                 : null;
             if (fileList != null && !fileList.isEmpty()) {
                 campaign.addFilesList(fileList);
@@ -168,7 +168,7 @@ public class CampaignService {
 
         // handle file list
         List<File> fileList = campaignVM.getFilesList() != null
-            ? filesRepository.findAllById(campaignVM.getFilesList())
+            ? fileRepository.findAllById(campaignVM.getFilesList())
             : null;
         if (fileList != null && !fileList.isEmpty()) {
             campaign.addFilesList(fileList);

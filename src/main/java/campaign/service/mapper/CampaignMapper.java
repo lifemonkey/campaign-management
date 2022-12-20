@@ -16,14 +16,14 @@ public class CampaignMapper {
 
     private final TargetListMapper targetListMapper;
 
-    private final FilesMapper filesMapper;
+    private final FileMapper fileMapper;
 
     private final RuleMapper ruleMapper;
 
-    public CampaignMapper(UserMapper userMapper, TargetListMapper targetListMapper, FilesMapper filesMapper, RuleMapper ruleMapper) {
+    public CampaignMapper(UserMapper userMapper, TargetListMapper targetListMapper, FileMapper fileMapper, RuleMapper ruleMapper) {
         this.userMapper = userMapper;
         this.targetListMapper = targetListMapper;
-        this.filesMapper = filesMapper;
+        this.fileMapper = fileMapper;
         this.ruleMapper = ruleMapper;
     }
 
@@ -63,7 +63,7 @@ public class CampaignMapper {
                 campaign.addTargetLists(targetListMapper.targetListDTOToTargetLists(campaignDTO.getTargetLists()));
             }
             if (campaignDTO.getFilesList() != null) {
-                campaign.addFilesList(filesMapper.fileDTOToFiles(campaignDTO.getFilesList()));
+                campaign.addFilesList(fileMapper.fileDTOToFiles(campaignDTO.getFilesList()));
             }
             if (campaignDTO.getRuleList() != null) {
                 campaign.addRuleList(ruleMapper.ruleDTOToRules(campaignDTO.getRuleList()));

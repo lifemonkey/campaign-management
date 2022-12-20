@@ -5,7 +5,7 @@ import campaign.domain.File;
 import campaign.repository.CampaignRepository;
 import campaign.repository.FileRepository;
 import campaign.service.dto.FileDTO;
-import campaign.service.mapper.FilesMapper;
+import campaign.service.mapper.FileMapper;
 import campaign.web.rest.vm.FileVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,17 +26,17 @@ public class FileService {
 
     private final CampaignRepository campaignRepository;
 
-    private final FilesMapper filesMapper;
+    private final FileMapper fileMapper;
 
-    public FileService(FileRepository fileRepository, CampaignRepository campaignRepository, FilesMapper filesMapper) {
+    public FileService(FileRepository fileRepository, CampaignRepository campaignRepository, FileMapper fileMapper) {
         this.fileRepository = fileRepository;
         this.campaignRepository = campaignRepository;
-        this.filesMapper = filesMapper;
+        this.fileMapper = fileMapper;
     }
 
     @Transactional(readOnly = true)
     public FileDTO getFileById(Long id) {
-        return filesMapper.fileToFileDTO(fileRepository.findById(id).orElse(new File()));
+        return fileMapper.fileToFileDTO(fileRepository.findById(id).orElse(new File()));
     }
 
     @Transactional(readOnly = true)
@@ -46,11 +46,11 @@ public class FileService {
 
     @Transactional(rollbackFor = Exception.class)
     public FileDTO createFile(FileVM fileVM) {
-        File file = filesMapper.fileVMToFile(fileVM);
+        File file = fileMapper.fileVMToFile(fileVM);
 
         if (file != null) {
             fileRepository.save(file);
-            return filesMapper.fileToFileDTO(file);
+            return fileMapper.fileToFileDTO(file);
         }
 
         return new FileDTO();
@@ -58,11 +58,11 @@ public class FileService {
 
     @Transactional(rollbackFor = Exception.class)
     public FileDTO updateFile(Long id, FileVM fileVM) {
-        File file = filesMapper.fileVMToFile(fileVM);
+        File file = fileMapper.fileVMToFile(fileVM);
         file.setId(id);
 
         fileRepository.save(file);
-        return filesMapper.fileToFileDTO(file);
+        return fileMapper.fileToFileDTO(file);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -75,7 +75,7 @@ public class FileService {
             // link campaign to file
             file.setCampaign(campaignOpt.get());
             fileRepository.save(file);
-            return filesMapper.fileToFileDTO(file);
+            return fileMapper.fileToFileDTO(file);
         }
 
         return new FileDTO();

@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
-public class FilesMapper {
+public class FileMapper {
 
     public FileDTO fileToFileDTO(File file) {
         return new FileDTO(file);

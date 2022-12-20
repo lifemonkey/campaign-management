@@ -18,12 +18,12 @@ public class RuleMapper {
 
     private final TargetListMapper targetListMapper;
 
-    private final FilesMapper filesMapper;
+    private final FileMapper fileMapper;
 
-    public RuleMapper(UserMapper userMapper, TargetListMapper targetListMapper, FilesMapper filesMapper) {
+    public RuleMapper(UserMapper userMapper, TargetListMapper targetListMapper, FileMapper fileMapper) {
         this.userMapper = userMapper;
         this.targetListMapper = targetListMapper;
-        this.filesMapper = filesMapper;
+        this.fileMapper = fileMapper;
     }
 
     public RuleDTO ruleToRuleDTO(Rule rule) {
