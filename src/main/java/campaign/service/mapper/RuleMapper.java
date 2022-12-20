@@ -52,9 +52,6 @@ public class RuleMapper {
                     rule.setDurationValue(ruleDTO.getDurationValue());
                 }
             }
-            if (ruleDTO.getRewardCondition() != null) {
-                rule.setRewardCondition(ruleDTO.getRewardCondition());
-            }
 
             if (ruleDTO.getRuleConfiguration() != null) {
                 rule.setRuleConfiguration(new RuleConfiguration(ruleDTO.getRuleConfiguration()));
@@ -97,9 +94,9 @@ public class RuleMapper {
                 }
             }
 
-            if (ruleVM.getRewardCondition() != null) {
-                rule.setRewardCondition(ruleVM.getRewardCondition());
-            }
+//            if (ruleVM.getRewardCondition() != null) {
+//                rule.setRewardCondition(ruleVM.getRewardCondition());
+//            }
 
 //            if (ruleVM.getRuleConfiguration() != null) {
 //                rule.setRuleConfiguration(ruleVM.getRuleConfiguration());

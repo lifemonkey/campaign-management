@@ -49,7 +49,7 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
     @JoinColumn(name = "status_id", referencedColumnName = "id")
     private Status status;
 
-    @OneToOne()
+    @OneToOne
     @JoinColumn(name = "approved_rejected_by", referencedColumnName = "id")
     private User approvedRejectedBy;
 

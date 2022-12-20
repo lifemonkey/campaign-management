@@ -1,13 +1,10 @@
 package campaign.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
-import java.util.Arrays;
 
 @Entity
 @Table(name = "reward_condition")
@@ -37,11 +34,99 @@ public class RewardCondition extends AbstractAuditingEntity implements Serializa
     @Column(name = "number_codes")
     private Integer numberCodes;
 
-    @OneToOne
-    @JoinColumn(name = "rule_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "rule_id", referencedColumnName = "id")
     private Rule rule;
 
-    @OneToOne
-    @JoinColumn(name = "reward_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "reward_id", referencedColumnName = "id")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Reward reward;
+
+    public RewardCondition() {
+    }
+
+    public RewardCondition(Float amountMin, Float amountMax, Integer timesMin, Integer timesMax, Integer numberCodes) {
+        this.amountMin = amountMin;
+        this.amountMax = amountMax;
+        this.timesMin = timesMin;
+        this.timesMax = timesMax;
+        this.numberCodes = numberCodes;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Float getAmountMin() {
+        return amountMin;
+    }
+
+    public void setAmountMin(Float amountMin) {
+        this.amountMin = amountMin;
+    }
+
+    public Float getAmountMax() {
+        return amountMax;
+    }
+
+    public void setAmountMax(Float amountMax) {
+        this.amountMax = amountMax;
+    }
+
+    public Integer getTimesMin() {
+        return timesMin;
+    }
+
+    public void setTimesMin(Integer timesMin) {
+        this.timesMin = timesMin;
+    }
+
+    public Integer getTimesMax() {
+        return timesMax;
+    }
+
+    public void setTimesMax(Integer timesMax) {
+        this.timesMax = timesMax;
+    }
+
+    public Integer getNumberCodes() {
+        return numberCodes;
+    }
+
+    public void setNumberCodes(Integer numberCodes) {
+        this.numberCodes = numberCodes;
+    }
+
+    public Rule getRule() {
+        return rule;
+    }
+
+    public void setRule(Rule rule) {
+        this.rule = rule;
+    }
+
+    public Reward getReward() {
+        return reward;
+    }
+
+    public void setReward(Reward reward) {
+        this.reward = reward;
+    }
+
+    @Override
+    public String toString() {
+        return "RewardCondition{" +
+            "id=" + id +
+            ", amountMin=" + amountMin +
+            ", amountMax=" + amountMax +
+            ", timesMin=" + timesMin +
+            ", timesMax=" + timesMax +
+            ", numberCodes=" + numberCodes +
+            '}';
+    }
 }

@@ -5,6 +5,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "rules")
@@ -32,9 +34,6 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
     @Column(name = "duration_value")
     private String durationValue;
 
-    @Column(name = "reward_condition", length = 1)
-    private Integer rewardCondition;
-
     @OneToOne
     @JoinColumn(name = "rule_configuration_id", referencedColumnName = "id")
     private RuleConfiguration ruleConfiguration;
@@ -46,6 +45,9 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "campaign_id", referencedColumnName = "id")
     private Campaign campaign;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "rule")
+    private final List<RewardCondition> rewardConditions = new ArrayList<>();
 
     public Rule() {
     }
@@ -102,14 +104,6 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
         this.transactionType = transactionType;
     }
 
-    public Integer getRewardCondition() {
-        return rewardCondition;
-    }
-
-    public void setRewardCondition(Integer rewardCondition) {
-        this.rewardCondition = rewardCondition;
-    }
-
     public RuleConfiguration getRuleConfiguration() {
         return ruleConfiguration;
     }
@@ -126,6 +120,10 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
         this.campaign = campaign;
     }
 
+    public List<RewardCondition> getRewardConditions() {
+        return rewardConditions;
+    }
+
     @Override
     public String toString() {
         return "Rule{" +
@@ -135,7 +133,6 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
             ", durationType=" + durationType +
             ", durationValue='" + durationValue + '\'' +
             ", transactionType=" + transactionType +
-            ", rewardCondition=" + rewardCondition +
             ", ruleConfiguration=" + ruleConfiguration +
             '}';
     }

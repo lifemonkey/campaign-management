@@ -53,13 +53,12 @@ INSERT INTO target_list (id,name,description,target_type,created_by,created_date
 
 --
 -- Dumping data for table `accounts`
--- TODO: update additional fields description, phone, address, languageId, dob
 /*!40000 ALTER TABLE `accounts` DISABLE KEYS */;
-INSERT INTO accounts (id,external_id,first_name,last_name,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,'ext_id_1','Hung','Doan','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO accounts (id,external_id,first_name,last_name,created_by,created_date,last_modified_by,last_modified_date) VALUES (2,'ext_id_2','Nguyen','To','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO accounts (id,external_id,first_name,last_name,created_by,created_date,last_modified_by,last_modified_date) VALUES (3,'ext_id_3','Tai','Nguyen','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO accounts (id,external_id,first_name,last_name,created_by,created_date,last_modified_by,last_modified_date) VALUES (4,'ext_id_4','Thinh','Phan','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO accounts (id,external_id,first_name,last_name,created_by,created_date,last_modified_by,last_modified_date) VALUES (5,'ext_id_5','Khai','Kieu','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO accounts (id,external_id,first_name,last_name,description,phone_number,address,language_id,dob,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,'ext_id_1','Hung','Doan','Description 1','0918861239','55 Quach Giai',1,to_date('1991-03-09 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO accounts (id,external_id,first_name,last_name,description,phone_number,address,language_id,dob,created_by,created_date,last_modified_by,last_modified_date) VALUES (2,'ext_id_2','Nguyen','To','Description 2','0972313320','1 Bis Pham Ngoc Thach',1,to_date('1991-12-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO accounts (id,external_id,first_name,last_name,description,phone_number,address,language_id,dob,created_by,created_date,last_modified_by,last_modified_date) VALUES (3,'ext_id_3','Tai','Nguyen','Description 3','0278638283','259 Tran Hung Dao',1,to_date('1989-05-12 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO accounts (id,external_id,first_name,last_name,description,phone_number,address,language_id,dob,created_by,created_date,last_modified_by,last_modified_date) VALUES (4,'ext_id_4','Thinh','Phan','Description 4','0728384723','380/6 Duong Thi Muoi',2,to_date('1972-10-12 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO accounts (id,external_id,first_name,last_name,description,phone_number,address,language_id,dob,created_by,created_date,last_modified_by,last_modified_date) VALUES (5,'ext_id_5','Khai','Kieu','Description 5','0378273847','78 Duong So 8',2,to_date('1987-11-19 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
 /*!40000 ALTER TABLE `accounts` ENABLE KEYS */;
 
 --
@@ -168,10 +167,26 @@ INSERT INTO transaction_type (id,name,description,created_by,created_date,last_m
 -- Dumping data for table `rules`
 --
 /*!40000 ALTER TABLE `rules` DISABLE KEYS */;
-INSERT INTO rules (id,name,description,duration_type,duration_value,reward_condition,campaign_id,rule_configuration_id,transaction_type_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,'Rule 1','Rule 1 description','DURATION_INSTANT','',0,1,1,1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO rules (id,name,description,duration_type,duration_value,reward_condition,campaign_id,rule_configuration_id,transaction_type_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (2,'Rule 2','Rule 3 description','DURATION_INSTANT','',0,1,1,1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO rules (id,name,description,duration_type,duration_value,reward_condition,campaign_id,rule_configuration_id,transaction_type_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (3,'Rule 3','Rule 3 description','DURATION_INSTANT','',0,1,1,1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO rules (id,name,description,duration_type,duration_value,campaign_id,rule_configuration_id,transaction_type_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,'Rule 1','Rule 1 description','DURATION_INSTANT','',1,1,1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO rules (id,name,description,duration_type,duration_value,campaign_id,rule_configuration_id,transaction_type_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (2,'Rule 2','Rule 3 description','DURATION_INSTANT','',1,1,1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO rules (id,name,description,duration_type,duration_value,campaign_id,rule_configuration_id,transaction_type_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (3,'Rule 3','Rule 3 description','DURATION_INSTANT','',1,1,1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
 /*!40000 ALTER TABLE `rules` ENABLE KEYS */;
+
+--
+-- Dumping data for table `reward`
+--
+/*!40000 ALTER TABLE `reward` DISABLE KEYS */;
+INSERT INTO reward (id,name,description,prize_type,prize_value,number_of_prize,released,message_winner_en,message_winner_sw,message_balance_en,message_balance_sw,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,'Reward 1','Reward 1 description',1,1,1,1,'message_winner_en','message_winner_sw','message_balance_en','message_balance_sw','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+/*!40000 ALTER TABLE `reward` ENABLE KEYS */;
+
+--
+-- Dumping data for table `reward_condition`
+--
+/*!40000 ALTER TABLE `reward_condition` DISABLE KEYS */;
+INSERT INTO reward_condition (id,amount_min,amount_max,times_min,times_max,number_codes,rule_id,reward_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,1,2,1,2,10,1,1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+/*!40000 ALTER TABLE `reward_condition` ENABLE KEYS */;
+
+
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
