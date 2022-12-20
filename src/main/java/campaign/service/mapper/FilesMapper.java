@@ -1,7 +1,8 @@
 package campaign.service.mapper;
 
-import campaign.domain.Files;
-import campaign.service.dto.FilesDTO;
+import campaign.domain.File;
+import campaign.service.dto.FileDTO;
+import campaign.web.rest.vm.FileVM;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,41 +12,56 @@ import java.util.stream.Collectors;
 @Service
 public class FilesMapper {
 
-    public FilesDTO filesToFilesDTO(Files file) {
-        return new FilesDTO(file);
+    public FileDTO fileToFileDTO(File file) {
+        return new FileDTO(file);
     }
 
-    public List<FilesDTO> filesToFilesDTOs(List<Files> filesList) {
-        return filesList.stream()
+    public List<FileDTO> fileToFileDTOs(List<File> fileList) {
+        return fileList.stream()
             .filter(Objects::nonNull)
-            .map(this::filesToFilesDTO)
+            .map(this::fileToFileDTO)
             .collect(Collectors.toList());
     }
 
-    public Files filesDTOToFile(FilesDTO filesDTO) {
-        if (filesDTO == null) {
+    public File fileDTOToFiles(FileDTO fileDTO) {
+        if (fileDTO == null) {
             return null;
         } else {
-            Files file = new Files();
-            file.setId(filesDTO.getId());
-            file.setName(filesDTO.getName());
-            file.setDescription(filesDTO.getDescription());
-            file.setFileType(filesDTO.getFileType());
-            file.setImageUrl(filesDTO.getImageUrl());
-            file.setImageBlob(filesDTO.getImageBlob());
-            file.setCreatedBy(filesDTO.getCreatedBy());
-            file.setCreatedDate(filesDTO.getCreatedDate());
-            file.setLastModifiedBy(filesDTO.getLastModifiedBy());
-            file.setLastModifiedDate(filesDTO.getLastModifiedDate());
+            File file = new File();
+            file.setId(fileDTO.getId());
+            file.setName(fileDTO.getName());
+            file.setDescription(fileDTO.getDescription());
+            file.setFileType(fileDTO.getFileType());
+            file.setImageUrl(fileDTO.getImageUrl());
+            file.setImageBlob(fileDTO.getImageBlob());
+            file.setCreatedBy(fileDTO.getCreatedBy());
+            file.setCreatedDate(fileDTO.getCreatedDate());
+            file.setLastModifiedBy(fileDTO.getLastModifiedBy());
+            file.setLastModifiedDate(fileDTO.getLastModifiedDate());
 
             return file;
         }
     }
 
-    public List<Files> filesDTOToFiles(List<FilesDTO> filesDTOs) {
-        return filesDTOs.stream()
+    public List<File> fileDTOToFiles(List<FileDTO> fileDTOS) {
+        return fileDTOS.stream()
             .filter(Objects::nonNull)
-            .map(this::filesDTOToFile)
+            .map(this::fileDTOToFiles)
             .collect(Collectors.toList());
+    }
+
+    public File fileVMToFile(FileVM fileVM) {
+        if (fileVM == null) {
+            return null;
+        } else {
+            File file = new File();
+            file.setName(fileVM.getName());
+            file.setDescription(fileVM.getDescription());
+            file.setFileType(fileVM.getFileType());
+            file.setImageUrl(fileVM.getImageUrl());
+            file.setImageBlob(fileVM.getImageBlob());
+
+            return file;
+        }
     }
 }

@@ -60,7 +60,7 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
     private final List<TargetList> targetLists = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "campaign")
-    private final List<Files> filesList = new ArrayList<>();
+    private final List<File> fileList = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "campaign")
     private final List<Rule> ruleList = new ArrayList<>();
@@ -160,12 +160,12 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
         this.targetLists.addAll(targetLists);
     }
 
-    public List<Files> getFilesList() {
-        return filesList;
+    public List<File> getFilesList() {
+        return fileList;
     }
 
-    public void addFilesList(List<Files> filesList) {
-        this.filesList.addAll(filesList);
+    public void addFilesList(List<File> fileList) {
+        this.fileList.addAll(fileList);
     }
 
     public List<Rule> getRuleList() {

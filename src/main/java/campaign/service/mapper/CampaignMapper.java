@@ -1,7 +1,6 @@
 package campaign.service.mapper;
 
 import campaign.domain.Campaign;
-import campaign.domain.TargetList;
 import campaign.service.dto.CampaignDTO;
 import campaign.web.rest.vm.CampaignVM;
 import org.springframework.stereotype.Service;
@@ -64,7 +63,7 @@ public class CampaignMapper {
                 campaign.addTargetLists(targetListMapper.targetListDTOToTargetLists(campaignDTO.getTargetLists()));
             }
             if (campaignDTO.getFilesList() != null) {
-                campaign.addFilesList(filesMapper.filesDTOToFiles(campaignDTO.getFilesList()));
+                campaign.addFilesList(filesMapper.fileDTOToFiles(campaignDTO.getFilesList()));
             }
             if (campaignDTO.getRuleList() != null) {
                 campaign.addRuleList(ruleMapper.ruleDTOToRules(campaignDTO.getRuleList()));

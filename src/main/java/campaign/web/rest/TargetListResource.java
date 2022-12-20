@@ -93,8 +93,19 @@ public class TargetListResource {
     @PutMapping("/target-list/{id}")
     @Timed
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
-    public ResponseEntity<TargetListDTO> updateTargetList(@Validated @PathVariable Long id, @RequestBody TargetListVM targetListVM) {
-        return new ResponseEntity<> (targetListService.updateTargetList(id, targetListVM), new HttpHeaders(), HttpStatus.OK);
+    public ResponseEntity<Object> updateTargetList(@Validated @PathVariable Long id, @RequestBody TargetListVM targetListVM) {
+        TargetListDTO targetList = targetListService.getTargetListById(id);
+        if (targetList.getId() != null) {
+            return new ResponseEntity<>(targetListService.updateTargetList(id, targetListVM), new HttpHeaders(), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(
+            new ResponseVM(
+                ResponseCode.RESPONSE_NOT_FOUND,
+                ResponseCode.ERROR_CODE_TARGET_LIST_NOT_FOUND,
+                "TargetList ID:" + id + " not found!"),
+            new HttpHeaders(),
+            HttpStatus.NOT_FOUND);
     }
 
     /**

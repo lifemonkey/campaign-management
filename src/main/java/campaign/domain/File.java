@@ -12,7 +12,7 @@ import java.util.Arrays;
 @Entity
 @Table(name = "files")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Files extends AbstractAuditingEntity implements Serializable {
+public class File extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,7 +29,6 @@ public class Files extends AbstractAuditingEntity implements Serializable {
     @Column(name = "description", length = 4000)
     private String description;
 
-    @NotBlank
     @Column(name = "file_type", length = 1)
     private Integer fileType;
 
@@ -45,10 +44,10 @@ public class Files extends AbstractAuditingEntity implements Serializable {
     @JoinColumn(name = "campaign_id", referencedColumnName = "id")
     private Campaign campaign;
 
-    public Files() {
+    public File() {
     }
 
-    public Files(String name, String description, Integer fileType, String imageUrl, byte[] imageBlob) {
+    public File(String name, String description, Integer fileType, String imageUrl, byte[] imageBlob) {
         this.name = name;
         this.description = description;
         this.fileType = fileType;

@@ -1,5 +1,6 @@
 package campaign.web.rest;
 
+import campaign.domain.Campaign;
 import campaign.security.AuthoritiesConstants;
 import campaign.service.CampaignService;
 import campaign.service.dto.CampaignDTO;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -47,7 +49,7 @@ public class CampaignResource {
         if (search != null) {
             page = campaignService.searchCampaigns(pageable, search);
         } else {
-            page =campaignService.getAllCampaign(pageable);
+            page = campaignService.getAllCampaign(pageable);
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/campaigns");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
@@ -111,8 +113,19 @@ public class CampaignResource {
     @PutMapping("/campaign/{id}")
     @Timed
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
-    public ResponseEntity<CampaignDTO> updateCampaign(@Valid @PathVariable Long id, @RequestBody CampaignVM campaignVM) {
-        return new ResponseEntity<> (campaignService.updateCampaign(id, campaignVM), new HttpHeaders(), HttpStatus.OK);
+    public ResponseEntity<Object> updateCampaign(@Valid @PathVariable Long id, @RequestBody CampaignVM campaignVM) {
+        CampaignDTO campaign = campaignService.getCampaignById(id);
+        if (campaign.getId() != null) {
+            return new ResponseEntity<>(campaignService.updateCampaign(id, campaignVM), new HttpHeaders(), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(
+            new ResponseVM(
+                ResponseCode.RESPONSE_NOT_FOUND,
+                ResponseCode.ERROR_CODE_CAMPAIGN_NOT_FOUND,
+                "Campaign ID:" + id + " not found!"),
+            new HttpHeaders(),
+            HttpStatus.NOT_FOUND);
     }
 
     /**

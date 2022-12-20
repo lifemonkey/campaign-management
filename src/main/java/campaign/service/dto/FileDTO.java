@@ -1,12 +1,12 @@
 package campaign.service.dto;
 
-import campaign.domain.Files;
+import campaign.domain.File;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
-public class FilesDTO {
+public class FileDTO {
 
     private Long id;
 
@@ -15,7 +15,7 @@ public class FilesDTO {
 
     private String description;
 
-    private int fileType;
+    private Integer fileType;
 
     private String imageUrl;
 
@@ -23,22 +23,27 @@ public class FilesDTO {
 
     private String createdBy;
 
+    private Long campaignId;
+
     private LocalDateTime createdDate;
 
     private String lastModifiedBy;
 
     private LocalDateTime lastModifiedDate;
 
-    public FilesDTO() {
+    public FileDTO() {
     }
 
-    public FilesDTO(Files file) {
+    public FileDTO(File file) {
         this.id = file.getId();
         this.name = file.getName();
         this.description = file.getDescription();
         this.fileType = file.getFileType();
         this.imageUrl = file.getImageUrl();
         this.imageBlob = file.getImageBlob();
+        if (file.getCampaign() != null) {
+            this.campaignId = file.getCampaign().getId();
+        }
         this.createdBy = file.getCreatedBy();
         this.createdDate = file.getCreatedDate();
         this.lastModifiedBy = file.getLastModifiedBy();
@@ -69,11 +74,11 @@ public class FilesDTO {
         this.description = description;
     }
 
-    public int getFileType() {
+    public Integer getFileType() {
         return fileType;
     }
 
-    public void setFileType(int fileType) {
+    public void setFileType(Integer fileType) {
         this.fileType = fileType;
     }
 
@@ -91,6 +96,14 @@ public class FilesDTO {
 
     public void setImageBlob(byte[] imageBlob) {
         this.imageBlob = imageBlob;
+    }
+
+    public Long getCampaignId() {
+        return campaignId;
+    }
+
+    public void setCampaignId(Long campaignId) {
+        this.campaignId = campaignId;
     }
 
     public String getCreatedBy() {

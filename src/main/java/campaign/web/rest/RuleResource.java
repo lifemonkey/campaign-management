@@ -95,8 +95,19 @@ public class RuleResource {
     @PutMapping("/rule/{id}")
     @Timed
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
-    public ResponseEntity<RuleDTO> updateCampaign(@Valid @PathVariable Long id, @RequestBody RuleVM ruleVM) {
-        return new ResponseEntity<> (ruleService.updateRule(id, ruleVM), new HttpHeaders(), HttpStatus.OK);
+    public ResponseEntity<Object> updateCampaign(@Valid @PathVariable Long id, @RequestBody RuleVM ruleVM) {
+        RuleDTO rule = ruleService.getRuleById(id);
+        if (rule.getId() != null) {
+            return new ResponseEntity<>(ruleService.updateRule(id, ruleVM), new HttpHeaders(), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(
+            new ResponseVM(
+                ResponseCode.RESPONSE_NOT_FOUND,
+                ResponseCode.ERROR_CODE_RULE_NOT_FOUND,
+                "Rule ID:" + id + " not found!"),
+            new HttpHeaders(),
+            HttpStatus.NOT_FOUND);
     }
 
     /**

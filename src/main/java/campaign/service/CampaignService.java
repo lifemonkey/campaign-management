@@ -102,7 +102,7 @@ public class CampaignService {
             }
 
             // handle file list
-            List<Files> fileList = campaignVM.getFilesList() != null
+            List<File> fileList = campaignVM.getFilesList() != null
                 ? filesRepository.findAllById(campaignVM.getFilesList())
                 : null;
             if (fileList != null && !fileList.isEmpty()) {
@@ -167,7 +167,7 @@ public class CampaignService {
         }
 
         // handle file list
-        List<Files> fileList = campaignVM.getFilesList() != null
+        List<File> fileList = campaignVM.getFilesList() != null
             ? filesRepository.findAllById(campaignVM.getFilesList())
             : null;
         if (fileList != null && !fileList.isEmpty()) {

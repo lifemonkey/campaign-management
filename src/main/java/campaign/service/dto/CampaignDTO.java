@@ -34,7 +34,7 @@ public class CampaignDTO {
 
     private List<TargetListDTO> targetLists;
 
-    private List<FilesDTO> filesList;
+    private List<FileDTO> filesList;
 
     private List<RuleDTO> ruleList;
 
@@ -72,7 +72,7 @@ public class CampaignDTO {
             this.targetLists.addAll(campaign.getTargetLists().stream().map(TargetListDTO::new).collect(Collectors.toList()));
         }
         if (campaign.getFilesList() != null) {
-            this.filesList = campaign.getFilesList().stream().map(FilesDTO::new).collect(Collectors.toList());
+            this.filesList = campaign.getFilesList().stream().map(FileDTO::new).collect(Collectors.toList());
         }
 
         if (campaign.getRuleList() != null) {
@@ -165,11 +165,11 @@ public class CampaignDTO {
         this.targetLists.addAll(targetLists);
     }
 
-    public List<FilesDTO> getFilesList() {
+    public List<FileDTO> getFilesList() {
         return filesList;
     }
 
-    public void addFilesList(List<FilesDTO> filesList) {
+    public void addFilesList(List<FileDTO> filesList) {
         this.filesList.addAll(filesList);
     }
 
