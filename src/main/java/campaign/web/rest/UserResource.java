@@ -36,6 +36,17 @@ public class UserResource {
     /**
      * GET /users : get all users.
      *
+     * @return the ResponseEntity with status 200 (OK) and with body all users
+     */
+    @GetMapping("/users")
+    @Timed
+    public ResponseEntity<Object> count() {
+        return new ResponseEntity<>(userService.count(), new HttpHeaders(), HttpStatus.OK);
+    }
+
+    /**
+     * GET /users : get all users.
+     *
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and with body all users
      */

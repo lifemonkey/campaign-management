@@ -38,6 +38,18 @@ public class CampaignResource {
     /**
      * GET /campaigns : get all campaigns
      *
+     * @RequestParam searchValue for campaign search by name
+     * @return the ResponseEntity with status 200 (OK) and with body all users
+     */
+    @GetMapping("/campaigns/count")
+    @Timed
+    public ResponseEntity<Object> getTotalRecord() {
+        return new ResponseEntity<Object>(campaignService.countRecords() , new HttpHeaders(), HttpStatus.OK);
+    }
+
+    /**
+     * GET /campaigns : get all campaigns
+     *
      * @param pageable the pagination information
      * @RequestParam searchValue for campaign search by name
      * @return the ResponseEntity with status 200 (OK) and with body all users

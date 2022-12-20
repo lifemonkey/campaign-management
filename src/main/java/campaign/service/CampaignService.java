@@ -66,6 +66,11 @@ public class CampaignService {
     }
 
     @Transactional(readOnly = true)
+    public Long countRecords() {
+        return campaignRepository.count();
+    }
+
+    @Transactional(readOnly = true)
     public Page<CampaignDTO> getAllCampaign(Pageable pageable) {
         return campaignRepository.findAll(pageable).map(CampaignDTO::new);
     }

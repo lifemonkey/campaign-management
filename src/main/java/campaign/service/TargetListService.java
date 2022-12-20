@@ -39,6 +39,11 @@ public class TargetListService {
     }
 
     @Transactional(readOnly = true)
+    public Long count() {
+        return targetListRepository.count();
+    }
+
+    @Transactional(readOnly = true)
     public Page<TargetListDTO> getAllTargetList(Pageable pageable) {
         return targetListRepository.findAll(pageable).map(TargetListDTO::new);
     }

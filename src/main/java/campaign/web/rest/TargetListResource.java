@@ -37,6 +37,17 @@ public class TargetListResource {
     /**
      * GET /target-list : get all target list.
      *
+     * @return the ResponseEntity with status 200 (OK) and with body all users
+     */
+    @GetMapping("/target-list/count")
+    @Timed
+    public ResponseEntity<Object> count() {
+        return new ResponseEntity<>(targetListService.count(), new HttpHeaders(), HttpStatus.OK);
+    }
+
+    /**
+     * GET /target-list : get all target list.
+     *
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and with body all users
      */
