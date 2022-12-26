@@ -16,6 +16,16 @@ public class AccountDTO {
 
     private String lastName;
 
+    private String description;
+
+    private String phoneNumber;
+
+    private String address;
+
+    private Integer languageId;
+
+    private LocalDateTime dob;
+
     private String createdBy;
 
     private LocalDateTime createdDate;
@@ -32,6 +42,11 @@ public class AccountDTO {
         this.externalId = account.getExternalId();
         this.firstName = account.getFirstname();
         this.lastName = account.getLastname();
+        this.description = account.getDescription();
+        this.phoneNumber = account.getPhoneNumber();
+        this.address = account.getAddress();
+        this.languageId = account.getLanguageId();
+        this.dob = account.getDob();
         this.createdBy = account.getCreatedBy();
         this.createdDate = account.getCreatedDate();
         this.lastModifiedBy = account.getLastModifiedBy();
@@ -68,6 +83,46 @@ public class AccountDTO {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Integer getLanguageId() {
+        return languageId;
+    }
+
+    public void setLanguageId(Integer languageId) {
+        this.languageId = languageId;
+    }
+
+    public LocalDateTime getDob() {
+        return dob;
+    }
+
+    public void setDob(LocalDateTime dob) {
+        this.dob = dob;
     }
 
     public String getCreatedBy() {
@@ -109,6 +164,11 @@ public class AccountDTO {
             ", externalId='" + externalId + '\'' +
             ", firstName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +
+            ", description='" + description + '\'' +
+            ", phoneNumber='" + phoneNumber + '\'' +
+            ", address='" + address + '\'' +
+            ", languageId=" + languageId +
+            ", dob=" + dob +
             ", createdBy='" + createdBy + '\'' +
             ", createdDate=" + createdDate +
             ", lastModifiedBy='" + lastModifiedBy + '\'' +

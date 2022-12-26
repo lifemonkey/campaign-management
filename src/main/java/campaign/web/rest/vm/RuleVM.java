@@ -18,8 +18,6 @@ public class RuleVM {
 
     private String durationValue;
 
-    private Integer rewardCondition;
-
     private Long transactionType;
 
     private Long ruleConfiguration;
@@ -56,14 +54,6 @@ public class RuleVM {
         this.durationValue = durationValue;
     }
 
-    public Integer getRewardCondition() {
-        return rewardCondition;
-    }
-
-    public void setRewardCondition(Integer rewardCondition) {
-        this.rewardCondition = rewardCondition;
-    }
-
     public Long getTransactionType() {
         return transactionType;
     }
@@ -87,7 +77,6 @@ public class RuleVM {
             ", description='" + description + '\'' +
             ", durationType=" + durationType +
             ", durationValue='" + durationValue + '\'' +
-            ", rewardCondition=" + rewardCondition +
             ", transactionType='" + transactionType + '\'' +
             ", ruleConfiguration='" + ruleConfiguration + '\'' +
             '}';

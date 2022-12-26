@@ -19,8 +19,6 @@ public class RuleDTO {
 
     private String durationValue;
 
-    private Integer rewardCondition;
-
     private String transactionType;
 
     private String ruleConfiguration;
@@ -42,7 +40,6 @@ public class RuleDTO {
         this.description = rule.getDescription();
         this.durationType = rule.getDurationType();
         this.durationValue = rule.getDurationValue();
-        this.rewardCondition = rule.getRewardCondition();
         this.ruleConfiguration = rule.getRuleConfiguration().getName();
         this.transactionType = rule.getTransactionType().getName();
         this.createdBy = rule.getCreatedBy();
@@ -90,14 +87,6 @@ public class RuleDTO {
 
     public void setDurationValue(String durationValue) {
         this.durationValue = durationValue;
-    }
-
-    public Integer getRewardCondition() {
-        return rewardCondition;
-    }
-
-    public void setRewardCondition(Integer rewardCondition) {
-        this.rewardCondition = rewardCondition;
     }
 
     public String getTransactionType() {
@@ -156,7 +145,6 @@ public class RuleDTO {
             ", description='" + description + '\'' +
             ", durationType=" + durationType +
             ", durationValue='" + durationValue + '\'' +
-            ", rewardCondition=" + rewardCondition +
             ", transactionType='" + transactionType + '\'' +
             ", ruleConfiguration='" + ruleConfiguration + '\'' +
             ", createdBy='" + createdBy + '\'' +
