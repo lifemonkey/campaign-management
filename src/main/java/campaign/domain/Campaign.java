@@ -42,6 +42,9 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
     @Column(name = "campaign_type", length = 1)
     private Integer campaignType;
 
+    @Column(name = "action_reason", length = 400)
+    private String actionReason;
+
     @Column(name = "notes", length = 4000)
     private String notes;
 
@@ -69,7 +72,7 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
         this.name = "Default Campaign";
     }
 
-    public Campaign(String name, String description, LocalDateTime fromDate, LocalDateTime endDate, Integer campaignType, String notes, Status status, User approvedRejectedBy) {
+    public Campaign(String name, String description, LocalDateTime fromDate, LocalDateTime endDate, Integer campaignType, String notes, Status status, String actionReason, User approvedRejectedBy) {
         this.name = name;
         this.description = description;
         this.fromDate = fromDate;
@@ -136,6 +139,14 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
         this.notes = notes;
     }
 
+    public String getActionReason() {
+        return actionReason;
+    }
+
+    public void setActionReason(String actionReason) {
+        this.actionReason = actionReason;
+    }
+
     public Status getStatus() {
         return status;
     }
@@ -182,9 +193,10 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
             "id=" + id +
             ", name='" + name + '\'' +
             ", description='" + description + '\'' +
-            ", fromDate=" + fromDate + '\'' +
-            ", endDate=" + endDate + '\'' +
-            ", campaignType=" + campaignType + '\'' +
+            ", fromDate=" + fromDate +
+            ", endDate=" + endDate +
+            ", campaignType=" + campaignType +
+            ", actionReason='" + actionReason + '\'' +
             ", notes='" + notes + '\'' +
             '}';
     }

@@ -23,6 +23,8 @@ public class CampaignVM {
     @Size(max = 4000)
     private String notes;
 
+    private String actionReason;
+
     private Long statusId;
 
     private Long approvedRejectedBy;
@@ -81,6 +83,14 @@ public class CampaignVM {
         this.notes = notes;
     }
 
+    public String getActionReason() {
+        return actionReason;
+    }
+
+    public void setActionReason(String actionReason) {
+        this.actionReason = actionReason;
+    }
+
     public Long getStatusId() {
         return statusId;
     }
@@ -129,6 +139,7 @@ public class CampaignVM {
             ", fromDate=" + fromDate +
             ", endDate=" + endDate +
             ", campaignType=" + campaignType +
+            ", actionReason='" + actionReason + '\'' +
             ", notes='" + notes + '\'' +
             ", statusId=" + statusId +
             ", approvedRejectedBy=" + approvedRejectedBy +

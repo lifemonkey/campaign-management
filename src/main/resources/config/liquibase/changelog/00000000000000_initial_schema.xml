@@ -139,6 +139,7 @@
             <column name="end_date" type="timestamp"/>
             <column name="campaign_type" type="int"/>
             <column name="notes" type="varchar(4000)"/>
+            <column name="action_reason" type="varchar(400)"/>
             <!-- constraints -->
             <column name="status_id" type="bigint"/>
             <column name="approved_rejected_by" type="bigint"/>

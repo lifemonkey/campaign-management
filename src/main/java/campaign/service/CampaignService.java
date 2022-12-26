@@ -1,5 +1,6 @@
 package campaign.service;
 
+import campaign.config.Constants;
 import campaign.domain.*;
 import campaign.repository.*;
 import campaign.service.dto.CampaignDTO;
@@ -63,11 +64,6 @@ public class CampaignService {
     @Transactional(readOnly = true)
     public Page<CampaignDTO> searchCampaigns(Pageable pageable, String search) {
         return campaignRepository.findAllByNameContaining(search, pageable).map(CampaignDTO::new);
-    }
-
-    @Transactional(readOnly = true)
-    public Long countRecords() {
-        return campaignRepository.count();
     }
 
     @Transactional(readOnly = true)
@@ -155,6 +151,7 @@ public class CampaignService {
         if (statusOpt.isPresent()) {
             campaign.setStatus(statusOpt.get());
         }
+
         // handle target list
         List<TargetList> targetLists = campaignVM.getTargetLists() != null
             ? targetListRepository.findAllById(campaignVM.getTargetLists())
@@ -186,5 +183,19 @@ public class CampaignService {
     @Transactional(rollbackFor = Exception.class)
     public void deleteCampaign(Long id) {
         campaignRepository.deleteById(id);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public CampaignDTO approveOrRejectCampaign(Long id, boolean isApprove) {
+        Optional<Campaign> campaignOpt = campaignRepository.findById(id);
+        if (campaignOpt.isPresent()) {
+            Optional<Status> statusOpt = statusRepository.findByName(
+                isApprove ? Constants.APPROVED_STATUS : Constants.REJECTED_STATUS);
+            Campaign campaign = campaignOpt.get();
+            campaign.setStatus(statusOpt.orElse(null));
+            return campaignMapper.campaignToCampaignDTO(campaignRepository.save(campaign));
+        }
+
+        return new CampaignDTO();
     }
 }

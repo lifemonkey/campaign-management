@@ -28,6 +28,8 @@ public class CampaignDTO {
     @Size(min = 1, max = 4000)
     private String notes;
 
+    private String actionReason;
+
     private String status;
 
     private UserDTO approvedRejectedBy;
@@ -61,6 +63,7 @@ public class CampaignDTO {
         }
         this.campaignType = campaign.getCampaignType();
         this.notes = campaign.getNotes();
+        this.actionReason = campaign.getActionReason();
         if (campaign.getStatus() != null) {
             this.status = campaign.getStatus().getName();
         }
@@ -139,6 +142,14 @@ public class CampaignDTO {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public String getActionReason() {
+        return actionReason;
+    }
+
+    public void setActionReason(String actionReason) {
+        this.actionReason = actionReason;
     }
 
     public String getStatus() {

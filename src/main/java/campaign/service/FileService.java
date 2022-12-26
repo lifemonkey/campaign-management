@@ -35,11 +35,6 @@ public class FileService {
     }
 
     @Transactional(readOnly = true)
-    public Long count() {
-        return fileRepository.count();
-    }
-
-    @Transactional(readOnly = true)
     public FileDTO getFileById(Long id) {
         return fileMapper.fileToFileDTO(fileRepository.findById(id).orElse(new File()));
     }

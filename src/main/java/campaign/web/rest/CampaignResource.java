@@ -38,18 +38,6 @@ public class CampaignResource {
     /**
      * GET /campaigns : get all campaigns
      *
-     * @RequestParam searchValue for campaign search by name
-     * @return the ResponseEntity with status 200 (OK) and with body all users
-     */
-    @GetMapping("/campaigns/count")
-    @Timed
-    public ResponseEntity<Object> getTotalRecord() {
-        return new ResponseEntity<Object>(campaignService.countRecords() , new HttpHeaders(), HttpStatus.OK);
-    }
-
-    /**
-     * GET /campaigns : get all campaigns
-     *
      * @param pageable the pagination information
      * @RequestParam searchValue for campaign search by name
      * @return the ResponseEntity with status 200 (OK) and with body all users
@@ -152,5 +140,31 @@ public class CampaignResource {
     public ResponseEntity<String> deleteCampaign(@Valid @PathVariable Long id) {
         campaignService.deleteCampaign(id);
         return new ResponseEntity<> ("Delete successfully", new HttpHeaders(), HttpStatus.OK);
+    }
+
+    /**
+     * Approve /campaign : approve campaign by id
+     *
+     * @PathVariable id of campaign
+     * @return the ResponseEntity with status 200 (OK) and with body all users
+     */
+    @PutMapping("/campaign/{id}/approve")
+    @Timed
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "')")
+    public ResponseEntity<Object> approveCampaign(@Valid @PathVariable Long id) {
+        return new ResponseEntity<> (campaignService.approveOrRejectCampaign(id, true), new HttpHeaders(), HttpStatus.OK);
+    }
+
+    /**
+     * Reject /campaign : approve campaign by id
+     *
+     * @PathVariable id of campaign
+     * @return the ResponseEntity with status 200 (OK) and with body all users
+     */
+    @PutMapping("/campaign/{id}/reject")
+    @Timed
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "')")
+    public ResponseEntity<Object> rejectCampaign(@Valid @PathVariable Long id) {
+        return new ResponseEntity<> (campaignService.approveOrRejectCampaign(id, false), new HttpHeaders(), HttpStatus.OK);
     }
 }

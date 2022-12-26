@@ -67,11 +67,6 @@ public class UserService {
     }*/
 
     @Transactional(readOnly = true)
-    public Long count() {
-        return userRepository.count();
-    }
-
-    @Transactional(readOnly = true)
     public Page<UserDTO> getAllUsers(Pageable pageable) {
         return userRepository.findAll(pageable).map(UserDTO::new);
     }
