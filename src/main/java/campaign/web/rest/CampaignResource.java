@@ -5,6 +5,7 @@ import campaign.security.AuthoritiesConstants;
 import campaign.service.CampaignService;
 import campaign.service.dto.CampaignDTO;
 import campaign.web.rest.util.PaginationUtil;
+import campaign.web.rest.vm.ActionCampaignVM;
 import campaign.web.rest.vm.CampaignVM;
 import campaign.web.rest.vm.ResponseCode;
 import campaign.web.rest.vm.ResponseVM;
@@ -170,16 +171,33 @@ public class CampaignResource {
     }
 
     /**
-     * Action /campaign : action on/off/pause campaign
+     * Toggle-ON /campaign : action on campaign
      *
      * @PathVariable id of campaign
      * @return the ResponseEntity with status 200 (OK) and with body all users
      */
-    @PutMapping("/campaign/{id}/action")
+    @PostMapping("/campaign/{id}/toggle-on")
     @Timed
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
-    public ResponseEntity<String> actionCampaign(@Valid @PathVariable Long id) {
-        return new ResponseEntity<> (campaignService.actionCampaign(id), new HttpHeaders(), HttpStatus.OK);
+    public ResponseEntity<String> toggleOnCampaign(@Valid @PathVariable Long id) {
+        return new ResponseEntity<> (campaignService.toggleOnCampaign(id), new HttpHeaders(), HttpStatus.OK);
+    }
+
+    /**
+     * Toggle-OFF /campaign : action off/pause campaign
+     *
+     * @PathVariable id of campaign
+     * @RequestBody ActionCampaignVM
+     *      - id: optional
+     *      - action: possible values are PAUSED, CANCEL, default is PAUSE
+     *      - reason: action reason
+     * @return the ResponseEntity with status 200 (OK) and with body all users
+     */
+    @PostMapping("/campaign/{id}/toggle-on")
+    @Timed
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    public ResponseEntity<String> toggleOffCampaign(@Valid @PathVariable Long id, @RequestBody ActionCampaignVM actionCampaignVM) {
+        return new ResponseEntity<> (campaignService.toggleOffCampaign(id, actionCampaignVM), new HttpHeaders(), HttpStatus.OK);
     }
 
     /**

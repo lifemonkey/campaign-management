@@ -5,6 +5,7 @@ import campaign.domain.*;
 import campaign.repository.*;
 import campaign.service.dto.CampaignDTO;
 import campaign.service.mapper.CampaignMapper;
+import campaign.web.rest.vm.ActionCampaignVM;
 import campaign.web.rest.vm.CampaignVM;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -203,7 +204,8 @@ public class CampaignService {
     }
 
     /**
-     * Action on/off/pause campaign
+     * Action on/off/pause campaign: Toggle ON
+     *
      *  1. Status=Initialization: toDate > currentDate
      *      - True: change status=Running AND update fromDate=currentDate
      *      - False: return error
@@ -213,11 +215,12 @@ public class CampaignService {
      *      - True: change status=Running AND update fromDate=currentDate
      *      - False: show error
      *  4. Status is other value show error
+     *
      * @param id
-     * @return
+     * @return String
      */
     @Transactional(rollbackFor = Exception.class)
-    public String actionCampaign(Long id) {
+    public String toggleOnCampaign(Long id) {
         Optional<Campaign> campaignOpt = campaignRepository.findById(id);
         if (campaignOpt.isPresent()) {
             Campaign campaign = campaignOpt.get();
@@ -244,6 +247,33 @@ public class CampaignService {
             } else {
                 return "Could not run this campaign!";
             }
+        }
+
+        return "Not found campaign by the given ID=" + id;
+    }
+
+    /**
+     * Action on/off/pause campaign: Toggle OFF on campaign with status is Running
+     *      - Pause campaign: change status to Paused
+     *      - Off campaign: change status to Cancelled
+     *
+     * @param id
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public String toggleOffCampaign(Long id, ActionCampaignVM actionCampaignVM) {
+        Optional<Campaign> campaignOpt = campaignRepository.findById(id);
+        if (campaignOpt.isPresent()) {
+            Campaign campaign = campaignOpt.get();
+            // get status of campaign to be updated
+            String status = actionCampaignVM.getAction() == Constants.CANCEL_CAMPAIGN
+                ? Constants.CANCELLED_STATUS
+                : Constants.PAUSE_STATUS;
+            Optional<Status> statusOpt = statusRepository.findByName(status);
+            // update value for campaign
+            campaign.setStatus(statusOpt.orElse(null));
+            campaign.setActionReason(actionCampaignVM.getActionReason());
+            return "The campaign " + campaign.getName() + "'s status updated to " + status;
         }
 
         return "Not found campaign by the given ID=" + id;

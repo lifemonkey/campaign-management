@@ -23,4 +23,7 @@ public final class Constants {
     public static final String CANCELLED_STATUS = "Cancelled";
     public static final String COMPLETED_STATUS = "Completed";
 
+    public static final String PAUSE_CAMPAIGN = "PAUSE";
+    public static final String CANCEL_CAMPAIGN = "CANCEL";
+
 }
