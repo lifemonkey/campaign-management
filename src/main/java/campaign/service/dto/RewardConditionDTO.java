@@ -1,7 +1,6 @@
 package campaign.service.dto;
 
 import campaign.domain.RewardCondition;
-import campaign.domain.Rule;
 
 import java.time.LocalDateTime;
 
@@ -21,7 +20,7 @@ public class RewardConditionDTO {
 
     private Long ruleId;
 
-    private RewardDTO rewardDTO;
+    private Long rewardId;
 
     private String createdBy;
 
@@ -47,7 +46,7 @@ public class RewardConditionDTO {
             this.ruleId = rewardCondition.getRule().getId();
         }
         if (rewardCondition.getReward() != null) {
-            this.rewardDTO = new RewardDTO(rewardCondition.getReward());
+            this.rewardId = rewardCondition.getReward().getId();
         }
 
         this.createdBy = rewardCondition.getCreatedBy();
@@ -112,12 +111,12 @@ public class RewardConditionDTO {
         this.ruleId = ruleId;
     }
 
-    public RewardDTO getRewardDTO() {
-        return rewardDTO;
+    public Long getRewardId() {
+        return rewardId;
     }
 
-    public void setRewardDTO(RewardDTO rewardDTO) {
-        this.rewardDTO = rewardDTO;
+    public void setRewardId(Long rewardId) {
+        this.rewardId = rewardId;
     }
 
     public String getCreatedBy() {

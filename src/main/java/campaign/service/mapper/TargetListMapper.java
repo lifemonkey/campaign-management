@@ -38,11 +38,6 @@ public class TargetListMapper {
             targetList.setName(targetListDTO.getName());
             targetList.setDescription(targetListDTO.getDescription());
             targetList.setTargetType(targetListDTO.getTargetType());
-
-            if (targetListDTO.getAccountList() != null) {
-                targetList.addAccountList(accountMapper.accountDTOToAccounts(targetListDTO.getAccountList()));
-            }
-
             targetList.setCreatedBy(targetListDTO.getCreatedBy());
             targetList.setCreatedDate(targetListDTO.getCreatedDate());
             targetList.setLastModifiedBy(targetListDTO.getLastModifiedBy());

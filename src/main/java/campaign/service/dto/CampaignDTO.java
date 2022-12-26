@@ -32,13 +32,13 @@ public class CampaignDTO {
 
     private String status;
 
-    private UserDTO approvedRejectedBy;
+    private Long approvedRejectedBy;
 
-    private List<TargetListDTO> targetLists;
+    private List<Long> targetListIds = new ArrayList<>();;
 
-    private List<FileDTO> filesList;
+    private List<Long> fileIds = new ArrayList<>();;
 
-    private List<RuleDTO> ruleList;
+    private List<Long> ruleIds = new ArrayList<>();;
 
     private String createdBy;
 
@@ -68,18 +68,16 @@ public class CampaignDTO {
             this.status = campaign.getStatus().getName();
         }
         if (campaign.getApprovedRejectedBy() != null) {
-            this.approvedRejectedBy = new UserDTO(campaign.getApprovedRejectedBy());
+            this.approvedRejectedBy = campaign.getApprovedRejectedBy().getId();
         }
-        this.targetLists = new ArrayList<>();
         if (campaign.getTargetLists() != null) {
-            this.targetLists.addAll(campaign.getTargetLists().stream().map(TargetListDTO::new).collect(Collectors.toList()));
+            this.targetListIds.addAll(campaign.getTargetLists().stream().map(TargetList::getId).collect(Collectors.toList()));
         }
         if (campaign.getFilesList() != null) {
-            this.filesList = campaign.getFilesList().stream().map(FileDTO::new).collect(Collectors.toList());
+            this.fileIds.addAll(campaign.getFilesList().stream().map(File::getId).collect(Collectors.toList()));
         }
-
         if (campaign.getRuleList() != null) {
-            this.ruleList = campaign.getRuleList().stream().map(RuleDTO::new).collect(Collectors.toList());
+            this.ruleIds.addAll(campaign.getRuleList().stream().map(Rule::getId).collect(Collectors.toList()));
         }
 
         this.createdBy = campaign.getCreatedBy();
@@ -160,36 +158,36 @@ public class CampaignDTO {
         this.status = status;
     }
 
-    public UserDTO getApprovedRejectedBy() {
+    public Long getApprovedRejectedBy() {
         return approvedRejectedBy;
     }
 
-    public void setApprovedRejectedBy(UserDTO approvedRejectedBy) {
+    public void setApprovedRejectedBy(Long approvedRejectedBy) {
         this.approvedRejectedBy = approvedRejectedBy;
     }
 
-    public List<TargetListDTO> getTargetLists() {
-        return targetLists;
+    public List<Long> getTargetListIds() {
+        return targetListIds;
     }
 
-    public void addTargetLists(List<TargetListDTO> targetLists) {
-        this.targetLists.addAll(targetLists);
+    public void addTargetListIds(List<Long> targetListIds) {
+        this.targetListIds = targetListIds;
     }
 
-    public List<FileDTO> getFilesList() {
-        return filesList;
+    public List<Long> getFileIds() {
+        return fileIds;
     }
 
-    public void addFilesList(List<FileDTO> filesList) {
-        this.filesList.addAll(filesList);
+    public void addFileIds(List<Long> fileIds) {
+        this.fileIds = fileIds;
     }
 
-    public List<RuleDTO> getRuleList() {
-        return ruleList;
+    public List<Long> getRuleIds() {
+        return ruleIds;
     }
 
-    public void addRuleList(List<RuleDTO> ruleList) {
-        this.ruleList.addAll(ruleList);
+    public void addRuleIds(List<Long> ruleIds) {
+        this.ruleIds = ruleIds;
     }
 
     public String getCreatedBy() {

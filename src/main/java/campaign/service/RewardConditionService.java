@@ -70,6 +70,7 @@ public class RewardConditionService {
             if (rewardOpt.isPresent()) {
                 rewardCondition.setReward(rewardOpt.get());
             }
+
             return rewardConditionMapper.rewardConditionToRewardConditionDTO(rewardConditionRepository.save(rewardCondition));
         }
 

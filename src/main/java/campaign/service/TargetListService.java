@@ -60,8 +60,8 @@ public class TargetListService {
             targetListRepository.save(targetList);
 
             // find related accounts
-            List<Account> accountList = targetListVM.getAccountList() != null
-                ? accountRepository.findByIdIn(targetListVM.getAccountList())
+            List<Account> accountList = targetListVM.getAccountIds() != null
+                ? accountRepository.findByIdIn(targetListVM.getAccountIds())
                 : null;
 
             if (accountList != null) {

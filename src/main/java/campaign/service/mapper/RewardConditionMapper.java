@@ -40,14 +40,6 @@ public class RewardConditionMapper {
             rewardCondition.setTimesMin(rewardConditionDTO.getTimesMin());
             rewardCondition.setTimesMax(rewardConditionDTO.getTimesMax());
             rewardCondition.setNumberCodes(rewardConditionDTO.getNumberCodes());
-
-//            if (rewardConditionDTO.getRuleId() != null) {
-//                rewardCondition.setRule(rewardConditionDTO.getRuleId());
-//            }
-            if (rewardConditionDTO.getRewardDTO() != null) {
-                rewardCondition.setReward(rewardMapper.rewardDTOToReward(rewardConditionDTO.getRewardDTO()));
-            }
-
             rewardCondition.setCreatedBy(rewardConditionDTO.getCreatedBy());
             rewardCondition.setCreatedDate(rewardConditionDTO.getCreatedDate());
             rewardCondition.setLastModifiedBy(rewardConditionDTO.getLastModifiedBy());
@@ -57,7 +49,7 @@ public class RewardConditionMapper {
         }
     }
 
-    public List<RewardCondition> ruleDTOToRules(List<RewardConditionDTO> rewardConditionDTOS) {
+    public List<RewardCondition> rewardConditionDTOToRewardConditions(List<RewardConditionDTO> rewardConditionDTOS) {
         return rewardConditionDTOS.stream()
             .filter(Objects::nonNull)
             .map(this::rewardConditionDTOToRewardCondition)
@@ -75,13 +67,6 @@ public class RewardConditionMapper {
             rewardCondition.setTimesMin(rewardConditionVM.getTimesMin());
             rewardCondition.setTimesMax(rewardConditionVM.getTimesMax());
             rewardCondition.setNumberCodes(rewardConditionVM.getNumberCodes());
-
-//            if (rewardConditionDTO.getRuleId() != null) {
-//                rewardCondition.setRule(rewardConditionDTO.getRuleId());
-//            }
-//            if (rewardConditionVM.getRewardDTO() != null) {
-//                rewardCondition.setReward(rewardMapper.rewardDTOToReward(rewardConditionVM.getRewardDTO()));
-//            }
 
             return rewardCondition;
         }

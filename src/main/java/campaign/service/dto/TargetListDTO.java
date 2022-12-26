@@ -1,5 +1,6 @@
 package campaign.service.dto;
 
+import campaign.domain.Account;
 import campaign.domain.TargetList;
 
 import javax.validation.constraints.NotBlank;
@@ -21,7 +22,7 @@ public class TargetListDTO {
 
     private Integer targetType;
 
-    private List<AccountDTO> accountList;
+    private List<Long> accountIds;
 
     private String createdBy;
 
@@ -39,10 +40,10 @@ public class TargetListDTO {
         this.name = targetList.getName();
         this.description = targetList.getDescription();
         this.targetType = targetList.getTargetType();
-        this.accountList = new ArrayList<>();
+        this.accountIds = new ArrayList<>();
 
         if(targetList.getAccountList() != null && !targetList.getAccountList().isEmpty()) {
-            this.accountList.addAll(targetList.getAccountList().stream().map(AccountDTO::new).collect(Collectors.toList()));
+            this.accountIds.addAll(targetList.getAccountList().stream().map(Account::getId).collect(Collectors.toList()));
         }
 
         this.createdBy = targetList.getCreatedBy();
@@ -83,12 +84,12 @@ public class TargetListDTO {
         this.targetType = targetType;
     }
 
-    public List<AccountDTO> getAccountList() {
-        return accountList;
+    public List<Long> getAccountIds() {
+        return accountIds;
     }
 
-    public void addAccountList(List<AccountDTO> accountList) {
-        this.accountList.addAll(accountList);
+    public void addAccountIds(List<Long> accountIds) {
+        this.accountIds.addAll(accountIds);
     }
 
     public String getCreatedBy() {
@@ -130,10 +131,7 @@ public class TargetListDTO {
             ", name='" + name + '\'' +
             ", description='" + description + '\'' +
             ", targetType=" + targetType +
-            ", accountList=" + accountList.stream()
-                .map(n -> String.valueOf(n))
-                .collect(Collectors.joining("-", "{", "}")) +
-            '}' +
+            ", accountIds='" + accountIds + '\'' +
             ", createdBy='" + createdBy + '\'' +
             ", createdDate=" + createdDate +
             ", lastModifiedBy='" + lastModifiedBy + '\'' +

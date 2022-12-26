@@ -193,7 +193,7 @@ public class CampaignResource {
      *      - reason: action reason
      * @return the ResponseEntity with status 200 (OK) and with body all users
      */
-    @PostMapping("/campaign/{id}/toggle-on")
+    @PostMapping("/campaign/{id}/toggle-off")
     @Timed
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
     public ResponseEntity<String> toggleOffCampaign(@Valid @PathVariable Long id, @RequestBody ActionCampaignVM actionCampaignVM) {

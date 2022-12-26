@@ -191,9 +191,9 @@ INSERT INTO reward_condition (id,amount_min,amount_max,times_min,times_max,numbe
 -- Dumping data for table `generated_time`
 --
 /*!40000 ALTER TABLE `status` DISABLE KEYS */;
-INSERT INTO generated_time (id,start_time,end_time,campaign_id) VALUES (1,to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'), to_date('2022-11-26 18:07:08','YYYY-MM-DD HH24:MI:SS'), 1);
-INSERT INTO generated_time (id,start_time,end_time,campaign_id) VALUES (2,to_date('2022-11-26 18:07:08','YYYY-MM-DD HH24:MI:SS'), to_date('2022-11-27 18:07:08','YYYY-MM-DD HH24:MI:SS'), 1);
-INSERT INTO generated_time (id,start_time,end_time,campaign_id) VALUES (3,to_date('2022-11-27 18:07:08','YYYY-MM-DD HH24:MI:SS'), to_date('2022-11-28 18:07:08','YYYY-MM-DD HH24:MI:SS'), 1);
+INSERT INTO generated_time (id,start_time,end_time,campaign_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'), to_date('2022-11-26 18:07:08','YYYY-MM-DD HH24:MI:SS'), 1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO generated_time (id,start_time,end_time,campaign_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (2,to_date('2022-11-26 18:07:08','YYYY-MM-DD HH24:MI:SS'), to_date('2022-11-27 18:07:08','YYYY-MM-DD HH24:MI:SS'), 1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO generated_time (id,start_time,end_time,campaign_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (3,to_date('2022-11-27 18:07:08','YYYY-MM-DD HH24:MI:SS'), to_date('2022-11-28 18:07:08','YYYY-MM-DD HH24:MI:SS'), 1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
 /*!40000 ALTER TABLE `status` ENABLE KEYS */;
 
 

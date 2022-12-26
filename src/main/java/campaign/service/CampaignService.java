@@ -91,25 +91,19 @@ public class CampaignService {
             }
 
             // handle target list
-            List<TargetList> targetLists = campaignVM.getTargetLists() != null
-                ? targetListRepository.findAllById(campaignVM.getTargetLists())
-                :null;
+            List<TargetList> targetLists = targetListRepository.findAllById(campaignVM.getTargetLists());
             if (targetLists != null && !targetLists.isEmpty()) {
                 campaign.addTargetLists(targetLists);
             }
 
             // handle rule list
-            List<Rule> ruleList = campaignVM.getRuleList() != null
-                ? ruleRepository.findAllById(campaignVM.getRuleList())
-                : null;
+            List<Rule> ruleList = ruleRepository.findAllById(campaignVM.getRuleList());
             if(ruleList != null && !ruleList.isEmpty()) {
                 campaign.addRuleList(ruleList);
             }
 
             // handle file list
-            List<File> fileList = campaignVM.getFilesList() != null
-                ? fileRepository.findAllById(campaignVM.getFilesList())
-                : null;
+            List<File> fileList = fileRepository.findAllById(campaignVM.getFilesList());
             if (fileList != null && !fileList.isEmpty()) {
                 campaign.addFilesList(fileList);
             }
@@ -149,33 +143,25 @@ public class CampaignService {
         campaign.setId(id);
 
         // handle status
-        Optional<Status> statusOpt = campaignVM.getStatusId() != null
-            ? statusRepository.findById(campaignVM.getStatusId())
-            : null;
+        Optional<Status> statusOpt = statusRepository.findById(campaignVM.getStatusId());
         if (statusOpt.isPresent()) {
             campaign.setStatus(statusOpt.get());
         }
 
         // handle target list
-        List<TargetList> targetLists = campaignVM.getTargetLists() != null
-            ? targetListRepository.findAllById(campaignVM.getTargetLists())
-            : null;
+        List<TargetList> targetLists = targetListRepository.findAllById(campaignVM.getTargetLists());
         if (targetLists != null && !targetLists.isEmpty()) {
             campaign.addTargetLists(targetLists);
         }
 
         // handle rule list
-        List<Rule> ruleList = campaignVM.getRuleList() != null
-            ? ruleRepository.findAllById(campaignVM.getRuleList())
-            : null;
+        List<Rule> ruleList = ruleRepository.findAllById(campaignVM.getRuleList());
         if(ruleList != null && !ruleList.isEmpty()) {
             campaign.addRuleList(ruleList);
         }
 
         // handle file list
-        List<File> fileList = campaignVM.getFilesList() != null
-            ? fileRepository.findAllById(campaignVM.getFilesList())
-            : null;
+        List<File> fileList = fileRepository.findAllById(campaignVM.getFilesList());
         if (fileList != null && !fileList.isEmpty()) {
             campaign.addFilesList(fileList);
         }

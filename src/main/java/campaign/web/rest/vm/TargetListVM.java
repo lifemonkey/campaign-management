@@ -15,7 +15,7 @@ public class TargetListVM {
 
     private Integer targetType;
 
-    private List<Long> accountList;
+    private List<Long> accountIds;
 
     public String getName() {
         return name;
@@ -41,11 +41,11 @@ public class TargetListVM {
         this.targetType = targetType;
     }
 
-    public List<Long> getAccountList() {
-        return accountList;
+    public List<Long> getAccountIds() {
+        return accountIds;
     }
 
-    public void addAccountList(List<Long> accountList) {
-        this.accountList.addAll(accountList);
+    public void addAccountIds(List<Long> accountIds) {
+        this.accountIds.addAll(accountIds);
     }
 }

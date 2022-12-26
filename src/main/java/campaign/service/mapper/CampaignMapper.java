@@ -55,20 +55,6 @@ public class CampaignMapper {
 
             campaign.setCampaignType(campaignDTO.getCampaignType());
             campaign.setNotes(campaignDTO.getNotes());
-
-            if (campaignDTO.getApprovedRejectedBy() != null) {
-                campaign.setApprovedRejectedBy(userMapper.userDTOToUser(campaignDTO.getApprovedRejectedBy()));
-            }
-            if (campaignDTO.getTargetLists() != null) {
-                campaign.addTargetLists(targetListMapper.targetListDTOToTargetLists(campaignDTO.getTargetLists()));
-            }
-            if (campaignDTO.getFilesList() != null) {
-                campaign.addFilesList(fileMapper.fileDTOToFiles(campaignDTO.getFilesList()));
-            }
-            if (campaignDTO.getRuleList() != null) {
-                campaign.addRuleList(ruleMapper.ruleDTOToRules(campaignDTO.getRuleList()));
-            }
-
             campaign.setCreatedBy(campaignDTO.getCreatedBy());
             campaign.setCreatedDate(campaignDTO.getCreatedDate());
             campaign.setLastModifiedBy(campaignDTO.getLastModifiedBy());
