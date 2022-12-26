@@ -87,6 +87,19 @@ public class RuleResource {
     }
 
     /**
+     * POST /rule : Duplicate existing rule
+     *
+     * @RequestParam to be clone rule
+     * @return the ResponseEntity with status 200 (OK) and with body all users
+     */
+    @PostMapping("/rule/clone")
+    @Timed
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    public ResponseEntity<RuleDTO> cloneRule(@RequestParam Long id) {
+        return new ResponseEntity<> (ruleService.cloneRule(id), new HttpHeaders(), HttpStatus.OK);
+    }
+
+    /**
      * PUT /rule : Update rule
      *
      * @RequestBody rule information to be updated

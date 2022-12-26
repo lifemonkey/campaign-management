@@ -85,6 +85,25 @@ public class RuleService {
     }
 
     @Transactional(rollbackFor = Exception.class)
+    public RuleDTO cloneRule(Long id) {
+        Optional<Rule> cloneRuleOpt = ruleRepository.findById(id);
+        Rule toBerInserted = new Rule();
+
+        if (cloneRuleOpt.isPresent()) {
+            toBerInserted.setName(cloneRuleOpt.get().getName());
+            toBerInserted.setDescription(cloneRuleOpt.get().getDescription());
+            toBerInserted.setDurationType(cloneRuleOpt.get().getDurationType());
+            toBerInserted.setDurationValue(cloneRuleOpt.get().getDurationValue());
+            toBerInserted.setRewardCondition(cloneRuleOpt.get().getRewardCondition());
+            toBerInserted.setRuleConfiguration(cloneRuleOpt.get().getRuleConfiguration());
+            toBerInserted.setTransactionType(cloneRuleOpt.get().getTransactionType());
+//            toBerInserted.setCampaign(cloneRuleOpt.get().getCampaign());
+        }
+
+        return ruleMapper.ruleToRuleDTO(ruleRepository.save(toBerInserted));
+    }
+
+    @Transactional(rollbackFor = Exception.class)
     public RuleDTO updateRule(Long id, RuleVM ruleVM) {
         Rule rule = ruleMapper.ruleVMToRule(ruleVM);
         rule.setId(id);

@@ -48,6 +48,7 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
     private Campaign campaign;
 
     public Rule() {
+        this.name = "Default rule";
     }
 
     public Rule(String name) {

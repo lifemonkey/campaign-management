@@ -102,7 +102,7 @@ public class CampaignResource {
     @PostMapping("/campaign/clone")
     @Timed
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
-    public ResponseEntity<CampaignDTO> createCampaign(@RequestParam Long id) {
+    public ResponseEntity<CampaignDTO> cloneCampaign(@RequestParam Long id) {
         return new ResponseEntity<> (campaignService.cloneCampaign(id), new HttpHeaders(), HttpStatus.OK);
     }
 
