@@ -1,12 +1,9 @@
 package campaign.web.rest;
 
 import campaign.security.AuthoritiesConstants;
-import campaign.service.CampaignService;
 import campaign.service.RuleService;
-import campaign.service.dto.CampaignDTO;
 import campaign.service.dto.RuleDTO;
 import campaign.web.rest.util.PaginationUtil;
-import campaign.web.rest.vm.CampaignVM;
 import campaign.web.rest.vm.ResponseCode;
 import campaign.web.rest.vm.ResponseVM;
 import campaign.web.rest.vm.RuleVM;

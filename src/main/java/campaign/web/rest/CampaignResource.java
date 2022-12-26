@@ -1,9 +1,9 @@
 package campaign.web.rest;
 
-import campaign.domain.Campaign;
 import campaign.security.AuthoritiesConstants;
 import campaign.service.CampaignService;
 import campaign.service.dto.CampaignDTO;
+import campaign.service.dto.CampaignWRelDTO;
 import campaign.web.rest.util.PaginationUtil;
 import campaign.web.rest.vm.ActionCampaignVM;
 import campaign.web.rest.vm.CampaignVM;
@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -46,10 +45,14 @@ public class CampaignResource {
      */
     @GetMapping("/campaigns")
     @Timed
-    public ResponseEntity<List<CampaignDTO>> getAllCampaigns(Pageable pageable, @RequestParam(required = false) String search) {
+    public ResponseEntity<List<CampaignDTO>> getAllCampaigns(
+        Pageable pageable,
+        @RequestParam(required = false) String search,
+        @RequestParam(required = false) Integer type
+    ) {
         Page<CampaignDTO> page;
-        if (search != null) {
-            page = campaignService.searchCampaigns(pageable, search);
+        if (search != null || type != null) {
+            page = campaignService.searchCampaigns(pageable, search, type);
         } else {
             page = campaignService.getAllCampaign(pageable);
         }
@@ -66,7 +69,7 @@ public class CampaignResource {
     @GetMapping("/campaign/{id}")
     @Timed
     public ResponseEntity<Object> getCampaignById(@Valid @PathVariable Long id) {
-        CampaignDTO campaign = campaignService.getCampaignById(id);
+        CampaignWRelDTO campaign = campaignService.getCampaignById(id);
         if (campaign != null) {
             return new ResponseEntity<>(campaign, new HttpHeaders(), HttpStatus.OK);
         }
@@ -89,7 +92,7 @@ public class CampaignResource {
     @PostMapping("/campaign")
     @Timed
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
-    public ResponseEntity<CampaignDTO> createCampaign(@RequestBody CampaignVM campaignVM) {
+    public ResponseEntity<CampaignWRelDTO> createCampaign(@RequestBody CampaignVM campaignVM) {
         return new ResponseEntity<> (campaignService.createCampaign(campaignVM), new HttpHeaders(), HttpStatus.OK);
     }
 
@@ -102,7 +105,7 @@ public class CampaignResource {
     @PostMapping("/campaign/clone")
     @Timed
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
-    public ResponseEntity<CampaignDTO> cloneCampaign(@RequestParam Long id) {
+    public ResponseEntity<CampaignWRelDTO> cloneCampaign(@RequestParam Long id) {
         return new ResponseEntity<> (campaignService.cloneCampaign(id), new HttpHeaders(), HttpStatus.OK);
     }
 
@@ -116,7 +119,7 @@ public class CampaignResource {
     @Timed
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
     public ResponseEntity<Object> updateCampaign(@Valid @PathVariable Long id, @RequestBody CampaignVM campaignVM) {
-        CampaignDTO campaign = campaignService.getCampaignById(id);
+        CampaignWRelDTO campaign = campaignService.getCampaignById(id);
         if (campaign.getId() != null) {
             return new ResponseEntity<>(campaignService.updateCampaign(id, campaignVM), new HttpHeaders(), HttpStatus.OK);
         }
@@ -207,7 +210,6 @@ public class CampaignResource {
     @PostMapping("/auto-active-campaign")
     @Scheduled(cron = "0 0 0 * * ?")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "')")
     public void activateCampaign() {
         campaignService.activateCampaign();
     }

@@ -3,6 +3,7 @@ package campaign.web.rest.vm;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CampaignVM {
@@ -29,11 +30,11 @@ public class CampaignVM {
 
     private Long approvedRejectedBy;
 
-    private List<Long> targetLists;
+    private List<Long> targetListIds = new ArrayList<>();
 
-    private List<Long> filesList;
+    private List<Long> fileIds = new ArrayList<>();
 
-    private List<Long> ruleList;
+    private List<Long> ruleIds = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -107,28 +108,28 @@ public class CampaignVM {
         this.approvedRejectedBy = approvedRejectedBy;
     }
 
-    public List<Long> getTargetLists() {
-        return targetLists;
+    public List<Long> getTargetListIds() {
+        return targetListIds;
     }
 
-    public void addTargetLists(List<Long> targetLists) {
-        this.targetLists.addAll(targetLists);
+    public void addTargetListIds(List<Long> targetListIds) {
+        this.targetListIds.addAll(targetListIds);
     }
 
-    public List<Long> getFilesList() {
-        return filesList;
+    public List<Long> getFileIds() {
+        return fileIds;
     }
 
-    public void addFilesList(List<Long> filesList) {
-        this.filesList.addAll(filesList);
+    public void addFileIds(List<Long> fileIds) {
+        this.fileIds.addAll(fileIds);
     }
 
-    public List<Long> getRuleList() {
-        return ruleList;
+    public List<Long> getRuleIds() {
+        return ruleIds;
     }
 
-    public void addRuleList(List<Long> ruleList) {
-        this.ruleList.addAll(ruleList);
+    public void addRuleIds(List<Long> ruleIds) {
+        this.ruleIds.addAll(ruleIds);
     }
 
     @Override
@@ -143,9 +144,9 @@ public class CampaignVM {
             ", notes='" + notes + '\'' +
             ", statusId=" + statusId +
             ", approvedRejectedBy=" + approvedRejectedBy +
-            ", targetLists=" + targetLists +
-            ", filesList=" + filesList +
-            ", filesList=" + filesList +
+            ", targetListIds=" + targetListIds +
+            ", fileIds=" + fileIds +
+            ", ruleIds=" + ruleIds +
             '}';
     }
 }

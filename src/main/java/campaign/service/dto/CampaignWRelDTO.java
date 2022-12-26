@@ -1,12 +1,15 @@
 package campaign.service.dto;
 
-import campaign.domain.Campaign;
+import campaign.domain.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
-public class CampaignDTO {
+public class CampaignWRelDTO {
 
     private Long id;
 
@@ -29,7 +32,13 @@ public class CampaignDTO {
 
     private String status;
 
-    private Long approvedRejectedBy;
+    private UserDTO approvedRejectedBy;
+
+    private List<TargetListCampaignDTO> targetListList = new ArrayList<>();
+
+    private List<FileDTO> fileList = new ArrayList<>();
+
+    private List<RuleDTO> ruleList = new ArrayList<>();
 
     private String createdBy;
 
@@ -39,10 +48,10 @@ public class CampaignDTO {
 
     private LocalDateTime lastModifiedDate;
 
-    public CampaignDTO() {
+    public CampaignWRelDTO() {
     }
 
-    public CampaignDTO(Campaign campaign) {
+    public CampaignWRelDTO(Campaign campaign) {
         this.id = campaign.getId();
         this.name = campaign.getName();
         this.description = campaign.getDescription();
@@ -59,7 +68,16 @@ public class CampaignDTO {
             this.status = campaign.getStatus().getName();
         }
         if (campaign.getApprovedRejectedBy() != null) {
-            this.approvedRejectedBy = campaign.getApprovedRejectedBy().getId();
+            this.approvedRejectedBy = new UserDTO(campaign.getApprovedRejectedBy());
+        }
+        if (campaign.getTargetLists() != null) {
+            this.targetListList = campaign.getTargetLists().stream().map(TargetListCampaignDTO::new).collect(Collectors.toList());
+        }
+        if (campaign.getFilesList() != null) {
+            this.fileList = campaign.getFilesList().stream().map(FileDTO::new).collect(Collectors.toList());
+        }
+        if (campaign.getRuleList() != null) {
+            this.ruleList = campaign.getRuleList().stream().map(RuleDTO::new).collect(Collectors.toList());
         }
 
         this.createdBy = campaign.getCreatedBy();
@@ -140,12 +158,36 @@ public class CampaignDTO {
         this.status = status;
     }
 
-    public Long getApprovedRejectedBy() {
+    public UserDTO getApprovedRejectedBy() {
         return approvedRejectedBy;
     }
 
-    public void setApprovedRejectedBy(Long approvedRejectedBy) {
+    public void setApprovedRejectedBy(UserDTO approvedRejectedBy) {
         this.approvedRejectedBy = approvedRejectedBy;
+    }
+
+    public List<TargetListCampaignDTO> getTargetListList() {
+        return targetListList;
+    }
+
+    public void setTargetListList(List<TargetListCampaignDTO> targetListList) {
+        this.targetListList = targetListList;
+    }
+
+    public List<FileDTO> getFileList() {
+        return fileList;
+    }
+
+    public void setFileList(List<FileDTO> fileList) {
+        this.fileList = fileList;
+    }
+
+    public List<RuleDTO> getRuleList() {
+        return ruleList;
+    }
+
+    public void setRuleList(List<RuleDTO> ruleList) {
+        this.ruleList = ruleList;
     }
 
     public String getCreatedBy() {
@@ -191,6 +233,9 @@ public class CampaignDTO {
             ", campaignType=" + campaignType +
             ", notes='" + notes + '\'' +
             ", status=" + status +
+//            ", approvedRejectedBy='" + approvedRejectedBy + '\'' +
+//            ", targetLists=" + targetLists +
+//            ", filesList=" + filesList +
             '}';
     }
 }

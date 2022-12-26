@@ -4,6 +4,7 @@ import campaign.config.Constants;
 import campaign.domain.*;
 import campaign.repository.*;
 import campaign.service.dto.CampaignDTO;
+import campaign.service.dto.CampaignWRelDTO;
 import campaign.service.mapper.CampaignMapper;
 import campaign.web.rest.vm.ActionCampaignVM;
 import campaign.web.rest.vm.CampaignVM;
@@ -56,18 +57,24 @@ public class CampaignService {
     }
 
     @Transactional(readOnly = true)
-    public CampaignDTO getCampaignById(Long campaignId) {
+    public CampaignWRelDTO getCampaignById(Long campaignId) {
         Optional<Campaign> campaignOpt = campaignRepository.findById(campaignId);
         if (campaignOpt.isPresent()) {
             return campaignMapper.campaignToCampaignDTO(campaignOpt.get());
         }
 
-        return new CampaignDTO();
+        return new CampaignWRelDTO();
     }
 
     @Transactional(readOnly = true)
-    public Page<CampaignDTO> searchCampaigns(Pageable pageable, String search) {
-        return campaignRepository.findAllByNameContaining(search, pageable).map(CampaignDTO::new);
+    public Page<CampaignDTO> searchCampaigns(Pageable pageable, String search, Integer type) {
+        if (search != null && type == null) {
+            return campaignRepository.findAllByNameContaining(search, pageable).map(CampaignDTO::new);
+        } else if (search == null && type != null) {
+            return campaignRepository.findAllByCampaignType(type, pageable).map(CampaignDTO::new);
+        } else {
+            return campaignRepository.findAllByNameContainingAndCampaignType(search, type, pageable).map(CampaignDTO::new);
+        }
     }
 
     @Transactional(readOnly = true)
@@ -76,7 +83,7 @@ public class CampaignService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public CampaignDTO createCampaign(CampaignVM campaignVM) {
+    public CampaignWRelDTO createCampaign(CampaignVM campaignVM) {
         Campaign campaign = campaignMapper.campaignVMToCampaign(campaignVM);
 
         if (campaign != null) {
@@ -91,19 +98,19 @@ public class CampaignService {
             }
 
             // handle target list
-            List<TargetList> targetLists = targetListRepository.findAllById(campaignVM.getTargetLists());
+            List<TargetList> targetLists = targetListRepository.findAllById(campaignVM.getTargetListIds());
             if (targetLists != null && !targetLists.isEmpty()) {
                 campaign.addTargetLists(targetLists);
             }
 
             // handle rule list
-            List<Rule> ruleList = ruleRepository.findAllById(campaignVM.getRuleList());
+            List<Rule> ruleList = ruleRepository.findAllById(campaignVM.getRuleIds());
             if(ruleList != null && !ruleList.isEmpty()) {
                 campaign.addRuleList(ruleList);
             }
 
             // handle file list
-            List<File> fileList = fileRepository.findAllById(campaignVM.getFilesList());
+            List<File> fileList = fileRepository.findAllById(campaignVM.getFileIds());
             if (fileList != null && !fileList.isEmpty()) {
                 campaign.addFilesList(fileList);
             }
@@ -112,11 +119,11 @@ public class CampaignService {
             return campaignMapper.campaignToCampaignDTO(campaign);
         }
 
-        return new CampaignDTO();
+        return new CampaignWRelDTO();
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public CampaignDTO cloneCampaign(Long id) {
+    public CampaignWRelDTO cloneCampaign(Long id) {
         Optional<Campaign> clonedCampaignOpt = campaignRepository.findById(id);
         Campaign toBeInserted = new Campaign();
 
@@ -138,7 +145,7 @@ public class CampaignService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public CampaignDTO updateCampaign(Long id, CampaignVM campaignVM) {
+    public CampaignWRelDTO updateCampaign(Long id, CampaignVM campaignVM) {
         Campaign campaign = campaignMapper.campaignVMToCampaign(campaignVM);
         campaign.setId(id);
 
@@ -149,19 +156,19 @@ public class CampaignService {
         }
 
         // handle target list
-        List<TargetList> targetLists = targetListRepository.findAllById(campaignVM.getTargetLists());
+        List<TargetList> targetLists = targetListRepository.findAllById(campaignVM.getTargetListIds());
         if (targetLists != null && !targetLists.isEmpty()) {
             campaign.addTargetLists(targetLists);
         }
 
         // handle rule list
-        List<Rule> ruleList = ruleRepository.findAllById(campaignVM.getRuleList());
+        List<Rule> ruleList = ruleRepository.findAllById(campaignVM.getRuleIds());
         if(ruleList != null && !ruleList.isEmpty()) {
             campaign.addRuleList(ruleList);
         }
 
         // handle file list
-        List<File> fileList = fileRepository.findAllById(campaignVM.getFilesList());
+        List<File> fileList = fileRepository.findAllById(campaignVM.getFileIds());
         if (fileList != null && !fileList.isEmpty()) {
             campaign.addFilesList(fileList);
         }
@@ -176,7 +183,7 @@ public class CampaignService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public CampaignDTO approveOrRejectCampaign(Long id, boolean isApprove) {
+    public CampaignWRelDTO approveOrRejectCampaign(Long id, boolean isApprove) {
         Optional<Campaign> campaignOpt = campaignRepository.findById(id);
         if (campaignOpt.isPresent()) {
             Optional<Status> statusOpt = statusRepository.findByName(
@@ -186,7 +193,7 @@ public class CampaignService {
             return campaignMapper.campaignToCampaignDTO(campaignRepository.save(campaign));
         }
 
-        return new CampaignDTO();
+        return new CampaignWRelDTO();
     }
 
     /**

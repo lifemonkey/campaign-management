@@ -2,6 +2,7 @@ package campaign.web.rest.vm;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TargetListVM {
@@ -15,7 +16,7 @@ public class TargetListVM {
 
     private Integer targetType;
 
-    private List<Long> accountIds;
+    private List<Long> accountIds = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -47,5 +48,15 @@ public class TargetListVM {
 
     public void addAccountIds(List<Long> accountIds) {
         this.accountIds.addAll(accountIds);
+    }
+
+    @Override
+    public String toString() {
+        return "TargetListVM{" +
+            "name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", targetType=" + targetType +
+            ", accountIds=" + accountIds +
+            '}';
     }
 }

@@ -14,4 +14,11 @@ public class TokenRefreshRequest {
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
+
+    @Override
+    public String toString() {
+        return "TokenRefreshRequest{" +
+            "refreshToken='" + refreshToken + '\'' +
+            '}';
+    }
 }
