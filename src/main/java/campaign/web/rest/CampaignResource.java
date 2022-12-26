@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -166,5 +167,30 @@ public class CampaignResource {
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "')")
     public ResponseEntity<Object> rejectCampaign(@Valid @PathVariable Long id) {
         return new ResponseEntity<> (campaignService.approveOrRejectCampaign(id, false), new HttpHeaders(), HttpStatus.OK);
+    }
+
+    /**
+     * Action /campaign : action on/off/pause campaign
+     *
+     * @PathVariable id of campaign
+     * @return the ResponseEntity with status 200 (OK) and with body all users
+     */
+    @PutMapping("/campaign/{id}/action")
+    @Timed
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    public ResponseEntity<String> actionCampaign(@Valid @PathVariable Long id) {
+        return new ResponseEntity<> (campaignService.actionCampaign(id), new HttpHeaders(), HttpStatus.OK);
+    }
+
+    /**
+     * Auto active campaign by change status of campaign to Running, If fromDate equals to currentDate
+     * This is scheduled to get fired every day, at 00:00 (am) for all campaign with status=Initialization
+     */
+    @PostMapping("/auto-active-campaign")
+    @Scheduled(cron = "0 0 0 * * ?")
+    @Timed
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "')")
+    public void activateCampaign() {
+        campaignService.activateCampaign();
     }
 }

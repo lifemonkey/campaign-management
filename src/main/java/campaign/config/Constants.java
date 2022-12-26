@@ -16,4 +16,11 @@ public final class Constants {
 
     public static final String APPROVED_STATUS = "Approved";
     public static final String REJECTED_STATUS = "Rejected";
+    public static final String RUNNING_STATUS = "Running";
+    public static final String PENDING_APPROVE_STATUS = "Pending Approve";
+    public static final String INITIALIZATION_STATUS = "Initialization";
+    public static final String PAUSE_STATUS = "Paused";
+    public static final String CANCELLED_STATUS = "Cancelled";
+    public static final String COMPLETED_STATUS = "Completed";
+
 }

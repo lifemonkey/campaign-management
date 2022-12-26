@@ -11,8 +11,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -198,4 +201,73 @@ public class CampaignService {
 
         return new CampaignDTO();
     }
+
+    /**
+     * Action on/off/pause campaign
+     *  1. Status=Initialization: toDate > currentDate
+     *      - True: change status=Running AND update fromDate=currentDate
+     *      - False: return error
+     *  2. Status=Pending Approve:
+     *      - Show error
+     *  3. Status=Paused: toDate > currentDate
+     *      - True: change status=Running AND update fromDate=currentDate
+     *      - False: show error
+     *  4. Status is other value show error
+     * @param id
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public String actionCampaign(Long id) {
+        Optional<Campaign> campaignOpt = campaignRepository.findById(id);
+        if (campaignOpt.isPresent()) {
+            Campaign campaign = campaignOpt.get();
+            Optional<Status> statusOpt = statusRepository.findByName(Constants.RUNNING_STATUS);
+
+            // if status is Initialization
+            if (campaign.getStatus().getName() == Constants.INITIALIZATION_STATUS
+                || campaign.getStatus().getName() == Constants.PAUSE_STATUS
+            ) {
+                if (campaign.getEndDate().isAfter(LocalDateTime.now())) {
+                    campaign.setStatus(statusOpt.orElse(null));
+                    campaign.setFromDate(LocalDateTime.now());
+                    return "Campaign " + campaign.getName() + " is running now.";
+                } else {
+                    return "Campaign " + campaign.getName() + " could not run because the end date is less than the current date";
+                }
+            } else if (campaign.getStatus().getName() == Constants.PENDING_APPROVE_STATUS) {
+                // if status is Pending Approve
+                if (campaign.getEndDate().isAfter(LocalDateTime.now())) {
+                    return "Campaign " + campaign.getName() + " need to be approved before starting.";
+                } else {
+                    return "Campaign " + campaign.getName() + " is running now.";
+                }
+            } else {
+                return "Could not run this campaign!";
+            }
+        }
+
+        return "Not found campaign by the given ID=" + id;
+    }
+
+    /**
+     * Auto activate campaign
+     * This feature will run every day at 00:00 to change status of campaign to Running
+     * If fromDate equal to currentDate
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void activateCampaign() {
+        Optional<Status> statusOpt = statusRepository.findByName(Constants.INITIALIZATION_STATUS);
+
+        if (statusOpt.isPresent()) {
+            List<Campaign> toBeActivated = campaignRepository.findAllByStatus(statusOpt.get())
+                .stream()
+                .filter(campaign -> LocalDate.now().isEqual(LocalDate.from(campaign.getFromDate())))
+                .collect(Collectors.toList());
+
+            if (toBeActivated.size() > 0) {
+                campaignRepository.saveAll(toBeActivated);
+            }
+        }
+    }
+
 }
