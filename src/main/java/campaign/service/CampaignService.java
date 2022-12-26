@@ -159,7 +159,7 @@ public class CampaignService {
         // handle target list
         List<TargetList> targetLists = campaignVM.getTargetLists() != null
             ? targetListRepository.findAllById(campaignVM.getTargetLists())
-            :null;
+            : null;
         if (targetLists != null && !targetLists.isEmpty()) {
             campaign.addTargetLists(targetLists);
         }

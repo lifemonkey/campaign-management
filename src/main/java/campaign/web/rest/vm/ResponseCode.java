@@ -19,6 +19,9 @@ public final class ResponseCode {
     public static final Integer ERROR_CODE_CAMPAIGN_NOT_FOUND = 1201;
     public static final Integer ERROR_CODE_TARGET_LIST_NOT_FOUND = 1301;
     public static final Integer ERROR_CODE_FILE_NOT_FOUND = 1401;
+    public static final Integer ERROR_CODE_REWARD_NOT_FOUND = 1501;
+    public static final Integer ERROR_CODE_REWARD_CONDITION_NOT_FOUND = 1601;
+    public static final Integer ERROR_CODE_GENERATED_TIME_NOT_FOUND = 1701;
 
     public static final Integer ERROR_CODE_PASSWORD_LENGTH = 2001;
 

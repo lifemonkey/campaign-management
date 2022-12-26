@@ -1,7 +1,9 @@
 package campaign.service.dto;
 
-import campaign.domain.Reward;
+import campaign.domain.RewardCondition;
 import campaign.domain.Rule;
+
+import java.time.LocalDateTime;
 
 public class RewardConditionDTO {
 
@@ -17,13 +19,41 @@ public class RewardConditionDTO {
 
     private Integer numberCodes;
 
-    private Rule rule;
+    private Long ruleId;
 
-    // TODO link to rewardDTO
-//    private Reward reward;
+    private RewardDTO rewardDTO;
+
+    private String createdBy;
+
+    private LocalDateTime createdDate;
+
+    private String lastModifiedBy;
+
+    private LocalDateTime lastModifiedDate;
 
 
     public RewardConditionDTO() {
+    }
+
+    public RewardConditionDTO(RewardCondition rewardCondition) {
+        this.id = rewardCondition.getId();
+        this.amountMin = rewardCondition.getAmountMin();
+        this.amountMax = rewardCondition.getAmountMax();
+        this.timesMin = rewardCondition.getTimesMin();
+        this.timesMax = rewardCondition.getTimesMax();
+        this.numberCodes = rewardCondition.getNumberCodes();
+
+        if (rewardCondition.getRule() != null) {
+            this.ruleId = rewardCondition.getRule().getId();
+        }
+        if (rewardCondition.getReward() != null) {
+            this.rewardDTO = new RewardDTO(rewardCondition.getReward());
+        }
+
+        this.createdBy = rewardCondition.getCreatedBy();
+        this.createdDate = rewardCondition.getCreatedDate();
+        this.lastModifiedBy = rewardCondition.getLastModifiedBy();
+        this.lastModifiedDate = rewardCondition.getLastModifiedDate();
     }
 
     public Long getId() {
@@ -74,12 +104,52 @@ public class RewardConditionDTO {
         this.numberCodes = numberCodes;
     }
 
-    public Rule getRule() {
-        return rule;
+    public Long getRuleId() {
+        return ruleId;
     }
 
-    public void setRule(Rule rule) {
-        this.rule = rule;
+    public void setRuleId(Long ruleId) {
+        this.ruleId = ruleId;
+    }
+
+    public RewardDTO getRewardDTO() {
+        return rewardDTO;
+    }
+
+    public void setRewardDTO(RewardDTO rewardDTO) {
+        this.rewardDTO = rewardDTO;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public LocalDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     @Override

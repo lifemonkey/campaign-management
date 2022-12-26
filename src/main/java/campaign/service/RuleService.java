@@ -94,7 +94,10 @@ public class RuleService {
             toBerInserted.setDescription(cloneRuleOpt.get().getDescription());
             toBerInserted.setDurationType(cloneRuleOpt.get().getDurationType());
             toBerInserted.setDurationValue(cloneRuleOpt.get().getDurationValue());
-            toBerInserted.setRewardCondition(cloneRuleOpt.get().getRewardCondition());
+            // clone reward conditions
+            if (cloneRuleOpt.get().getRewardConditions() != null) {
+                toBerInserted.addRewardConditions(cloneRuleOpt.get().getRewardConditions());
+            }
             toBerInserted.setRuleConfiguration(cloneRuleOpt.get().getRuleConfiguration());
             toBerInserted.setTransactionType(cloneRuleOpt.get().getTransactionType());
 //            toBerInserted.setCampaign(cloneRuleOpt.get().getCampaign());

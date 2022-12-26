@@ -302,6 +302,26 @@
             </column>
         </createTable>
 
+        <createTable tableName="generated_time">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="start_time" type="timestamp"/>
+            <column name="end_time" type="timestamp"/>
+            <column name="campaign_id" type="bigint"/>
+            <!-- Auditing fields -->
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(50)" />
+            <column name="last_modified_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
         <!-- Config relationship -->
         <addForeignKeyConstraint baseColumnNames="role_id"
                                  baseTableName="users"
@@ -390,6 +410,14 @@
                                  constraintName="fk_rule_transaction_type_id"
                                  referencedColumnNames="id"
                                  referencedTableName="transaction_type"
+                                 onUpdate="CASCADE"
+                                 onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint baseColumnNames="campaign_id"
+                                 baseTableName="generated_time"
+                                 constraintName="fk_generated_time_campaign_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="campaign"
                                  onUpdate="CASCADE"
                                  onDelete="CASCADE"/>
 
