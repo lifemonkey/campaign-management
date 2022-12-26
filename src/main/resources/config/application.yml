@@ -122,6 +122,17 @@ spring:
   output:
     ansi:
       console-available: true
+  ## MULTIPART (MultipartProperties)
+  # Enable multipart uploads
+  servlet:
+    multipart:
+      enabled: true
+      # Threshold after which files are written to disk.
+      file-size-threshold: 2KB
+      # Max file size.
+      max-file-size: 5MB
+      # Max Request Size
+      max-request-size: 5MB
 
 server:
   servlet:

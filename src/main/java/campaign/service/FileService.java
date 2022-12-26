@@ -13,7 +13,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 @Service
@@ -54,6 +59,23 @@ public class FileService {
         }
 
         return new FileDTO();
+    }
+
+    public String uploadFile(MultipartFile file) {
+        try {
+            // Get the file and save it somewhere
+            byte[] bytes = file.getBytes();
+//            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+//            Files.write(path, bytes);
+
+            File savedFile = fileRepository.save(new File(file.getOriginalFilename(), file.getName(), 1, "", file.getBytes()));
+            return "Success";
+
+        } catch (IOException e) {
+            log.error("Could not upload file to server! ", e.getMessage());
+        }
+
+        return null;
     }
 
     @Transactional(rollbackFor = Exception.class)

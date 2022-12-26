@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -71,41 +72,41 @@ public class FileResource {
     }
 
     /**
-     * POST /file : Create file
+     * POST /file/upload : upload a file
      *
      * @RequestBody file information to be created
      * @return the ResponseEntity with status 200 (OK) and with body all users
      */
-    @PostMapping("/file")
+    @PostMapping("/file/upload")
     @Timed
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
-    public ResponseEntity<FileDTO> createRule(@RequestBody FileVM fileVM) {
-        return new ResponseEntity<> (fileService.createFile(fileVM), new HttpHeaders(), HttpStatus.OK);
+    public ResponseEntity<String> createRule(@RequestParam("file") MultipartFile file) {
+        return new ResponseEntity<> (fileService.uploadFile(file), new HttpHeaders(), HttpStatus.OK);
     }
 
-    /**
-     * PUT /file : Update file
-     *
-     * @RequestBody file information to be updated
-     * @return the ResponseEntity with status 200 (OK) and with body all users
-     */
-    @PutMapping("/file/{id}")
-    @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
-    public ResponseEntity<Object> updateFile(@Valid @PathVariable Long id, @RequestBody FileVM fileVM) {
-        FileDTO file = fileService.getFileById(id);
-        if (file.getId() != null) {
-            return new ResponseEntity<>(fileService.updateFile(id, fileVM), new HttpHeaders(), HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(
-            new ResponseVM(
-                ResponseCode.RESPONSE_NOT_FOUND,
-                ResponseCode.ERROR_CODE_FILE_NOT_FOUND,
-                "File ID:" + id + " not found!"),
-            new HttpHeaders(),
-            HttpStatus.NOT_FOUND);
-    }
+//    /**
+//     * PUT /file : Update file
+//     *
+//     * @RequestBody file information to be updated
+//     * @return the ResponseEntity with status 200 (OK) and with body all users
+//     */
+//    @PutMapping("/file/{id}")
+//    @Timed
+//    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+//    public ResponseEntity<Object> updateFile(@Valid @PathVariable Long id, @RequestBody FileVM fileVM) {
+//        FileDTO file = fileService.getFileById(id);
+//        if (file.getId() != null) {
+//            return new ResponseEntity<>(fileService.updateFile(id, fileVM), new HttpHeaders(), HttpStatus.OK);
+//        }
+//
+//        return new ResponseEntity<>(
+//            new ResponseVM(
+//                ResponseCode.RESPONSE_NOT_FOUND,
+//                ResponseCode.ERROR_CODE_FILE_NOT_FOUND,
+//                "File ID:" + id + " not found!"),
+//            new HttpHeaders(),
+//            HttpStatus.NOT_FOUND);
+//    }
 
     /**
      * PUT /file : Update file
