@@ -179,7 +179,14 @@ public class CampaignService {
 
     @Transactional(rollbackFor = Exception.class)
     public void deleteCampaign(Long id) {
-        campaignRepository.deleteById(id);
+        Optional<Campaign> campaignOpt = campaignRepository.findById(id);
+        if (campaignOpt.isPresent()) {
+            Campaign campaign = campaignOpt.get();
+            // detach user
+            campaign.setApprovedRejectedBy(null);
+            campaignRepository.save(campaign);
+            campaignRepository.delete(campaign);
+        }
     }
 
     @Transactional(rollbackFor = Exception.class)

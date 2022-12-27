@@ -81,6 +81,13 @@ public class GeneratedTimeService {
 
     @Transactional(rollbackFor = Exception.class)
     public void deleteGeneratedTime(Long id) {
-        generatedTimeRepository.deleteById(id);
+        Optional<GeneratedTime> generatedTimeOpt = generatedTimeRepository.findById(id);
+        if (generatedTimeOpt.isPresent()) {
+            GeneratedTime generatedTime = generatedTimeOpt.get();
+            // detach campaign
+            generatedTime.setCampaign(null);
+            generatedTimeRepository.save(generatedTime);
+            generatedTimeRepository.delete(generatedTime);
+        }
     }
 }

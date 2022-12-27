@@ -128,6 +128,15 @@ public class RewardConditionService {
 
     @Transactional(rollbackFor = Exception.class)
     public void deleteRewardCondition(Long id) {
-        rewardConditionRepository.deleteById(id);
+        Optional<RewardCondition> rewardConditionOpt = rewardConditionRepository.findById(id);
+        if (rewardConditionOpt.isPresent()) {
+            RewardCondition rewardCondition = rewardConditionOpt.get();
+            // detach rule
+            rewardCondition.setRule(null);
+            rewardRepository.delete(rewardCondition.getReward());
+            rewardCondition.setReward(null);
+            rewardConditionRepository.save(rewardCondition);
+            rewardConditionRepository.delete(rewardCondition);
+        }
     }
 }

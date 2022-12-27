@@ -133,6 +133,13 @@ public class RuleService {
 
     @Transactional(rollbackFor = Exception.class)
     public void deleteRule(Long id) {
-        ruleRepository.deleteById(id);
+        Optional<Rule> ruleOpt = ruleRepository.findById(id);
+        if (ruleOpt.isPresent()) {
+            Rule rule = ruleOpt.get();
+            // detach campaign
+            rule.setCampaign(null);
+            ruleRepository.save(rule);
+            ruleRepository.delete(rule);
+        }
     }
 }
