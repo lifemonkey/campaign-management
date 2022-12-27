@@ -22,7 +22,7 @@ public class TargetListDTO {
 
     private Integer targetType;
 
-    private List<Long> accountIds;
+    private List<AccountDTO> accountList;
 
     private String createdBy;
 
@@ -40,10 +40,10 @@ public class TargetListDTO {
         this.name = targetList.getName();
         this.description = targetList.getDescription();
         this.targetType = targetList.getTargetType();
-        this.accountIds = new ArrayList<>();
+        this.accountList = new ArrayList<>();
 
         if(targetList.getAccountList() != null && !targetList.getAccountList().isEmpty()) {
-            this.accountIds.addAll(targetList.getAccountList().stream().map(Account::getId).collect(Collectors.toList()));
+            this.accountList.addAll(targetList.getAccountList().stream().map(AccountDTO::new).collect(Collectors.toList()));
         }
 
         this.createdBy = targetList.getCreatedBy();
@@ -84,12 +84,12 @@ public class TargetListDTO {
         this.targetType = targetType;
     }
 
-    public List<Long> getAccountIds() {
-        return accountIds;
+    public List<AccountDTO> getAccountList() {
+        return accountList;
     }
 
-    public void addAccountIds(List<Long> accountIds) {
-        this.accountIds.addAll(accountIds);
+    public void addAccountList(List<AccountDTO> accountList) {
+        this.accountList.addAll(accountList);
     }
 
     public String getCreatedBy() {
@@ -131,7 +131,7 @@ public class TargetListDTO {
             ", name='" + name + '\'' +
             ", description='" + description + '\'' +
             ", targetType=" + targetType +
-            ", accountIds='" + accountIds + '\'' +
+            ", accountList='" + accountList + '\'' +
             ", createdBy='" + createdBy + '\'' +
             ", createdDate=" + createdDate +
             ", lastModifiedBy='" + lastModifiedBy + '\'' +

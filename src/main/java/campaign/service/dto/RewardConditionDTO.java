@@ -18,9 +18,9 @@ public class RewardConditionDTO {
 
     private Integer numberCodes;
 
-    private Long ruleId;
+    private RuleDTO rule;
 
-    private Long rewardId;
+    private RewardDTO reward;
 
     private String createdBy;
 
@@ -43,10 +43,10 @@ public class RewardConditionDTO {
         this.numberCodes = rewardCondition.getNumberCodes();
 
         if (rewardCondition.getRule() != null) {
-            this.ruleId = rewardCondition.getRule().getId();
+            this.rule = new RuleDTO(rewardCondition.getRule());
         }
         if (rewardCondition.getReward() != null) {
-            this.rewardId = rewardCondition.getReward().getId();
+            this.reward = new RewardDTO(rewardCondition.getReward());
         }
 
         this.createdBy = rewardCondition.getCreatedBy();
@@ -103,20 +103,20 @@ public class RewardConditionDTO {
         this.numberCodes = numberCodes;
     }
 
-    public Long getRuleId() {
-        return ruleId;
+    public RuleDTO getRule() {
+        return rule;
     }
 
-    public void setRuleId(Long ruleId) {
-        this.ruleId = ruleId;
+    public void setRule(RuleDTO rule) {
+        this.rule = rule;
     }
 
-    public Long getRewardId() {
-        return rewardId;
+    public RewardDTO getReward() {
+        return reward;
     }
 
-    public void setRewardId(Long rewardId) {
-        this.rewardId = rewardId;
+    public void setReward(RewardDTO reward) {
+        this.reward = reward;
     }
 
     public String getCreatedBy() {
