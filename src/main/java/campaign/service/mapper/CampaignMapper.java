@@ -27,14 +27,14 @@ public class CampaignMapper {
         this.ruleMapper = ruleMapper;
     }
 
-    public CampaignWRelDTO campaignToCampaignDTO(Campaign campaign) {
+    public CampaignWRelDTO campaignToCampaignWRelDTO(Campaign campaign) {
         return new CampaignWRelDTO(campaign);
     }
 
-    public List<CampaignWRelDTO> campaignToCampaignDTOs(List<Campaign> campaignList) {
+    public List<CampaignWRelDTO> campaignToCampaignWRelDTOs(List<Campaign> campaignList) {
         return campaignList.stream()
             .filter(Objects::nonNull)
-            .map(this::campaignToCampaignDTO)
+            .map(this::campaignToCampaignWRelDTO)
             .collect(Collectors.toList());
     }
 

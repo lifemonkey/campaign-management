@@ -257,12 +257,19 @@
             </column>
         </createTable>
 
-        <createTable tableName="rule_configuration">
+        <createTable tableName="rules">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(200)" />
             <column name="description" type="varchar(4000)"/>
+            <column name="duration_type" type="varchar(200)"/>
+            <column name="duration_value" type="varchar(200)"/>
+            <column name="reward_condition" type="int"/>
+            <!-- constraints -->
+            <column name="rule_configuration" type="bigint"/>
+            <column name="transaction_type_id" type="bigint"/>
+            <column name="campaign_id" type="bigint"/>
             <!-- Auditing fields -->
             <column name="created_by" type="varchar(50)">
                 <constraints nullable="false"/>
@@ -276,28 +283,11 @@
             </column>
         </createTable>
 
-        <createTable tableName="rules">
-            <column name="id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="name" type="varchar(200)" />
-            <column name="description" type="varchar(4000)"/>
-            <column name="duration_type" type="varchar(200)"/>
-            <column name="duration_value" type="varchar(200)"/>
-            <column name="reward_condition" type="int"/>
-            <!-- constraints -->
-            <column name="rule_configuration_id" type="bigint"/>
-            <column name="transaction_type_id" type="bigint"/>
-            <column name="campaign_id" type="bigint"/>
-            <!-- Auditing fields -->
-            <column name="created_by" type="varchar(50)">
+        <createTable tableName="campaign_rule">
+            <column name="campaign_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_date" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
-            </column>
-            <column name="last_modified_by" type="varchar(50)" />
-            <column name="last_modified_date" type="timestamp" defaultValueDate="${now}">
+            <column name="rule_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -397,14 +387,6 @@
                                  onUpdate="CASCADE"
                                  onDelete="CASCADE"/>
 
-        <addForeignKeyConstraint baseColumnNames="rule_configuration_id"
-                                 baseTableName="rules"
-                                 constraintName="fk_rule_rule_configuration_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="rule_configuration"
-                                 onUpdate="CASCADE"
-                                 onDelete="CASCADE"/>
-
         <addForeignKeyConstraint baseColumnNames="transaction_type_id"
                                  baseTableName="rules"
                                  constraintName="fk_rule_transaction_type_id"
@@ -418,6 +400,22 @@
                                  constraintName="fk_generated_time_campaign_id"
                                  referencedColumnNames="id"
                                  referencedTableName="campaign"
+                                 onUpdate="CASCADE"
+                                 onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint baseColumnNames="campaign_id"
+                                 baseTableName="campaign_rule"
+                                 constraintName="fk_campaign_rule_campaign_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="campaign"
+                                 onUpdate="CASCADE"
+                                 onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint baseColumnNames="rule_id"
+                                 baseTableName="campaign_rule"
+                                 constraintName="fk_campaign_rule_rule_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="rules"
                                  onUpdate="CASCADE"
                                  onDelete="CASCADE"/>
 

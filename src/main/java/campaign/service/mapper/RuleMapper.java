@@ -1,7 +1,6 @@
 package campaign.service.mapper;
 
 import campaign.domain.Rule;
-import campaign.domain.RuleConfiguration;
 import campaign.domain.TransactionType;
 import campaign.service.dto.RuleDTO;
 import campaign.web.rest.vm.RuleVM;
@@ -54,7 +53,7 @@ public class RuleMapper {
             }
 
             if (ruleDTO.getRuleConfiguration() != null) {
-                rule.setRuleConfiguration(new RuleConfiguration(ruleDTO.getRuleConfiguration()));
+                rule.setRuleConfiguration(ruleDTO.getRuleConfiguration());
             }
             if (ruleDTO.getTransactionType() != null) {
                 rule.setTransactionType(new TransactionType(ruleDTO.getTransactionType()));
@@ -98,9 +97,9 @@ public class RuleMapper {
 //                rule.setRewardCondition(ruleVM.getRewardCondition());
 //            }
 
-//            if (ruleVM.getRuleConfiguration() != null) {
-//                rule.setRuleConfiguration(ruleVM.getRuleConfiguration());
-//            }
+            if (ruleVM.getRuleConfiguration() != null) {
+                rule.setRuleConfiguration(ruleVM.getRuleConfiguration());
+            }
 //            if (ruleVM.getTransactionType() != null) {
 //                rule.setTransactionType(ruleVM.getTransactionType());
 //            }

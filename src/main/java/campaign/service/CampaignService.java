@@ -6,8 +6,12 @@ import campaign.repository.*;
 import campaign.service.dto.CampaignDTO;
 import campaign.service.dto.CampaignWRelDTO;
 import campaign.service.mapper.CampaignMapper;
+import campaign.service.mapper.FileMapper;
+import campaign.service.mapper.GeneratedTimeMapper;
 import campaign.web.rest.vm.ActionCampaignVM;
 import campaign.web.rest.vm.CampaignVM;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,7 +27,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class CampaignService {
 
-//    private final Logger log = LoggerFactory.getLogger(CampaignService.class);
+    private final Logger log = LoggerFactory.getLogger(CampaignService.class);
 
     private final CampaignRepository campaignRepository;
 
@@ -33,34 +37,46 @@ public class CampaignService {
 
     private final FileRepository fileRepository;
 
+    private final FileMapper fileMapper;
+
     private final StatusRepository statusRepository;
 
     private final RuleRepository ruleRepository;
 
     private final CampaignMapper campaignMapper;
 
+    private final GeneratedTimeRepository generatedTimeRepository;
+
+    private final GeneratedTimeMapper generatedTimeMapper;
+
     public CampaignService(CampaignRepository campaignRepository,
                            UserRepository userRepository,
                            TargetListRepository targetListRepository,
                            FileRepository fileRepository,
+                           FileMapper fileMapper,
                            StatusRepository statusRepository,
                            RuleRepository ruleRepository,
-                           CampaignMapper campaignMapper
+                           CampaignMapper campaignMapper,
+                           GeneratedTimeRepository generatedTimeRepository,
+                           GeneratedTimeMapper generatedTimeMapper
     ) {
         this.campaignRepository = campaignRepository;
         this.userRepository = userRepository;
         this.targetListRepository =targetListRepository;
         this.fileRepository = fileRepository;
+        this.fileMapper = fileMapper;
         this.statusRepository = statusRepository;
         this.ruleRepository = ruleRepository;
         this.campaignMapper = campaignMapper;
+        this.generatedTimeRepository = generatedTimeRepository;
+        this.generatedTimeMapper = generatedTimeMapper;
     }
 
     @Transactional(readOnly = true)
     public CampaignWRelDTO getCampaignById(Long campaignId) {
         Optional<Campaign> campaignOpt = campaignRepository.findById(campaignId);
         if (campaignOpt.isPresent()) {
-            return campaignMapper.campaignToCampaignDTO(campaignOpt.get());
+            return campaignMapper.campaignToCampaignWRelDTO(campaignOpt.get());
         }
 
         return new CampaignWRelDTO();
@@ -89,6 +105,14 @@ public class CampaignService {
         if (campaign != null) {
             campaignRepository.save(campaign);
 
+            // handle status
+            Optional<Status> statusOpt = campaignVM.getStatusId() != null
+                ? statusRepository.findById(campaignVM.getStatusId())
+                : null;
+            if (statusOpt != null && statusOpt.isPresent()) {
+                campaign.setStatus(statusOpt.get());
+            }
+
             // handle approved/rejected user
             Optional<User> userOpt = campaignVM.getApprovedRejectedBy() != null
                 ? userRepository.findById(campaignVM.getApprovedRejectedBy())
@@ -109,14 +133,29 @@ public class CampaignService {
                 campaign.addRuleList(ruleList);
             }
 
+            // save campaign
+            campaignRepository.save(campaign);
+
             // handle file list
-            List<File> fileList = fileRepository.findAllById(campaignVM.getFileIds());
+            List<File> fileList = fileMapper.fileVMToFiles(campaignVM.getFiles());
             if (fileList != null && !fileList.isEmpty()) {
+                fileList.stream().forEach(file -> file.setCampaign(campaign));
+                fileRepository.saveAll(fileList);
+                // two ways binding
                 campaign.addFilesList(fileList);
             }
 
+            // handle generated time list
+            List<GeneratedTime> generatedTimes = generatedTimeMapper.generatedTimeVMToGeneratedTimes(campaignVM.getGeneratedTimes());
+            if (generatedTimes != null && !generatedTimes.isEmpty()) {
+                generatedTimes.stream().forEach(generatedTime -> generatedTime.setCampaign(campaign));
+                generatedTimeRepository.saveAll(generatedTimes);
+                // two ways binding
+                campaign.addGeneratedTimeList(generatedTimes);
+            }
+
             campaignRepository.save(campaign);
-            return campaignMapper.campaignToCampaignDTO(campaign);
+            return campaignMapper.campaignToCampaignWRelDTO(campaign);
         }
 
         return new CampaignWRelDTO();
@@ -139,9 +178,10 @@ public class CampaignService {
             toBeInserted.addTargetLists(clonedCampaignOpt.get().getTargetLists());
             toBeInserted.addFilesList(clonedCampaignOpt.get().getFilesList());
             toBeInserted.addRuleList(clonedCampaignOpt.get().getRuleList());
+            toBeInserted.addGeneratedTimeList(clonedCampaignOpt.get().getGeneratedTimeList());
         }
 
-        return campaignMapper.campaignToCampaignDTO(campaignRepository.save(toBeInserted));
+        return campaignMapper.campaignToCampaignWRelDTO(campaignRepository.save(toBeInserted));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -167,14 +207,8 @@ public class CampaignService {
             campaign.addRuleList(ruleList);
         }
 
-        // handle file list
-        List<File> fileList = fileRepository.findAllById(campaignVM.getFileIds());
-        if (fileList != null && !fileList.isEmpty()) {
-            campaign.addFilesList(fileList);
-        }
-
         campaignRepository.save(campaign);
-        return campaignMapper.campaignToCampaignDTO(campaign);
+        return campaignMapper.campaignToCampaignWRelDTO(campaign);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -183,7 +217,10 @@ public class CampaignService {
         if (campaignOpt.isPresent()) {
             Campaign campaign = campaignOpt.get();
             // detach user
+            campaign.setStatus(null);
             campaign.setApprovedRejectedBy(null);
+            campaign.clearTargetLists();
+            campaign.clearRuleList();
             campaignRepository.save(campaign);
             campaignRepository.delete(campaign);
         }
@@ -197,7 +234,7 @@ public class CampaignService {
                 isApprove ? Constants.APPROVED_STATUS : Constants.REJECTED_STATUS);
             Campaign campaign = campaignOpt.get();
             campaign.setStatus(statusOpt.orElse(null));
-            return campaignMapper.campaignToCampaignDTO(campaignRepository.save(campaign));
+            return campaignMapper.campaignToCampaignWRelDTO(campaignRepository.save(campaign));
         }
 
         return new CampaignWRelDTO();

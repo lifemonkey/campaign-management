@@ -4,7 +4,6 @@ import campaign.domain.*;
 import campaign.repository.*;
 import campaign.service.dto.RuleDTO;
 import campaign.service.mapper.RewardConditionMapper;
-import campaign.service.mapper.RewardMapper;
 import campaign.service.mapper.RuleMapper;
 import campaign.web.rest.vm.RuleVM;
 import org.slf4j.Logger;
@@ -16,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -26,7 +24,6 @@ public class RuleService {
 
     private final RuleRepository ruleRepository;
 
-    private final RuleConfigurationRepository ruleConfigurationRepository;
 
     private final TransactionTypeRepository transactionTypeRepository;
 
@@ -37,14 +34,12 @@ public class RuleService {
     private final RewardConditionMapper rewardConditionMapper;
 
     public RuleService(RuleRepository ruleRepository,
-                       RuleConfigurationRepository ruleConfigurationRepository,
                        TransactionTypeRepository transactionTypeRepository,
                        RuleMapper ruleMapper,
                        RewardConditionRepository rewardConditionRepository,
                        RewardConditionMapper rewardConditionMapper
     ) {
         this.ruleRepository = ruleRepository;
-        this.ruleConfigurationRepository = ruleConfigurationRepository;
         this.transactionTypeRepository = transactionTypeRepository;
         this.ruleMapper = ruleMapper;
         this.rewardConditionRepository = rewardConditionRepository;
@@ -72,14 +67,6 @@ public class RuleService {
 
         if (rule != null) {
             ruleRepository.save(rule);
-
-            // handle rule configuration
-            if (ruleVM.getRuleConfiguration() != null) {
-                Optional<RuleConfiguration> ruleConfigurationOpt = ruleConfigurationRepository.findById(ruleVM.getRuleConfiguration());
-                if (ruleConfigurationOpt.isPresent()) {
-                    rule.setRuleConfiguration(ruleConfigurationOpt.get());
-                }
-            }
 
             // handle transaction type
             if (ruleVM.getTransactionType() != null) {
@@ -132,14 +119,6 @@ public class RuleService {
         Rule rule = ruleMapper.ruleVMToRule(ruleVM);
         rule.setId(id);
 
-        // handle rule configuration
-        if (ruleVM.getRuleConfiguration() != null) {
-            Optional<RuleConfiguration> ruleConfigurationOpt = ruleConfigurationRepository.findById(ruleVM.getRuleConfiguration());
-            if (ruleConfigurationOpt.isPresent()) {
-                rule.setRuleConfiguration(ruleConfigurationOpt.get());
-            }
-        }
-
         // handle transaction type
         if (ruleVM.getTransactionType() != null) {
             Optional<TransactionType> transactionTypeOpt = transactionTypeRepository.findById(ruleVM.getTransactionType());
@@ -158,7 +137,7 @@ public class RuleService {
         if (ruleOpt.isPresent()) {
             Rule rule = ruleOpt.get();
             // detach campaign
-            rule.setCampaign(null);
+            rule.clearCampaignList();
             ruleRepository.save(rule);
             ruleRepository.delete(rule);
         }

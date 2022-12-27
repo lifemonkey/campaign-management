@@ -22,7 +22,7 @@ public class RuleVM {
 
     private Long transactionType;
 
-    private Long ruleConfiguration;
+    private Integer ruleConfiguration;
 
     private List<RewardConditionVM> rewardConditions = new ArrayList<>();
 
@@ -66,11 +66,11 @@ public class RuleVM {
         this.transactionType = transactionType;
     }
 
-    public Long getRuleConfiguration() {
+    public Integer getRuleConfiguration() {
         return ruleConfiguration;
     }
 
-    public void setRuleConfiguration(Long ruleConfiguration) {
+    public void setRuleConfiguration(Integer ruleConfiguration) {
         this.ruleConfiguration = ruleConfiguration;
     }
 

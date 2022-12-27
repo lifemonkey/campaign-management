@@ -64,4 +64,11 @@ public class FileMapper {
             return file;
         }
     }
+
+    public List<File> fileVMToFiles(List<FileVM> fileVMs) {
+        return fileVMs.stream()
+            .filter(Objects::nonNull)
+            .map(this::fileVMToFile)
+            .collect(Collectors.toList());
+    }
 }

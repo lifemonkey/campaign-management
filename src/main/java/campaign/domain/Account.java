@@ -55,7 +55,7 @@ public class Account extends AbstractAuditingEntity implements Serializable {
 
     @ManyToMany(mappedBy = "accountList", fetch = FetchType.LAZY)
     @JsonIgnore
-    List<TargetList> targetLists = new ArrayList<>();
+    private List<TargetList> targetLists = new ArrayList<>();
 
     public Account() {
     }

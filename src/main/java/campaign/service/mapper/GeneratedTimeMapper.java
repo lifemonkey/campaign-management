@@ -58,9 +58,15 @@ public class GeneratedTimeMapper {
             generatedTime.setId(generatedTimeVM.getId());
             generatedTime.setStartTime(generatedTimeVM.getStartTime());
             generatedTime.setEndTime(generatedTimeVM.getEndTime());
-//            generatedTime.setCampaign(generatedTimeVM.getCampaignId());
 
             return generatedTime;
         }
+    }
+
+    public List<GeneratedTime> generatedTimeVMToGeneratedTimes(List<GeneratedTimeVM> generatedTimeVMs) {
+        return generatedTimeVMs.stream()
+            .filter(Objects::nonNull)
+            .map(this::generatedTimeVMToGeneratedTime)
+            .collect(Collectors.toList());
     }
 }

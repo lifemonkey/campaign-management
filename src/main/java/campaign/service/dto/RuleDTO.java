@@ -24,7 +24,7 @@ public class RuleDTO {
 
     private String transactionType;
 
-    private String ruleConfiguration;
+    private Integer ruleConfiguration;
 
     private List<RuleRewardDTO> ruleRewardList = new ArrayList<>();
 
@@ -45,7 +45,7 @@ public class RuleDTO {
         this.description = rule.getDescription();
         this.durationType = rule.getDurationType();
         this.durationValue = rule.getDurationValue();
-        this.ruleConfiguration = rule.getRuleConfiguration().getName();
+        this.ruleConfiguration = rule.getRuleConfiguration();
         this.transactionType = rule.getTransactionType().getName();
         this.ruleRewardList = rule.getRewardConditions().stream().map(RuleRewardDTO::new).collect(Collectors.toList());
         this.createdBy = rule.getCreatedBy();
@@ -103,11 +103,11 @@ public class RuleDTO {
         this.transactionType = transactionType;
     }
 
-    public String getRuleConfiguration() {
+    public Integer getRuleConfiguration() {
         return ruleConfiguration;
     }
 
-    public void setRuleConfiguration(String ruleConfiguration) {
+    public void setRuleConfiguration(Integer ruleConfiguration) {
         this.ruleConfiguration = ruleConfiguration;
     }
 

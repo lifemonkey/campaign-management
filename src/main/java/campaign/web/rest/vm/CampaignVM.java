@@ -32,9 +32,11 @@ public class CampaignVM {
 
     private List<Long> targetListIds = new ArrayList<>();
 
-    private List<Long> fileIds = new ArrayList<>();
+    private List<FileVM> files = new ArrayList<>();
 
     private List<Long> ruleIds = new ArrayList<>();
+
+    private List<GeneratedTimeVM> generatedTimes = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -116,12 +118,12 @@ public class CampaignVM {
         this.targetListIds.addAll(targetListIds);
     }
 
-    public List<Long> getFileIds() {
-        return fileIds;
+    public List<FileVM> getFiles() {
+        return files;
     }
 
-    public void addFileIds(List<Long> fileIds) {
-        this.fileIds.addAll(fileIds);
+    public void addFileIds(List<FileVM> files) {
+        this.files.addAll(files);
     }
 
     public List<Long> getRuleIds() {
@@ -130,6 +132,14 @@ public class CampaignVM {
 
     public void addRuleIds(List<Long> ruleIds) {
         this.ruleIds.addAll(ruleIds);
+    }
+
+    public List<GeneratedTimeVM> getGeneratedTimes() {
+        return generatedTimes;
+    }
+
+    public void addGeneratedTimes(List<GeneratedTimeVM> generatedTimes) {
+        this.generatedTimes.addAll(generatedTimes);
     }
 
     @Override
@@ -145,7 +155,6 @@ public class CampaignVM {
             ", statusId=" + statusId +
             ", approvedRejectedBy=" + approvedRejectedBy +
             ", targetListIds=" + targetListIds +
-            ", fileIds=" + fileIds +
             ", ruleIds=" + ruleIds +
             '}';
     }

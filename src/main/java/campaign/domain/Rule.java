@@ -34,20 +34,18 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
     @Column(name = "duration_value")
     private String durationValue;
 
-    @OneToOne
-    @JoinColumn(name = "rule_configuration_id", referencedColumnName = "id")
-    private RuleConfiguration ruleConfiguration;
+    @Column(name = "rule_configuration")
+    private Integer ruleConfiguration;
 
     @OneToOne
     @JoinColumn(name = "transaction_type_id", referencedColumnName = "id")
     private TransactionType transactionType;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "campaign_id", referencedColumnName = "id")
-    private Campaign campaign;
+    @ManyToMany(mappedBy = "ruleList", fetch = FetchType.LAZY)
+    private List<Campaign> campaignList = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "rule")
-    private final List<RewardCondition> rewardConditions = new ArrayList<>();
+    private List<RewardCondition> rewardConditions = new ArrayList<>();
 
     public Rule() {
         this.name = "Default rule";
@@ -105,20 +103,24 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
         this.transactionType = transactionType;
     }
 
-    public RuleConfiguration getRuleConfiguration() {
+    public Integer getRuleConfiguration() {
         return ruleConfiguration;
     }
 
-    public void setRuleConfiguration(RuleConfiguration ruleConfiguration) {
+    public void setRuleConfiguration(Integer ruleConfiguration) {
         this.ruleConfiguration = ruleConfiguration;
     }
 
-    public Campaign getCampaign() {
-        return campaign;
+    public List<Campaign> getCampaignList() {
+        return campaignList;
     }
 
-    public void setCampaign(Campaign campaign) {
-        this.campaign = campaign;
+    public void addCampaignList(List<Campaign> campaignList) {
+        this.campaignList = campaignList;
+    }
+
+    public void clearCampaignList() {
+        this.campaignList = new ArrayList<>();
     }
 
     public List<RewardCondition> getRewardConditions() {

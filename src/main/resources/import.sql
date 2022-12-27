@@ -15,6 +15,7 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+
 --
 -- Dumping data for table `roles`
 --
@@ -23,6 +24,7 @@ INSERT INTO roles (id,name,description,can_approve_reward,can_reject_reward,camp
 INSERT INTO roles (id,name,description,can_approve_reward,can_reject_reward,campaign_management,rule_management,prize_management) VALUES (2,'BO_STAFF','bo staff',0,0,1,1,1);
 INSERT INTO roles (id,name,description,can_approve_reward,can_reject_reward,campaign_management,rule_management,prize_management) VALUES (3,'FIN_STAFF','fin staff',1,1,0,0,0);
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
+
 
 --
 -- Dumping data for table `users`
@@ -40,6 +42,7 @@ INSERT INTO users (id,username,password,first_name,last_name,expired_date,role_i
 INSERT INTO users (id,username,password,first_name,last_name,expired_date,role_id,image_url,status,created_by,created_date,last_modified_by,last_modified_date) VALUES (5,'hung.doan@gmail.com','$2a$12$eU5a1Rt18csSBqJ18FGY.OJBbcF6Ou0E1MKfzyx9EPOcnURBXio4e','Hung','Doan',NULL,3,NULL,-1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
+
 --
 -- Dumping data for table `target_list`
 --
@@ -51,6 +54,7 @@ INSERT INTO target_list (id,name,description,target_type,created_by,created_date
 INSERT INTO target_list (id,name,description,target_type,created_by,created_date,last_modified_by,last_modified_date) VALUES (5,'List 5','List 5 description',3,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
 /*!40000 ALTER TABLE `target_list` ENABLE KEYS */;
 
+
 --
 -- Dumping data for table `accounts`
 /*!40000 ALTER TABLE `accounts` DISABLE KEYS */;
@@ -61,17 +65,20 @@ INSERT INTO accounts (id,external_id,first_name,last_name,description,phone_numb
 INSERT INTO accounts (id,external_id,first_name,last_name,description,phone_number,address,language_id,dob,created_by,created_date,last_modified_by,last_modified_date) VALUES (5,'ext_id_5','Khai','Kieu','Description 5','0378273847','78 Duong So 8',2,to_date('1987-11-19 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
 /*!40000 ALTER TABLE `accounts` ENABLE KEYS */;
 
+
 --
 -- Dumping data for table `token_black_list`
 --
 /*!40000 ALTER TABLE `token_black_list` DISABLE KEYS */;
 /*!40000 ALTER TABLE `token_black_list` ENABLE KEYS */;
 
+
 --
 -- Dumping data for table `refresh_token`
 --
 /*!40000 ALTER TABLE `refresh_token` DISABLE KEYS */;
 /*!40000 ALTER TABLE `refresh_token` ENABLE KEYS */;
+
 
 --
 -- Dumping data for table `status`
@@ -87,6 +94,7 @@ INSERT INTO status (id,name) VALUES (7,'Approved');
 INSERT INTO status (id,name) VALUES (8,'Rejected');
 /*!40000 ALTER TABLE `status` ENABLE KEYS */;
 
+
 --
 -- Dumping data for table `campaign`
 --
@@ -98,6 +106,7 @@ INSERT INTO campaign (id,name,description,from_date,end_date,campaign_type,notes
 INSERT INTO campaign (id,name,description,from_date,end_date,campaign_type,notes,action_reason,status_id,approved_rejected_by,created_by,created_date,last_modified_by,last_modified_date) VALUES (5,'Campaign 5','Campaign 5 description',to_date('2022-12-10 11:54:50','YYYY-MM-DD HH24:MI:SS'),to_date('2023-01-11 11:54:50','YYYY-MM-DD HH24:MI:SS'),2,'Note for campaign 5','',3,3,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
 /*!40000 ALTER TABLE `campaign` ENABLE KEYS */;
 
+
 --
 -- Dumping data for table `files`
 --
@@ -108,6 +117,7 @@ INSERT INTO files (id,name,description,file_type,image_url,campaign_id,created_b
 INSERT INTO files (id,name,description,file_type,image_url,campaign_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (4,'File 4','File 4 description',3,'https://google.com/image_4',4,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
 INSERT INTO files (id,name,description,file_type,image_url,campaign_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (5,'File 5','File 5 description',2,'https://google.com/image_5',5,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
 /*!40000 ALTER TABLE `files` ENABLE KEYS */;
+
 
 --
 -- Dumping data for table `campaign_target_list`
@@ -127,6 +137,7 @@ INSERT INTO campaign_target_list (campaign_id,target_list_id) VALUES (4,2);
 INSERT INTO campaign_target_list (campaign_id,target_list_id) VALUES (5,1);
 /*!40000 ALTER TABLE `campaign_target_list` ENABLE KEYS */;
 
+
 --
 -- Dumping data for table `target_list_account`
 --
@@ -145,15 +156,6 @@ INSERT INTO target_list_account (account_id,target_list_id) VALUES (2,4);
 INSERT INTO target_list_account (account_id,target_list_id) VALUES (3,4);
 /*!40000 ALTER TABLE `target_list_account` ENABLE KEYS */;
 
---
--- Dumping data for table `rule_configuration`
---
-/*!40000 ALTER TABLE `rule_configuration` DISABLE KEYS */;
-INSERT INTO rule_configuration (id,name,description,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,'The first transaction','The first transaction description','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO rule_configuration (id,name,description,created_by,created_date,last_modified_by,last_modified_date) VALUES (2,'By numbers of transaction','By numbers of transaction description','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO rule_configuration (id,name,description,created_by,created_date,last_modified_by,last_modified_date) VALUES (3,'By value per one transaction','By value per one transaction description','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO rule_configuration (id,name,description,created_by,created_date,last_modified_by,last_modified_date) VALUES (4,'Total value of transaction','Total value of transaction description','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
-/*!40000 ALTER TABLE `rule_configuration` ENABLE KEYS */;
 
 --
 -- Dumping data for table `transaction_type`
@@ -164,14 +166,29 @@ INSERT INTO transaction_type (id,name,description,created_by,created_date,last_m
 INSERT INTO transaction_type (id,name,description,created_by,created_date,last_modified_by,last_modified_date) VALUES (3,'Reward Condition','Reward Condition description','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
 /*!40000 ALTER TABLE `transaction_type` ENABLE KEYS */;
 
+
 --
 -- Dumping data for table `rules`
 --
 /*!40000 ALTER TABLE `rules` DISABLE KEYS */;
-INSERT INTO rules (id,name,description,duration_type,duration_value,campaign_id,rule_configuration_id,transaction_type_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,'Rule 1','Rule 1 description','DURATION_INSTANT','',1,1,1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO rules (id,name,description,duration_type,duration_value,campaign_id,rule_configuration_id,transaction_type_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (2,'Rule 2','Rule 3 description','DURATION_INSTANT','',1,1,1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO rules (id,name,description,duration_type,duration_value,campaign_id,rule_configuration_id,transaction_type_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (3,'Rule 3','Rule 3 description','DURATION_INSTANT','',1,1,1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO rules (id,name,description,duration_type,duration_value,rule_configuration,transaction_type_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,'Rule 1','Rule 1 description','DURATION_INSTANT','',1,1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO rules (id,name,description,duration_type,duration_value,rule_configuration,transaction_type_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (2,'Rule 2','Rule 3 description','DURATION_INSTANT','',2,1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO rules (id,name,description,duration_type,duration_value,rule_configuration,transaction_type_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (3,'Rule 3','Rule 3 description','DURATION_INSTANT','',3,1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
 /*!40000 ALTER TABLE `rules` ENABLE KEYS */;
+
+
+--
+-- Dumping data for table `target_list_account`
+--
+/*!40000 ALTER TABLE `campaign_rule` DISABLE KEYS */;
+INSERT INTO campaign_rule (campaign_id,rule_id) VALUES (1,1);
+INSERT INTO campaign_rule (campaign_id,rule_id) VALUES (1,2);
+INSERT INTO campaign_rule (campaign_id,rule_id) VALUES (1,3);
+INSERT INTO campaign_rule (campaign_id,rule_id) VALUES (2,1);
+INSERT INTO campaign_rule (campaign_id,rule_id) VALUES (2,2);
+INSERT INTO campaign_rule (campaign_id,rule_id) VALUES (3,1);
+/*!40000 ALTER TABLE `campaign_rule` ENABLE KEYS */;
+
 
 --
 -- Dumping data for table `reward`
@@ -180,12 +197,14 @@ INSERT INTO rules (id,name,description,duration_type,duration_value,campaign_id,
 INSERT INTO reward (id,name,description,prize_type,prize_value,number_of_prize,released,message_winner_en,message_winner_sw,message_balance_en,message_balance_sw,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,'Reward 1','Reward 1 description',1,1,1,1,'message_winner_en','message_winner_sw','message_balance_en','message_balance_sw','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
 /*!40000 ALTER TABLE `reward` ENABLE KEYS */;
 
+
 --
 -- Dumping data for table `reward_condition`
 --
 /*!40000 ALTER TABLE `reward_condition` DISABLE KEYS */;
 INSERT INTO reward_condition (id,amount_min,amount_max,times_min,times_max,number_codes,rule_id,reward_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,1,2,1,2,10,1,1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
 /*!40000 ALTER TABLE `reward_condition` ENABLE KEYS */;
+
 
 --
 -- Dumping data for table `generated_time`

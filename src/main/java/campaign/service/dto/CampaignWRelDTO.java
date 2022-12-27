@@ -40,6 +40,8 @@ public class CampaignWRelDTO {
 
     private List<RuleDTO> ruleList = new ArrayList<>();
 
+    private List<GeneratedTimeDTO> generatedTimeList = new ArrayList<>();
+
     private String createdBy;
 
     private LocalDateTime createdDate;
@@ -70,14 +72,17 @@ public class CampaignWRelDTO {
         if (campaign.getApprovedRejectedBy() != null) {
             this.approvedRejectedBy = new UserDTO(campaign.getApprovedRejectedBy());
         }
-        if (campaign.getTargetLists() != null) {
+        if (!campaign.getTargetLists().isEmpty()) {
             this.targetListList = campaign.getTargetLists().stream().map(TargetListCampaignDTO::new).collect(Collectors.toList());
         }
-        if (campaign.getFilesList() != null) {
+        if (!campaign.getFilesList().isEmpty()) {
             this.fileList = campaign.getFilesList().stream().map(FileDTO::new).collect(Collectors.toList());
         }
-        if (campaign.getRuleList() != null) {
+        if (!campaign.getRuleList().isEmpty()) {
             this.ruleList = campaign.getRuleList().stream().map(RuleDTO::new).collect(Collectors.toList());
+        }
+        if (!campaign.getGeneratedTimeList().isEmpty()) {
+            this.generatedTimeList = campaign.getGeneratedTimeList().stream().map(GeneratedTimeDTO::new).collect(Collectors.toList());
         }
 
         this.createdBy = campaign.getCreatedBy();
@@ -188,6 +193,14 @@ public class CampaignWRelDTO {
 
     public void setRuleList(List<RuleDTO> ruleList) {
         this.ruleList = ruleList;
+    }
+
+    public List<GeneratedTimeDTO> getGeneratedTimeList() {
+        return generatedTimeList;
+    }
+
+    public void setGeneratedTimeList(List<GeneratedTimeDTO> generatedTimeList) {
+        this.generatedTimeList = generatedTimeList;
     }
 
     public String getCreatedBy() {

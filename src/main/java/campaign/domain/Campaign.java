@@ -60,13 +60,19 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
     @JoinTable(name = "campaign_target_list",
         joinColumns = @JoinColumn(name = "target_list_id", nullable = false, referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "campaign_id", nullable = false, referencedColumnName = "id"))
-    private final List<TargetList> targetLists = new ArrayList<>();
+    private List<TargetList> targetLists = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "campaign")
-    private final List<File> fileList = new ArrayList<>();
+    private List<File> fileList = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "campaign_rule",
+        joinColumns = @JoinColumn(name = "campaign_id", nullable = false, referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "rule_id", nullable = false, referencedColumnName = "id"))
+    private List<Rule> ruleList = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "campaign")
-    private final List<Rule> ruleList = new ArrayList<>();
+    private List<GeneratedTime> generatedTimeList = new ArrayList<>();
 
     public Campaign() {
         this.name = "Default Campaign";
@@ -171,6 +177,10 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
         this.targetLists.addAll(targetLists);
     }
 
+    public void clearTargetLists() {
+        this.targetLists = new ArrayList<>();
+    }
+
     public List<File> getFilesList() {
         return fileList;
     }
@@ -185,6 +195,18 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
 
     public void addRuleList(List<Rule> ruleList) {
         this.ruleList.addAll(ruleList);
+    }
+
+    public void clearRuleList() {
+        this.ruleList = new ArrayList<>();
+    }
+
+    public List<GeneratedTime> getGeneratedTimeList() {
+        return generatedTimeList;
+    }
+
+    public void addGeneratedTimeList(List<GeneratedTime> generatedTimes) {
+        this.generatedTimeList.addAll(generatedTimes);
     }
 
     @Override
