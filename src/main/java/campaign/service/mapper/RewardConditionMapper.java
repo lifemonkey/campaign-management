@@ -71,4 +71,11 @@ public class RewardConditionMapper {
             return rewardCondition;
         }
     }
+
+    public List<RewardCondition> rewardConditionVMToRewardConditions(List<RewardConditionVM> rewardConditionVMs) {
+        return rewardConditionVMs.stream()
+            .filter(Objects::nonNull)
+            .map(this::rewardConditionVMToRewardCondition)
+            .collect(Collectors.toList());
+    }
 }

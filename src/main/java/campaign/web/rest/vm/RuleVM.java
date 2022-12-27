@@ -4,6 +4,8 @@ import campaign.domain.EDuration;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RuleVM {
 
@@ -21,6 +23,8 @@ public class RuleVM {
     private Long transactionType;
 
     private Long ruleConfiguration;
+
+    private List<RewardConditionVM> rewardConditions = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -68,6 +72,14 @@ public class RuleVM {
 
     public void setRuleConfiguration(Long ruleConfiguration) {
         this.ruleConfiguration = ruleConfiguration;
+    }
+
+    public List<RewardConditionVM> getRewardConditions() {
+        return rewardConditions;
+    }
+
+    public void addRewardConditions(List<RewardConditionVM> rewardConditions) {
+        this.rewardConditions.addAll(rewardConditions);
     }
 
     @Override

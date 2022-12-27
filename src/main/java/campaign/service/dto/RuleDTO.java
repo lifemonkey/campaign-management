@@ -5,6 +5,9 @@ import campaign.domain.Rule;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class RuleDTO {
 
@@ -22,6 +25,8 @@ public class RuleDTO {
     private String transactionType;
 
     private String ruleConfiguration;
+
+    private List<RuleRewardDTO> ruleRewardList = new ArrayList<>();
 
     private String createdBy;
 
@@ -42,6 +47,7 @@ public class RuleDTO {
         this.durationValue = rule.getDurationValue();
         this.ruleConfiguration = rule.getRuleConfiguration().getName();
         this.transactionType = rule.getTransactionType().getName();
+        this.ruleRewardList = rule.getRewardConditions().stream().map(RuleRewardDTO::new).collect(Collectors.toList());
         this.createdBy = rule.getCreatedBy();
         this.createdDate = rule.getCreatedDate();
         this.lastModifiedBy = rule.getLastModifiedBy();
@@ -103,6 +109,14 @@ public class RuleDTO {
 
     public void setRuleConfiguration(String ruleConfiguration) {
         this.ruleConfiguration = ruleConfiguration;
+    }
+
+    public List<RuleRewardDTO> getRuleRewardList() {
+        return ruleRewardList;
+    }
+
+    public void setRuleRewardList(List<RuleRewardDTO> ruleRewardList) {
+        this.ruleRewardList = ruleRewardList;
     }
 
     public String getCreatedBy() {
