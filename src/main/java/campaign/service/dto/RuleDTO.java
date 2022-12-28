@@ -22,9 +22,11 @@ public class RuleDTO {
 
     private String durationValue;
 
-    private String transactionType;
+    private TransactionTypeDTO transactionType;
 
     private Integer ruleConfiguration;
+
+    private Integer campaignType;
 
     private List<RuleRewardDTO> ruleRewardList = new ArrayList<>();
 
@@ -46,7 +48,8 @@ public class RuleDTO {
         this.durationType = rule.getDurationType();
         this.durationValue = rule.getDurationValue();
         this.ruleConfiguration = rule.getRuleConfiguration();
-        this.transactionType = rule.getTransactionType().getName();
+        this.transactionType = new TransactionTypeDTO(rule.getTransactionType());
+        this.campaignType = rule.getCampaignType();
         this.ruleRewardList = rule.getRewardConditions().stream().map(RuleRewardDTO::new).collect(Collectors.toList());
         this.createdBy = rule.getCreatedBy();
         this.createdDate = rule.getCreatedDate();
@@ -95,11 +98,11 @@ public class RuleDTO {
         this.durationValue = durationValue;
     }
 
-    public String getTransactionType() {
+    public TransactionTypeDTO getTransactionType() {
         return transactionType;
     }
 
-    public void setTransactionType(String transactionType) {
+    public void setTransactionType(TransactionTypeDTO transactionType) {
         this.transactionType = transactionType;
     }
 
@@ -109,6 +112,14 @@ public class RuleDTO {
 
     public void setRuleConfiguration(Integer ruleConfiguration) {
         this.ruleConfiguration = ruleConfiguration;
+    }
+
+    public Integer getCampaignType() {
+        return campaignType;
+    }
+
+    public void setCampaignType(Integer campaignType) {
+        this.campaignType = campaignType;
     }
 
     public List<RuleRewardDTO> getRuleRewardList() {
@@ -159,7 +170,6 @@ public class RuleDTO {
             ", description='" + description + '\'' +
             ", durationType=" + durationType +
             ", durationValue='" + durationValue + '\'' +
-            ", transactionType='" + transactionType + '\'' +
             ", ruleConfiguration='" + ruleConfiguration + '\'' +
             ", createdBy='" + createdBy + '\'' +
             ", createdDate=" + createdDate +

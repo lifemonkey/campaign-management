@@ -37,6 +37,9 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
     @Column(name = "rule_configuration")
     private Integer ruleConfiguration;
 
+    @Column(name = "campaign_type")
+    private Integer campaignType;
+
     @OneToOne
     @JoinColumn(name = "transaction_type_id", referencedColumnName = "id")
     private TransactionType transactionType;
@@ -109,6 +112,14 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
 
     public void setRuleConfiguration(Integer ruleConfiguration) {
         this.ruleConfiguration = ruleConfiguration;
+    }
+
+    public Integer getCampaignType() {
+        return campaignType;
+    }
+
+    public void setCampaignType(Integer campaignType) {
+        this.campaignType = campaignType;
     }
 
     public List<Campaign> getCampaignList() {

@@ -19,10 +19,13 @@ public class RuleMapper {
 
     private final FileMapper fileMapper;
 
-    public RuleMapper(UserMapper userMapper, TargetListMapper targetListMapper, FileMapper fileMapper) {
+    private final TransactionTypeMapper transactionTypeMapper;
+
+    public RuleMapper(UserMapper userMapper, TargetListMapper targetListMapper, FileMapper fileMapper, TransactionTypeMapper transactionTypeMapper) {
         this.userMapper = userMapper;
         this.targetListMapper = targetListMapper;
         this.fileMapper = fileMapper;
+        this.transactionTypeMapper = transactionTypeMapper;
     }
 
     public RuleDTO ruleToRuleDTO(Rule rule) {
@@ -56,7 +59,7 @@ public class RuleMapper {
                 rule.setRuleConfiguration(ruleDTO.getRuleConfiguration());
             }
             if (ruleDTO.getTransactionType() != null) {
-                rule.setTransactionType(new TransactionType(ruleDTO.getTransactionType()));
+                rule.setTransactionType(transactionTypeMapper.transactionTypeDTOToTransactionType(ruleDTO.getTransactionType()));
             }
 
             rule.setCreatedBy(ruleDTO.getCreatedBy());

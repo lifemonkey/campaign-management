@@ -24,6 +24,8 @@ public class RuleVM {
 
     private Integer ruleConfiguration;
 
+    private Integer campaignType;
+
     private List<RewardConditionVM> rewardConditions = new ArrayList<>();
 
     public String getName() {
@@ -74,6 +76,14 @@ public class RuleVM {
         this.ruleConfiguration = ruleConfiguration;
     }
 
+    public Integer getCampaignType() {
+        return campaignType;
+    }
+
+    public void setCampaignType(Integer campaignType) {
+        this.campaignType = campaignType;
+    }
+
     public List<RewardConditionVM> getRewardConditions() {
         return rewardConditions;
     }
@@ -90,6 +100,7 @@ public class RuleVM {
             ", durationType=" + durationType +
             ", durationValue='" + durationValue + '\'' +
             ", transactionType='" + transactionType + '\'' +
+            ", campaignType='" + campaignType + '\'' +
             ", ruleConfiguration='" + ruleConfiguration + '\'' +
             '}';
     }

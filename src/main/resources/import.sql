@@ -171,9 +171,9 @@ INSERT INTO transaction_type (id,name,description,created_by,created_date,last_m
 -- Dumping data for table `rules`
 --
 /*!40000 ALTER TABLE `rules` DISABLE KEYS */;
-INSERT INTO rules (id,name,description,duration_type,duration_value,rule_configuration,transaction_type_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,'Rule 1','Rule 1 description','DURATION_INSTANT','',1,1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO rules (id,name,description,duration_type,duration_value,rule_configuration,transaction_type_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (2,'Rule 2','Rule 3 description','DURATION_INSTANT','',2,1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO rules (id,name,description,duration_type,duration_value,rule_configuration,transaction_type_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (3,'Rule 3','Rule 3 description','DURATION_INSTANT','',3,1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO rules (id,name,description,duration_type,duration_value,rule_configuration,campaign_type,transaction_type_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,'Rule 1','Rule 1 description','DURATION_INSTANT','',1,1,1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO rules (id,name,description,duration_type,duration_value,rule_configuration,campaign_type,transaction_type_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (2,'Rule 2','Rule 3 description','DURATION_INSTANT','',2,1,1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO rules (id,name,description,duration_type,duration_value,rule_configuration,campaign_type,transaction_type_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (3,'Rule 3','Rule 3 description','DURATION_INSTANT','',3,1,1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
 /*!40000 ALTER TABLE `rules` ENABLE KEYS */;
 
 
@@ -214,7 +214,6 @@ INSERT INTO generated_time (id,start_time,end_time,campaign_id,created_by,create
 INSERT INTO generated_time (id,start_time,end_time,campaign_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (2,to_date('2022-11-26 18:07:08','YYYY-MM-DD HH24:MI:SS'), to_date('2022-11-27 18:07:08','YYYY-MM-DD HH24:MI:SS'), 1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
 INSERT INTO generated_time (id,start_time,end_time,campaign_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (3,to_date('2022-11-27 18:07:08','YYYY-MM-DD HH24:MI:SS'), to_date('2022-11-28 18:07:08','YYYY-MM-DD HH24:MI:SS'), 1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
 /*!40000 ALTER TABLE `status` ENABLE KEYS */;
-
 
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
