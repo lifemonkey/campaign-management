@@ -44,7 +44,7 @@ spring:
 #    username: root
 #    password: root
     # Oracle
-    url: jdbc:oracle:thin:@//51.15.204.21:49161/xe #jdbc:oracle:thin:@//10.58.244.196:1521/orclpdb
+    url: jdbc:oracle:thin:@//10.58.244.196:1521/orclpdb #jdbc:oracle:thin:@//51.15.204.21:49161/xe
     driver-class-name: oracle.jdbc.OracleDriver
     username: LUCKY_DRAW_TANZ
     password: LUCKY_DRAW_TANZ

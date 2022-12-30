@@ -1,7 +1,6 @@
 package campaign.service.mapper;
 
 import campaign.domain.Rule;
-import campaign.domain.TransactionType;
 import campaign.service.dto.RuleDTO;
 import campaign.web.rest.vm.RuleVM;
 import org.springframework.stereotype.Service;
@@ -47,6 +46,7 @@ public class RuleMapper {
             rule.setId(ruleDTO.getId());
             rule.setName(ruleDTO.getName());
             rule.setDescription(ruleDTO.getDescription());
+            rule.setCampaignType(ruleDTO.getCampaignType());
             if (ruleDTO.getDurationType() != null) {
                 rule.setDurationType(ruleDTO.getDurationType());
                 // add some condition here to set condition values
@@ -86,6 +86,10 @@ public class RuleMapper {
 
             if (ruleVM.getDescription() != null) {
                 rule.setDescription(ruleVM.getDescription());
+            }
+
+            if (ruleVM.getCampaignType() != null) {
+                rule.setCampaignType(ruleVM.getCampaignType());
             }
 
             if (ruleVM.getDurationType() != null) {

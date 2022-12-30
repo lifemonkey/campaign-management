@@ -269,7 +269,7 @@
             <!-- constraints -->
             <column name="rule_configuration" type="bigint"/>
             <column name="transaction_type_id" type="bigint"/>
-            <column name="campaign_type" type="bigint"/>
+            <column name="campaign_type" type="int"/>
             <!-- Auditing fields -->
             <column name="created_by" type="varchar(50)">
                 <constraints nullable="false"/>
