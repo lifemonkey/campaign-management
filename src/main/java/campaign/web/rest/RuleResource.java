@@ -41,8 +41,17 @@ public class RuleResource {
      */
     @GetMapping("/rules")
     @Timed
-    public ResponseEntity<List<RuleDTO>> getAllRules(Pageable pageable) {
-        Page<RuleDTO> page = ruleService.getAllRules(pageable);
+    public ResponseEntity<List<RuleDTO>> getAllRules(
+        Pageable pageable,
+        @RequestParam(required = false) String search,
+        @RequestParam(required = false) Integer type
+    ) {
+        Page<RuleDTO> page;
+        if (search != null || type != null) {
+            page = ruleService.searchRules(pageable, search, type);
+        } else {
+            page = ruleService.getAllRules(pageable);
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/rules");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

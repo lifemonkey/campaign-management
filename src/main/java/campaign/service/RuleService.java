@@ -2,6 +2,7 @@ package campaign.service;
 
 import campaign.domain.*;
 import campaign.repository.*;
+import campaign.service.dto.CampaignDTO;
 import campaign.service.dto.RuleDTO;
 import campaign.service.mapper.RewardConditionMapper;
 import campaign.service.mapper.RuleMapper;
@@ -59,6 +60,17 @@ public class RuleService {
         }
 
         return new RuleDTO();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<RuleDTO> searchRules(Pageable pageable, String search, Integer campaignType) {
+        if (search != null && campaignType == null) {
+            return ruleRepository.findAllByNameContaining(search, pageable).map(RuleDTO::new);
+        } else if (search == null && campaignType != null) {
+            return ruleRepository.findAllByCampaignType(campaignType, pageable).map(RuleDTO::new);
+        } else {
+            return ruleRepository.findAllByNameContainingAndCampaignType(search, campaignType, pageable).map(RuleDTO::new);
+        }
     }
 
     @Transactional(readOnly = true)
