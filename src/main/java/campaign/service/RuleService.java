@@ -5,6 +5,7 @@ import campaign.repository.*;
 import campaign.service.dto.RuleDTO;
 import campaign.service.mapper.RewardConditionMapper;
 import campaign.service.mapper.RuleMapper;
+import campaign.web.rest.vm.RewardConditionVM;
 import campaign.web.rest.vm.RuleVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -24,7 +26,6 @@ public class RuleService {
 
     private final RuleRepository ruleRepository;
 
-
     private final TransactionTypeRepository transactionTypeRepository;
 
     private final RuleMapper ruleMapper;
@@ -33,17 +34,21 @@ public class RuleService {
 
     private final RewardConditionMapper rewardConditionMapper;
 
+    private final RewardRepository rewardRepository;
+
     public RuleService(RuleRepository ruleRepository,
                        TransactionTypeRepository transactionTypeRepository,
                        RuleMapper ruleMapper,
                        RewardConditionRepository rewardConditionRepository,
-                       RewardConditionMapper rewardConditionMapper
+                       RewardConditionMapper rewardConditionMapper,
+                       RewardRepository rewardRepository
     ) {
         this.ruleRepository = ruleRepository;
         this.transactionTypeRepository = transactionTypeRepository;
         this.ruleMapper = ruleMapper;
         this.rewardConditionRepository = rewardConditionRepository;
         this.rewardConditionMapper = rewardConditionMapper;
+        this.rewardRepository = rewardRepository;
     }
 
     @Transactional(readOnly = true)
@@ -75,18 +80,20 @@ public class RuleService {
                     rule.setTransactionType(transactionTypeOpt.get());
                 }
             }
-            // save rule
-            ruleRepository.save(rule);
 
             // handle reward-conditions
             if (ruleVM.getRewardConditions().size() > 0) {
                 // save reward conditions
-                List<RewardCondition> rewardConditionList = rewardConditionMapper.rewardConditionVMToRewardConditions(ruleVM.getRewardConditions());
-                rewardConditionList.forEach(rewardCondition -> rewardCondition.setRule(rule));
+                List<RewardConditionVM> rewardConditionVMs = ruleVM.getRewardConditions();
+                List<Reward> rewardList = rewardRepository.findAllById(
+                    rewardConditionVMs.stream().map(RewardConditionVM::getRewardId).collect(Collectors.toList()));
+                List<RewardCondition> rewardConditionList =
+                    rewardConditionMapper.rewardConditionVMToRewardConditions(rewardConditionVMs, rule, rewardList);
                 rewardConditionRepository.saveAll(rewardConditionList);
+                rule.addRewardConditions(rewardConditionList);
             }
 
-            return ruleMapper.ruleToRuleDTO(rule);
+            return ruleMapper.ruleToRuleDTO(ruleRepository.save(rule));
         }
 
         return new RuleDTO();

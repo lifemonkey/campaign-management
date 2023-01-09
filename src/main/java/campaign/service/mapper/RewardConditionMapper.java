@@ -1,12 +1,15 @@
 package campaign.service.mapper;
 
+import campaign.domain.Reward;
 import campaign.domain.RewardCondition;
+import campaign.domain.Rule;
 import campaign.service.dto.RewardConditionDTO;
 import campaign.web.rest.vm.RewardConditionVM;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -72,10 +75,30 @@ public class RewardConditionMapper {
         }
     }
 
-    public List<RewardCondition> rewardConditionVMToRewardConditions(List<RewardConditionVM> rewardConditionVMs) {
+    public RewardCondition rewardConditionVMToRewardCondition(RewardConditionVM rewardConditionVM, Rule rule, Reward reward) {
+        if (rewardConditionVM == null) {
+            return null;
+        } else {
+            RewardCondition rewardCondition = this.rewardConditionVMToRewardCondition(rewardConditionVM);
+            rewardCondition.setRule(rule);
+            if (reward != null) {
+                rewardCondition.setReward(reward);
+            }
+            return rewardCondition;
+        }
+    }
+
+    public List<RewardCondition> rewardConditionVMToRewardConditions(
+        List<RewardConditionVM> rewardConditionVMs,
+        Rule rule,
+        List<Reward> rewardList
+    ) {
         return rewardConditionVMs.stream()
             .filter(Objects::nonNull)
-            .map(this::rewardConditionVMToRewardCondition)
+            .map(rewardConditionVM -> {
+                Optional<Reward> rewardOpt = rewardList.stream().filter(r -> rewardConditionVM.getRewardId() == r.getId()).findFirst();
+                return this.rewardConditionVMToRewardCondition(rewardConditionVM, rule, rewardOpt.get());
+            })
             .collect(Collectors.toList());
     }
 }
