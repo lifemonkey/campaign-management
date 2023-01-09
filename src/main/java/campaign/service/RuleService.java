@@ -83,12 +83,12 @@ public class RuleService {
 
             // handle reward-conditions
             if (ruleVM.getRewardConditions().size() > 0) {
-                // save reward conditions
                 List<RewardConditionVM> rewardConditionVMs = ruleVM.getRewardConditions();
                 List<Reward> rewardList = rewardRepository.findAllById(
                     rewardConditionVMs.stream().map(RewardConditionVM::getRewardId).collect(Collectors.toList()));
                 List<RewardCondition> rewardConditionList =
                     rewardConditionMapper.rewardConditionVMToRewardConditions(rewardConditionVMs, rule, rewardList);
+                // save reward conditions
                 rewardConditionRepository.saveAll(rewardConditionList);
                 rule.addRewardConditions(rewardConditionList);
             }
@@ -116,7 +116,6 @@ public class RuleService {
             }
             toBerInserted.setRuleConfiguration(cloneRuleOpt.get().getRuleConfiguration());
             toBerInserted.setTransactionType(cloneRuleOpt.get().getTransactionType());
-//            toBerInserted.setCampaign(cloneRuleOpt.get().getCampaign());
         }
 
         return ruleMapper.ruleToRuleDTO(ruleRepository.save(toBerInserted));
@@ -135,8 +134,19 @@ public class RuleService {
             }
         }
 
-        ruleRepository.save(rule);
-        return ruleMapper.ruleToRuleDTO(rule);
+        // handle reward-conditions
+        if (ruleVM.getRewardConditions() != null) {
+            List<RewardConditionVM> rewardConditionVMs = ruleVM.getRewardConditions();
+            List<Reward> rewardList = rewardRepository.findAllById(
+                rewardConditionVMs.stream().map(RewardConditionVM::getRewardId).collect(Collectors.toList()));
+            List<RewardCondition> rewardConditionList =
+                rewardConditionMapper.rewardConditionVMToRewardConditions(rewardConditionVMs, rule, rewardList);
+            // save reward conditions
+//            rewardConditionRepository.saveAll(rewardConditionList);
+            rule.addRewardConditions(rewardConditionList);
+        }
+
+        return ruleMapper.ruleToRuleDTO(ruleRepository.save(rule));
     }
 
     @Transactional(rollbackFor = Exception.class)

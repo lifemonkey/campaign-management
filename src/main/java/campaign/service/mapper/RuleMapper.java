@@ -100,16 +100,9 @@ public class RuleMapper {
                 }
             }
 
-//            if (ruleVM.getRewardCondition() != null) {
-//                rule.setRewardCondition(ruleVM.getRewardCondition());
-//            }
-
             if (ruleVM.getRuleConfiguration() != null) {
                 rule.setRuleConfiguration(ruleVM.getRuleConfiguration());
             }
-//            if (ruleVM.getTransactionType() != null) {
-//                rule.setTransactionType(ruleVM.getTransactionType());
-//            }
 
             return rule;
         }
