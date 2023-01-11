@@ -44,6 +44,11 @@ public class RewardService {
         return rewardRepository.findAll(pageable).map(RewardDTO::new);
     }
 
+    @Transactional(readOnly = true)
+    public Page<RewardDTO> searchRewards(Pageable pageable, String search) {
+        return rewardRepository.findAllByNameContaining(search, pageable).map(RewardDTO::new);
+    }
+
     @Transactional(rollbackFor = Exception.class)
     public RewardDTO createReward(RewardVM rewardVM) {
         Reward reward = rewardMapper.rewardVMToReward(rewardVM);

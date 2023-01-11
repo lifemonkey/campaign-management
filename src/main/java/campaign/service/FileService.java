@@ -49,6 +49,17 @@ public class FileService {
         return fileRepository.findAll(pageable).map(FileDTO::new);
     }
 
+    @Transactional(readOnly = true)
+    public Page<FileDTO> searchFiles(Pageable pageable, String search, Integer type) {
+        if (search != null && type == null) {
+            return fileRepository.findAllByNameContaining(search, pageable).map(FileDTO::new);
+        } else if (search == null && type != null) {
+            return fileRepository.findAllByFileType(type, pageable).map(FileDTO::new);
+        } else {
+            return fileRepository.findAllByNameContainingAndFileType(search, type, pageable).map(FileDTO::new);
+        }
+    }
+
     @Transactional(rollbackFor = Exception.class)
     public FileDTO createFile(FileVM fileVM) {
         File file = fileMapper.fileVMToFile(fileVM);

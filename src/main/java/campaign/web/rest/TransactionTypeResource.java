@@ -41,8 +41,16 @@ public class TransactionTypeResource {
      */
     @GetMapping("/transaction-types")
     @Timed
-    public ResponseEntity<List<TransactionTypeDTO>> getAllTransactionTypes(Pageable pageable) {
-        Page<TransactionTypeDTO> page = transactionTypeService.getAllTransactionTypes(pageable);
+    public ResponseEntity<List<TransactionTypeDTO>> getAllTransactionTypes(
+        Pageable pageable,
+        @RequestParam(required = false) String search
+    ) {
+        Page<TransactionTypeDTO> page;
+        if (search != null) {
+            page = transactionTypeService.searchTransactionTypes(pageable, search);
+        } else {
+            page = transactionTypeService.getAllTransactionTypes(pageable);
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/transaction-types");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

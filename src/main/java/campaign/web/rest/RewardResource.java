@@ -1,14 +1,11 @@
 package campaign.web.rest;
 
 import campaign.security.AuthoritiesConstants;
-import campaign.service.RewardConditionService;
 import campaign.service.RewardService;
-import campaign.service.dto.RewardConditionDTO;
 import campaign.service.dto.RewardDTO;
 import campaign.web.rest.util.PaginationUtil;
 import campaign.web.rest.vm.ResponseCode;
 import campaign.web.rest.vm.ResponseVM;
-import campaign.web.rest.vm.RewardConditionVM;
 import campaign.web.rest.vm.RewardVM;
 import io.micrometer.core.annotation.Timed;
 import org.slf4j.Logger;
@@ -44,8 +41,14 @@ public class RewardResource {
      */
     @GetMapping("/rewards")
     @Timed
-    public ResponseEntity<List<RewardDTO>> getAllRewards(Pageable pageable) {
-        Page<RewardDTO> page = rewardService.getAllRewards(pageable);
+    public ResponseEntity<List<RewardDTO>> getAllRewards(Pageable pageable, @RequestParam(required = false) String search) {
+        Page<RewardDTO> page;
+
+        if (search != null) {
+            page = rewardService.searchRewards(pageable, search);
+        } else {
+            page = rewardService.getAllRewards(pageable);
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/reward-conditions");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

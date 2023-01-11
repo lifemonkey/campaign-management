@@ -4,7 +4,6 @@ import campaign.security.AuthoritiesConstants;
 import campaign.service.FileService;
 import campaign.service.dto.FileDTO;
 import campaign.web.rest.util.PaginationUtil;
-import campaign.web.rest.vm.FileVM;
 import campaign.web.rest.vm.ResponseCode;
 import campaign.web.rest.vm.ResponseVM;
 import io.micrometer.core.annotation.Timed;
@@ -42,8 +41,17 @@ public class FileResource {
      */
     @GetMapping("/files")
     @Timed
-    public ResponseEntity<List<FileDTO>> getAllFiles(Pageable pageable) {
-        Page<FileDTO> page = fileService.getAllFiles(pageable);
+    public ResponseEntity<List<FileDTO>> getAllFiles(
+        Pageable pageable,
+        @RequestParam(required = false) String search,
+        @RequestParam(required = false) Integer type
+    ) {
+        Page<FileDTO> page;
+        if (search != null || type != null) {
+            page = fileService.searchFiles(pageable, search, type);
+        } else {
+            page = fileService.getAllFiles(pageable);
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/files");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

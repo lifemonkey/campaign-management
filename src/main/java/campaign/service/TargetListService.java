@@ -44,6 +44,18 @@ public class TargetListService {
     }
 
     @Transactional(readOnly = true)
+    public Page<TargetListDTO> searchTargetList(Pageable pageable, String search, Integer type) {
+        if (search != null && type == null) {
+            return targetListRepository.findAllByNameContaining(search, pageable).map(TargetListDTO::new);
+        } else if (search == null && type != null) {
+            return targetListRepository.findAllByTargetType(type, pageable).map(TargetListDTO::new);
+        } else {
+            return targetListRepository.findAllByNameContainingAndTargetType(search, type, pageable).map(TargetListDTO::new);
+        }
+    }
+
+
+    @Transactional(readOnly = true)
     public TargetListDTO getTargetListById(Long id) {
         Optional<TargetList> targetListOpt = targetListRepository.findById(id);
         if (targetListOpt.isPresent()) {

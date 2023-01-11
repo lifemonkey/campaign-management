@@ -42,10 +42,14 @@ public class TransactionTypeService {
         return new TransactionTypeDTO();
     }
 
-
     @Transactional(readOnly = true)
     public Page<TransactionTypeDTO> getAllTransactionTypes(Pageable pageable) {
         return transactionTypeRepository.findAll(pageable).map(TransactionTypeDTO::new);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<TransactionTypeDTO> searchTransactionTypes(Pageable pageable, String search) {
+        return transactionTypeRepository.findAllByNameContaining(search, pageable).map(TransactionTypeDTO::new);
     }
 
     @Transactional(rollbackFor = Exception.class)

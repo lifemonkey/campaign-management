@@ -42,8 +42,17 @@ public class TargetListResource {
      */
     @GetMapping("/target-list")
     @Timed
-    public ResponseEntity<List<TargetListDTO>> getAllTargetList(Pageable pageable) {
-        Page<TargetListDTO> page = targetListService.getAllTargetList(pageable);
+    public ResponseEntity<List<TargetListDTO>> getAllTargetList(
+        Pageable pageable,
+        @RequestParam(required = false) String search,
+        @RequestParam(required = false) Integer type
+    ) {
+        Page<TargetListDTO> page;
+        if (search != null || type != null) {
+            page = targetListService.searchTargetList(pageable, search, type);
+        } else {
+            page = targetListService.getAllTargetList(pageable);
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/target-list");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

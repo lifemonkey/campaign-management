@@ -42,8 +42,16 @@ public class UserResource {
     @GetMapping("/users")
     @Timed
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
-    public ResponseEntity<List<UserDTO>> getAllUsers(Pageable pageable) {
-        final Page<UserDTO> page = userService.getAllUsers(pageable);
+    public ResponseEntity<List<UserDTO>> getAllUsers(
+        Pageable pageable,
+        @RequestParam(required = false) String search
+    ) {
+        final Page<UserDTO> page;
+        if (search != null) {
+            page = userService.searchUsers(pageable, search);
+        } else {
+            page = userService.getAllUsers(pageable);
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

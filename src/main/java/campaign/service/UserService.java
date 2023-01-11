@@ -72,6 +72,11 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
+    public Page<UserDTO> searchUsers(Pageable pageable, String search) {
+        return userRepository.findAllByUsernameContaining(search, pageable).map(UserDTO::new);
+    }
+
+    @Transactional(readOnly = true)
     public UserDTO getUserById(Long id) {
         Optional<User> userOpt = userRepository.findById(id);
         return new UserDTO(userOpt.orElse(null));
