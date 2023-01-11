@@ -4,8 +4,21 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
 
-        <changeSet id="00000000000000" author="jhipster">
-        <createSequence sequenceName="sequence_generator" startValue="1717" incrementBy="1"/>
+    <changeSet id="00000000000000" author="jhipster">
+<!--        <createSequence sequenceName="account_id_sequence" startValue="100" incrementBy="1"/>-->
+<!--        <createSequence sequenceName="campaign_id_sequence" startValue="100" incrementBy="1"/>-->
+<!--        <createSequence sequenceName="field_id_sequence" startValue="100" incrementBy="1"/>-->
+<!--        <createSequence sequenceName="generated_time_id_sequence" startValue="100" incrementBy="1"/>-->
+<!--        <createSequence sequenceName="refresh_token_id_sequence" startValue="100" incrementBy="1"/>-->
+<!--        <createSequence sequenceName="reward_id_sequence" startValue="100" incrementBy="1"/>-->
+<!--        <createSequence sequenceName="reward_condition_id_sequence" startValue="100" incrementBy="1"/>-->
+<!--        <createSequence sequenceName="role_id_sequence" startValue="100" incrementBy="1"/>-->
+<!--        <createSequence sequenceName="rule_id_sequence" startValue="100" incrementBy="1"/>-->
+<!--        <createSequence sequenceName="status_id_sequence" startValue="100" incrementBy="1"/>-->
+<!--        <createSequence sequenceName="target_list_id_sequence" startValue="100" incrementBy="1"/>-->
+<!--        <createSequence sequenceName="token_black_list_id_sequence" startValue="100" incrementBy="1"/>-->
+<!--        <createSequence sequenceName="transaction_type_id_sequence" startValue="100" incrementBy="1"/>-->
+<!--        <createSequence sequenceName="user_id_sequence" startValue="100" incrementBy="1"/>-->
     </changeSet>
 
     <!--
@@ -67,6 +80,7 @@
             <column name="image_blob" type="longblob" />
             <!-- constraints -->
             <column name="role_id" type="bigint" />
+            <column name="status" type="bigint" />
             <!-- Auditing fields -->
             <column name="created_by" type="varchar(50)">
                 <constraints nullable="false"/>
@@ -265,9 +279,8 @@
             <column name="description" type="varchar(4000)"/>
             <column name="duration_type" type="varchar(200)"/>
             <column name="duration_value" type="varchar(200)"/>
-            <column name="reward_condition" type="int"/>
-            <!-- constraints -->
             <column name="rule_configuration" type="bigint"/>
+            <!-- constraints -->
             <column name="transaction_type_id" type="bigint"/>
             <column name="campaign_type" type="int"/>
             <!-- Auditing fields -->
@@ -299,6 +312,62 @@
             <column name="start_time" type="timestamp"/>
             <column name="end_time" type="timestamp"/>
             <column name="campaign_id" type="bigint"/>
+            <!-- Auditing fields -->
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(50)" />
+            <column name="last_modified_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="reward_condition">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="amount_min" type="bigint"/>
+            <column name="amount_max" type="bigint"/>
+            <column name="times_min" type="bigint"/>
+            <column name="times_max" type="bigint"/>
+            <column name="number_codes" type="bigint"/>
+            <!-- constraints -->
+            <column name="rule_id" type="bigint"/>
+            <column name="reward_id" type="bigint"/>
+            <!-- Auditing fields -->
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(50)" />
+            <column name="last_modified_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="reward">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(400)"/>
+            <column name="description" type="varchar(400)"/>
+            <column name="prize_type" type="int"/>
+            <column name="prize_value" type="int"/>
+            <column name="number_of_prize" type="int"/>
+            <column name="released" type="int"/>
+            <column name="message_winner_en" type="varchar(400)"/>
+            <column name="message_winner_sw" type="varchar(400)"/>
+            <column name="message_balance_en" type="varchar(400)"/>
+            <column name="message_balance_sw" type="varchar(400)"/>
+
+            <!-- constraints -->
+            <column name="rule_id" type="bigint"/>
+            <column name="reward_id" type="bigint"/>
             <!-- Auditing fields -->
             <column name="created_by" type="varchar(50)">
                 <constraints nullable="false"/>
@@ -379,14 +448,6 @@
                                  onUpdate="CASCADE"
                                  onDelete="CASCADE"/>
 
-        <addForeignKeyConstraint baseColumnNames="campaign_id"
-                                 baseTableName="rules"
-                                 constraintName="fk_rules_campaign_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="campaign"
-                                 onUpdate="CASCADE"
-                                 onDelete="CASCADE"/>
-
         <addForeignKeyConstraint baseColumnNames="transaction_type_id"
                                  baseTableName="rules"
                                  constraintName="fk_rule_transaction_type_id"
@@ -419,16 +480,39 @@
                                  onUpdate="CASCADE"
                                  onDelete="CASCADE"/>
 
+        <addForeignKeyConstraint baseColumnNames="rule_id"
+                                 baseTableName="reward_condition"
+                                 constraintName="fk_reward_condition_rule_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="rules"
+                                 onUpdate="CASCADE"
+                                 onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint baseColumnNames="reward_id"
+                                 baseTableName="reward_condition"
+                                 constraintName="fk_reward_condition_reward_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="reward"
+                                 onUpdate="CASCADE"
+                                 onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint baseColumnNames="status"
+                                 baseTableName="users"
+                                 constraintName="fk_users_status"
+                                 referencedColumnNames="id"
+                                 referencedTableName="status"
+                                 onUpdate="CASCADE"
+                                 onDelete="CASCADE"/>
+
         <loadData file="config/liquibase/roles.csv" separator=";" tableName="roles"/>
+        <loadData file="config/liquibase/status.csv" separator=";" tableName="status"/>
         <loadData file="config/liquibase/users.csv" separator=";" tableName="users"/>
         <loadData file="config/liquibase/accounts.csv" separator=";" tableName="accounts"/>
         <loadData file="config/liquibase/target_list.csv" separator=";" tableName="target_list"/>
         <loadData file="config/liquibase/target_list_account.csv" separator=";" tableName="target_list_account"/>
-        <loadData file="config/liquibase/status.csv" separator=";" tableName="status"/>
         <loadData file="config/liquibase/campaign.csv" separator=";" tableName="campaign"/>
         <loadData file="config/liquibase/campaign_target_list.csv" separator=";" tableName="campaign_target_list"/>
         <loadData file="config/liquibase/files.csv" separator=";" tableName="files"/>
-        <loadData file="config/liquibase/rule_configuration.csv"  separator=";" tableName="rule_configuration"/>
         <loadData file="config/liquibase/transaction_type.csv" separator=";" tableName="transaction_type"/>
         <loadData file="config/liquibase/rule.csv" separator=";" tableName="rules"/>
     </changeSet>

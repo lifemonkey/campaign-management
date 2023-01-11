@@ -153,8 +153,10 @@ public class RuleService {
                 rewardConditionVMs.stream().map(RewardConditionVM::getRewardId).collect(Collectors.toList()));
             List<RewardCondition> rewardConditionList =
                 rewardConditionMapper.rewardConditionVMToRewardConditions(rewardConditionVMs, rule, rewardList);
-            // save reward conditions
-//            rewardConditionRepository.saveAll(rewardConditionList);
+            // detach rule from reward-conditions
+            rewardConditionRepository.saveAll(rewardConditionList);
+            // update reward conditions list in rule
+            rule.clearRewardConditions();
             rule.addRewardConditions(rewardConditionList);
         }
 

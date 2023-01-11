@@ -80,7 +80,9 @@ public class RewardConditionMapper {
             return null;
         } else {
             RewardCondition rewardCondition = this.rewardConditionVMToRewardCondition(rewardConditionVM);
-            rewardCondition.setRule(rule);
+            if (rule.getRewardConditions().stream().filter(rc -> rc.getId() == rewardConditionVM.getId()).findAny().isPresent()) {
+                rewardCondition.setRule(rule);
+            }
             if (reward != null) {
                 rewardCondition.setReward(reward);
             }
