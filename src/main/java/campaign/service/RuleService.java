@@ -15,8 +15,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -148,16 +150,24 @@ public class RuleService {
 
         // handle reward-conditions
         if (ruleVM.getRewardConditions() != null) {
-            List<RewardConditionVM> rewardConditionVMs = ruleVM.getRewardConditions();
-            List<Reward> rewardList = rewardRepository.findAllById(
-                rewardConditionVMs.stream().map(RewardConditionVM::getRewardId).collect(Collectors.toList()));
-            List<RewardCondition> rewardConditionList =
-                rewardConditionMapper.rewardConditionVMToRewardConditions(rewardConditionVMs, rule, rewardList);
+            Set<Long> rewardConditionIds =
+                ruleVM.getRewardConditions().stream().map(RewardConditionVM::getId).collect(Collectors.toSet());;
+
             // detach rule from reward-conditions
-            rewardConditionRepository.saveAll(rewardConditionList);
-            // update reward conditions list in rule
-            rule.clearRewardConditions();
-            rule.addRewardConditions(rewardConditionList);
+            List<RewardCondition> toBeDetached = rewardConditionRepository.findAllByRuleId(rule.getId());
+            //rule.getRewardConditions().stream().map(RewardCondition::removeRule).collect(Collectors.toList());
+            rewardConditionRepository.saveAll(
+                toBeDetached.stream()
+                    .filter(rc -> !rewardConditionIds.contains(rc.getId()))
+                    .map(RewardCondition::removeRule)
+                    .collect(Collectors.toList()));
+
+            List<Reward> rewardList = rewardRepository.findAllById(
+                ruleVM.getRewardConditions().stream().map(RewardConditionVM::getRewardId).collect(Collectors.toList()));
+
+            // handle reward-conditions
+            rule.addRewardConditions(
+                rewardConditionMapper.rewardConditionVMToRewardConditions(ruleVM.getRewardConditions(), rule, rewardList));
         }
 
         return ruleMapper.ruleToRuleDTO(ruleRepository.save(rule));

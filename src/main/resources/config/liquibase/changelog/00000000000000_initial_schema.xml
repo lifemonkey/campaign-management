@@ -515,6 +515,9 @@
         <loadData file="config/liquibase/files.csv" separator=";" tableName="files"/>
         <loadData file="config/liquibase/transaction_type.csv" separator=";" tableName="transaction_type"/>
         <loadData file="config/liquibase/rule.csv" separator=";" tableName="rules"/>
+        <loadData file="config/liquibase/reward.csv" separator=";" tableName="reward"/>
+        <loadData file="config/liquibase/reward_condition.csv" separator=";" tableName="reward_condition"/>
+
     </changeSet>
 
     <changeSet author="jhipster" id="00000000000002" context="test">

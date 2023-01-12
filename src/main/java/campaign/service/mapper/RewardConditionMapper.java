@@ -7,6 +7,7 @@ import campaign.service.dto.RewardConditionDTO;
 import campaign.web.rest.vm.RewardConditionVM;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -80,9 +81,8 @@ public class RewardConditionMapper {
             return null;
         } else {
             RewardCondition rewardCondition = this.rewardConditionVMToRewardCondition(rewardConditionVM);
-            if (rule.getRewardConditions().stream().filter(rc -> rc.getId() == rewardConditionVM.getId()).findAny().isPresent()) {
-                rewardCondition.setRule(rule);
-            }
+            rewardCondition.setRule(rule);
+
             if (reward != null) {
                 rewardCondition.setReward(reward);
             }
@@ -100,7 +100,6 @@ public class RewardConditionMapper {
             .map(rewardConditionVM -> {
                 Optional<Reward> rewardOpt = rewardList.stream().filter(r -> rewardConditionVM.getRewardId() == r.getId()).findFirst();
                 return this.rewardConditionVMToRewardCondition(rewardConditionVM, rule, rewardOpt.get());
-            })
-            .collect(Collectors.toList());
+            }).collect(Collectors.toList());
     }
 }

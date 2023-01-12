@@ -110,6 +110,11 @@ public class RewardCondition extends AbstractAuditingEntity implements Serializa
         this.rule = rule;
     }
 
+    public RewardCondition removeRule() {
+        this.rule = null;
+        return this;
+    }
+
     public Reward getReward() {
         return reward;
     }
