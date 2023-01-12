@@ -15,9 +15,9 @@ public class TransactionType extends AbstractAuditingEntity implements Serializa
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaction_type_sequence_generator")
-    @SequenceGenerator(name = "transaction_type_sequence_generator", sequenceName = "transaction_type_id_sequence", initialValue = 100, allocationSize = 1)
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaction_type_sequence_generator")
+//    @SequenceGenerator(name = "transaction_type_sequence_generator", sequenceName = "transaction_type_id_sequence", initialValue = 100, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank

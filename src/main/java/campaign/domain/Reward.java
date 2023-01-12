@@ -14,9 +14,9 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reward_sequence_generator")
-    @SequenceGenerator(name = "reward_sequence_generator", sequenceName = "reward_id_sequence", initialValue = 100, allocationSize = 1)
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reward_sequence_generator")
+//    @SequenceGenerator(name = "reward_sequence_generator", sequenceName = "reward_id_sequence", initialValue = 100, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "name", length = 400)

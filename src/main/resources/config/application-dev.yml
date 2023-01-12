@@ -40,14 +40,14 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     initialization-mode: always
     # MYSQL
-#    url: jdbc:mysql://localhost:3306/LUCKY_DRAW_TANZ?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
-#    username: root
-#    password: root
+    url: jdbc:mysql://localhost:3306/LUCKY_DRAW_TANZ?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    username: root
+    password: root
     # Oracle
-    url: jdbc:oracle:thin:@//10.58.244.196:1521/orclpdb #jdbc:oracle:thin:@//51.15.204.21:49161/xe
-    driver-class-name: oracle.jdbc.OracleDriver
-    username: LUCKY_DRAW_TANZ
-    password: LUCKY_DRAW_TANZ
+#    url: jdbc:oracle:thin:@//10.58.244.196:1521/orclpdb #jdbc:oracle:thin:@//51.15.204.21:49161/xe
+#    driver-class-name: oracle.jdbc.OracleDriver
+#    username: LUCKY_DRAW_TANZ
+#    password: LUCKY_DRAW_TANZ
     hikari:
       auto-commit: false
       minimumIdle: 5
@@ -65,8 +65,8 @@ spring:
     show-sql: true
     defer-datasource-initialization: true
     properties:
-      hbm2ddl.auto: update
-      hbm2ddl.import_files: import.sql
+      hbm2ddl.auto: none
+#      hbm2ddl.import_files: import.sql
       hibernate.default_schema: LUCKY_DRAW_TANZ
       hibernate.id.new_generator_mappings: true
       hibernate.connection.provider_disables_autocommit: false
@@ -78,12 +78,12 @@ spring:
       hibernate.cache.use_minimal_puts: true
       hibernate.cache.hazelcast.use_lite_member: true
       hibernate.storage_engine: innodb
-#      hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
-      hibernate.dialect: org.hibernate.dialect.Oracle10gDialect
+      hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
+#      hibernate.dialect: org.hibernate.dialect.Oracle10gDialect
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
     contexts: dev, faker
-    enabled: false
+    enabled: true
   mail:
     host: localhost
     port: 25
