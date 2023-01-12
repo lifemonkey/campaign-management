@@ -45,8 +45,14 @@ public class RewardService {
     }
 
     @Transactional(readOnly = true)
-    public Page<RewardDTO> searchRewards(Pageable pageable, String search) {
-        return rewardRepository.findAllByNameContaining(search, pageable).map(RewardDTO::new);
+    public Page<RewardDTO> searchRewards(Pageable pageable, String search, Integer type) {
+        if (search != null && type == null) {
+            return rewardRepository.findAllByNameContaining(search, pageable).map(RewardDTO::new);
+        } else if (search == null && type != null) {
+            return rewardRepository.findAllByPrizeType(type, pageable).map(RewardDTO::new);
+        } else {
+            return rewardRepository.findAllByNameContainingAndPrizeType(search, type, pageable).map(RewardDTO::new);
+        }
     }
 
     @Transactional(rollbackFor = Exception.class)

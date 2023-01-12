@@ -41,11 +41,15 @@ public class RewardResource {
      */
     @GetMapping("/rewards")
     @Timed
-    public ResponseEntity<List<RewardDTO>> getAllRewards(Pageable pageable, @RequestParam(required = false) String search) {
+    public ResponseEntity<List<RewardDTO>> getAllRewards(
+        Pageable pageable,
+        @RequestParam(required = false) String search,
+        @RequestParam(required = false) Integer type
+    ) {
         Page<RewardDTO> page;
 
-        if (search != null) {
-            page = rewardService.searchRewards(pageable, search);
+        if (search != null || type != null) {
+            page = rewardService.searchRewards(pageable, search, type);
         } else {
             page = rewardService.getAllRewards(pageable);
         }
