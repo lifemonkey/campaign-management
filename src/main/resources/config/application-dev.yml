@@ -103,6 +103,9 @@ spring:
       discovery:
         enabled: true
 
+## File Storage Properties
+file.upload-dir: ./files-storage
+
 server:
   port: 8181
 

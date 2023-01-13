@@ -1,5 +1,6 @@
 package campaign.service;
 
+import campaign.config.FileStorageProperties;
 import campaign.domain.Campaign;
 import campaign.domain.File;
 import campaign.repository.CampaignRepository;
@@ -9,16 +10,22 @@ import campaign.service.mapper.FileMapper;
 import campaign.web.rest.vm.FileVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 
 @Service
@@ -27,16 +34,32 @@ public class FileService {
 
     private final Logger log = LoggerFactory.getLogger(FileService.class);
 
+    private FileStorageProperties fileStorageProperties;
+
+    private final Path fileStorageLocation;
+
     private final FileRepository fileRepository;
 
     private final CampaignRepository campaignRepository;
 
     private final FileMapper fileMapper;
 
-    public FileService(FileRepository fileRepository, CampaignRepository campaignRepository, FileMapper fileMapper) {
+    public FileService(FileStorageProperties fileStorageProperties,
+                       FileRepository fileRepository,
+                       CampaignRepository campaignRepository,
+                       FileMapper fileMapper
+    ) {
         this.fileRepository = fileRepository;
         this.campaignRepository = campaignRepository;
         this.fileMapper = fileMapper;
+
+//        this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir()).toAbsolutePath().normalize();
+        this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir()).toAbsolutePath().normalize();
+        try {
+            Files.createDirectories(this.fileStorageLocation);
+        } catch (Exception ex) {
+            log.error("Could not create the directory where the uploaded files will be stored.");
+        }
     }
 
     @Transactional(readOnly = true)
@@ -73,19 +96,48 @@ public class FileService {
     }
 
     public String uploadFile(MultipartFile file) {
+
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+            .path("/downloadFile/")
+            .path(storeFile(file))
+            .toUriString();
+
+        return fileDownloadUri;
+    }
+
+    public String storeFile(MultipartFile file) {
+        // Normalize file name
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
         try {
-            // Get the file and save it somewhere
-            byte[] bytes = file.getBytes();
-//            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
-//            Files.write(path, bytes);
+            // Check if the file's name contains invalid characters
+            if(fileName.contains("..")) {
+                log.error("Sorry! Filename contains invalid path sequence " + fileName);
+            }
 
-            File savedFile = fileRepository.save(new File(file.getOriginalFilename(), file.getName(), 1, "", file.getBytes()));
-            return "Success";
+            // Copy file to the target location (Replacing existing file with the same name)
+            Path targetLocation = this.fileStorageLocation.resolve(fileName);
+            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-        } catch (IOException e) {
-            log.error("Could not upload file to server! ", e.getMessage());
+            return fileName;
+        } catch (IOException ex) {
+            log.error("Could not store file " + fileName + ". Please try again!");
         }
+        return null;
+    }
 
+    public Resource loadFileAsResource(String fileName) {
+        try {
+            Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
+            Resource resource = new UrlResource(filePath.toUri());
+            if(resource.exists()) {
+                return resource;
+            } else {
+                log.warn("File not found " + fileName);
+            }
+        } catch (MalformedURLException ex) {
+            log.error("File not found " + fileName, ex);
+        }
         return null;
     }
 
