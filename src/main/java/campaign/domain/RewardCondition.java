@@ -14,9 +14,9 @@ public class RewardCondition extends AbstractAuditingEntity implements Serializa
     private static final long serialVersionUID = 1L;
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reward_condition_sequence_generator")
-//    @SequenceGenerator(name = "reward_condition_sequence_generator", sequenceName = "reward_condition_id_sequence", initialValue = 100, allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reward_condition_sequence_generator")
+    @SequenceGenerator(name = "reward_condition_sequence_generator", sequenceName = "reward_condition_id_sequence", initialValue = 100, allocationSize = 1)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "amount_min")

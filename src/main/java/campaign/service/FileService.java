@@ -1,6 +1,5 @@
 package campaign.service;
 
-import campaign.config.FileStorageProperties;
 import campaign.domain.Campaign;
 import campaign.domain.File;
 import campaign.repository.CampaignRepository;
@@ -26,7 +25,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -34,7 +36,8 @@ public class FileService {
 
     private final Logger log = LoggerFactory.getLogger(FileService.class);
 
-    private FileStorageProperties fileStorageProperties;
+//    @Value("${file.upload-dir}")
+    private String fileUploadDir = "./files-storage";
 
     private final Path fileStorageLocation;
 
@@ -44,17 +47,12 @@ public class FileService {
 
     private final FileMapper fileMapper;
 
-    public FileService(FileStorageProperties fileStorageProperties,
-                       FileRepository fileRepository,
-                       CampaignRepository campaignRepository,
-                       FileMapper fileMapper
-    ) {
+    public FileService(FileRepository fileRepository, CampaignRepository campaignRepository, FileMapper fileMapper) {
         this.fileRepository = fileRepository;
         this.campaignRepository = campaignRepository;
         this.fileMapper = fileMapper;
-
-//        this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir()).toAbsolutePath().normalize();
-        this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir()).toAbsolutePath().normalize();
+        // init File directory use to store uploaded files
+        this.fileStorageLocation = Paths.get(this.fileUploadDir).toAbsolutePath().normalize();
         try {
             Files.createDirectories(this.fileStorageLocation);
         } catch (Exception ex) {
@@ -84,25 +82,33 @@ public class FileService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public FileDTO createFile(FileVM fileVM) {
-        File file = fileMapper.fileVMToFile(fileVM);
-
-        if (file != null) {
-            fileRepository.save(file);
-            return fileMapper.fileToFileDTO(file);
-        }
-
-        return new FileDTO();
+    public List<FileDTO> uploadFiles(MultipartFile[] files) {
+        return Arrays.asList(files)
+            .stream().map(file -> uploadFile(file, "", null))
+            .collect(Collectors.toList());
     }
 
-    public String uploadFile(MultipartFile file) {
-
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+    @Transactional(rollbackFor = Exception.class)
+    public FileDTO uploadFile(MultipartFile file, String description, Integer type) {
+        // store file to server dir
+        String fileUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
             .path("/downloadFile/")
             .path(storeFile(file))
             .toUriString();
-
-        return fileDownloadUri;
+        // get file by fileName from db
+        Optional<File> fileOpt = fileRepository.findByName(StringUtils.cleanPath(file.getOriginalFilename()));
+        File toBeSaved = new File();
+        if (fileOpt.isPresent()) {
+            toBeSaved = fileOpt.get();
+            toBeSaved.description(description).type(type);
+        } else {
+            toBeSaved.name(StringUtils.cleanPath(file.getOriginalFilename()))
+                .description(description)
+                .type(type)
+                .url(fileUrl);
+        }
+        // save file and convert to DTO
+        return fileMapper.fileToFileDTO(fileRepository.save(toBeSaved));
     }
 
     public String storeFile(MultipartFile file) {
@@ -126,17 +132,25 @@ public class FileService {
         return null;
     }
 
-    public Resource loadFileAsResource(String fileName) {
+    public Resource loadFileAsResource(FileVM fileVM) {
         try {
+            String fileName = null;
+            if (fileVM.getName() != null) {
+                fileName = fileVM.getName();
+            } else if (fileVM.getImageUrl() != null) {
+                fileName = StringUtils.cleanPath(Paths.get(fileVM.getImageUrl()).getFileName().toString());
+            }
+
+            // fileUrl
             Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
             Resource resource = new UrlResource(filePath.toUri());
             if(resource.exists()) {
                 return resource;
             } else {
-                log.warn("File not found " + fileName);
+                log.warn("File not found " + filePath.getFileName());
             }
         } catch (MalformedURLException ex) {
-            log.error("File not found " + fileName, ex);
+            log.error("FileVM is invalid " + fileVM, ex);
         }
         return null;
     }

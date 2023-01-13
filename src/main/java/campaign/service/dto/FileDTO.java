@@ -4,7 +4,6 @@ import campaign.domain.File;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 
 public class FileDTO {
 
@@ -18,8 +17,6 @@ public class FileDTO {
     private Integer fileType;
 
     private String imageUrl;
-
-    private byte[] imageBlob;
 
     private String createdBy;
 
@@ -40,7 +37,6 @@ public class FileDTO {
         this.description = file.getDescription();
         this.fileType = file.getFileType();
         this.imageUrl = file.getImageUrl();
-        this.imageBlob = file.getImageBlob();
         if (file.getCampaign() != null) {
             this.campaignId = file.getCampaign().getId();
         }
@@ -88,14 +84,6 @@ public class FileDTO {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-    }
-
-    public byte[] getImageBlob() {
-        return imageBlob;
-    }
-
-    public void setImageBlob(byte[] imageBlob) {
-        this.imageBlob = imageBlob;
     }
 
     public Long getCampaignId() {
@@ -146,7 +134,6 @@ public class FileDTO {
             ", description='" + description + '\'' +
             ", fileType=" + fileType +
             ", imageUrl='" + imageUrl + '\'' +
-            ", imageBlob=" + Arrays.toString(imageBlob) +
             ", createdBy='" + createdBy + '\'' +
             ", createdDate=" + createdDate +
             ", lastModifiedBy='" + lastModifiedBy + '\'' +

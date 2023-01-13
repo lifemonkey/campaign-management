@@ -17,13 +17,13 @@ public class File extends AbstractAuditingEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "file_sequence_generator")
-//    @SequenceGenerator(name = "file_sequence_generator", sequenceName = "field_id_sequence", initialValue = 100, allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "file_sequence_generator")
+    @SequenceGenerator(name = "file_sequence_generator", sequenceName = "field_id_sequence", initialValue = 100, allocationSize = 1)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
-    @Column(name = "name", length = 200)
+    @Column(name = "name", length = 200, unique = true)
     private String name;
 
     @Column(name = "description", length = 4000)
@@ -47,12 +47,11 @@ public class File extends AbstractAuditingEntity implements Serializable {
     public File() {
     }
 
-    public File(String name, String description, Integer fileType, String imageUrl, byte[] imageBlob) {
+    public File(String name, String description, Integer fileType, String imageUrl) {
         this.name = name;
         this.description = description;
         this.fileType = fileType;
         this.imageUrl = imageUrl;
-        this.imageBlob = imageBlob;
     }
 
     public Long getId() {
@@ -71,12 +70,22 @@ public class File extends AbstractAuditingEntity implements Serializable {
         this.name = name;
     }
 
+    public File name(String name) {
+        this.name = name;
+        return this;
+    }
+
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public File description(String description) {
+        this.description = description;
+        return this;
     }
 
     public Integer getFileType() {
@@ -87,12 +96,22 @@ public class File extends AbstractAuditingEntity implements Serializable {
         this.fileType = fileType;
     }
 
+    public File type(Integer fileType) {
+        this.fileType = fileType;
+        return this;
+    }
+
     public String getImageUrl() {
         return imageUrl;
     }
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public File url(String imageUrl) {
+        this.imageUrl = imageUrl;
+        return this;
     }
 
     public byte[] getImageBlob() {

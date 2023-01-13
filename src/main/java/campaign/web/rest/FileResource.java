@@ -4,6 +4,7 @@ import campaign.security.AuthoritiesConstants;
 import campaign.service.FileService;
 import campaign.service.dto.FileDTO;
 import campaign.web.rest.util.PaginationUtil;
+import campaign.web.rest.vm.FileVM;
 import campaign.web.rest.vm.ResponseCode;
 import campaign.web.rest.vm.ResponseVM;
 import io.micrometer.core.annotation.Timed;
@@ -91,27 +92,21 @@ public class FileResource {
      */
     @GetMapping("/file/download")
     @Timed
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
+    public ResponseEntity<Object> downloadFile(@RequestBody FileVM fileVM) {
         // Load file as Resource
-        Resource resource = fileService.loadFileAsResource(fileName);
-
-        // Try to determine file's content type
-        String contentType = null;
-        try {
-            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-        } catch (IOException ex) {
-            log.info("Could not determine file type.");
+        Resource resource = fileService.loadFileAsResource(fileVM);
+        if (resource != null && resource.exists()) {
+            return new ResponseEntity<>(resource, new HttpHeaders(), HttpStatus.OK);
+            //HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
         }
 
-        // Fallback to the default content type if type could not be determined
-        if(contentType == null) {
-            contentType = "application/octet-stream";
-        }
-
-        return ResponseEntity.ok()
-            .contentType(MediaType.parseMediaType(contentType))
-            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-            .body(resource);
+        return new ResponseEntity<>(
+            new ResponseVM(
+                ResponseCode.RESPONSE_NOT_FOUND,
+                ResponseCode.ERROR_CODE_FILE_NOT_FOUND,
+                "File name:" + fileVM.getName() + " or url:" + fileVM.getImageUrl() + " not found!"),
+            new HttpHeaders(),
+            HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -123,8 +118,23 @@ public class FileResource {
     @PostMapping("/file/upload")
     @Timed
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
-    public ResponseEntity<String> createFile(@RequestParam("file") MultipartFile file) {
-        return new ResponseEntity<> (fileService.uploadFile(file), new HttpHeaders(), HttpStatus.OK);
+    public ResponseEntity<FileDTO> uploadFile(@RequestParam MultipartFile file,
+                                             @RequestParam(required = false) String description,
+                                             @RequestParam(required = false) Integer type) {
+        return new ResponseEntity<> (fileService.uploadFile(file, description, type), new HttpHeaders(), HttpStatus.OK);
+    }
+
+    /**
+     * POST /file/upload : upload a file
+     *
+     * @RequestBody file information to be created
+     * @return the ResponseEntity with status 200 (OK) and with body all users
+     */
+    @PostMapping("/files/upload")
+    @Timed
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    public ResponseEntity<List<FileDTO>> uploadFiles(@RequestParam MultipartFile[] files) {
+        return new ResponseEntity<> (fileService.uploadFiles(files), new HttpHeaders(), HttpStatus.OK);
     }
 
     /**

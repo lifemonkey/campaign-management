@@ -17,8 +17,6 @@ public class FileVM {
 
     private String imageUrl;
 
-    private byte[] imageBlob;
-
     public String getName() {
         return name;
     }
@@ -51,14 +49,6 @@ public class FileVM {
         this.imageUrl = imageUrl;
     }
 
-    public byte[] getImageBlob() {
-        return imageBlob;
-    }
-
-    public void setImageBlob(byte[] imageBlob) {
-        this.imageBlob = imageBlob;
-    }
-
     @Override
     public String toString() {
         return "FileVM{" +
@@ -66,7 +56,6 @@ public class FileVM {
                 ", description='" + description + '\'' +
                 ", fileType=" + fileType +
                 ", imageUrl='" + imageUrl + '\'' +
-                ", imageBlob=" + Arrays.toString(imageBlob) +
                 '}';
     }
 }

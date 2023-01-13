@@ -15,9 +15,9 @@ public class GeneratedTime extends AbstractAuditingEntity implements Serializabl
     private static final long serialVersionUID = 1L;
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generated_time_generator")
-//    @SequenceGenerator(name = "generated_time_generator", sequenceName = "generated_time_id_sequence", initialValue = 100, allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generated_time_generator")
+    @SequenceGenerator(name = "generated_time_generator", sequenceName = "generated_time_id_sequence", initialValue = 100, allocationSize = 1)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "start_time", columnDefinition = "TIMESTAMP")
