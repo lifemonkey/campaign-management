@@ -22,6 +22,8 @@ public class RewardDTO {
 
     private Integer released;
 
+    private FileDTO imageDTO;
+
     private String messageWinnerEN;
 
     private String messageWinnerSW;
@@ -49,6 +51,7 @@ public class RewardDTO {
         this.prizeValue = reward.getPrizeValue();
         this.numOfPrize = reward.getNumOfPrize();
         this.released = reward.getReleased();
+        this.imageDTO = new FileDTO(reward.getImage());
         this.messageWinnerEN = reward.getMessageWinnerEN();
         this.messageWinnerSW = reward.getMessageWinnerSW();
         this.messageBalanceEN = reward.getMessageBalanceEN();
@@ -113,6 +116,14 @@ public class RewardDTO {
 
     public void setReleased(Integer released) {
         this.released = released;
+    }
+
+    public FileDTO getImageDTO() {
+        return imageDTO;
+    }
+
+    public void setImageDTO(FileDTO imageDTO) {
+        this.imageDTO = imageDTO;
     }
 
     public String getMessageWinnerEN() {

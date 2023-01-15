@@ -16,4 +16,6 @@ public interface FileRepository extends JpaRepository<File, Long> {
     Page<File> findAllByNameContainingAndFileType(String name, Integer fileType, Pageable pageable);
 
     Optional<File> findByName(String name);
+
+    Optional<File> findByImageUrl(String imageUrl);
 }

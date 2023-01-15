@@ -37,6 +37,9 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
     @Column(name = "released")
     private Integer released;
 
+    @Column(name = "image")
+    private File image;
+
     @Column(name = "message_winner_en", length = 4000)
     private String messageWinnerEN;
 
@@ -52,13 +55,14 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
     public Reward() {
     }
 
-    public Reward(String name, String description, Integer prizeType, Integer prizeValue, Integer numOfPrize, Integer released, String messageWinnerEN, String messageWinnerSW, String messageBalanceEN, String messageBalanceSW) {
+    public Reward(String name, String description, Integer prizeType, Integer prizeValue, Integer numOfPrize, Integer released, File image, String messageWinnerEN, String messageWinnerSW, String messageBalanceEN, String messageBalanceSW) {
         this.name = name;
         this.description = description;
         this.prizeType = prizeType;
         this.prizeValue = prizeValue;
         this.numOfPrize = numOfPrize;
         this.released = released;
+        this.image = image;
         this.messageWinnerEN = messageWinnerEN;
         this.messageWinnerSW = messageWinnerSW;
         this.messageBalanceEN = messageBalanceEN;
@@ -119,6 +123,14 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
 
     public void setReleased(Integer released) {
         this.released = released;
+    }
+
+    public File getImage() {
+        return image;
+    }
+
+    public void setImage(File image) {
+        this.image = image;
     }
 
     public String getMessageWinnerEN() {

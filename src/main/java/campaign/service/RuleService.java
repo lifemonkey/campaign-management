@@ -2,7 +2,6 @@ package campaign.service;
 
 import campaign.domain.*;
 import campaign.repository.*;
-import campaign.service.dto.CampaignDTO;
 import campaign.service.dto.RuleDTO;
 import campaign.service.mapper.RewardConditionMapper;
 import campaign.service.mapper.RuleMapper;
@@ -15,7 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -65,14 +63,31 @@ public class RuleService {
     }
 
     @Transactional(readOnly = true)
-    public Page<RuleDTO> searchRules(Pageable pageable, String search, Integer campaignType) {
+    public Page<RuleDTO> searchRules(Pageable pageable, String search, String appliedCampaign, Integer campaignType) {
+        Page<Rule> ruleList;
+
         if (search != null && campaignType == null) {
-            return ruleRepository.findAllByNameContaining(search, pageable).map(RuleDTO::new);
+            ruleList = ruleRepository.findAllByNameContaining(search, pageable);
         } else if (search == null && campaignType != null) {
-            return ruleRepository.findAllByCampaignType(campaignType, pageable).map(RuleDTO::new);
+            ruleList = ruleRepository.findAllByCampaignType(campaignType, pageable);
         } else {
-            return ruleRepository.findAllByNameContainingAndCampaignType(search, campaignType, pageable).map(RuleDTO::new);
+            ruleList = ruleRepository.findAllByNameContainingAndCampaignType(search, campaignType, pageable);
         }
+
+        // applied campaign: All, None, Campaign-name
+        if (appliedCampaign != null && !appliedCampaign.equalsIgnoreCase("all")) {
+            if (appliedCampaign.equalsIgnoreCase("none")) {
+                ruleList.stream().filter(rule -> rule.getCampaignList() == null).collect(Collectors.toList());
+            } else {
+                ruleList.stream()
+                    .filter(rule -> rule.getCampaignList().stream()
+                        .filter(campaign -> campaign.getName().toLowerCase().contains(appliedCampaign))
+                        .findAny().isPresent())
+                    .collect(Collectors.toList());
+            }
+        }
+
+        return ruleList.map(RuleDTO::new);
     }
 
     @Transactional(readOnly = true)

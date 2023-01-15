@@ -44,11 +44,12 @@ public class RuleResource {
     public ResponseEntity<List<RuleDTO>> getAllRules(
         Pageable pageable,
         @RequestParam(required = false) String search,
+        @RequestParam(required = false) String appliedCampaign,
         @RequestParam(required = false) Integer type
     ) {
         Page<RuleDTO> page;
-        if (search != null || type != null) {
-            page = ruleService.searchRules(pageable, search, type);
+        if (search != null || appliedCampaign != null || type != null) {
+            page = ruleService.searchRules(pageable, search, appliedCampaign, type);
         } else {
             page = ruleService.getAllRules(pageable);
         }

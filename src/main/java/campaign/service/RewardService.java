@@ -1,8 +1,11 @@
 package campaign.service;
 
+import campaign.domain.File;
 import campaign.domain.Reward;
+import campaign.repository.FileRepository;
 import campaign.repository.RewardRepository;
 import campaign.service.dto.RewardDTO;
+import campaign.service.mapper.FileMapper;
 import campaign.service.mapper.RewardMapper;
 import campaign.web.rest.vm.RewardVM;
 import org.slf4j.Logger;
@@ -24,9 +27,20 @@ public class RewardService {
 
     private final RewardMapper rewardMapper;
 
-    public RewardService(RewardRepository rewardRepository, RewardMapper rewardMapper) {
+    private final FileRepository fileRepository;
+
+    private final FileMapper fileMapper;
+
+    public RewardService(RewardRepository rewardRepository,
+                         RewardMapper rewardMapper,
+                         FileRepository fileRepository,
+                         FileMapper fileMapper
+    ) {
+
         this.rewardRepository = rewardRepository;
         this.rewardMapper = rewardMapper;
+        this.fileRepository = fileRepository;
+        this.fileMapper = fileMapper;
     }
 
     @Transactional(readOnly = true)
@@ -60,6 +74,11 @@ public class RewardService {
         Reward reward = rewardMapper.rewardVMToReward(rewardVM);
 
         if (reward != null) {
+            File file = fileMapper.fileVMToFile(rewardVM.getImage());
+            if (file != null) {
+                fileRepository.save(file);
+                reward.setImage(file);
+            }
             return rewardMapper.rewardToRewardDTO(rewardRepository.save(reward));
         }
 
@@ -72,10 +91,9 @@ public class RewardService {
         Reward toBerInserted = new Reward();
 
         if (rewardOpt.isPresent()) {
-            toBerInserted.setId(rewardOpt.get().getId());
             toBerInserted.setName(rewardOpt.get().getName());
             toBerInserted.setDescription(rewardOpt.get().getDescription());
-
+            toBerInserted.setImage(rewardOpt.get().getImage());
             toBerInserted.setPrizeType(rewardOpt.get().getPrizeType());
             toBerInserted.setPrizeValue(rewardOpt.get().getPrizeValue());
             toBerInserted.setNumOfPrize(rewardOpt.get().getNumOfPrize());
@@ -94,12 +112,27 @@ public class RewardService {
         Reward reward = rewardMapper.rewardVMToReward(rewardVM);
         reward.setId(id);
 
+        Optional<File> imageOpt;
+        if (rewardVM.getImage().getName() != null) {
+            imageOpt = fileRepository.findByName(rewardVM.getImage().getName());
+        } else {
+            imageOpt = fileRepository.findByImageUrl(rewardVM.getImage().getImageUrl());
+        }
+
+        reward.setImage(imageOpt.orElse(null));
+
         rewardRepository.save(reward);
         return rewardMapper.rewardToRewardDTO(reward);
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void deleteReward(Long id) {
-        rewardRepository.deleteById(id);
+        Optional<Reward> rewardOpt = rewardRepository.findById(id);
+        if (rewardOpt.isPresent()) {
+            Reward reward = rewardOpt.get();
+            reward.setImage(null);
+            rewardRepository.save(reward);
+            rewardRepository.delete(reward);
+        }
     }
 }

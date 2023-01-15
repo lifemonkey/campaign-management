@@ -16,6 +16,8 @@ public class RewardVM {
 
     private Integer released;
 
+    private FileVM image;
+
     private String messageWinnerEN;
 
     private String messageWinnerSW;
@@ -78,6 +80,14 @@ public class RewardVM {
 
     public void setReleased(Integer released) {
         this.released = released;
+    }
+
+    public FileVM getImage() {
+        return image;
+    }
+
+    public void setImage(FileVM image) {
+        this.image = image;
     }
 
     public String getMessageWinnerEN() {
