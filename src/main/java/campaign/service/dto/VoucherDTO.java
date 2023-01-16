@@ -24,6 +24,7 @@ public class VoucherDTO {
     }
 
     public VoucherDTO(Voucher voucher) {
+        this.id = voucher.getId();
         this.voucherCode = voucher.getVoucherCode();
         this.createdBy = voucher.getCreatedBy();
         this.createdDate = voucher.getCreatedDate();

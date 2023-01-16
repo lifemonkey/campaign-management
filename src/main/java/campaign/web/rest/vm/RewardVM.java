@@ -1,5 +1,7 @@
 package campaign.web.rest.vm;
 
+import campaign.service.dto.VoucherDTO;
+
 import java.util.List;
 
 public class RewardVM {
@@ -28,7 +30,7 @@ public class RewardVM {
 
     private String messageBalanceSW;
 
-    private List<String> voucherCodes;
+    private List<VoucherDTO> voucherCodes;
 
     public Long getId() {
         return id;
@@ -126,11 +128,11 @@ public class RewardVM {
         this.messageBalanceSW = messageBalanceSW;
     }
 
-    public List<String> getVoucherCodes() {
+    public List<VoucherDTO> getVoucherCodes() {
         return voucherCodes;
     }
 
-    public void setVoucherCodes(List<String> voucherCodes) {
+    public void setVoucherCodes(List<VoucherDTO> voucherCodes) {
         this.voucherCodes = voucherCodes;
     }
 
@@ -149,7 +151,6 @@ public class RewardVM {
             ", messageWinnerSW='" + messageWinnerSW + '\'' +
             ", messageBalanceEN='" + messageBalanceEN + '\'' +
             ", messageBalanceSW='" + messageBalanceSW + '\'' +
-            ", voucherCodes=" + voucherCodes +
             '}';
     }
 }

@@ -39,7 +39,8 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
     @Column(name = "released")
     private Integer released;
 
-    @Column(name = "image")
+    @OneToOne
+    @JoinColumn(name = "file_id", referencedColumnName = "id")
     private File image;
 
     @Column(name = "message_winner_en", length = 4000)
@@ -174,8 +175,17 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
         return vouchers;
     }
 
-    public void setVouchers(List<Voucher> vouchers) {
-        this.vouchers = vouchers;
+    public void addVouchers(List<Voucher> vouchers) {
+        this.vouchers.addAll(vouchers);
+    }
+
+    public void updateVouchers(List<Voucher> vouchers) {
+        this.vouchers.clear();
+        this.vouchers.addAll(vouchers);
+    }
+
+    public void clearVouchers() {
+        this.vouchers.clear();
     }
 
     @Override

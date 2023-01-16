@@ -4,6 +4,8 @@ import campaign.domain.Reward;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class RewardDTO {
 
@@ -22,7 +24,7 @@ public class RewardDTO {
 
     private Integer released;
 
-    private FileDTO imageDTO;
+    private FileDTO image;
 
     private String messageWinnerEN;
 
@@ -31,6 +33,8 @@ public class RewardDTO {
     private String messageBalanceEN;
 
     private String messageBalanceSW;
+
+    private List<VoucherDTO> voucherCodes;
 
     private String createdBy;
 
@@ -51,11 +55,18 @@ public class RewardDTO {
         this.prizeValue = reward.getPrizeValue();
         this.numOfPrize = reward.getNumOfPrize();
         this.released = reward.getReleased();
-        this.imageDTO = new FileDTO(reward.getImage());
+        if (reward.getImage() != null) {
+            this.image = new FileDTO(reward.getImage());
+        }
         this.messageWinnerEN = reward.getMessageWinnerEN();
         this.messageWinnerSW = reward.getMessageWinnerSW();
         this.messageBalanceEN = reward.getMessageBalanceEN();
         this.messageBalanceSW = reward.getMessageBalanceSW();
+        if (reward.getVouchers() != null) {
+            this.voucherCodes = reward.getVouchers().stream()
+                .map(VoucherDTO::new)
+                .collect(Collectors.toList());
+        }
         this.createdBy = reward.getCreatedBy();
         this.createdDate = reward.getCreatedDate();
         this.lastModifiedBy = reward.getLastModifiedBy();
@@ -118,12 +129,12 @@ public class RewardDTO {
         this.released = released;
     }
 
-    public FileDTO getImageDTO() {
-        return imageDTO;
+    public FileDTO getImage() {
+        return image;
     }
 
-    public void setImageDTO(FileDTO imageDTO) {
-        this.imageDTO = imageDTO;
+    public void setImage(FileDTO image) {
+        this.image = image;
     }
 
     public String getMessageWinnerEN() {
@@ -156,6 +167,14 @@ public class RewardDTO {
 
     public void setMessageBalanceSW(String messageBalanceSW) {
         this.messageBalanceSW = messageBalanceSW;
+    }
+
+    public List<VoucherDTO> getVoucherCodes() {
+        return voucherCodes;
+    }
+
+    public void setVoucherCodes(List<VoucherDTO> voucherCodes) {
+        this.voucherCodes = voucherCodes;
     }
 
     public String getCreatedBy() {

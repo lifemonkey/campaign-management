@@ -1,5 +1,6 @@
 package campaign.domain;
 
+import campaign.service.dto.VoucherDTO;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -29,6 +30,14 @@ public class Voucher extends AbstractAuditingEntity implements Serializable {
     private Reward reward;
 
     public Voucher() {
+    }
+
+    public Voucher(VoucherDTO voucherCode, Reward reward) {
+        if (voucherCode.getId() != null) {
+            this.id = voucherCode.getId();
+        }
+        this.voucherCode = voucherCode.getVoucherCode();
+        this.reward = reward;
     }
 
     public Voucher(String voucherCode, Reward reward) {

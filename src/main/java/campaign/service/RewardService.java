@@ -7,6 +7,7 @@ import campaign.repository.FileRepository;
 import campaign.repository.RewardRepository;
 import campaign.repository.VoucherRepository;
 import campaign.service.dto.RewardDTO;
+import campaign.service.dto.VoucherDTO;
 import campaign.service.mapper.FileMapper;
 import campaign.service.mapper.RewardMapper;
 import campaign.service.mapper.VoucherMapper;
@@ -87,13 +88,14 @@ public class RewardService {
         Reward reward = rewardMapper.rewardVMToReward(rewardVM);
 
         if (reward != null) {
+            rewardRepository.save(reward);
+
             // handle image
             File file = fileMapper.fileVMToFile(rewardVM.getImage());
             if (file != null) {
                 fileRepository.save(file);
                 reward.setImage(file);
             }
-            rewardRepository.save(reward);
 
             // handle voucher code
             if (rewardVM.getVoucherCodes() != null) {
@@ -104,6 +106,7 @@ public class RewardService {
                         .collect(Collectors.toList());
                     // save vouchers
                     voucherRepository.saveAll(toBeSaved);
+                    reward.addVouchers(toBeSaved);
                 }
             }
 
@@ -121,7 +124,9 @@ public class RewardService {
         if (rewardOpt.isPresent()) {
             toBerInserted.setName(rewardOpt.get().getName());
             toBerInserted.setDescription(rewardOpt.get().getDescription());
-            toBerInserted.setImage(rewardOpt.get().getImage());
+            if (rewardOpt.get().getImage() != null) {
+                toBerInserted.setImage(rewardOpt.get().getImage());
+            }
             toBerInserted.setPrizeType(rewardOpt.get().getPrizeType());
             toBerInserted.setPrizeValue(rewardOpt.get().getPrizeValue());
             toBerInserted.setNumOfPrize(rewardOpt.get().getNumOfPrize());
@@ -130,7 +135,8 @@ public class RewardService {
             toBerInserted.setMessageWinnerSW(rewardOpt.get().getMessageWinnerSW());
             toBerInserted.setMessageBalanceEN(rewardOpt.get().getMessageBalanceEN());
             toBerInserted.setMessageBalanceSW(rewardOpt.get().getMessageBalanceSW());
-            toBerInserted.setVouchers(rewardOpt.get().getVouchers());
+            // voucher code can not be cloned
+            //toBerInserted.setVouchers(rewardOpt.get().getVouchers());
         }
 
         return rewardMapper.rewardToRewardDTO(rewardRepository.save(toBerInserted));
@@ -142,37 +148,37 @@ public class RewardService {
         reward.setId(id);
 
         // handle image
-        Optional<File> imageOpt;
-        if (rewardVM.getImage().getName() != null) {
-            imageOpt = fileRepository.findByName(rewardVM.getImage().getName());
-        } else {
-            imageOpt = fileRepository.findByImageUrl(rewardVM.getImage().getImageUrl());
+        if (rewardVM.getImage() != null) {
+            Optional<File> imageOpt = fileRepository.findById(rewardVM.getImage().getId());
+            File image = fileMapper.fileVMToFile(rewardVM.getImage());
+            if (imageOpt.isPresent()) {
+                image.setId(imageOpt.get().getId());
+            }
+            fileRepository.save(image);
+            reward.setImage(image);
         }
-
-        reward.setImage(imageOpt.orElse(null));
 
         // handle voucher
         if (rewardVM.getVoucherCodes() != null) {
             // remove existing vouchers
-            List<Voucher> toBeDetached = voucherRepository.findByRewardId(reward.getId());
-            voucherRepository.saveAll(
-                toBeDetached.stream()
-                    .filter(voucher -> rewardVM.getVoucherCodes().contains(voucher.getVoucherCode()))
-                    .map(Voucher::removeReward)
-                    .collect(Collectors.toList()));
+            List<Long> voucherIds = rewardVM.getVoucherCodes().stream().map(VoucherDTO::getId).collect(Collectors.toList());
+            List<Voucher> toBeDetached = voucherRepository.findByRewardId(reward.getId()).stream()
+                .filter(voucher -> !voucherIds.contains(voucher.getId()))
+                .map(Voucher::removeReward)
+                .collect(Collectors.toList());
+            voucherRepository.saveAll(toBeDetached);
+
             // create new vouchers if not existed yet
             if (reward.getVouchers() != null) {
                 List<Voucher> toBeSaved = rewardVM.getVoucherCodes().stream()
                     .map(voucherCode -> new Voucher(voucherCode, reward))
                     .collect(Collectors.toList());
                 // save vouchers
-                voucherRepository.saveAll(toBeSaved);
+                reward.updateVouchers(toBeSaved);
             }
         }
 
-
-        rewardRepository.save(reward);
-        return rewardMapper.rewardToRewardDTO(reward);
+        return rewardMapper.rewardToRewardDTO(rewardRepository.save(reward));
     }
 
     @Transactional(rollbackFor = Exception.class)

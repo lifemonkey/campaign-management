@@ -368,7 +368,7 @@
             <!-- constraints -->
             <column name="rule_id" type="bigint"/>
             <column name="reward_id" type="bigint"/>
-            <column name="image" type="bigint"/>
+            <column name="file_id" type="bigint"/>
             <!-- Auditing fields -->
             <column name="created_by" type="varchar(50)">
                 <constraints nullable="false"/>
@@ -533,6 +533,15 @@
                                  referencedTableName="reward"
                                  onUpdate="CASCADE"
                                  onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint baseColumnNames="file_id"
+                                 baseTableName="reward"
+                                 constraintName="fk_reward_file_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="files"
+                                 onUpdate="CASCADE"
+                                 onDelete="CASCADE"/>
+
 
         <loadData file="config/liquibase/roles.csv" separator=";" tableName="roles"/>
         <loadData file="config/liquibase/status.csv" separator=";" tableName="status"/>
