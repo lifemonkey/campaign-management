@@ -5,6 +5,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "reward")
@@ -51,6 +53,9 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
 
     @Column(name = "message_balance_sw", length = 4000)
     private String messageBalanceSW;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "reward")
+    private List<Voucher> vouchers = new ArrayList<>();
 
     public Reward() {
     }
@@ -163,6 +168,14 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
 
     public void setMessageBalanceSW(String messageBalanceSW) {
         this.messageBalanceSW = messageBalanceSW;
+    }
+
+    public List<Voucher> getVouchers() {
+        return vouchers;
+    }
+
+    public void setVouchers(List<Voucher> vouchers) {
+        this.vouchers = vouchers;
     }
 
     @Override

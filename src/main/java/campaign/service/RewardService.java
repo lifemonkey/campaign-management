@@ -2,11 +2,14 @@ package campaign.service;
 
 import campaign.domain.File;
 import campaign.domain.Reward;
+import campaign.domain.Voucher;
 import campaign.repository.FileRepository;
 import campaign.repository.RewardRepository;
+import campaign.repository.VoucherRepository;
 import campaign.service.dto.RewardDTO;
 import campaign.service.mapper.FileMapper;
 import campaign.service.mapper.RewardMapper;
+import campaign.service.mapper.VoucherMapper;
 import campaign.web.rest.vm.RewardVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +18,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -31,16 +36,24 @@ public class RewardService {
 
     private final FileMapper fileMapper;
 
+    private final VoucherRepository voucherRepository;
+
+    private final VoucherMapper voucherMapper;
+
     public RewardService(RewardRepository rewardRepository,
                          RewardMapper rewardMapper,
                          FileRepository fileRepository,
-                         FileMapper fileMapper
+                         FileMapper fileMapper,
+                         VoucherRepository voucherRepository,
+                         VoucherMapper voucherMapper
     ) {
 
         this.rewardRepository = rewardRepository;
         this.rewardMapper = rewardMapper;
         this.fileRepository = fileRepository;
         this.fileMapper = fileMapper;
+        this.voucherRepository = voucherRepository;
+        this.voucherMapper = voucherMapper;
     }
 
     @Transactional(readOnly = true)
@@ -74,11 +87,26 @@ public class RewardService {
         Reward reward = rewardMapper.rewardVMToReward(rewardVM);
 
         if (reward != null) {
+            // handle image
             File file = fileMapper.fileVMToFile(rewardVM.getImage());
             if (file != null) {
                 fileRepository.save(file);
                 reward.setImage(file);
             }
+            rewardRepository.save(reward);
+
+            // handle voucher code
+            if (rewardVM.getVoucherCodes() != null) {
+                // create vouchers
+                if (reward.getVouchers() != null) {
+                    List<Voucher> toBeSaved = rewardVM.getVoucherCodes().stream()
+                        .map(voucherCode -> new Voucher(voucherCode, reward))
+                        .collect(Collectors.toList());
+                    // save vouchers
+                    voucherRepository.saveAll(toBeSaved);
+                }
+            }
+
             return rewardMapper.rewardToRewardDTO(rewardRepository.save(reward));
         }
 
@@ -102,6 +130,7 @@ public class RewardService {
             toBerInserted.setMessageWinnerSW(rewardOpt.get().getMessageWinnerSW());
             toBerInserted.setMessageBalanceEN(rewardOpt.get().getMessageBalanceEN());
             toBerInserted.setMessageBalanceSW(rewardOpt.get().getMessageBalanceSW());
+            toBerInserted.setVouchers(rewardOpt.get().getVouchers());
         }
 
         return rewardMapper.rewardToRewardDTO(rewardRepository.save(toBerInserted));
@@ -112,6 +141,7 @@ public class RewardService {
         Reward reward = rewardMapper.rewardVMToReward(rewardVM);
         reward.setId(id);
 
+        // handle image
         Optional<File> imageOpt;
         if (rewardVM.getImage().getName() != null) {
             imageOpt = fileRepository.findByName(rewardVM.getImage().getName());
@@ -120,6 +150,26 @@ public class RewardService {
         }
 
         reward.setImage(imageOpt.orElse(null));
+
+        // handle voucher
+        if (rewardVM.getVoucherCodes() != null) {
+            // remove existing vouchers
+            List<Voucher> toBeDetached = voucherRepository.findByRewardId(reward.getId());
+            voucherRepository.saveAll(
+                toBeDetached.stream()
+                    .filter(voucher -> rewardVM.getVoucherCodes().contains(voucher.getVoucherCode()))
+                    .map(Voucher::removeReward)
+                    .collect(Collectors.toList()));
+            // create new vouchers if not existed yet
+            if (reward.getVouchers() != null) {
+                List<Voucher> toBeSaved = rewardVM.getVoucherCodes().stream()
+                    .map(voucherCode -> new Voucher(voucherCode, reward))
+                    .collect(Collectors.toList());
+                // save vouchers
+                voucherRepository.saveAll(toBeSaved);
+            }
+        }
+
 
         rewardRepository.save(reward);
         return rewardMapper.rewardToRewardDTO(reward);

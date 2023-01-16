@@ -194,7 +194,9 @@ INSERT INTO campaign_rule (campaign_id,rule_id) VALUES (3,1);
 -- Dumping data for table `reward`
 --
 /*!40000 ALTER TABLE `reward` DISABLE KEYS */;
-INSERT INTO reward (id,name,description,prize_type,prize_value,number_of_prize,released,message_winner_en,message_winner_sw,message_balance_en,message_balance_sw,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,'Reward 1','Reward 1 description',1,1,1,1,'message_winner_en','message_winner_sw','message_balance_en','message_balance_sw','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO reward (id,name,description,prize_type,prize_value,number_of_prize,released,image,message_winner_en,message_winner_sw,message_balance_en,message_balance_sw,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,'Reward 1','Reward 1 description',1,1,1,1,1,'message_winner_en','message_winner_sw','message_balance_en','message_balance_sw','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO reward (id,name,description,prize_type,prize_value,number_of_prize,released,image,message_winner_en,message_winner_sw,message_balance_en,message_balance_sw,created_by,created_date,last_modified_by,last_modified_date) VALUES (2,'Reward 2','Reward 2 description',1,1,1,1,1,'message_winner_en','message_winner_sw','message_balance_en','message_balance_sw','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO reward (id,name,description,prize_type,prize_value,number_of_prize,released,image,message_winner_en,message_winner_sw,message_balance_en,message_balance_sw,created_by,created_date,last_modified_by,last_modified_date) VALUES (3,'Reward 3','Reward 3 description',1,1,1,1,1,'message_winner_en','message_winner_sw','message_balance_en','message_balance_sw','system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
 /*!40000 ALTER TABLE `reward` ENABLE KEYS */;
 
 
@@ -203,6 +205,8 @@ INSERT INTO reward (id,name,description,prize_type,prize_value,number_of_prize,r
 --
 /*!40000 ALTER TABLE `reward_condition` DISABLE KEYS */;
 INSERT INTO reward_condition (id,amount_min,amount_max,times_min,times_max,number_codes,rule_id,reward_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,1,2,1,2,10,1,1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO reward_condition (id,amount_min,amount_max,times_min,times_max,number_codes,rule_id,reward_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (2,5,3,7,3,10,2,2,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO reward_condition (id,amount_min,amount_max,times_min,times_max,number_codes,rule_id,reward_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (3,21,63,25,23,34,1,3,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
 /*!40000 ALTER TABLE `reward_condition` ENABLE KEYS */;
 
 
@@ -213,6 +217,19 @@ INSERT INTO reward_condition (id,amount_min,amount_max,times_min,times_max,numbe
 INSERT INTO generated_time (id,start_time,end_time,campaign_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'), to_date('2022-11-26 18:07:08','YYYY-MM-DD HH24:MI:SS'), 1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
 INSERT INTO generated_time (id,start_time,end_time,campaign_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (2,to_date('2022-11-26 18:07:08','YYYY-MM-DD HH24:MI:SS'), to_date('2022-11-27 18:07:08','YYYY-MM-DD HH24:MI:SS'), 1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
 INSERT INTO generated_time (id,start_time,end_time,campaign_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (3,to_date('2022-11-27 18:07:08','YYYY-MM-DD HH24:MI:SS'), to_date('2022-11-28 18:07:08','YYYY-MM-DD HH24:MI:SS'), 1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+/*!40000 ALTER TABLE `status` ENABLE KEYS */;
+
+
+--
+-- Dumping data for table `generated_time`
+--
+/*!40000 ALTER TABLE `status` DISABLE KEYS */;
+INSERT INTO voucher (id,voucher_code,reward_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (1,'Reward_1_Voucher_code_001', 1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO voucher (id,voucher_code,reward_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (2,'Reward_1_Voucher_code_001', 1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO voucher (id,voucher_code,reward_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (3,'Reward_1_Voucher_code_001', 1,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO voucher (id,voucher_code,reward_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (4,'Reward_2_Voucher_code_001', 2,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO voucher (id,voucher_code,reward_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (5,'Reward_2_Voucher_code_001', 2,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO voucher (id,voucher_code,reward_id,created_by,created_date,last_modified_by,last_modified_date) VALUES (6,'Reward_3_Voucher_code_001', 3,'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'),'system',to_date('2022-11-25 18:07:08','YYYY-MM-DD HH24:MI:SS'));
 /*!40000 ALTER TABLE `status` ENABLE KEYS */;
 
 

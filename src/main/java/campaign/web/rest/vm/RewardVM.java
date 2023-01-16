@@ -1,5 +1,7 @@
 package campaign.web.rest.vm;
 
+import java.util.List;
+
 public class RewardVM {
 
     private Long id;
@@ -25,6 +27,8 @@ public class RewardVM {
     private String messageBalanceEN;
 
     private String messageBalanceSW;
+
+    private List<String> voucherCodes;
 
     public Long getId() {
         return id;
@@ -122,6 +126,14 @@ public class RewardVM {
         this.messageBalanceSW = messageBalanceSW;
     }
 
+    public List<String> getVoucherCodes() {
+        return voucherCodes;
+    }
+
+    public void setVoucherCodes(List<String> voucherCodes) {
+        this.voucherCodes = voucherCodes;
+    }
+
     @Override
     public String toString() {
         return "RewardVM{" +
@@ -132,10 +144,12 @@ public class RewardVM {
             ", prizeValue=" + prizeValue +
             ", numOfPrize=" + numOfPrize +
             ", released=" + released +
+            ", image=" + image +
             ", messageWinnerEN='" + messageWinnerEN + '\'' +
             ", messageWinnerSW='" + messageWinnerSW + '\'' +
             ", messageBalanceEN='" + messageBalanceEN + '\'' +
             ", messageBalanceSW='" + messageBalanceSW + '\'' +
+            ", voucherCodes=" + voucherCodes +
             '}';
     }
 }
