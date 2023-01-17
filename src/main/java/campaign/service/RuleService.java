@@ -77,6 +77,10 @@ public class RuleService {
             ruleList = ruleRepository.findAll(pageable);
         }
 
+        if (appliedCampaign == null || appliedCampaign.equalsIgnoreCase("all")) {
+            return ruleList.map(RuleDTO::new);
+        }
+
         // applied campaign: All, None, Campaign-name
         return new PageImpl<>(
             ruleList.stream()

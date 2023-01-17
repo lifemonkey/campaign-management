@@ -187,6 +187,7 @@ INSERT INTO campaign_rule (campaign_id,rule_id) VALUES (1,3);
 INSERT INTO campaign_rule (campaign_id,rule_id) VALUES (2,1);
 INSERT INTO campaign_rule (campaign_id,rule_id) VALUES (2,2);
 INSERT INTO campaign_rule (campaign_id,rule_id) VALUES (3,1);
+INSERT INTO campaign_rule (campaign_id,rule_id) VALUES (4,3);
 /*!40000 ALTER TABLE `campaign_rule` ENABLE KEYS */;
 
 
