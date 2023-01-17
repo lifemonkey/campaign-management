@@ -34,8 +34,6 @@ public class UserDTO {
 
     private String imageUrl;
 
-    private byte[] imageBlob;
-
     private Integer status;
 
     private ERole role;
@@ -59,7 +57,6 @@ public class UserDTO {
         this.lastname = user.getLastname();
         this.expiredDate = user.getExpiredDate();
         this.imageUrl = user.getImageUrl();
-        this.imageBlob = user.getImageBlob();
         this.status = user.getStatus();
         if (user.getRole() != null) {
             this.role = user.getRole().getName();
@@ -134,14 +131,6 @@ public class UserDTO {
         this.imageUrl = imageUrl;
     }
 
-    public byte[] getImageBlob() {
-        return imageBlob;
-    }
-
-    public void setImageBlob(byte[] imageBlob) {
-        this.imageBlob = imageBlob;
-    }
-
     public Integer getStatus() {
         return status;
     }
@@ -196,7 +185,6 @@ public class UserDTO {
             ", lastname='" + lastname + '\'' +
             ", expiredDate=" + expiredDate +
             ", imageUrl='" + imageUrl + '\'' +
-            ", imageBlob=" + Arrays.toString(imageBlob) +
             ", role='" + role + '\'' +
             '}';
     }

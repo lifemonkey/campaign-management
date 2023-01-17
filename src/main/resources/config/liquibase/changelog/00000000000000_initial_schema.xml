@@ -77,7 +77,6 @@
             <column name="last_name" type="varchar(200)"/>
             <column name="expired_date" type="timestamp"/>
             <column name="image_url" type="varchar(255)" />
-            <column name="image_blob" type="longblob" />
             <!-- constraints -->
             <column name="role_id" type="bigint" />
             <column name="status" type="bigint" />

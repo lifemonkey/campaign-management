@@ -58,10 +58,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "image_url")
     private String imageUrl = null;
 
-    @Column(name = "image_blob", columnDefinition = "BLOB")
-    @Lob
-    private byte[]  imageBlob;
-
     @Column(name = "status")
     private Integer status;
 
@@ -139,14 +135,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-    }
-
-    public byte[] getImageBlob() {
-        return imageBlob;
-    }
-
-    public void setImageBlob(byte[] imageBlob) {
-        this.imageBlob = imageBlob;
     }
 
     public Integer getStatus() {
