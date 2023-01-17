@@ -70,8 +70,10 @@ public class RuleService {
             ruleList = ruleRepository.findAllByNameContaining(search, pageable);
         } else if (search == null && campaignType != null) {
             ruleList = ruleRepository.findAllByCampaignType(campaignType, pageable);
-        } else {
+        } else if (search != null && campaignType != null) {
             ruleList = ruleRepository.findAllByNameContainingAndCampaignType(search, campaignType, pageable);
+        } else {
+            ruleList = ruleRepository.findAll(pageable);
         }
 
         // applied campaign: All, None, Campaign-name
@@ -88,11 +90,6 @@ public class RuleService {
         }
 
         return ruleList.map(RuleDTO::new);
-    }
-
-    @Transactional(readOnly = true)
-    public Page<RuleDTO> getAllRules(Pageable pageable) {
-        return ruleRepository.findAll(pageable).map(RuleDTO::new);
     }
 
     @Transactional(rollbackFor = Exception.class)
