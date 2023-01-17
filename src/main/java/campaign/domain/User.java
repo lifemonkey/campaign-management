@@ -4,8 +4,6 @@ import campaign.config.Constants;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.id.enhanced.SequenceStyleGenerator;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
