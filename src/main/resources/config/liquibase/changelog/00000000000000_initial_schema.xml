@@ -556,6 +556,7 @@
         <loadData file="config/liquibase/reward.csv" separator=";" tableName="reward"/>
         <loadData file="config/liquibase/reward_condition.csv" separator=";" tableName="reward_condition"/>
         <loadData file="config/liquibase/voucher.csv" separator=";" tableName="voucher"/>
+        <loadData file="config/liquibase/campaign_rule.csv" separator=";" tableName="campaign_rule"/>
 
     </changeSet>
 

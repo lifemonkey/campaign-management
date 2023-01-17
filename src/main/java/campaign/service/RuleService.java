@@ -10,6 +10,7 @@ import campaign.web.rest.vm.RuleVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,19 +78,20 @@ public class RuleService {
         }
 
         // applied campaign: All, None, Campaign-name
-        if (appliedCampaign != null && !appliedCampaign.equalsIgnoreCase("all")) {
-            if (appliedCampaign.equalsIgnoreCase("none")) {
-                ruleList.stream().filter(rule -> rule.getCampaignList() == null).collect(Collectors.toList());
-            } else {
-                ruleList.stream()
-                    .filter(rule -> rule.getCampaignList().stream()
-                        .filter(campaign -> campaign.getName().toLowerCase().contains(appliedCampaign))
-                        .findAny().isPresent())
-                    .collect(Collectors.toList());
-            }
-        }
-
-        return ruleList.map(RuleDTO::new);
+        return new PageImpl<>(
+            ruleList.stream()
+                .filter(rule -> {
+                    if (appliedCampaign.equalsIgnoreCase("none")) {
+                        if (rule.getCampaignList() == null) return true;
+                    } else {
+                        if (rule.getCampaignList().stream()
+                            .filter(campaign -> campaign.getName().toLowerCase().contains(appliedCampaign.toLowerCase()))
+                            .findAny().isPresent()) return true;
+                    }
+                    return false;
+                })
+                .collect(Collectors.toList()), ruleList.getPageable(), ruleList.getTotalElements()
+        ).map(RuleDTO::new);
     }
 
     @Transactional(rollbackFor = Exception.class)
