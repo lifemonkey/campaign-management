@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TargetListRepository extends JpaRepository<TargetList, Long> {
 
-    Page<TargetList> findAllByNameContaining(String name, Pageable pageable);
+    Page<TargetList> findAllByNameContainingIgnoreCase(String name, Pageable pageable);
 
     Page<TargetList> findAllByTargetType(Integer targetType, Pageable pageable);
 
-    Page<TargetList> findAllByNameContainingAndTargetType(String name, Integer targetType, Pageable pageable);
+    Page<TargetList> findAllByNameContainingIgnoreCaseAndTargetType(String name, Integer targetType, Pageable pageable);
 }

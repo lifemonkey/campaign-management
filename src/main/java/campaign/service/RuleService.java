@@ -68,11 +68,11 @@ public class RuleService {
         Page<Rule> ruleList;
 
         if (search != null && campaignType == null) {
-            ruleList = ruleRepository.findAllByNameContaining(search, pageable);
+            ruleList = ruleRepository.findAllByNameContainingIgnoreCase(search, pageable);
         } else if (search == null && campaignType != null) {
             ruleList = ruleRepository.findAllByCampaignType(campaignType, pageable);
         } else if (search != null && campaignType != null) {
-            ruleList = ruleRepository.findAllByNameContainingAndCampaignType(search, campaignType, pageable);
+            ruleList = ruleRepository.findAllByNameContainingIgnoreCaseAndCampaignType(search, campaignType, pageable);
         } else {
             ruleList = ruleRepository.findAll(pageable);
         }

@@ -73,11 +73,11 @@ public class FileService {
     @Transactional(readOnly = true)
     public Page<FileDTO> searchFiles(Pageable pageable, String search, Integer type) {
         if (search != null && type == null) {
-            return fileRepository.findAllByNameContaining(search, pageable).map(FileDTO::new);
+            return fileRepository.findAllByNameContainingIgnoreCase(search, pageable).map(FileDTO::new);
         } else if (search == null && type != null) {
             return fileRepository.findAllByFileType(type, pageable).map(FileDTO::new);
         } else {
-            return fileRepository.findAllByNameContainingAndFileType(search, type, pageable).map(FileDTO::new);
+            return fileRepository.findAllByNameContainingIgnoreCaseAndFileType(search, type, pageable).map(FileDTO::new);
         }
     }
 
@@ -96,7 +96,7 @@ public class FileService {
             .path(storeFile(file))
             .toUriString();
         // get file by fileName from db
-        Optional<File> fileOpt = fileRepository.findByName(StringUtils.cleanPath(file.getOriginalFilename()));
+        Optional<File> fileOpt = fileRepository.findByNameIgnoreCase(StringUtils.cleanPath(file.getOriginalFilename()));
         File toBeSaved = new File();
         if (fileOpt.isPresent()) {
             toBeSaved = fileOpt.get();

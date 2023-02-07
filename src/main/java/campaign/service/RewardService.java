@@ -75,11 +75,11 @@ public class RewardService {
     @Transactional(readOnly = true)
     public Page<RewardDTO> searchRewards(Pageable pageable, String search, Integer type) {
         if (search != null && type == null) {
-            return rewardRepository.findAllByNameContaining(search, pageable).map(RewardDTO::new);
+            return rewardRepository.findAllByNameContainingIgnoreCase(search, pageable).map(RewardDTO::new);
         } else if (search == null && type != null) {
             return rewardRepository.findAllByPrizeType(type, pageable).map(RewardDTO::new);
         } else {
-            return rewardRepository.findAllByNameContainingAndPrizeType(search, type, pageable).map(RewardDTO::new);
+            return rewardRepository.findAllByNameContainingIgnoreCaseAndPrizeType(search, type, pageable).map(RewardDTO::new);
         }
     }
 

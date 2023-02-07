@@ -9,13 +9,13 @@ import java.util.Optional;
 
 public interface FileRepository extends JpaRepository<File, Long> {
 
-    Page<File> findAllByNameContaining(String name, Pageable pageable);
+    Page<File> findAllByNameContainingIgnoreCase(String name, Pageable pageable);
 
     Page<File> findAllByFileType(Integer fileType, Pageable pageable);
 
-    Page<File> findAllByNameContainingAndFileType(String name, Integer fileType, Pageable pageable);
+    Page<File> findAllByNameContainingIgnoreCaseAndFileType(String name, Integer fileType, Pageable pageable);
 
-    Optional<File> findByName(String name);
+    Optional<File> findByNameIgnoreCase(String name);
 
     Optional<File> findByImageUrl(String imageUrl);
 }

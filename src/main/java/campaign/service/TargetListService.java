@@ -46,11 +46,11 @@ public class TargetListService {
     @Transactional(readOnly = true)
     public Page<TargetListDTO> searchTargetList(Pageable pageable, String search, Integer type) {
         if (search != null && type == null) {
-            return targetListRepository.findAllByNameContaining(search, pageable).map(TargetListDTO::new);
+            return targetListRepository.findAllByNameContainingIgnoreCase(search, pageable).map(TargetListDTO::new);
         } else if (search == null && type != null) {
             return targetListRepository.findAllByTargetType(type, pageable).map(TargetListDTO::new);
         } else {
-            return targetListRepository.findAllByNameContainingAndTargetType(search, type, pageable).map(TargetListDTO::new);
+            return targetListRepository.findAllByNameContainingIgnoreCaseAndTargetType(search, type, pageable).map(TargetListDTO::new);
         }
     }
 
