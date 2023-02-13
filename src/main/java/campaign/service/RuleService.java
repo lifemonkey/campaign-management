@@ -86,7 +86,7 @@ public class RuleService {
             ruleList.stream()
                 .filter(rule -> {
                     if (appliedCampaign.equalsIgnoreCase("none")) {
-                        if (rule.getCampaignList() == null) return true;
+                        if (rule.getCampaignList() == null || rule.getCampaignList().isEmpty()) return true;
                     } else {
                         if (rule.getCampaignList().stream()
                             .filter(campaign -> campaign.getName().toLowerCase().contains(appliedCampaign.toLowerCase()))
