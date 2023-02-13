@@ -49,6 +49,8 @@ public class File extends AbstractAuditingEntity implements Serializable {
     @JoinColumn(name = "reward_id", referencedColumnName = "id")
     private Reward reward;
 
+    public File() {}
+
     public File(FileDTO file) {
         this.name = file.getName();
         this.description = file.getDescription();
@@ -61,6 +63,18 @@ public class File extends AbstractAuditingEntity implements Serializable {
         this.description = description;
         this.fileType = fileType;
         this.imageUrl = imageUrl;
+    }
+
+    public File clone() {
+        String fileName = "Unknown-name";
+        if (this.getName() != null && !this.getName().isEmpty()) {
+            String[] fileNameArr = this.getName().split("\\.");
+            if (fileNameArr.length == 2) {
+                fileName = fileNameArr[0] + "-copy." + fileNameArr[1];
+            }
+        }
+
+        return new File(fileName, this.getDescription(), this.getFileType(), this.getImageUrl());
     }
 
     public Long getId() {

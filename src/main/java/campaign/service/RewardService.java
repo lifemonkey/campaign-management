@@ -12,6 +12,7 @@ import campaign.service.dto.VoucherDTO;
 import campaign.service.mapper.FileMapper;
 import campaign.service.mapper.RewardMapper;
 import campaign.service.mapper.VoucherMapper;
+import campaign.web.rest.vm.FileVM;
 import campaign.web.rest.vm.RewardVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -92,15 +94,14 @@ public class RewardService {
             rewardRepository.save(reward);
 
             // handle image
-            if (rewardVM.getFiles() != null) {
-                if (reward.getFiles() != null) {
-                    List<File> toBeSaved = rewardVM.getFiles().stream()
-                        .map(file -> new File(file))
-                        .collect(Collectors.toList());
-                    // save files
-                    fileRepository.saveAll(toBeSaved);
-                    reward.addFiles(toBeSaved);
-                }
+            List<Long> fileIds = rewardVM.getFiles().stream().map(FileVM::getId).collect(Collectors.toList());
+            List<File> fileList = fileRepository.findAllById(fileIds);
+            if (fileList != null && !fileList.isEmpty()) {
+
+                fileList.stream().forEach(file -> file.setReward(reward));
+                fileRepository.saveAll(fileList);
+                // two ways binding
+                reward.addFiles(fileList);
             }
 
             // handle voucher code
@@ -130,9 +131,6 @@ public class RewardService {
         if (rewardOpt.isPresent()) {
             toBerInserted.setName(rewardOpt.get().getName());
             toBerInserted.setDescription(rewardOpt.get().getDescription());
-            if (rewardOpt.get().getFiles() != null) {
-                toBerInserted.addFiles(rewardOpt.get().getFiles());
-            }
             toBerInserted.setPrizeType(rewardOpt.get().getPrizeType());
             toBerInserted.setPrizeValue(rewardOpt.get().getPrizeValue());
             toBerInserted.setNumOfPrize(rewardOpt.get().getNumOfPrize());
@@ -141,8 +139,20 @@ public class RewardService {
             toBerInserted.setMessageWinnerSW(rewardOpt.get().getMessageWinnerSW());
             toBerInserted.setMessageBalanceEN(rewardOpt.get().getMessageBalanceEN());
             toBerInserted.setMessageBalanceSW(rewardOpt.get().getMessageBalanceSW());
+            rewardRepository.save(toBerInserted);
             // voucher code can not be cloned
             //toBerInserted.setVouchers(rewardOpt.get().getVouchers());
+            // clone files
+            if (rewardOpt.get().getFiles() != null) {
+                List<File> toBeCloned = rewardOpt.get().getFiles().stream()
+                    .map(file -> {
+                        File clonedFile = file.clone();
+                        clonedFile.setReward(toBerInserted);
+                        return clonedFile;
+                    })
+                    .collect(Collectors.toList());
+                toBerInserted.addFiles(toBeCloned);
+            }
         }
 
         return rewardMapper.rewardToRewardDTO(rewardRepository.save(toBerInserted));
@@ -153,10 +163,10 @@ public class RewardService {
         Reward reward = rewardMapper.rewardVMToReward(rewardVM);
         reward.setId(id);
 
-        // handle image
+        // handle files
         if (rewardVM.getFiles() != null) {
             // remove existing files
-            List<Long> fileIds = rewardVM.getFiles().stream().map(FileDTO::getId).collect(Collectors.toList());
+            List<Long> fileIds = rewardVM.getFiles().stream().map(FileVM::getId).collect(Collectors.toList());
             List<File> toBeDetached = fileRepository.findByRewardId(reward.getId()).stream()
                 .filter(file -> !fileIds.contains(file.getId()))
                 .map(File::removeReward)
@@ -166,7 +176,7 @@ public class RewardService {
             // create new files
             if (reward.getFiles() != null) {
                 List<File> toBeSaved = rewardVM.getFiles().stream()
-                    .map(file -> new File(file))
+                    .map(file -> fileMapper.fileVMToFile(file))
                     .collect(Collectors.toList());
                 // save files
                 reward.updateFiles(toBeSaved);

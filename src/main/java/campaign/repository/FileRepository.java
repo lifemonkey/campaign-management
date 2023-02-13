@@ -16,7 +16,7 @@ public interface FileRepository extends JpaRepository<File, Long> {
 
     Page<File> findAllByNameContainingIgnoreCaseAndFileType(String name, Integer fileType, Pageable pageable);
 
-    Optional<File> findByNameIgnoreCase(String name);
+    List<File> findByNameIgnoreCase(String name);
 
     Optional<File> findByImageUrl(String imageUrl);
 

@@ -21,7 +21,7 @@ public class RewardVM {
 
     private Integer released;
 
-    private List<FileDTO> files;
+    private List<FileVM> files;
 
     private String messageWinnerEN;
 
@@ -89,11 +89,11 @@ public class RewardVM {
         this.released = released;
     }
 
-    public List<FileDTO> getFiles() {
+    public List<FileVM> getFiles() {
         return files;
     }
 
-    public void setFiles(List<FileDTO> files) {
+    public void setFiles(List<FileVM> files) {
         this.files = files;
     }
 

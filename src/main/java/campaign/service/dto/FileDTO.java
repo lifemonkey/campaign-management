@@ -22,6 +22,8 @@ public class FileDTO {
 
     private Long campaignId;
 
+    private Long rewardId;
+
     private LocalDateTime createdDate;
 
     private String lastModifiedBy;
@@ -39,6 +41,8 @@ public class FileDTO {
         this.imageUrl = file.getImageUrl();
         if (file.getCampaign() != null) {
             this.campaignId = file.getCampaign().getId();
+        } else if (file.getReward() != null) {
+            this.rewardId = file.getReward().getId();
         }
         this.createdBy = file.getCreatedBy();
         this.createdDate = file.getCreatedDate();
@@ -84,6 +88,14 @@ public class FileDTO {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public Long getRewardId() {
+        return rewardId;
+    }
+
+    public void setRewardId(Long rewardId) {
+        this.rewardId = rewardId;
     }
 
     public Long getCampaignId() {

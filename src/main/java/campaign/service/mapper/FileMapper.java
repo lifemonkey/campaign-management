@@ -54,6 +54,9 @@ public class FileMapper {
             return null;
         } else {
             File file = new File();
+            if (fileVM.getId() != null) {
+                file.setId(fileVM.getId());
+            }
             file.setName(fileVM.getName());
             file.setDescription(fileVM.getDescription());
             file.setFileType(fileVM.getFileType());

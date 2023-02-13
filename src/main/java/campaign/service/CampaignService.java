@@ -10,6 +10,7 @@ import campaign.service.mapper.FileMapper;
 import campaign.service.mapper.GeneratedTimeMapper;
 import campaign.web.rest.vm.ActionCampaignVM;
 import campaign.web.rest.vm.CampaignVM;
+import campaign.web.rest.vm.FileVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -132,12 +134,11 @@ public class CampaignService {
             if(ruleList != null && !ruleList.isEmpty()) {
                 campaign.addRuleList(ruleList);
             }
-
-            // save campaign
             campaignRepository.save(campaign);
 
             // handle file list
-            List<File> fileList = fileMapper.fileVMToFiles(campaignVM.getFiles());
+            List<Long> fileIds = campaignVM.getFiles().stream().map(FileVM::getId).collect(Collectors.toList());
+            List<File> fileList = fileRepository.findAllById(fileIds);
             if (fileList != null && !fileList.isEmpty()) {
                 fileList.stream().forEach(file -> file.setCampaign(campaign));
                 fileRepository.saveAll(fileList);

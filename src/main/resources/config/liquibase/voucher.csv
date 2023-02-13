@@ -1,7 +1,7 @@
-id;voucher_code;reward_id;created_by;last_modified_by
-1;Reward_1_Voucher_code_001;1;system;system
-2;Reward_1_Voucher_code_002;1;system;system
-3;Reward_1_Voucher_code_003;1;system;system
-4;Reward_2_Voucher_code_001;2;system;system
-5;Reward_2_Voucher_code_002;2;system;system
-6;Reward_3_Voucher_code_001;3;system;system
+id;voucher_code;start_date;expired_date;reward_id;created_by;last_modified_by
+1;Reward_1_Voucher_code_001;;;1;system;system
+2;Reward_1_Voucher_code_002;;;1;system;system
+3;Reward_1_Voucher_code_003;;;1;system;system
+4;Reward_2_Voucher_code_001;;;2;system;system
+5;Reward_2_Voucher_code_002;;;2;system;system
+6;Reward_3_Voucher_code_001;;;3;system;system

@@ -2,8 +2,10 @@ package campaign.service;
 
 import campaign.domain.Campaign;
 import campaign.domain.File;
+import campaign.domain.Reward;
 import campaign.repository.CampaignRepository;
 import campaign.repository.FileRepository;
+import campaign.repository.RewardRepository;
 import campaign.service.dto.FileDTO;
 import campaign.service.mapper.FileMapper;
 import campaign.web.rest.vm.FileVM;
@@ -25,6 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -46,8 +49,10 @@ public class FileService {
     private final CampaignRepository campaignRepository;
 
     private final FileMapper fileMapper;
+    private final RewardRepository rewardRepository;
 
-    public FileService(FileRepository fileRepository, CampaignRepository campaignRepository, FileMapper fileMapper) {
+    public FileService(FileRepository fileRepository, CampaignRepository campaignRepository, FileMapper fileMapper,
+                       RewardRepository rewardRepository) {
         this.fileRepository = fileRepository;
         this.campaignRepository = campaignRepository;
         this.fileMapper = fileMapper;
@@ -58,6 +63,7 @@ public class FileService {
         } catch (Exception ex) {
             log.error("Could not create the directory where the uploaded files will be stored.");
         }
+        this.rewardRepository = rewardRepository;
     }
 
     @Transactional(readOnly = true)
@@ -96,10 +102,10 @@ public class FileService {
             .path(storeFile(file))
             .toUriString();
         // get file by fileName from db
-        Optional<File> fileOpt = fileRepository.findByNameIgnoreCase(StringUtils.cleanPath(file.getOriginalFilename()));
+        List<File> fileList = fileRepository.findByNameIgnoreCase(StringUtils.cleanPath(file.getOriginalFilename()));
         File toBeSaved = new File();
-        if (fileOpt.isPresent()) {
-            toBeSaved = fileOpt.get();
+        if (fileList != null && fileList.size() > 0) {
+            toBeSaved = fileList.get(0);
             toBeSaved.description(description).type(type);
         } else {
             toBeSaved.name(StringUtils.cleanPath(file.getOriginalFilename()))
@@ -178,6 +184,37 @@ public class FileService {
         }
 
         return new FileDTO();
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public FileDTO updateFileReward(Long id, Long rewardId) {
+        Optional<File> fileOpt = fileRepository.findById(id);
+        Optional<Reward> rewardOpt = rewardRepository.findById(rewardId);
+
+        if (fileOpt.isPresent() && rewardOpt.isPresent()) {
+            File file = fileOpt.get();
+            // link campaign to file
+            file.setReward(rewardOpt.get());
+            fileRepository.save(file);
+            return fileMapper.fileToFileDTO(file);
+        }
+
+        return new FileDTO();
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public List<FileDTO> updateFilesReward(List<Long> ids, Long rewardId) {
+        List<File> fileList = fileRepository.findAllById(ids);
+        Optional<Reward> rewardOpt = rewardRepository.findById(rewardId);
+
+        if (fileList != null && rewardOpt.isPresent()) {
+            // link campaign to file
+            fileList.stream().forEach(file -> file.setReward(rewardOpt.get()));
+            fileRepository.saveAll(fileList);
+            return fileMapper.fileToFileDTOs(fileList);
+        }
+
+        return new ArrayList<>();
     }
 
     @Transactional(rollbackFor = Exception.class)
