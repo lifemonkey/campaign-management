@@ -17,9 +17,9 @@ public class TargetList extends AbstractAuditingEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "target_list_sequence_generator")
-    @SequenceGenerator(name = "target_list_sequence_generator", sequenceName = "target_list_id_sequence", initialValue = 100, allocationSize = 1)
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "target_list_sequence_generator")
+//    @SequenceGenerator(name = "target_list_sequence_generator", sequenceName = "target_list_id_sequence", initialValue = 100, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
