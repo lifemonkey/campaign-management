@@ -1,12 +1,14 @@
 package campaign.domain;
 
 import campaign.service.dto.VoucherDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "voucher")
@@ -25,6 +27,14 @@ public class Voucher extends AbstractAuditingEntity implements Serializable {
     @Column(name = "voucher_code", length = 200, unique = true)
     private String voucherCode;
 
+    @Column(name = "start_date")
+    @JsonIgnore
+    private LocalDateTime startDate = LocalDateTime.now();
+
+    @Column(name = "expired_date")
+    @JsonIgnore
+    private LocalDateTime expiredDate = null;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "reward_id", referencedColumnName = "id")
     private Reward reward;
@@ -37,11 +47,15 @@ public class Voucher extends AbstractAuditingEntity implements Serializable {
             this.id = voucherCode.getId();
         }
         this.voucherCode = voucherCode.getVoucherCode();
+        this.startDate = voucherCode.getStartDate();
+        this.expiredDate = voucherCode.getExpiredDate();
         this.reward = reward;
     }
 
-    public Voucher(String voucherCode, Reward reward) {
+    public Voucher(String voucherCode, LocalDateTime startDate, LocalDateTime expiredDate, Reward reward) {
         this.voucherCode = voucherCode;
+        this.startDate = startDate;
+        this.expiredDate = expiredDate;
         this.reward = reward;
     }
 
@@ -59,6 +73,22 @@ public class Voucher extends AbstractAuditingEntity implements Serializable {
 
     public void setVoucherCode(String voucherCode) {
         this.voucherCode = voucherCode;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDateTime getExpiredDate() {
+        return expiredDate;
+    }
+
+    public void setExpiredDate(LocalDateTime expiredDate) {
+        this.expiredDate = expiredDate;
     }
 
     public Reward getReward() {
@@ -79,7 +109,8 @@ public class Voucher extends AbstractAuditingEntity implements Serializable {
         return "Voucher{" +
             "id=" + id +
             ", voucherCode='" + voucherCode + '\'' +
-            ", reward=" + reward +
+            ", startDate=" + startDate +
+            ", expiredDate=" + expiredDate +
             '}';
     }
 }

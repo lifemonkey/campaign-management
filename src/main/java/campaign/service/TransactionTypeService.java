@@ -49,7 +49,7 @@ public class TransactionTypeService {
 
     @Transactional(readOnly = true)
     public Page<TransactionTypeDTO> searchTransactionTypes(Pageable pageable, String search) {
-        return transactionTypeRepository.findAllByNameContaining(search, pageable).map(TransactionTypeDTO::new);
+        return transactionTypeRepository.findAllByNameContainingIgnoreCase(search, pageable).map(TransactionTypeDTO::new);
     }
 
     @Transactional(rollbackFor = Exception.class)

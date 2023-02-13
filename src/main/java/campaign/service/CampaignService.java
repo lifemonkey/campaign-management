@@ -10,6 +10,7 @@ import campaign.service.mapper.FileMapper;
 import campaign.service.mapper.GeneratedTimeMapper;
 import campaign.web.rest.vm.ActionCampaignVM;
 import campaign.web.rest.vm.CampaignVM;
+import campaign.web.rest.vm.FileVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -85,11 +87,11 @@ public class CampaignService {
     @Transactional(readOnly = true)
     public Page<CampaignDTO> searchCampaigns(Pageable pageable, String search, Integer type) {
         if (search != null && type == null) {
-            return campaignRepository.findAllByNameContaining(search, pageable).map(CampaignDTO::new);
+            return campaignRepository.findAllByNameContainingIgnoreCase(search, pageable).map(CampaignDTO::new);
         } else if (search == null && type != null) {
             return campaignRepository.findAllByCampaignType(type, pageable).map(CampaignDTO::new);
         } else {
-            return campaignRepository.findAllByNameContainingAndCampaignType(search, type, pageable).map(CampaignDTO::new);
+            return campaignRepository.findAllByNameContainingIgnoreCaseAndCampaignType(search, type, pageable).map(CampaignDTO::new);
         }
     }
 
@@ -132,12 +134,11 @@ public class CampaignService {
             if(ruleList != null && !ruleList.isEmpty()) {
                 campaign.addRuleList(ruleList);
             }
-
-            // save campaign
             campaignRepository.save(campaign);
 
             // handle file list
-            List<File> fileList = fileMapper.fileVMToFiles(campaignVM.getFiles());
+            List<Long> fileIds = campaignVM.getFiles().stream().map(FileVM::getId).collect(Collectors.toList());
+            List<File> fileList = fileRepository.findAllById(fileIds);
             if (fileList != null && !fileList.isEmpty()) {
                 fileList.stream().forEach(file -> file.setCampaign(campaign));
                 fileRepository.saveAll(fileList);
@@ -230,7 +231,7 @@ public class CampaignService {
     public CampaignWRelDTO approveOrRejectCampaign(Long id, boolean isApprove) {
         Optional<Campaign> campaignOpt = campaignRepository.findById(id);
         if (campaignOpt.isPresent()) {
-            Optional<Status> statusOpt = statusRepository.findByName(
+            Optional<Status> statusOpt = statusRepository.findByNameIgnoreCase(
                 isApprove ? Constants.APPROVED_STATUS : Constants.REJECTED_STATUS);
             Campaign campaign = campaignOpt.get();
             campaign.setStatus(statusOpt.orElse(null));
@@ -261,7 +262,7 @@ public class CampaignService {
         Optional<Campaign> campaignOpt = campaignRepository.findById(id);
         if (campaignOpt.isPresent()) {
             Campaign campaign = campaignOpt.get();
-            Optional<Status> statusOpt = statusRepository.findByName(Constants.RUNNING_STATUS);
+            Optional<Status> statusOpt = statusRepository.findByNameIgnoreCase(Constants.RUNNING_STATUS);
 
             // if status is Initialization
             if (campaign.getStatus().getName() == Constants.INITIALIZATION_STATUS
@@ -306,7 +307,7 @@ public class CampaignService {
             String status = actionCampaignVM.getAction() == Constants.CANCEL_CAMPAIGN
                 ? Constants.CANCELLED_STATUS
                 : Constants.PAUSE_STATUS;
-            Optional<Status> statusOpt = statusRepository.findByName(status);
+            Optional<Status> statusOpt = statusRepository.findByNameIgnoreCase(status);
             // update value for campaign
             campaign.setStatus(statusOpt.orElse(null));
             campaign.setActionReason(actionCampaignVM.getActionReason());
@@ -323,7 +324,7 @@ public class CampaignService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void activateCampaign() {
-        Optional<Status> statusOpt = statusRepository.findByName(Constants.INITIALIZATION_STATUS);
+        Optional<Status> statusOpt = statusRepository.findByNameIgnoreCase(Constants.INITIALIZATION_STATUS);
 
         if (statusOpt.isPresent()) {
             List<Campaign> toBeActivated = campaignRepository.findAllByStatus(statusOpt.get())

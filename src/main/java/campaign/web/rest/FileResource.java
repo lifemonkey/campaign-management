@@ -15,15 +15,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -149,6 +146,20 @@ public class FileResource {
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
     public ResponseEntity<FileDTO> updateFileCampaign(@Valid @PathVariable Long id, @Valid @PathVariable Long campaignId) {
         return new ResponseEntity<> (fileService.updateFileCampaign(id, campaignId), new HttpHeaders(), HttpStatus.OK);
+    }
+
+    /**
+     * PUT /file : Update file
+     *
+     * @PathVariable file id
+     * @PathVariable campaign id
+     * @return the ResponseEntity with status 200 (OK) and with body all users
+     */
+    @PutMapping("/file/{id}/reward/{rewardId}")
+    @Timed
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    public ResponseEntity<FileDTO> updateFileReward(@Valid @PathVariable Long id, @Valid @PathVariable Long rewardId) {
+        return new ResponseEntity<> (fileService.updateFileReward(id, rewardId), new HttpHeaders(), HttpStatus.OK);
     }
 
     /**

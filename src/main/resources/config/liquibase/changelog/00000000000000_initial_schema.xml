@@ -169,30 +169,6 @@
             </column>
         </createTable>
 
-        <createTable tableName="files">
-            <column name="id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="name" type="varchar(200)"/>
-            <column name="description" type="varchar(4000)"/>
-            <column name="file_type" type="int"/>
-            <column name="image_url" type="varchar(255)"/>
-            <column name="image_blob" type="longblob" />
-            <!-- constraints -->
-            <column name="campaign_id" type="bigint"/>
-            <!-- Auditing fields -->
-            <column name="created_by" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_date" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
-            </column>
-            <column name="last_modified_by" type="varchar(50)" />
-            <column name="last_modified_date" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
         <createTable tableName="target_list">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -367,7 +343,6 @@
             <!-- constraints -->
             <column name="rule_id" type="bigint"/>
             <column name="reward_id" type="bigint"/>
-            <column name="file_id" type="bigint"/>
             <!-- Auditing fields -->
             <column name="created_by" type="varchar(50)">
                 <constraints nullable="false"/>
@@ -386,8 +361,35 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="voucher_code" type="varchar(400)"/>
+            <column name="start_date" type="timestamp" defaultValueDate="${now}"/>
+            <column name="expired_date" type="timestamp"/>
 
             <!-- constraints -->
+            <column name="reward_id" type="bigint"/>
+            <!-- Auditing fields -->
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(50)" />
+            <column name="last_modified_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="files">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(200)"/>
+            <column name="description" type="varchar(4000)"/>
+            <column name="file_type" type="int"/>
+            <column name="image_url" type="varchar(255)"/>
+            <column name="image_blob" type="longblob" />
+            <!-- constraints -->
+            <column name="campaign_id" type="bigint"/>
             <column name="reward_id" type="bigint"/>
             <!-- Auditing fields -->
             <column name="created_by" type="varchar(50)">
@@ -533,11 +535,11 @@
                                  onUpdate="CASCADE"
                                  onDelete="CASCADE"/>
 
-        <addForeignKeyConstraint baseColumnNames="file_id"
-                                 baseTableName="reward"
+        <addForeignKeyConstraint baseColumnNames="reward_id"
+                                 baseTableName="files"
                                  constraintName="fk_reward_file_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="files"
+                                 referencedTableName="reward"
                                  onUpdate="CASCADE"
                                  onDelete="CASCADE"/>
 
@@ -550,13 +552,13 @@
         <loadData file="config/liquibase/target_list_account.csv" separator=";" tableName="target_list_account"/>
         <loadData file="config/liquibase/campaign.csv" separator=";" tableName="campaign"/>
         <loadData file="config/liquibase/campaign_target_list.csv" separator=";" tableName="campaign_target_list"/>
-        <loadData file="config/liquibase/files.csv" separator=";" tableName="files"/>
         <loadData file="config/liquibase/transaction_type.csv" separator=";" tableName="transaction_type"/>
         <loadData file="config/liquibase/rule.csv" separator=";" tableName="rules"/>
         <loadData file="config/liquibase/reward.csv" separator=";" tableName="reward"/>
         <loadData file="config/liquibase/reward_condition.csv" separator=";" tableName="reward_condition"/>
         <loadData file="config/liquibase/voucher.csv" separator=";" tableName="voucher"/>
         <loadData file="config/liquibase/campaign_rule.csv" separator=";" tableName="campaign_rule"/>
+        <loadData file="config/liquibase/files.csv" separator=";" tableName="files"/>
 
     </changeSet>
 

@@ -1,6 +1,6 @@
-id;name;description;file_type;image_url;campaign_id;created_by;last_modified_by
-1;File 1;File 1 description;1;https://google.com/image_1;1;system;system
-2;File 2;File 2 description;1;https://google.com/image_2;2;system;system
-3;File 3;File 3 description;1;https://google.com/image_3;3;system;system
-4;File 4;File 4 description;3;https://google.com/image_4;4;system;system
-5;File 5;File 5 description;2;https://google.com/image_5;5;system;system
+id;name;description;file_type;image_url;campaign_id;reward_id;created_by;last_modified_by
+1;File 1;File 1 description;1;https://google.com/image_1;1;;system;system
+2;File 2;File 2 description;1;https://google.com/image_2;2;;system;system
+3;File 3;File 3 description;1;https://google.com/image_3;3;;system;system
+4;File 4;File 4 description;3;https://google.com/image_4;4;;system;system
+5;File 5;File 5 description;2;https://google.com/image_5;5;;system;system

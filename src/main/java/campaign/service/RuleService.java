@@ -68,11 +68,11 @@ public class RuleService {
         Page<Rule> ruleList;
 
         if (search != null && campaignType == null) {
-            ruleList = ruleRepository.findAllByNameContaining(search, pageable);
+            ruleList = ruleRepository.findAllByNameContainingIgnoreCase(search, pageable);
         } else if (search == null && campaignType != null) {
             ruleList = ruleRepository.findAllByCampaignType(campaignType, pageable);
         } else if (search != null && campaignType != null) {
-            ruleList = ruleRepository.findAllByNameContainingAndCampaignType(search, campaignType, pageable);
+            ruleList = ruleRepository.findAllByNameContainingIgnoreCaseAndCampaignType(search, campaignType, pageable);
         } else {
             ruleList = ruleRepository.findAll(pageable);
         }
@@ -86,7 +86,7 @@ public class RuleService {
             ruleList.stream()
                 .filter(rule -> {
                     if (appliedCampaign.equalsIgnoreCase("none")) {
-                        if (rule.getCampaignList() == null) return true;
+                        if (rule.getCampaignList() == null || rule.getCampaignList().isEmpty()) return true;
                     } else {
                         if (rule.getCampaignList().stream()
                             .filter(campaign -> campaign.getName().toLowerCase().contains(appliedCampaign.toLowerCase()))

@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RuleRepository extends JpaRepository<Rule, Long> {
 
-    Page<Rule> findAllByNameContaining(String name, Pageable pageable);
+    Page<Rule> findAllByNameContainingIgnoreCase(String name, Pageable pageable);
 
     Page<Rule> findAllByCampaignType(Integer campaignType, Pageable pageable);
 
-    Page<Rule> findAllByNameContainingAndCampaignType(String name, Integer campaignType, Pageable pageable);
+    Page<Rule> findAllByNameContainingIgnoreCaseAndCampaignType(String name, Integer campaignType, Pageable pageable);
 }

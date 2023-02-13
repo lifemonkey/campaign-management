@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface TransactionTypeRepository extends JpaRepository<TransactionType, Long> {
 
-    Optional<TransactionType> findByName(String name);
+    Optional<TransactionType> findByNameIgnoreCase(String name);
 
-    Page<TransactionType> findAllByNameContaining(String name, Pageable pageable);
+    Page<TransactionType> findAllByNameContainingIgnoreCase(String name, Pageable pageable);
 }

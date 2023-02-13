@@ -6,11 +6,13 @@ import campaign.domain.Voucher;
 import campaign.repository.FileRepository;
 import campaign.repository.RewardRepository;
 import campaign.repository.VoucherRepository;
+import campaign.service.dto.FileDTO;
 import campaign.service.dto.RewardDTO;
 import campaign.service.dto.VoucherDTO;
 import campaign.service.mapper.FileMapper;
 import campaign.service.mapper.RewardMapper;
 import campaign.service.mapper.VoucherMapper;
+import campaign.web.rest.vm.FileVM;
 import campaign.web.rest.vm.RewardVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -75,11 +78,11 @@ public class RewardService {
     @Transactional(readOnly = true)
     public Page<RewardDTO> searchRewards(Pageable pageable, String search, Integer type) {
         if (search != null && type == null) {
-            return rewardRepository.findAllByNameContaining(search, pageable).map(RewardDTO::new);
+            return rewardRepository.findAllByNameContainingIgnoreCase(search, pageable).map(RewardDTO::new);
         } else if (search == null && type != null) {
             return rewardRepository.findAllByPrizeType(type, pageable).map(RewardDTO::new);
         } else {
-            return rewardRepository.findAllByNameContainingAndPrizeType(search, type, pageable).map(RewardDTO::new);
+            return rewardRepository.findAllByNameContainingIgnoreCaseAndPrizeType(search, type, pageable).map(RewardDTO::new);
         }
     }
 
@@ -91,10 +94,14 @@ public class RewardService {
             rewardRepository.save(reward);
 
             // handle image
-            File file = fileMapper.fileVMToFile(rewardVM.getImage());
-            if (file != null) {
-                fileRepository.save(file);
-                reward.setImage(file);
+            List<Long> fileIds = rewardVM.getFiles().stream().map(FileVM::getId).collect(Collectors.toList());
+            List<File> fileList = fileRepository.findAllById(fileIds);
+            if (fileList != null && !fileList.isEmpty()) {
+
+                fileList.stream().forEach(file -> file.setReward(reward));
+                fileRepository.saveAll(fileList);
+                // two ways binding
+                reward.addFiles(fileList);
             }
 
             // handle voucher code
@@ -124,9 +131,6 @@ public class RewardService {
         if (rewardOpt.isPresent()) {
             toBerInserted.setName(rewardOpt.get().getName());
             toBerInserted.setDescription(rewardOpt.get().getDescription());
-            if (rewardOpt.get().getImage() != null) {
-                toBerInserted.setImage(rewardOpt.get().getImage());
-            }
             toBerInserted.setPrizeType(rewardOpt.get().getPrizeType());
             toBerInserted.setPrizeValue(rewardOpt.get().getPrizeValue());
             toBerInserted.setNumOfPrize(rewardOpt.get().getNumOfPrize());
@@ -135,8 +139,20 @@ public class RewardService {
             toBerInserted.setMessageWinnerSW(rewardOpt.get().getMessageWinnerSW());
             toBerInserted.setMessageBalanceEN(rewardOpt.get().getMessageBalanceEN());
             toBerInserted.setMessageBalanceSW(rewardOpt.get().getMessageBalanceSW());
+            rewardRepository.save(toBerInserted);
             // voucher code can not be cloned
             //toBerInserted.setVouchers(rewardOpt.get().getVouchers());
+            // clone files
+            if (rewardOpt.get().getFiles() != null) {
+                List<File> toBeCloned = rewardOpt.get().getFiles().stream()
+                    .map(file -> {
+                        File clonedFile = file.clone();
+                        clonedFile.setReward(toBerInserted);
+                        return clonedFile;
+                    })
+                    .collect(Collectors.toList());
+                toBerInserted.addFiles(toBeCloned);
+            }
         }
 
         return rewardMapper.rewardToRewardDTO(rewardRepository.save(toBerInserted));
@@ -147,15 +163,24 @@ public class RewardService {
         Reward reward = rewardMapper.rewardVMToReward(rewardVM);
         reward.setId(id);
 
-        // handle image
-        if (rewardVM.getImage() != null) {
-            Optional<File> imageOpt = fileRepository.findById(rewardVM.getImage().getId());
-            File image = fileMapper.fileVMToFile(rewardVM.getImage());
-            if (imageOpt.isPresent()) {
-                image.setId(imageOpt.get().getId());
+        // handle files
+        if (rewardVM.getFiles() != null) {
+            // remove existing files
+            List<Long> fileIds = rewardVM.getFiles().stream().map(FileVM::getId).collect(Collectors.toList());
+            List<File> toBeDetached = fileRepository.findByRewardId(reward.getId()).stream()
+                .filter(file -> !fileIds.contains(file.getId()))
+                .map(File::removeReward)
+                .collect(Collectors.toList());
+            fileRepository.saveAll(toBeDetached);
+
+            // create new files
+            if (reward.getFiles() != null) {
+                List<File> toBeSaved = rewardVM.getFiles().stream()
+                    .map(file -> fileMapper.fileVMToFile(file))
+                    .collect(Collectors.toList());
+                // save files
+                reward.updateFiles(toBeSaved);
             }
-            fileRepository.save(image);
-            reward.setImage(image);
         }
 
         // handle voucher
@@ -186,8 +211,6 @@ public class RewardService {
         Optional<Reward> rewardOpt = rewardRepository.findById(id);
         if (rewardOpt.isPresent()) {
             Reward reward = rewardOpt.get();
-            reward.setImage(null);
-            rewardRepository.save(reward);
             rewardRepository.delete(reward);
         }
     }

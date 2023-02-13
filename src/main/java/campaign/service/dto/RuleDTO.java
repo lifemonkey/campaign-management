@@ -1,5 +1,6 @@
 package campaign.service.dto;
 
+import campaign.domain.Campaign;
 import campaign.domain.EDuration;
 import campaign.domain.Rule;
 
@@ -30,6 +31,7 @@ public class RuleDTO {
 
     private List<RuleRewardDTO> ruleRewardList = new ArrayList<>();
 
+    private List<String> appliedCampaigns = new ArrayList<>();
     private String createdBy;
 
     private LocalDateTime createdDate;
@@ -51,6 +53,7 @@ public class RuleDTO {
         this.transactionType = new TransactionTypeDTO(rule.getTransactionType());
         this.campaignType = rule.getCampaignType();
         this.ruleRewardList = rule.getRewardConditions().stream().map(RuleRewardDTO::new).collect(Collectors.toList());
+        this.appliedCampaigns = rule.getCampaignList().stream().map(Campaign::getName).collect(Collectors.toList());
         this.createdBy = rule.getCreatedBy();
         this.createdDate = rule.getCreatedDate();
         this.lastModifiedBy = rule.getLastModifiedBy();
@@ -128,6 +131,14 @@ public class RuleDTO {
 
     public void setRuleRewardList(List<RuleRewardDTO> ruleRewardList) {
         this.ruleRewardList = ruleRewardList;
+    }
+
+    public List<String> getAppliedCampaigns() {
+        return appliedCampaigns;
+    }
+
+    public void setAppliedCampaigns(List<String> appliedCampaigns) {
+        this.appliedCampaigns = appliedCampaigns;
     }
 
     public String getCreatedBy() {
