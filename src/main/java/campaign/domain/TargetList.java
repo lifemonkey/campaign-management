@@ -35,7 +35,7 @@ public class TargetList extends AbstractAuditingEntity implements Serializable {
     @ManyToMany(mappedBy = "targetLists", fetch = FetchType.LAZY)
     private List<Campaign> campaignList = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL )
     @JoinTable(name = "target_list_account",
         joinColumns = @JoinColumn(name = "account_id", nullable = false, referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "target_list_id", nullable = false, referencedColumnName = "id"))
