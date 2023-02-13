@@ -1,5 +1,6 @@
 package campaign.domain;
 
+import campaign.service.dto.FileDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -44,7 +45,15 @@ public class File extends AbstractAuditingEntity implements Serializable {
     @JoinColumn(name = "campaign_id", referencedColumnName = "id")
     private Campaign campaign;
 
-    public File() {
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "reward_id", referencedColumnName = "id")
+    private Reward reward;
+
+    public File(FileDTO file) {
+        this.name = file.getName();
+        this.description = file.getDescription();
+        this.fileType = file.getFileType();
+        this.imageUrl = file.getImageUrl();
     }
 
     public File(String name, String description, Integer fileType, String imageUrl) {
@@ -128,6 +137,19 @@ public class File extends AbstractAuditingEntity implements Serializable {
 
     public void setCampaign(Campaign campaign) {
         this.campaign = campaign;
+    }
+
+    public Reward getReward() {
+        return reward;
+    }
+
+    public void setReward(Reward reward) {
+        this.reward = reward;
+    }
+
+    public File removeReward() {
+        this.reward = null;
+        return this;
     }
 
     @Override

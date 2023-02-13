@@ -39,9 +39,8 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
     @Column(name = "released")
     private Integer released;
 
-    @OneToOne
-    @JoinColumn(name = "file_id", referencedColumnName = "id")
-    private File image;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "files")
+    private List<File> files = new ArrayList<>();
 
     @Column(name = "message_winner_en", length = 4000)
     private String messageWinnerEN;
@@ -61,14 +60,14 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
     public Reward() {
     }
 
-    public Reward(String name, String description, Integer prizeType, Integer prizeValue, Integer numOfPrize, Integer released, File image, String messageWinnerEN, String messageWinnerSW, String messageBalanceEN, String messageBalanceSW) {
+    public Reward(String name, String description, Integer prizeType, Integer prizeValue, Integer numOfPrize, Integer released, List<File> files, String messageWinnerEN, String messageWinnerSW, String messageBalanceEN, String messageBalanceSW) {
         this.name = name;
         this.description = description;
         this.prizeType = prizeType;
         this.prizeValue = prizeValue;
         this.numOfPrize = numOfPrize;
         this.released = released;
-        this.image = image;
+        this.files = files;
         this.messageWinnerEN = messageWinnerEN;
         this.messageWinnerSW = messageWinnerSW;
         this.messageBalanceEN = messageBalanceEN;
@@ -131,12 +130,21 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
         this.released = released;
     }
 
-    public File getImage() {
-        return image;
+    public List<File> getFiles() {
+        return files;
     }
 
-    public void setImage(File image) {
-        this.image = image;
+    public void addFiles(List<File> files) {
+        this.files.addAll(files);
+    }
+
+    public void updateFiles(List<File> files) {
+        this.files.clear();
+        this.files.addAll(files);
+    }
+
+    public void clearFiles() {
+        this.files.clear();
     }
 
     public String getMessageWinnerEN() {

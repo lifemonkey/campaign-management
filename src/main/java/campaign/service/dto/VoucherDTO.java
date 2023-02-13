@@ -1,7 +1,6 @@
 package campaign.service.dto;
 
 import campaign.domain.Voucher;
-
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
@@ -13,6 +12,10 @@ public class VoucherDTO {
     private String voucherCode;
 
     private String createdBy;
+
+    private LocalDateTime startDate;
+
+    private LocalDateTime expiredDate;
 
     private LocalDateTime createdDate;
 
@@ -26,6 +29,8 @@ public class VoucherDTO {
     public VoucherDTO(Voucher voucher) {
         this.id = voucher.getId();
         this.voucherCode = voucher.getVoucherCode();
+        this.startDate = voucher.getStartDate();
+        this.expiredDate = voucher.getExpiredDate();
         this.createdBy = voucher.getCreatedBy();
         this.createdDate = voucher.getCreatedDate();
         this.lastModifiedBy = voucher.getLastModifiedBy();
@@ -54,6 +59,22 @@ public class VoucherDTO {
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDateTime getExpiredDate() {
+        return expiredDate;
+    }
+
+    public void setExpiredDate(LocalDateTime expiredDate) {
+        this.expiredDate = expiredDate;
     }
 
     public LocalDateTime getCreatedDate() {
@@ -86,6 +107,8 @@ public class VoucherDTO {
             "id=" + id +
             ", voucherCode='" + voucherCode + '\'' +
             ", createdBy='" + createdBy + '\'' +
+            ", startDate=" + startDate +
+            ", expiredDate=" + expiredDate +
             ", createdDate=" + createdDate +
             ", lastModifiedBy='" + lastModifiedBy + '\'' +
             ", lastModifiedDate=" + lastModifiedDate +

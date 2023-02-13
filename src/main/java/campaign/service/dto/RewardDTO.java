@@ -24,7 +24,7 @@ public class RewardDTO {
 
     private Integer released;
 
-    private FileDTO image;
+    private List<FileDTO> files;
 
     private String messageWinnerEN;
 
@@ -55,8 +55,10 @@ public class RewardDTO {
         this.prizeValue = reward.getPrizeValue();
         this.numOfPrize = reward.getNumOfPrize();
         this.released = reward.getReleased();
-        if (reward.getImage() != null) {
-            this.image = new FileDTO(reward.getImage());
+        if (reward.getFiles() != null) {
+            this.files = reward.getFiles().stream()
+                .map(FileDTO::new)
+                .collect(Collectors.toList());
         }
         this.messageWinnerEN = reward.getMessageWinnerEN();
         this.messageWinnerSW = reward.getMessageWinnerSW();
@@ -129,12 +131,12 @@ public class RewardDTO {
         this.released = released;
     }
 
-    public FileDTO getImage() {
-        return image;
+    public List<FileDTO> getFiles() {
+        return files;
     }
 
-    public void setImage(FileDTO image) {
-        this.image = image;
+    public void setFiles(List<FileDTO> files) {
+        this.files = files;
     }
 
     public String getMessageWinnerEN() {

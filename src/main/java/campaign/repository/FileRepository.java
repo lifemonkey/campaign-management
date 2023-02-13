@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface FileRepository extends JpaRepository<File, Long> {
@@ -18,4 +19,6 @@ public interface FileRepository extends JpaRepository<File, Long> {
     Optional<File> findByNameIgnoreCase(String name);
 
     Optional<File> findByImageUrl(String imageUrl);
+
+    List<File> findByRewardId(Long rewardId);
 }

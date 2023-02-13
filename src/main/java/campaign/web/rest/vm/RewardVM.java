@@ -1,5 +1,6 @@
 package campaign.web.rest.vm;
 
+import campaign.service.dto.FileDTO;
 import campaign.service.dto.VoucherDTO;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class RewardVM {
 
     private Integer released;
 
-    private FileVM image;
+    private List<FileDTO> files;
 
     private String messageWinnerEN;
 
@@ -88,12 +89,12 @@ public class RewardVM {
         this.released = released;
     }
 
-    public FileVM getImage() {
-        return image;
+    public List<FileDTO> getFiles() {
+        return files;
     }
 
-    public void setImage(FileVM image) {
-        this.image = image;
+    public void setFiles(List<FileDTO> files) {
+        this.files = files;
     }
 
     public String getMessageWinnerEN() {
@@ -146,7 +147,6 @@ public class RewardVM {
             ", prizeValue=" + prizeValue +
             ", numOfPrize=" + numOfPrize +
             ", released=" + released +
-            ", image=" + image +
             ", messageWinnerEN='" + messageWinnerEN + '\'' +
             ", messageWinnerSW='" + messageWinnerSW + '\'' +
             ", messageBalanceEN='" + messageBalanceEN + '\'' +

@@ -6,6 +6,7 @@ import campaign.domain.Voucher;
 import campaign.repository.FileRepository;
 import campaign.repository.RewardRepository;
 import campaign.repository.VoucherRepository;
+import campaign.service.dto.FileDTO;
 import campaign.service.dto.RewardDTO;
 import campaign.service.dto.VoucherDTO;
 import campaign.service.mapper.FileMapper;
@@ -91,10 +92,15 @@ public class RewardService {
             rewardRepository.save(reward);
 
             // handle image
-            File file = fileMapper.fileVMToFile(rewardVM.getImage());
-            if (file != null) {
-                fileRepository.save(file);
-                reward.setImage(file);
+            if (rewardVM.getFiles() != null) {
+                if (reward.getFiles() != null) {
+                    List<File> toBeSaved = rewardVM.getFiles().stream()
+                        .map(file -> new File(file))
+                        .collect(Collectors.toList());
+                    // save files
+                    fileRepository.saveAll(toBeSaved);
+                    reward.addFiles(toBeSaved);
+                }
             }
 
             // handle voucher code
@@ -124,8 +130,8 @@ public class RewardService {
         if (rewardOpt.isPresent()) {
             toBerInserted.setName(rewardOpt.get().getName());
             toBerInserted.setDescription(rewardOpt.get().getDescription());
-            if (rewardOpt.get().getImage() != null) {
-                toBerInserted.setImage(rewardOpt.get().getImage());
+            if (rewardOpt.get().getFiles() != null) {
+                toBerInserted.addFiles(rewardOpt.get().getFiles());
             }
             toBerInserted.setPrizeType(rewardOpt.get().getPrizeType());
             toBerInserted.setPrizeValue(rewardOpt.get().getPrizeValue());
@@ -148,14 +154,23 @@ public class RewardService {
         reward.setId(id);
 
         // handle image
-        if (rewardVM.getImage() != null) {
-            Optional<File> imageOpt = fileRepository.findById(rewardVM.getImage().getId());
-            File image = fileMapper.fileVMToFile(rewardVM.getImage());
-            if (imageOpt.isPresent()) {
-                image.setId(imageOpt.get().getId());
+        if (rewardVM.getFiles() != null) {
+            // remove existing files
+            List<Long> fileIds = rewardVM.getFiles().stream().map(FileDTO::getId).collect(Collectors.toList());
+            List<File> toBeDetached = fileRepository.findByRewardId(reward.getId()).stream()
+                .filter(file -> !fileIds.contains(file.getId()))
+                .map(File::removeReward)
+                .collect(Collectors.toList());
+            fileRepository.saveAll(toBeDetached);
+
+            // create new files
+            if (reward.getFiles() != null) {
+                List<File> toBeSaved = rewardVM.getFiles().stream()
+                    .map(file -> new File(file))
+                    .collect(Collectors.toList());
+                // save files
+                reward.updateFiles(toBeSaved);
             }
-            fileRepository.save(image);
-            reward.setImage(image);
         }
 
         // handle voucher
@@ -186,8 +201,6 @@ public class RewardService {
         Optional<Reward> rewardOpt = rewardRepository.findById(id);
         if (rewardOpt.isPresent()) {
             Reward reward = rewardOpt.get();
-            reward.setImage(null);
-            rewardRepository.save(reward);
             rewardRepository.delete(reward);
         }
     }
