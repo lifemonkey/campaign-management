@@ -66,7 +66,7 @@ public class File extends AbstractAuditingEntity implements Serializable {
     }
 
     public File clone() {
-        String fileName = "Unknown-name";
+        String fileName = this.getName();
         if (this.getName() != null && !this.getName().isEmpty()) {
             String[] fileNameArr = this.getName().split("\\.");
             if (fileNameArr.length == 2) {
@@ -151,6 +151,11 @@ public class File extends AbstractAuditingEntity implements Serializable {
 
     public void setCampaign(Campaign campaign) {
         this.campaign = campaign;
+    }
+
+    public File removeCampaign() {
+        this.campaign = null;
+        return this;
     }
 
     public Reward getReward() {

@@ -1,13 +1,11 @@
 package campaign.web.rest.vm;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class FileVM {
 
     private Long id;
 
-    @NotNull
     @Size(min = 1, max = 255)
     private String name;
 

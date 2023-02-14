@@ -171,7 +171,7 @@ public class CampaignService {
         Campaign toBeInserted = new Campaign();
 
         if (clonedCampaignOpt.isPresent()) {
-            toBeInserted.setName(clonedCampaignOpt.get().getName());
+            toBeInserted.setName(clonedCampaignOpt.get().getName() + "-cloned");
             toBeInserted.setDescription(clonedCampaignOpt.get().getDescription());
             toBeInserted.setFromDate(clonedCampaignOpt.get().getFromDate());
             toBeInserted.setEndDate(clonedCampaignOpt.get().getEndDate());
@@ -185,7 +185,7 @@ public class CampaignService {
             campaignRepository.save(toBeInserted);
 
             // clone files
-            if (clonedCampaignOpt.get().getFilesList() != null) {
+            if (clonedCampaignOpt.get().getFilesList() != null && !clonedCampaignOpt.get().getFilesList().isEmpty()) {
                 List<File> toBeCloned = clonedCampaignOpt.get().getFilesList().stream()
                     .map(file -> {
                         File clonedFile = file.clone();
@@ -216,7 +216,7 @@ public class CampaignService {
         }
 
         // handle target list
-        if (campaignVM.getTargetListIds() != null) {
+        if (campaignVM.getTargetListIds() != null && !campaignVM.getTargetListIds().isEmpty()) {
             Set<Long> targetListIds = campaignVM.getTargetListIds().stream().collect(Collectors.toSet());
             // to be detached target list
             List<TargetList> toBeDetachedTargetList = campaignInDb.get().getTargetLists();
@@ -231,7 +231,7 @@ public class CampaignService {
         }
 
         // handle rule list
-        if (campaignVM.getRuleIds() != null) {
+        if (campaignVM.getRuleIds() != null && !campaignVM.getRuleIds().isEmpty()) {
             Set<Long> ruleIds = campaignVM.getRuleIds().stream().collect(Collectors.toSet());
             // to be detached rule list
             List<Rule> toBeDetachedRuleList = campaignInDb.get().getRuleList();
@@ -245,14 +245,15 @@ public class CampaignService {
         }
 
         // handle file list
-        if (campaignVM.getFiles() != null) {
+        if (campaignVM.getFiles() != null && !campaignVM.getFiles().isEmpty()) {
             // remove existing files
             List<Long> fileIds = campaignVM.getFiles().stream().map(FileVM::getId).collect(Collectors.toList());
-            List<File> toBeDetached = fileRepository.findByCampaignId(campaign.getId()).stream()
+            List<File> toBeDetachedFiles = campaignInDb.get().getFilesList();
+            fileRepository.saveAll(
+                toBeDetachedFiles.stream()
                 .filter(file -> !fileIds.contains(file.getId()))
-                .map(File::removeReward)
-                .collect(Collectors.toList());
-            fileRepository.saveAll(toBeDetached);
+                .map(File::removeCampaign)
+                .collect(Collectors.toList()));
 
             // create or update files
             List<File> toBeSavedFiles = fileRepository.findAllById(fileIds);
@@ -262,27 +263,25 @@ public class CampaignService {
         }
 
         // handle generated time list
-        if (campaignVM.getGeneratedTimes() != null) {
+        if (campaignVM.getGeneratedTimes() != null && !campaignVM.getGeneratedTimes().isEmpty()) {
             Set<Long> generatedTimeIds =
                 campaignVM.getGeneratedTimes().stream().map(GeneratedTimeVM::getId).collect(Collectors.toSet());
 
             // to be detached generated time
-            List<GeneratedTime> toBeDetachedGeneratedTimes = generatedTimeRepository.findAllByCampaignId(id);
+            List<GeneratedTime> toBeDetachedGeneratedTimes = campaignInDb.get().getGeneratedTimeList();
             if (toBeDetachedGeneratedTimes != null && !toBeDetachedGeneratedTimes.isEmpty()) {
                 generatedTimeRepository.saveAll(
                     toBeDetachedGeneratedTimes.stream()
                         .filter(gt -> !generatedTimeIds.contains(gt.getId()))
                         .map(GeneratedTime::removeCampaign)
                         .collect(Collectors.toList()));
-
-            // create generated time
-//            List<GeneratedTime> toBeSavedGeneratedTimes = generatedTimeRepository.saveAll(
-//                generatedTimeMapper.generatedTimeVMToGeneratedTimes(campaignVM.getGeneratedTimes()));
-//            toBeSavedGeneratedTimes.stream().forEach(gt -> gt.setCampaign(campaign));
-//            // two ways binding
-//            campaign.addGeneratedTimeList(toBeSavedGeneratedTimes);
-                campaign.addGeneratedTimeList(generatedTimeMapper.generatedTimeVMToGeneratedTimes(campaignVM.getGeneratedTimes()));
             }
+            // create generated time
+            List<GeneratedTime> toBeSavedGeneratedTimes = generatedTimeRepository.saveAll(
+                generatedTimeMapper.generatedTimeVMToGeneratedTimes(campaignVM.getGeneratedTimes()));
+            toBeSavedGeneratedTimes.stream().forEach(gt -> gt.setCampaign(campaign));
+//            // two ways binding
+            campaign.addGeneratedTimeList(toBeSavedGeneratedTimes);
         }
 
         campaignRepository.save(campaign);
