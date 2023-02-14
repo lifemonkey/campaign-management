@@ -61,14 +61,18 @@ public class RewardConditionService {
         RewardCondition rewardCondition = rewardConditionMapper.rewardConditionVMToRewardCondition(rewardConditionVM);
 
         if (rewardCondition != null) {
-            Optional<Rule> ruleOpt = ruleRepository.findById(rewardConditionVM.getRuleId());
-            if (ruleOpt.isPresent()) {
-                rewardCondition.setRule(ruleOpt.get());
+            if (rewardConditionVM.getRuleId() != null) {
+                Optional<Rule> ruleOpt = ruleRepository.findById(rewardConditionVM.getRuleId());
+                if (ruleOpt.isPresent()) {
+                    rewardCondition.setRule(ruleOpt.get());
+                }
             }
 
-            Optional<Reward> rewardOpt = rewardRepository.findById(rewardConditionVM.getRewardId());
-            if (rewardOpt.isPresent()) {
-                rewardCondition.setReward(rewardOpt.get());
+            if (rewardConditionVM.getRewardId() != null) {
+                Optional<Reward> rewardOpt = rewardRepository.findById(rewardConditionVM.getRewardId());
+                if (rewardOpt.isPresent()) {
+                    rewardCondition.setReward(rewardOpt.get());
+                }
             }
 
             return rewardConditionMapper.rewardConditionToRewardConditionDTO(rewardConditionRepository.save(rewardCondition));
@@ -133,7 +137,6 @@ public class RewardConditionService {
             RewardCondition rewardCondition = rewardConditionOpt.get();
             // detach rule
             rewardCondition.setRule(null);
-            rewardRepository.delete(rewardCondition.getReward());
             rewardCondition.setReward(null);
             rewardConditionRepository.save(rewardCondition);
             rewardConditionRepository.delete(rewardCondition);
