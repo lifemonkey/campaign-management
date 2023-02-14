@@ -143,6 +143,10 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
         this.rewardConditions.addAll(rewardConditionList);
     }
 
+    public Rule clearRewardConditions() {
+        this.rewardConditions.clear();
+        return this;
+    }
     @Override
     public String toString() {
         return "Rule{" +

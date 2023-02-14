@@ -198,6 +198,7 @@ public class RuleService {
             Rule rule = ruleOpt.get();
             // detach campaign
             rule.clearCampaignList();
+            rule.clearRewardConditions();
             ruleRepository.save(rule);
             ruleRepository.delete(rule);
         }

@@ -98,8 +98,10 @@ public class RewardConditionMapper {
         return rewardConditionVMs.stream()
             .filter(Objects::nonNull)
             .map(rewardConditionVM -> {
-                Optional<Reward> rewardOpt = rewardList.stream().filter(r -> rewardConditionVM.getRewardId() == r.getId()).findFirst();
-                return this.rewardConditionVMToRewardCondition(rewardConditionVM, rule, rewardOpt.get());
+                Reward reward = rewardList.stream()
+                    .filter(r -> rewardConditionVM.getRewardId() == r.getId())
+                    .findFirst().orElse(null);
+                return this.rewardConditionVMToRewardCondition(rewardConditionVM, rule, reward);
             }).collect(Collectors.toList());
     }
 }
