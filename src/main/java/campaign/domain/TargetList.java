@@ -90,6 +90,11 @@ public class TargetList extends AbstractAuditingEntity implements Serializable {
         this.campaignList.addAll(campaignList);
     }
 
+    public TargetList clearCampaignList() {
+        this.campaignList.clear();
+        return this;
+    }
+
     public List<Account> getAccountList() {
         return accountList;
     }

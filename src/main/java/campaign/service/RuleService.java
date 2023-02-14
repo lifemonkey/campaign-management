@@ -169,7 +169,7 @@ public class RuleService {
         // handle reward-conditions
         if (ruleVM.getRewardConditions() != null) {
             Set<Long> rewardConditionIds =
-                ruleVM.getRewardConditions().stream().map(RewardConditionVM::getId).collect(Collectors.toSet());;
+                ruleVM.getRewardConditions().stream().map(RewardConditionVM::getId).collect(Collectors.toSet());
 
             // detach rule from reward-conditions
             List<RewardCondition> toBeDetached = rewardConditionRepository.findAllByRuleId(rule.getId());

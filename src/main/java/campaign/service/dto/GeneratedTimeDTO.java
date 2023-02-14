@@ -30,7 +30,9 @@ public class GeneratedTimeDTO {
         this.id = generatedTime.getId();
         this.startTime = generatedTime.getStartTime();
         this.endTime = generatedTime.getEndTime();
-        this.campaignId = generatedTime.getCampaign().getId();
+        if (generatedTime.getCampaign() != null) {
+            this.campaignId = generatedTime.getCampaign().getId();
+        }
         this.createdBy = generatedTime.getCreatedBy();
         this.createdDate = generatedTime.getCreatedDate();
         this.lastModifiedBy = generatedTime.getLastModifiedBy();

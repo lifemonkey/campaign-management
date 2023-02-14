@@ -8,9 +8,11 @@ import campaign.service.dto.CampaignWRelDTO;
 import campaign.service.mapper.CampaignMapper;
 import campaign.service.mapper.FileMapper;
 import campaign.service.mapper.GeneratedTimeMapper;
+import campaign.service.mapper.TargetListMapper;
 import campaign.web.rest.vm.ActionCampaignVM;
 import campaign.web.rest.vm.CampaignVM;
 import campaign.web.rest.vm.FileVM;
+import campaign.web.rest.vm.GeneratedTimeVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -23,6 +25,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -64,7 +67,7 @@ public class CampaignService {
     ) {
         this.campaignRepository = campaignRepository;
         this.userRepository = userRepository;
-        this.targetListRepository =targetListRepository;
+        this.targetListRepository = targetListRepository;
         this.fileRepository = fileRepository;
         this.fileMapper = fileMapper;
         this.statusRepository = statusRepository;
@@ -177,9 +180,21 @@ public class CampaignService {
             toBeInserted.setStatus(clonedCampaignOpt.get().getStatus());
             toBeInserted.setApprovedRejectedBy(clonedCampaignOpt.get().getApprovedRejectedBy());
             toBeInserted.addTargetLists(clonedCampaignOpt.get().getTargetLists());
-            toBeInserted.addFilesList(clonedCampaignOpt.get().getFilesList());
             toBeInserted.addRuleList(clonedCampaignOpt.get().getRuleList());
             toBeInserted.addGeneratedTimeList(clonedCampaignOpt.get().getGeneratedTimeList());
+            campaignRepository.save(toBeInserted);
+
+            // clone files
+            if (clonedCampaignOpt.get().getFilesList() != null) {
+                List<File> toBeCloned = clonedCampaignOpt.get().getFilesList().stream()
+                    .map(file -> {
+                        File clonedFile = file.clone();
+                        clonedFile.setCampaign(toBeInserted);
+                        return clonedFile;
+                    })
+                    .collect(Collectors.toList());
+                toBeInserted.addFilesList(toBeCloned);
+            }
         }
 
         return campaignMapper.campaignToCampaignWRelDTO(campaignRepository.save(toBeInserted));
@@ -187,6 +202,10 @@ public class CampaignService {
 
     @Transactional(rollbackFor = Exception.class)
     public CampaignWRelDTO updateCampaign(Long id, CampaignVM campaignVM) {
+        Optional<Campaign> campaignInDb = campaignRepository.findById(id);
+        // check if campaign is existed
+        if (!campaignInDb.isPresent()) return null;
+
         Campaign campaign = campaignMapper.campaignVMToCampaign(campaignVM);
         campaign.setId(id);
 
@@ -197,15 +216,73 @@ public class CampaignService {
         }
 
         // handle target list
-        List<TargetList> targetLists = targetListRepository.findAllById(campaignVM.getTargetListIds());
-        if (targetLists != null && !targetLists.isEmpty()) {
-            campaign.addTargetLists(targetLists);
+        if (campaignVM.getTargetListIds() != null) {
+            Set<Long> targetListIds = campaignVM.getTargetListIds().stream().collect(Collectors.toSet());
+            // to be detached target list
+            List<TargetList> toBeDetachedTargetList = campaignInDb.get().getTargetLists();
+            targetListRepository.saveAll(
+                toBeDetachedTargetList.stream()
+                    .filter(tl -> !targetListIds.contains(tl.getId()))
+                    .map(TargetList::clearCampaignList)
+                    .collect(Collectors.toList()));
+            // add target list to campaign
+            List<TargetList> toBeSaved = targetListRepository.findAllById(targetListIds);
+            campaign.addTargetLists(toBeSaved);
         }
 
         // handle rule list
-        List<Rule> ruleList = ruleRepository.findAllById(campaignVM.getRuleIds());
-        if(ruleList != null && !ruleList.isEmpty()) {
-            campaign.addRuleList(ruleList);
+        if (campaignVM.getRuleIds() != null) {
+            Set<Long> ruleIds = campaignVM.getRuleIds().stream().collect(Collectors.toSet());
+            // to be detached rule list
+            List<Rule> toBeDetachedRuleList = campaignInDb.get().getRuleList();
+            ruleRepository.saveAll(
+                toBeDetachedRuleList.stream()
+                    .filter(r -> !ruleIds.contains(r.getId()))
+                    .map(Rule::clearCampaignList)
+                    .collect(Collectors.toList()));
+            // add rule list to campaign
+            campaign.addRuleList(ruleRepository.findAllById(ruleIds));
+        }
+
+        // handle file list
+        if (campaignVM.getFiles() != null) {
+            // remove existing files
+            List<Long> fileIds = campaignVM.getFiles().stream().map(FileVM::getId).collect(Collectors.toList());
+            List<File> toBeDetached = fileRepository.findByCampaignId(campaign.getId()).stream()
+                .filter(file -> !fileIds.contains(file.getId()))
+                .map(File::removeReward)
+                .collect(Collectors.toList());
+            fileRepository.saveAll(toBeDetached);
+
+            // create or update files
+            List<File> toBeSavedFiles = fileRepository.findAllById(fileIds);
+            toBeSavedFiles.stream().forEach(f -> f.setCampaign(campaign));
+            // two ways binding
+            campaign.updateFileList(toBeSavedFiles);
+        }
+
+        // handle generated time list
+        if (campaignVM.getGeneratedTimes() != null) {
+            Set<Long> generatedTimeIds =
+                campaignVM.getGeneratedTimes().stream().map(GeneratedTimeVM::getId).collect(Collectors.toSet());
+
+            // to be detached generated time
+            List<GeneratedTime> toBeDetachedGeneratedTimes = generatedTimeRepository.findAllByCampaignId(id);
+            if (toBeDetachedGeneratedTimes != null && !toBeDetachedGeneratedTimes.isEmpty()) {
+                generatedTimeRepository.saveAll(
+                    toBeDetachedGeneratedTimes.stream()
+                        .filter(gt -> !generatedTimeIds.contains(gt.getId()))
+                        .map(GeneratedTime::removeCampaign)
+                        .collect(Collectors.toList()));
+
+            // create generated time
+//            List<GeneratedTime> toBeSavedGeneratedTimes = generatedTimeRepository.saveAll(
+//                generatedTimeMapper.generatedTimeVMToGeneratedTimes(campaignVM.getGeneratedTimes()));
+//            toBeSavedGeneratedTimes.stream().forEach(gt -> gt.setCampaign(campaign));
+//            // two ways binding
+//            campaign.addGeneratedTimeList(toBeSavedGeneratedTimes);
+                campaign.addGeneratedTimeList(generatedTimeMapper.generatedTimeVMToGeneratedTimes(campaignVM.getGeneratedTimes()));
+            }
         }
 
         campaignRepository.save(campaign);

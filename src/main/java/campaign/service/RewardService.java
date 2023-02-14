@@ -6,7 +6,6 @@ import campaign.domain.Voucher;
 import campaign.repository.FileRepository;
 import campaign.repository.RewardRepository;
 import campaign.repository.VoucherRepository;
-import campaign.service.dto.FileDTO;
 import campaign.service.dto.RewardDTO;
 import campaign.service.dto.VoucherDTO;
 import campaign.service.mapper.FileMapper;
@@ -21,7 +20,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -126,36 +124,36 @@ public class RewardService {
     @Transactional(rollbackFor = Exception.class)
     public RewardDTO cloneReward(Long id) {
         Optional<Reward> rewardOpt = rewardRepository.findById(id);
-        Reward toBerInserted = new Reward();
+        Reward toBeInserted = new Reward();
 
         if (rewardOpt.isPresent()) {
-            toBerInserted.setName(rewardOpt.get().getName());
-            toBerInserted.setDescription(rewardOpt.get().getDescription());
-            toBerInserted.setPrizeType(rewardOpt.get().getPrizeType());
-            toBerInserted.setPrizeValue(rewardOpt.get().getPrizeValue());
-            toBerInserted.setNumOfPrize(rewardOpt.get().getNumOfPrize());
-            toBerInserted.setReleased(rewardOpt.get().getReleased());
-            toBerInserted.setMessageWinnerEN(rewardOpt.get().getMessageWinnerEN());
-            toBerInserted.setMessageWinnerSW(rewardOpt.get().getMessageWinnerSW());
-            toBerInserted.setMessageBalanceEN(rewardOpt.get().getMessageBalanceEN());
-            toBerInserted.setMessageBalanceSW(rewardOpt.get().getMessageBalanceSW());
-            rewardRepository.save(toBerInserted);
+            toBeInserted.setName(rewardOpt.get().getName());
+            toBeInserted.setDescription(rewardOpt.get().getDescription());
+            toBeInserted.setPrizeType(rewardOpt.get().getPrizeType());
+            toBeInserted.setPrizeValue(rewardOpt.get().getPrizeValue());
+            toBeInserted.setNumOfPrize(rewardOpt.get().getNumOfPrize());
+            toBeInserted.setReleased(rewardOpt.get().getReleased());
+            toBeInserted.setMessageWinnerEN(rewardOpt.get().getMessageWinnerEN());
+            toBeInserted.setMessageWinnerSW(rewardOpt.get().getMessageWinnerSW());
+            toBeInserted.setMessageBalanceEN(rewardOpt.get().getMessageBalanceEN());
+            toBeInserted.setMessageBalanceSW(rewardOpt.get().getMessageBalanceSW());
+            rewardRepository.save(toBeInserted);
             // voucher code can not be cloned
-            //toBerInserted.setVouchers(rewardOpt.get().getVouchers());
+            //toBeInserted.setVouchers(rewardOpt.get().getVouchers());
             // clone files
             if (rewardOpt.get().getFiles() != null) {
                 List<File> toBeCloned = rewardOpt.get().getFiles().stream()
                     .map(file -> {
                         File clonedFile = file.clone();
-                        clonedFile.setReward(toBerInserted);
+                        clonedFile.setReward(toBeInserted);
                         return clonedFile;
                     })
                     .collect(Collectors.toList());
-                toBerInserted.addFiles(toBeCloned);
+                toBeInserted.addFiles(toBeCloned);
             }
         }
 
-        return rewardMapper.rewardToRewardDTO(rewardRepository.save(toBerInserted));
+        return rewardMapper.rewardToRewardDTO(rewardRepository.save(toBeInserted));
     }
 
     @Transactional(rollbackFor = Exception.class)

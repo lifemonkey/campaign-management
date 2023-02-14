@@ -26,9 +26,8 @@ public class GeneratedTime extends AbstractAuditingEntity implements Serializabl
     @Column(name = "end_time", columnDefinition = "TIMESTAMP")
     private LocalDateTime endTime;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "campaign_id", referencedColumnName = "id")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Campaign campaign;
 
     public GeneratedTime() {
@@ -64,6 +63,11 @@ public class GeneratedTime extends AbstractAuditingEntity implements Serializabl
 
     public void setCampaign(Campaign campaign) {
         this.campaign = campaign;
+    }
+
+    public GeneratedTime removeCampaign() {
+        this.campaign = null;
+        return this;
     }
 
     @Override

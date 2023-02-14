@@ -189,6 +189,15 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
         this.fileList.addAll(fileList);
     }
 
+    public void updateFileList(List<File> files) {
+        this.fileList.clear();
+        this.fileList.addAll(files);
+    }
+
+    public void clearFileList() {
+        this.fileList.clear();
+    }
+
     public List<Rule> getRuleList() {
         return ruleList;
     }

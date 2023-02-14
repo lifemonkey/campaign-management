@@ -73,4 +73,8 @@ public class TargetListMapper {
             return targetList;
         }
     }
+
+    public List<TargetList> targetListVMToTargetLists(List<TargetListVM> targetListVMs) {
+        return targetListVMs.stream().map(this::targetListVMToTargetList).collect(Collectors.toList());
+    }
 }
