@@ -1,6 +1,5 @@
 package campaign.web.rest.vm;
 
-import campaign.service.dto.FileDTO;
 import campaign.service.dto.VoucherDTO;
 
 import java.util.List;

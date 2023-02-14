@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -158,47 +159,50 @@ public class RewardService {
 
     @Transactional(rollbackFor = Exception.class)
     public RewardDTO updateReward(Long id, RewardVM rewardVM) {
+        Optional<Reward> rewardInDb = rewardRepository.findById(id);
+        // check if reward is existed
+        if (!rewardInDb.isPresent()) return null;
+        // convert rewardVM input to reward to be saved
         Reward reward = rewardMapper.rewardVMToReward(rewardVM);
         reward.setId(id);
 
         // handle files
-        if (rewardVM.getFiles() != null) {
-            // remove existing files
-            List<Long> fileIds = rewardVM.getFiles().stream().map(FileVM::getId).collect(Collectors.toList());
-            List<File> toBeDetached = fileRepository.findByRewardId(reward.getId()).stream()
-                .filter(file -> !fileIds.contains(file.getId()))
-                .map(File::removeReward)
-                .collect(Collectors.toList());
-            fileRepository.saveAll(toBeDetached);
+        if (rewardVM.getFiles() != null && !rewardVM.getFiles().isEmpty()) {
+            // to be detached files
+            Set<Long> fileIds = rewardVM.getFiles().stream().map(FileVM::getId).collect(Collectors.toSet());
+            List<File> toBeDetachedFiles = rewardInDb.get().getFiles();
+            fileRepository.saveAll(
+                toBeDetachedFiles.stream()
+                    .filter(file -> !fileIds.contains(file.getId()))
+                    .map(File::removeReward)
+                    .collect(Collectors.toList()));
 
-            // create new files
-            if (reward.getFiles() != null) {
-                List<File> toBeSaved = rewardVM.getFiles().stream()
-                    .map(file -> fileMapper.fileVMToFile(file))
-                    .collect(Collectors.toList());
-                // save files
-                reward.updateFiles(toBeSaved);
-            }
+            // create or update files
+            List<File> toBeSavedFiles = fileRepository.findAllById(fileIds);;
+            toBeSavedFiles.stream().forEach(f -> f.setReward(reward));
+            // save files
+            reward.updateFiles(toBeSavedFiles);
         }
 
         // handle voucher
-        if (rewardVM.getVoucherCodes() != null) {
+        if (rewardVM.getVoucherCodes() != null && !rewardVM.getVoucherCodes().isEmpty()) {
             // remove existing vouchers
-            List<Long> voucherIds = rewardVM.getVoucherCodes().stream().map(VoucherDTO::getId).collect(Collectors.toList());
-            List<Voucher> toBeDetached = voucherRepository.findByRewardId(reward.getId()).stream()
-                .filter(voucher -> !voucherIds.contains(voucher.getId()))
-                .map(Voucher::removeReward)
-                .collect(Collectors.toList());
-            voucherRepository.saveAll(toBeDetached);
-
-            // create new vouchers if not existed yet
-            if (reward.getVouchers() != null) {
-                List<Voucher> toBeSaved = rewardVM.getVoucherCodes().stream()
-                    .map(voucherCode -> new Voucher(voucherCode, reward))
-                    .collect(Collectors.toList());
-                // save vouchers
-                reward.updateVouchers(toBeSaved);
+            Set<Long> voucherIds =
+                rewardVM.getVoucherCodes().stream().map(VoucherDTO::getId).collect(Collectors.toSet());
+            List<Voucher> toBeDetachedVouchers = rewardInDb.get().getVouchers();
+            if (toBeDetachedVouchers != null && !toBeDetachedVouchers.isEmpty()) {
+                voucherRepository.saveAll(
+                    toBeDetachedVouchers.stream()
+                        .filter(voucher -> !voucherIds.contains(voucher.getId()))
+                        .map(Voucher::removeReward)
+                        .collect(Collectors.toList()));
             }
+            // create vouchers code
+            List<Voucher> toBeSavedVouchers = voucherRepository.saveAll(
+                voucherMapper.voucherDTOToVouchers(rewardVM.getVoucherCodes()));
+            toBeSavedVouchers.stream().forEach(voucher -> voucher.setReward(reward));
+            // save vouchers
+            reward.updateVouchers(toBeSavedVouchers);
         }
 
         return rewardMapper.rewardToRewardDTO(rewardRepository.save(reward));

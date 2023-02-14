@@ -27,7 +27,7 @@ public class Voucher extends AbstractAuditingEntity implements Serializable {
     @Column(name = "voucher_code", length = 200, unique = true)
     private String voucherCode;
 
-    @Column(name = "start_date")
+    @Column(name = "start_date", columnDefinition = "TIMESTAMP")
     @JsonIgnore
     private LocalDateTime startDate = LocalDateTime.now();
 

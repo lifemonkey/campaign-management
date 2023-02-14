@@ -125,7 +125,7 @@ public class RewardResource {
             new ResponseVM(
                 ResponseCode.RESPONSE_NOT_FOUND,
                 ResponseCode.ERROR_CODE_REWARD_CONDITION_NOT_FOUND,
-                "Reward Condition ID:" + id + " not found!"),
+                "Reward ID:" + id + " not found!"),
             new HttpHeaders(),
             HttpStatus.NOT_FOUND);
     }

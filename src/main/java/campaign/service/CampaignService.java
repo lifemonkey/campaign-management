@@ -8,7 +8,6 @@ import campaign.service.dto.CampaignWRelDTO;
 import campaign.service.mapper.CampaignMapper;
 import campaign.service.mapper.FileMapper;
 import campaign.service.mapper.GeneratedTimeMapper;
-import campaign.service.mapper.TargetListMapper;
 import campaign.web.rest.vm.ActionCampaignVM;
 import campaign.web.rest.vm.CampaignVM;
 import campaign.web.rest.vm.FileVM;
@@ -22,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -205,7 +203,7 @@ public class CampaignService {
         Optional<Campaign> campaignInDb = campaignRepository.findById(id);
         // check if campaign is existed
         if (!campaignInDb.isPresent()) return null;
-
+        // convert campaignVM input to campaign to be saved
         Campaign campaign = campaignMapper.campaignVMToCampaign(campaignVM);
         campaign.setId(id);
 
@@ -266,7 +264,6 @@ public class CampaignService {
         if (campaignVM.getGeneratedTimes() != null && !campaignVM.getGeneratedTimes().isEmpty()) {
             Set<Long> generatedTimeIds =
                 campaignVM.getGeneratedTimes().stream().map(GeneratedTimeVM::getId).collect(Collectors.toSet());
-
             // to be detached generated time
             List<GeneratedTime> toBeDetachedGeneratedTimes = campaignInDb.get().getGeneratedTimeList();
             if (toBeDetachedGeneratedTimes != null && !toBeDetachedGeneratedTimes.isEmpty()) {
