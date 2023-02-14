@@ -1,5 +1,6 @@
 package campaign.service;
 
+import campaign.config.Constants;
 import campaign.domain.*;
 import campaign.repository.*;
 import campaign.service.dto.RuleDTO;
@@ -137,7 +138,7 @@ public class RuleService {
         Rule toBerInserted = new Rule();
 
         if (cloneRuleOpt.isPresent()) {
-            toBerInserted.setName(cloneRuleOpt.get().getName());
+            toBerInserted.setName(cloneRuleOpt.get().getName() + Constants.CLONE_POSTFIX);
             toBerInserted.setDescription(cloneRuleOpt.get().getDescription());
             toBerInserted.setDurationType(cloneRuleOpt.get().getDurationType());
             toBerInserted.setDurationValue(cloneRuleOpt.get().getDurationValue());

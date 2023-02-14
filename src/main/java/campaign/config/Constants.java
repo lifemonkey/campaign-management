@@ -26,4 +26,5 @@ public final class Constants {
     public static final String PAUSE_CAMPAIGN = "PAUSE";
     public static final String CANCEL_CAMPAIGN = "CANCEL";
 
+    public static final String CLONE_POSTFIX = "-Copy";
 }

@@ -61,7 +61,6 @@ public class GeneratedTimeService {
         GeneratedTime toBerInserted = new GeneratedTime();
 
         if (generatedTimeOpt.isPresent()) {
-            toBerInserted.setId(generatedTimeOpt.get().getId());
             toBerInserted.setStartTime(generatedTimeOpt.get().getStartTime());
             toBerInserted.setEndTime(generatedTimeOpt.get().getEndTime());
             toBerInserted.setCampaign(generatedTimeOpt.get().getCampaign());

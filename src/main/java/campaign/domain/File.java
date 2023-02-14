@@ -1,5 +1,6 @@
 package campaign.domain;
 
+import campaign.config.Constants;
 import campaign.service.dto.FileDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
@@ -70,7 +71,7 @@ public class File extends AbstractAuditingEntity implements Serializable {
         if (this.getName() != null && !this.getName().isEmpty()) {
             String[] fileNameArr = this.getName().split("\\.");
             if (fileNameArr.length == 2) {
-                fileName = fileNameArr[0] + "-copy." + fileNameArr[1];
+                fileName = fileNameArr[0] + Constants.CLONE_POSTFIX + "." + fileNameArr[1];
             }
         }
 

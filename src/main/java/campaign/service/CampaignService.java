@@ -169,7 +169,7 @@ public class CampaignService {
         Campaign toBeInserted = new Campaign();
 
         if (clonedCampaignOpt.isPresent()) {
-            toBeInserted.setName(clonedCampaignOpt.get().getName() + "-cloned");
+            toBeInserted.setName(clonedCampaignOpt.get().getName() + Constants.CLONE_POSTFIX);
             toBeInserted.setDescription(clonedCampaignOpt.get().getDescription());
             toBeInserted.setFromDate(clonedCampaignOpt.get().getFromDate());
             toBeInserted.setEndDate(clonedCampaignOpt.get().getEndDate());

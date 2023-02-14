@@ -1,5 +1,6 @@
 package campaign.service;
 
+import campaign.config.Constants;
 import campaign.domain.File;
 import campaign.domain.Reward;
 import campaign.domain.Voucher;
@@ -128,7 +129,7 @@ public class RewardService {
         Reward toBeInserted = new Reward();
 
         if (rewardOpt.isPresent()) {
-            toBeInserted.setName(rewardOpt.get().getName());
+            toBeInserted.setName(rewardOpt.get().getName() + Constants.CLONE_POSTFIX);
             toBeInserted.setDescription(rewardOpt.get().getDescription());
             toBeInserted.setPrizeType(rewardOpt.get().getPrizeType());
             toBeInserted.setPrizeValue(rewardOpt.get().getPrizeValue());

@@ -1,5 +1,6 @@
 package campaign.service;
 
+import campaign.config.Constants;
 import campaign.domain.TransactionType;
 import campaign.repository.TransactionTypeRepository;
 import campaign.service.dto.TransactionTypeDTO;
@@ -71,7 +72,7 @@ public class TransactionTypeService {
         TransactionType toBerInserted = new TransactionType();
 
         if (transactionTypeOpt.isPresent()) {
-            toBerInserted.setName(transactionTypeOpt.get().getName());
+            toBerInserted.setName(transactionTypeOpt.get().getName() + Constants.CLONE_POSTFIX);
             toBerInserted.setDescription(transactionTypeOpt.get().getDescription());
         }
 
