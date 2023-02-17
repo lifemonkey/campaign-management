@@ -200,24 +200,26 @@ public class CampaignService {
 
     @Transactional(rollbackFor = Exception.class)
     public CampaignWRelDTO updateCampaign(Long id, CampaignVM campaignVM) {
-        Optional<Campaign> campaignInDb = campaignRepository.findById(id);
+        Optional<Campaign> campaignOpt = campaignRepository.findById(id);
         // check if campaign is existed
-        if (!campaignInDb.isPresent()) return null;
+        if (!campaignOpt.isPresent()) return null;
+
         // convert campaignVM input to campaign to be saved
-        Campaign campaign = campaignMapper.campaignVMToCampaign(campaignVM);
-        campaign.setId(id);
+        Campaign campaign = campaignMapper.updateCampaign(campaignOpt.get(), campaignVM);
 
         // handle status
-        Optional<Status> statusOpt = statusRepository.findById(campaignVM.getStatusId());
-        if (statusOpt.isPresent()) {
-            campaign.setStatus(statusOpt.get());
+        if (campaignVM.getStatusId() != null) {
+            Optional<Status> statusOpt = statusRepository.findById(campaignVM.getStatusId());
+            if (statusOpt.isPresent()) {
+                campaign.setStatus(statusOpt.get());
+            }
         }
 
         // handle target list
         if (campaignVM.getTargetListIds() != null && !campaignVM.getTargetListIds().isEmpty()) {
             Set<Long> targetListIds = campaignVM.getTargetListIds().stream().collect(Collectors.toSet());
             // to be detached target list
-            List<TargetList> toBeDetachedTargetList = campaignInDb.get().getTargetLists();
+            List<TargetList> toBeDetachedTargetList = campaignOpt.get().getTargetLists();
             targetListRepository.saveAll(
                 toBeDetachedTargetList.stream()
                     .filter(tl -> !targetListIds.contains(tl.getId()))
@@ -232,7 +234,7 @@ public class CampaignService {
         if (campaignVM.getRuleIds() != null && !campaignVM.getRuleIds().isEmpty()) {
             Set<Long> ruleIds = campaignVM.getRuleIds().stream().collect(Collectors.toSet());
             // to be detached rule list
-            List<Rule> toBeDetachedRuleList = campaignInDb.get().getRuleList();
+            List<Rule> toBeDetachedRuleList = campaignOpt.get().getRuleList();
             ruleRepository.saveAll(
                 toBeDetachedRuleList.stream()
                     .filter(r -> !ruleIds.contains(r.getId()))
@@ -246,7 +248,7 @@ public class CampaignService {
         if (campaignVM.getFiles() != null && !campaignVM.getFiles().isEmpty()) {
             // remove existing files
             List<Long> fileIds = campaignVM.getFiles().stream().map(FileVM::getId).collect(Collectors.toList());
-            List<File> toBeDetachedFiles = campaignInDb.get().getFilesList();
+            List<File> toBeDetachedFiles = campaignOpt.get().getFilesList();
             fileRepository.saveAll(
                 toBeDetachedFiles.stream()
                 .filter(file -> !fileIds.contains(file.getId()))
@@ -265,7 +267,7 @@ public class CampaignService {
             Set<Long> generatedTimeIds =
                 campaignVM.getGeneratedTimes().stream().map(GeneratedTimeVM::getId).collect(Collectors.toSet());
             // to be detached generated time
-            List<GeneratedTime> toBeDetachedGeneratedTimes = campaignInDb.get().getGeneratedTimeList();
+            List<GeneratedTime> toBeDetachedGeneratedTimes = campaignOpt.get().getGeneratedTimeList();
             if (toBeDetachedGeneratedTimes != null && !toBeDetachedGeneratedTimes.isEmpty()) {
                 generatedTimeRepository.saveAll(
                     toBeDetachedGeneratedTimes.stream()

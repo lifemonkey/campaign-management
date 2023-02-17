@@ -40,7 +40,7 @@ public class FileService {
     private final Logger log = LoggerFactory.getLogger(FileService.class);
 
 //    @Value("${file.upload-dir}")
-    private String fileUploadDir = "./files-storage";
+    private String fileUploadDir = System.getProperty("user.dir") + "/files-storage";
 
     private final Path fileStorageLocation;
 

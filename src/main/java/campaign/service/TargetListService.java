@@ -89,8 +89,10 @@ public class TargetListService {
 
     @Transactional(rollbackFor = Exception.class)
     public TargetListDTO updateTargetList(Long id, TargetListVM targetListVM) {
-        TargetList targetList = targetListMapper.targetListVMToTargetList(targetListVM);
-        targetList.setId(id);
+        Optional<TargetList> targetListOpt = targetListRepository.findById(id);
+        if (!targetListOpt.isPresent()) return null;
+
+        TargetList targetList = targetListMapper.updateTargetList(targetListOpt.get(), targetListVM);
         targetListRepository.save(targetList);
         return targetListMapper.targetListToTargetListDTO(targetList);
     }

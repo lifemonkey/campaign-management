@@ -77,4 +77,24 @@ public class TargetListMapper {
     public List<TargetList> targetListVMToTargetLists(List<TargetListVM> targetListVMs) {
         return targetListVMs.stream().map(this::targetListVMToTargetList).collect(Collectors.toList());
     }
+
+    public TargetList updateTargetList(TargetList targetListInDb, TargetListVM targetListVM) {
+        if (targetListVM == null || targetListInDb == null) {
+            return null;
+        } else {
+            TargetList targetList = targetListInDb;
+
+            if (targetListVM.getName() != null) {
+                targetList.setName(targetListVM.getName());
+            }
+            if (targetListVM.getDescription() != null) {
+                targetList.setDescription(targetListVM.getDescription());
+            }
+            if (targetListVM.getTargetType() != null) {
+                targetList.setTargetType(targetListVM.getTargetType());
+            }
+
+            return targetList;
+        }
+    }
 }

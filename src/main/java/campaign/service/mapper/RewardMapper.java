@@ -81,4 +81,45 @@ public class RewardMapper {
             return reward;
         }
     }
+
+    public Reward updateReward(Reward rewardInDb, RewardVM rewardVM) {
+        if (rewardVM == null || rewardInDb == null) {
+            return null;
+        } else {
+            Reward reward = rewardInDb;
+
+            if (rewardVM.getName() != null) {
+                reward.setName(rewardVM.getName());
+            }
+            if (rewardVM.getDescription() != null) {
+                reward.setDescription(rewardVM.getDescription());
+            }
+            if (rewardVM.getPrizeType() != null) {
+                reward.setPrizeType(rewardVM.getPrizeType());
+            }
+            if (rewardVM.getPrizeValue() != null) {
+                reward.setPrizeValue(rewardVM.getPrizeValue());
+            }
+            if (rewardVM.getNumOfPrize() != null) {
+                reward.setNumOfPrize(rewardVM.getNumOfPrize());
+            }
+            if (rewardVM.getReleased() != null) {
+                reward.setReleased(rewardVM.getReleased());
+            }
+            if (rewardVM.getMessageWinnerEN() != null) {
+                reward.setMessageWinnerEN(rewardVM.getMessageWinnerEN());
+            }
+            if (rewardVM.getMessageWinnerSW() != null) {
+                reward.setMessageWinnerSW(rewardVM.getMessageWinnerSW());
+            }
+            if (rewardVM.getMessageBalanceEN() != null) {
+                reward.setMessageBalanceEN(rewardVM.getMessageBalanceEN());
+            }
+            if (rewardVM.getMessageBalanceSW() != null) {
+                reward.setMessageBalanceSW(rewardVM.getMessageBalanceSW());
+            }
+
+            return reward;
+        }
+    }
 }

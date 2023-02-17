@@ -92,4 +92,33 @@ public class CampaignMapper {
             return campaign;
         }
     }
+
+    public Campaign updateCampaign(Campaign campaignInDb, CampaignVM campaignVM) {
+        if (campaignVM == null || campaignInDb == null) {
+            return null;
+        } else {
+            Campaign campaign = campaignInDb;
+
+            if (campaignVM.getName() != null) {
+                campaign.setName(campaignVM.getName());
+            }
+            if (campaignVM.getDescription() != null) {
+                campaign.setDescription(campaignVM.getDescription());
+            }
+            if (campaignVM.getFromDate() != null) {
+                campaign.setFromDate(campaignVM.getFromDate());
+            }
+            if (campaignVM.getEndDate() != null) {
+                campaign.setEndDate(campaignVM.getEndDate());
+            }
+            if (campaignVM.getCampaignType() != null) {
+                campaign.setCampaignType(campaignVM.getCampaignType());
+            }
+            if (campaignVM.getNotes() != null) {
+                campaign.setNotes(campaignVM.getNotes());
+            }
+
+            return campaign;
+        }
+    }
 }

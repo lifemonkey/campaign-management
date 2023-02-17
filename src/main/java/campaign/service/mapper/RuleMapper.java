@@ -107,4 +107,34 @@ public class RuleMapper {
             return rule;
         }
     }
+
+    public Rule updateRule(Rule ruleInDb, RuleVM ruleVM) {
+        if (ruleVM == null || ruleInDb == null) {
+            return null;
+        } else {
+            Rule rule = ruleInDb;
+
+            if (ruleVM.getName() != null) {
+                rule.setName(ruleVM.getName());
+            }
+            if (ruleVM.getDescription() != null) {
+                rule.setDescription(ruleVM.getDescription());
+            }
+            if (ruleVM.getCampaignType() != null) {
+                rule.setCampaignType(ruleVM.getCampaignType());
+            }
+            if (ruleVM.getDurationType() != null) {
+                rule.setDurationType(ruleVM.getDurationType());
+                // add some condition here to set condition values
+                if(ruleVM.getDurationValue() != null) {
+                    rule.setDurationValue(ruleVM.getDurationValue());
+                }
+            }
+            if (ruleVM.getRuleConfiguration() != null) {
+                rule.setRuleConfiguration(ruleVM.getRuleConfiguration());
+            }
+
+            return rule;
+        }
+    }
 }

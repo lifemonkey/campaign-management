@@ -109,21 +109,23 @@ public class RewardConditionService {
 
     @Transactional(rollbackFor = Exception.class)
     public RewardConditionDTO updateRewardCondition(Long id, RewardConditionVM rewardConditionVM) {
-        RewardCondition rewardCondition = rewardConditionMapper.rewardConditionVMToRewardCondition(rewardConditionVM);
-        rewardCondition.setId(id);
+        Optional<RewardCondition> rewardConditionOpt = rewardConditionRepository.findById(id);
+        if (!rewardConditionOpt.isPresent()) return null;
 
-        Optional<Rule> ruleOpt = rewardConditionVM.getRuleId() != null
-            ? ruleRepository.findById(rewardConditionVM.getRuleId())
-            : null;
-        if (ruleOpt.isPresent()) {
-            rewardCondition.setRule(ruleOpt.get());
+        RewardCondition rewardCondition = rewardConditionMapper.updateRewardCondition(rewardConditionOpt.get(), rewardConditionVM);
+
+        if (rewardConditionVM.getRuleId() != null) {
+            Optional<Rule> ruleOpt = ruleRepository.findById(rewardConditionVM.getRuleId());
+            if (ruleOpt.isPresent()) {
+                rewardCondition.setRule(ruleOpt.get());
+            }
         }
 
-        Optional<Reward> rewardOpt = rewardConditionVM.getRewardId() != null
-            ? rewardRepository.findById(rewardConditionVM.getRewardId())
-            : null;
-        if (rewardOpt.isPresent()) {
-            rewardCondition.setReward(rewardOpt.get());
+        if (rewardConditionVM.getRewardId() != null) {
+            Optional<Reward> rewardOpt = rewardRepository.findById(rewardConditionVM.getRewardId());
+            if (rewardOpt.isPresent()) {
+                rewardCondition.setReward(rewardOpt.get());
+            }
         }
 
         rewardConditionRepository.save(rewardCondition);

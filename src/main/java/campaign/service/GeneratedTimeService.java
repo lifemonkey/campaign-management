@@ -71,9 +71,10 @@ public class GeneratedTimeService {
 
     @Transactional(rollbackFor = Exception.class)
     public GeneratedTimeDTO updateGeneratedTime(Long id, GeneratedTimeVM generatedTimeVM) {
-        GeneratedTime generatedTime = generatedTimeMapper.generatedTimeVMToGeneratedTime(generatedTimeVM);
-        generatedTime.setId(id);
+        Optional<GeneratedTime> generatedTimeOpt = generatedTimeRepository.findById(id);
+        if (!generatedTimeOpt.isPresent()) return null;
 
+        GeneratedTime generatedTime = generatedTimeMapper.updateGeneratedTime(generatedTimeOpt.get(), generatedTimeVM);
         generatedTimeRepository.save(generatedTime);
         return generatedTimeMapper.generatedTimeToGeneratedTimeDTO(generatedTime);
     }

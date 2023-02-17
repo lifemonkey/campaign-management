@@ -156,8 +156,10 @@ public class RuleService {
 
     @Transactional(rollbackFor = Exception.class)
     public RuleDTO updateRule(Long id, RuleVM ruleVM) {
-        Rule rule = ruleMapper.ruleVMToRule(ruleVM);
-        rule.setId(id);
+        Optional<Rule> ruleOpt = ruleRepository.findById(id);
+        if (!ruleOpt.isPresent()) return null;
+
+        Rule rule = ruleMapper.updateRule(ruleOpt.get(), ruleVM);
 
         // handle transaction type
         if (ruleVM.getTransactionType() != null) {

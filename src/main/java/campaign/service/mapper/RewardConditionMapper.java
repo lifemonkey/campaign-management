@@ -104,4 +104,30 @@ public class RewardConditionMapper {
                 return this.rewardConditionVMToRewardCondition(rewardConditionVM, rule, reward);
             }).collect(Collectors.toList());
     }
+
+    public RewardCondition updateRewardCondition(RewardCondition rewardConditionInDb, RewardConditionVM rewardConditionVM) {
+        if (rewardConditionVM == null || rewardConditionInDb == null) {
+            return null;
+        } else {
+            RewardCondition rewardCondition = rewardConditionInDb;
+
+            if (rewardConditionVM.getAmountMin() != null) {
+                rewardCondition.setAmountMin(rewardConditionVM.getAmountMin());
+            }
+            if (rewardConditionVM.getAmountMax() != null) {
+                rewardCondition.setAmountMax(rewardConditionVM.getAmountMax());
+            }
+            if (rewardConditionVM.getTimesMin() != null) {
+                rewardCondition.setTimesMin(rewardConditionVM.getTimesMin());
+            }
+            if (rewardConditionVM.getTimesMax() !=null) {
+                rewardCondition.setTimesMax(rewardConditionVM.getTimesMax());
+            }
+            if (rewardConditionVM.getNumberCodes() != null) {
+                rewardCondition.setNumberCodes(rewardConditionVM.getNumberCodes());
+            }
+
+            return rewardCondition;
+        }
+    }
 }

@@ -160,18 +160,19 @@ public class RewardService {
 
     @Transactional(rollbackFor = Exception.class)
     public RewardDTO updateReward(Long id, RewardVM rewardVM) {
-        Optional<Reward> rewardInDb = rewardRepository.findById(id);
+        Optional<Reward> rewardOpt = rewardRepository.findById(id);
         // check if reward is existed
-        if (!rewardInDb.isPresent()) return null;
+        if (!rewardOpt.isPresent()) return null;
+
         // convert rewardVM input to reward to be saved
-        Reward reward = rewardMapper.rewardVMToReward(rewardVM);
+        Reward reward = rewardMapper.updateReward(rewardOpt.get(), rewardVM);
         reward.setId(id);
 
         // handle files
         if (rewardVM.getFiles() != null && !rewardVM.getFiles().isEmpty()) {
             // to be detached files
             Set<Long> fileIds = rewardVM.getFiles().stream().map(FileVM::getId).collect(Collectors.toSet());
-            List<File> toBeDetachedFiles = rewardInDb.get().getFiles();
+            List<File> toBeDetachedFiles = rewardOpt.get().getFiles();
             fileRepository.saveAll(
                 toBeDetachedFiles.stream()
                     .filter(file -> !fileIds.contains(file.getId()))
@@ -190,7 +191,7 @@ public class RewardService {
             // remove existing vouchers
             Set<Long> voucherIds =
                 rewardVM.getVoucherCodes().stream().map(VoucherDTO::getId).collect(Collectors.toSet());
-            List<Voucher> toBeDetachedVouchers = rewardInDb.get().getVouchers();
+            List<Voucher> toBeDetachedVouchers = rewardOpt.get().getVouchers();
             if (toBeDetachedVouchers != null && !toBeDetachedVouchers.isEmpty()) {
                 voucherRepository.saveAll(
                     toBeDetachedVouchers.stream()

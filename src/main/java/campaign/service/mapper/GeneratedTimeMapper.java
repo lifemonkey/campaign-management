@@ -69,4 +69,22 @@ public class GeneratedTimeMapper {
             .map(this::generatedTimeVMToGeneratedTime)
             .collect(Collectors.toList());
     }
+
+    public GeneratedTime updateGeneratedTime(GeneratedTime generatedTimeInDb, GeneratedTimeVM generatedTimeVM) {
+        if (generatedTimeVM == null || generatedTimeInDb == null) {
+            return null;
+        } else {
+            GeneratedTime generatedTime = generatedTimeInDb;
+
+            if (generatedTimeVM.getStartTime() != null) {
+                generatedTime.setStartTime(generatedTimeVM.getStartTime());
+            }
+
+            if (generatedTimeVM.getEndTime() != null) {
+                generatedTime.setEndTime(generatedTimeVM.getEndTime());
+            }
+
+            return generatedTime;
+        }
+    }
 }

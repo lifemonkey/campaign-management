@@ -68,4 +68,21 @@ public class TransactionTypeMapper {
             return transactionType;
         }
     }
+
+    public TransactionType updateTransactionType(TransactionType transactionTypeInDb, TransactionTypeVM transactionTypeVM) {
+        if (transactionTypeVM == null || transactionTypeInDb == null) {
+            return null;
+        } else {
+            TransactionType transactionType = transactionTypeInDb;
+
+            if (transactionTypeVM.getName() != null) {
+                transactionType.setName(transactionTypeVM.getName());
+            }
+            if (transactionTypeVM.getDescription() != null) {
+                transactionType.setDescription(transactionTypeVM.getDescription());
+            }
+
+            return transactionType;
+        }
+    }
 }

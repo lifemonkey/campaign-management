@@ -9,7 +9,6 @@ import java.util.List;
 
 public class RuleVM {
 
-    @NotNull
     @Size(min = 1, max = 255)
     private String name;
 
