@@ -96,11 +96,6 @@ public class FileService {
 
     @Transactional(rollbackFor = Exception.class)
     public FileDTO uploadFile(MultipartFile file, String description, Integer type) {
-        // store file to server dir
-        String fileUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-            .path("/downloadFile/")
-            .path(storeFile(file))
-            .toUriString();
         // get file by fileName from db
         List<File> fileList = fileRepository.findByNameIgnoreCase(StringUtils.cleanPath(file.getOriginalFilename()));
         File toBeSaved = new File();
@@ -111,7 +106,7 @@ public class FileService {
             toBeSaved.name(StringUtils.cleanPath(file.getOriginalFilename()))
                 .description(description)
                 .type(type)
-                .url(fileUrl);
+                .url(fileUploadDir + "/" + storeFile(file));
         }
         // save file and convert to DTO
         return fileMapper.fileToFileDTO(fileRepository.save(toBeSaved));
