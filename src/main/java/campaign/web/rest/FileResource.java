@@ -87,7 +87,7 @@ public class FileResource {
      * @PathVariable id file id
      * @return the ResponseEntity with status 200 (OK) and with body all files
      */
-    @GetMapping("/file/download")
+    @PostMapping("/file/download")
     @Timed
     public ResponseEntity<Object> downloadFile(@RequestBody FileVM fileVM) {
         // Load file as Resource

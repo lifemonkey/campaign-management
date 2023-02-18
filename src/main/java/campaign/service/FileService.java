@@ -40,7 +40,7 @@ public class FileService {
     private final Logger log = LoggerFactory.getLogger(FileService.class);
 
 //    @Value("${file.upload-dir}")
-    private String fileUploadDir = System.getProperty("user.dir") + "/files-storage";
+    private String fileUploadDir = "./files-storage";
 
     private final Path fileStorageLocation;
 
@@ -96,8 +96,15 @@ public class FileService {
 
     @Transactional(rollbackFor = Exception.class)
     public FileDTO uploadFile(MultipartFile file, String description, Integer type) {
+        // store file to server dir
+        String fileUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+            .path("/downloadFile/")
+            .path(storeFile(file))
+            .toUriString();
+
         // get file by fileName from db
         List<File> fileList = fileRepository.findByNameIgnoreCase(StringUtils.cleanPath(file.getOriginalFilename()));
+
         File toBeSaved = new File();
         if (fileList != null && fileList.size() > 0) {
             toBeSaved = fileList.get(0);
@@ -106,7 +113,7 @@ public class FileService {
             toBeSaved.name(StringUtils.cleanPath(file.getOriginalFilename()))
                 .description(description)
                 .type(type)
-                .url(fileUploadDir + "/" + storeFile(file));
+                .url(fileUrl);
         }
         // save file and convert to DTO
         return fileMapper.fileToFileDTO(fileRepository.save(toBeSaved));

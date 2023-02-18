@@ -1,6 +1,6 @@
-id;external_id;first_name;last_name;created_by;last_modified_by
-1;ext_id_1;Hung;Doan;system;system
-2;ext_id_2;Nguyen;To;system;system
-3;ext_id_3;Tai;Nguyen;system;system
-4;ext_id_4;Thinh;Phan;system;system
-5;ext_id_5;Khai;Kieu;system;system
+id;external_id;first_name;last_name;description;phone_number;address;language_id;dob;created_by;last_modified_by
+1;ext_id_1;Hung;Doan;Description 1;0918861239;Tran Hung Dao;1;;system;system
+2;ext_id_2;Nguyen;To;Description 2;0918861240;Nguyen Thi Minh Khai;1;;system;system
+3;ext_id_3;Tai;Nguyen;Description 3;0918861241;Cong Quynh;1;;system;system
+4;ext_id_4;Thinh;Phan;Description 4;0918861242;Co Giang;1;;system;system
+5;ext_id_5;Khai;Kieu;Description 5;0918861243;Co Bac;system;system
