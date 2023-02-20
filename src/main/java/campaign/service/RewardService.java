@@ -11,6 +11,7 @@ import campaign.repository.RewardRepository;
 import campaign.repository.VoucherRepository;
 import campaign.service.dto.CampaignDTO;
 import campaign.service.dto.RewardDTO;
+import campaign.service.dto.RuleDTO;
 import campaign.service.dto.VoucherDTO;
 import campaign.service.mapper.FileMapper;
 import campaign.service.mapper.RewardMapper;
@@ -20,13 +21,13 @@ import campaign.web.rest.vm.RewardVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -101,14 +102,59 @@ public class RewardService {
     }
 
     @Transactional(readOnly = true)
-    public Page<RewardDTO> searchRewards(Pageable pageable, String search, Integer type) {
+    public Page<RewardDTO> searchRewards(Pageable pageable, String search, Integer type, String appliedCampaign) {
+        Page<Reward> rewardList;
+
         if (search != null && type == null) {
-            return rewardRepository.findAllByNameContainingIgnoreCase(search, pageable).map(RewardDTO::new);
+            rewardList = rewardRepository.findAllByNameContainingIgnoreCase(search, pageable);
         } else if (search == null && type != null) {
-            return rewardRepository.findAllByPrizeType(type, pageable).map(RewardDTO::new);
+            rewardList = rewardRepository.findAllByPrizeType(type, pageable);
+        } else if (search != null && type != null) {
+            rewardList = rewardRepository.findAllByNameContainingIgnoreCaseAndPrizeType(search, type, pageable);
         } else {
-            return rewardRepository.findAllByNameContainingIgnoreCaseAndPrizeType(search, type, pageable).map(RewardDTO::new);
+            rewardList = rewardRepository.findAll(pageable);
         }
+
+        // get applied campaigns
+        Map<Long, CampaignDTO> appliedCampaigns = appliedCampaigns(rewardList.toList());
+
+        if (appliedCampaign == null || appliedCampaign.isEmpty()) {
+            return rewardList.map(reward -> {
+                RewardDTO rewardDTO = new RewardDTO(reward);
+                rewardDTO.setAppliedCampaign(appliedCampaigns.get(reward.getCampaignId()));
+                return rewardDTO;
+            });
+        }
+
+        // applied campaign: campaign details
+        return new PageImpl<>(
+            rewardList.stream()
+                .filter(reward -> reward.getCampaignId() != null && appliedCampaigns.containsKey(reward.getCampaignId()))
+                .collect(Collectors.toList()), rewardList.getPageable(), rewardList.getTotalElements()
+        ).map(reward -> {
+            RewardDTO rewardDTO = new RewardDTO(reward);
+            rewardDTO.setAppliedCampaign(appliedCampaigns.get(reward.getCampaignId()));
+            return rewardDTO;
+        });
+    }
+
+    private Map<Long, CampaignDTO> appliedCampaigns(List<Reward> rewardList) {
+        List<Long> appliedCampaignIds = rewardList.stream()
+            .filter(reward -> reward.getCampaignId() != null)
+            .map(Reward::getCampaignId)
+            .collect(Collectors.toList());
+
+        Map<Long, CampaignDTO> appliedCampaigns = new HashMap<>();
+
+        if (!appliedCampaignIds.isEmpty()) {
+            List<Campaign> campaignList = campaignRepository.findAllById(appliedCampaignIds);
+            if (!campaignList.isEmpty()) {
+                campaignList.stream().forEach(campaign ->
+                    appliedCampaigns.put(campaign.getId(), new CampaignDTO(campaign)));
+            }
+        }
+
+        return appliedCampaigns;
     }
 
     @Transactional(rollbackFor = Exception.class)
