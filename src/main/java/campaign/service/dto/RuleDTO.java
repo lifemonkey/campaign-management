@@ -29,9 +29,10 @@ public class RuleDTO {
 
     private Integer campaignType;
 
-    private List<RuleRewardDTO> ruleRewardList = new ArrayList<>();
+    private List<RuleRewardConditionDTO> ruleRewardList = new ArrayList<>();
 
     private List<String> appliedCampaigns = new ArrayList<>();
+
     private String createdBy;
 
     private LocalDateTime createdDate;
@@ -54,7 +55,7 @@ public class RuleDTO {
             this.transactionType = new TransactionTypeDTO(rule.getTransactionType());
         }
         this.campaignType = rule.getCampaignType();
-        this.ruleRewardList = rule.getRewardConditions().stream().map(RuleRewardDTO::new).collect(Collectors.toList());
+        this.ruleRewardList = rule.getRewardConditions().stream().map(RuleRewardConditionDTO::new).collect(Collectors.toList());
         this.appliedCampaigns = rule.getCampaignList().stream().map(Campaign::getName).collect(Collectors.toList());
         this.createdBy = rule.getCreatedBy();
         this.createdDate = rule.getCreatedDate();
@@ -127,11 +128,11 @@ public class RuleDTO {
         this.campaignType = campaignType;
     }
 
-    public List<RuleRewardDTO> getRuleRewardList() {
+    public List<RuleRewardConditionDTO> getRuleRewardList() {
         return ruleRewardList;
     }
 
-    public void setRuleRewardList(List<RuleRewardDTO> ruleRewardList) {
+    public void setRuleRewardList(List<RuleRewardConditionDTO> ruleRewardList) {
         this.ruleRewardList = ruleRewardList;
     }
 

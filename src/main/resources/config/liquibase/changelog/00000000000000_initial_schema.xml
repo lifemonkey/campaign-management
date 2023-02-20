@@ -330,10 +330,8 @@
             <column name="message_balance_en" type="varchar(400)"/>
             <column name="message_balance_sw" type="varchar(400)"/>
             <column name="level" type="int"/>
+            <column name="campaign_id" type="int"/>
 
-            <!-- constraints -->
-            <column name="rule_id" type="bigint"/>
-            <column name="reward_id" type="bigint"/>
             <!-- Auditing fields -->
             <column name="created_by" type="varchar(50)">
                 <constraints nullable="false"/>

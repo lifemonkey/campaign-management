@@ -4,10 +4,8 @@ import campaign.domain.Reward;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
-public class RewardDTO {
+public class RewardConditionRewardDTO {
 
     private Long id;
 
@@ -24,8 +22,6 @@ public class RewardDTO {
 
     private Integer released;
 
-    private List<FileDTO> files;
-
     private String messageWinnerEN;
 
     private String messageWinnerSW;
@@ -33,8 +29,6 @@ public class RewardDTO {
     private String messageBalanceEN;
 
     private String messageBalanceSW;
-
-    private List<VoucherDTO> voucherCodes;
 
     private String createdBy;
 
@@ -46,12 +40,10 @@ public class RewardDTO {
 
     private Integer level;
 
-    private CampaignDTO appliedCampaign;
-
-    public RewardDTO() {
+    public RewardConditionRewardDTO() {
     }
 
-    public RewardDTO(Reward reward) {
+    public RewardConditionRewardDTO(Reward reward) {
         this.id = reward.getId();
         this.name = reward.getName();
         this.description = reward.getDescription();
@@ -59,21 +51,11 @@ public class RewardDTO {
         this.prizeValue = reward.getPrizeValue();
         this.numOfPrize = reward.getNumOfPrize();
         this.released = reward.getReleased();
-        if (reward.getFiles() != null) {
-            this.files = reward.getFiles().stream()
-                .map(FileDTO::new)
-                .collect(Collectors.toList());
-        }
         this.messageWinnerEN = reward.getMessageWinnerEN();
         this.messageWinnerSW = reward.getMessageWinnerSW();
         this.messageBalanceEN = reward.getMessageBalanceEN();
         this.messageBalanceSW = reward.getMessageBalanceSW();
         this.level = reward.getLevel();
-        if (reward.getVouchers() != null) {
-            this.voucherCodes = reward.getVouchers().stream()
-                .map(VoucherDTO::new)
-                .collect(Collectors.toList());
-        }
         this.createdBy = reward.getCreatedBy();
         this.createdDate = reward.getCreatedDate();
         this.lastModifiedBy = reward.getLastModifiedBy();
@@ -136,14 +118,6 @@ public class RewardDTO {
         this.released = released;
     }
 
-    public List<FileDTO> getFiles() {
-        return files;
-    }
-
-    public void setFiles(List<FileDTO> files) {
-        this.files = files;
-    }
-
     public String getMessageWinnerEN() {
         return messageWinnerEN;
     }
@@ -184,14 +158,6 @@ public class RewardDTO {
         this.level = level;
     }
 
-    public List<VoucherDTO> getVoucherCodes() {
-        return voucherCodes;
-    }
-
-    public void setVoucherCodes(List<VoucherDTO> voucherCodes) {
-        this.voucherCodes = voucherCodes;
-    }
-
     public String getCreatedBy() {
         return createdBy;
     }
@@ -222,14 +188,6 @@ public class RewardDTO {
 
     public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
-    }
-
-    public CampaignDTO getAppliedCampaign() {
-        return appliedCampaign;
-    }
-
-    public void setAppliedCampaign(CampaignDTO appliedCampaign) {
-        this.appliedCampaign = appliedCampaign;
     }
 
     @Override

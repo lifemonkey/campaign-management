@@ -5,9 +5,11 @@ import campaign.domain.Campaign;
 import campaign.domain.File;
 import campaign.domain.Reward;
 import campaign.domain.Voucher;
+import campaign.repository.CampaignRepository;
 import campaign.repository.FileRepository;
 import campaign.repository.RewardRepository;
 import campaign.repository.VoucherRepository;
+import campaign.service.dto.CampaignDTO;
 import campaign.service.dto.RewardDTO;
 import campaign.service.dto.VoucherDTO;
 import campaign.service.mapper.FileMapper;
@@ -45,12 +47,15 @@ public class RewardService {
 
     private final VoucherMapper voucherMapper;
 
+    private final CampaignRepository campaignRepository;
+
     public RewardService(RewardRepository rewardRepository,
                          RewardMapper rewardMapper,
                          FileRepository fileRepository,
                          FileMapper fileMapper,
                          VoucherRepository voucherRepository,
-                         VoucherMapper voucherMapper
+                         VoucherMapper voucherMapper,
+                         CampaignRepository campaignRepository
     ) {
 
         this.rewardRepository = rewardRepository;
@@ -59,16 +64,30 @@ public class RewardService {
         this.fileMapper = fileMapper;
         this.voucherRepository = voucherRepository;
         this.voucherMapper = voucherMapper;
+        this.campaignRepository = campaignRepository;
     }
 
     @Transactional(readOnly = true)
     public RewardDTO getRewardById(Long id) {
         Optional<Reward> rewardOpt = rewardRepository.findById(id);
         if (rewardOpt.isPresent()) {
-            return rewardMapper.rewardToRewardDTO(rewardOpt.get());
+            RewardDTO rewardDTO = rewardMapper.rewardToRewardDTO(rewardOpt.get());
+            rewardDTO.setAppliedCampaign(appliedCampaign(rewardOpt.get()));
+            return rewardDTO;
         }
 
         return new RewardDTO();
+    }
+
+    private CampaignDTO appliedCampaign(Reward reward) {
+        if (reward.getCampaignId() != null) {
+            Optional<Campaign> campaignOpt = campaignRepository.findById(reward.getCampaignId());
+            if (campaignOpt.isPresent()) {
+                return new CampaignDTO(campaignOpt.get());
+            }
+        }
+
+        return null;
     }
 
     @Transactional(readOnly = true)

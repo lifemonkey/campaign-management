@@ -52,6 +52,8 @@ public class CampaignService {
 
     private final GeneratedTimeMapper generatedTimeMapper;
 
+    private final RewardRepository rewardRepository;
+
     public CampaignService(CampaignRepository campaignRepository,
                            UserRepository userRepository,
                            TargetListRepository targetListRepository,
@@ -61,7 +63,8 @@ public class CampaignService {
                            RuleRepository ruleRepository,
                            CampaignMapper campaignMapper,
                            GeneratedTimeRepository generatedTimeRepository,
-                           GeneratedTimeMapper generatedTimeMapper
+                           GeneratedTimeMapper generatedTimeMapper,
+                           RewardRepository rewardRepository
     ) {
         this.campaignRepository = campaignRepository;
         this.userRepository = userRepository;
@@ -73,6 +76,7 @@ public class CampaignService {
         this.campaignMapper = campaignMapper;
         this.generatedTimeRepository = generatedTimeRepository;
         this.generatedTimeMapper = generatedTimeMapper;
+        this.rewardRepository = rewardRepository;
     }
 
     @Transactional(readOnly = true)
@@ -159,6 +163,16 @@ public class CampaignService {
                 generatedTimeRepository.saveAll(generatedTimes);
                 // two ways binding
                 campaign.addGeneratedTimeList(generatedTimes);
+            }
+
+            // handle applied campaign
+            if (campaignVM.getRewardId() != null) {
+                Optional<Reward> rewardOpt = rewardRepository.findById(campaignVM.getRewardId());
+                if (rewardOpt.isPresent()) {
+                    Reward reward = rewardOpt.get();
+                    reward.setCampaignId(campaign.getId());
+                    rewardRepository.save(reward);
+                }
             }
 
             campaignRepository.save(campaign);
@@ -292,6 +306,16 @@ public class CampaignService {
             toBeSavedGeneratedTimes.stream().forEach(gt -> gt.setCampaign(campaign));
 //            // two ways binding
             campaign.addGeneratedTimeList(toBeSavedGeneratedTimes);
+        }
+
+        // handle applied campaign
+        if (campaignVM.getRewardId() != null) {
+            Optional<Reward> rewardOpt = rewardRepository.findById(campaignVM.getRewardId());
+            if (rewardOpt.isPresent()) {
+                Reward reward = rewardOpt.get();
+                reward.setCampaignId(campaign.getId());
+                rewardRepository.save(reward);
+            }
         }
 
         campaignRepository.save(campaign);

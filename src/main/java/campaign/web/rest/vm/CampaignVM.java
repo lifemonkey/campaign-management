@@ -28,6 +28,8 @@ public class CampaignVM {
 
     private Long approvedRejectedBy;
 
+    private Long rewardId;
+
     private List<Long> targetListIds = new ArrayList<>();
 
     private List<FileVM> files = new ArrayList<>();
@@ -108,6 +110,14 @@ public class CampaignVM {
         this.approvedRejectedBy = approvedRejectedBy;
     }
 
+    public Long getRewardId() {
+        return rewardId;
+    }
+
+    public void setRewardId(Long rewardId) {
+        this.rewardId = rewardId;
+    }
+
     public List<Long> getTargetListIds() {
         return targetListIds;
     }
@@ -152,6 +162,7 @@ public class CampaignVM {
             ", notes='" + notes + '\'' +
             ", statusId=" + statusId +
             ", approvedRejectedBy=" + approvedRejectedBy +
+            ", rewardId=" + rewardId +
             ", targetListIds=" + targetListIds +
             ", ruleIds=" + ruleIds +
             '}';

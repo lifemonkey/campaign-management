@@ -60,10 +60,13 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
     @Column(name = "level")
     private Integer level;
 
+    @Column(name = "campaign_id")
+    private Long campaignId;
+
     public Reward() {
     }
 
-    public Reward(String name, String description, Integer prizeType, Integer prizeValue, Integer numOfPrize, Integer released, List<File> files, String messageWinnerEN, String messageWinnerSW, String messageBalanceEN, String messageBalanceSW, Integer level) {
+    public Reward(String name, String description, Integer prizeType, Integer prizeValue, Integer numOfPrize, Integer released, List<File> files, String messageWinnerEN, String messageWinnerSW, String messageBalanceEN, String messageBalanceSW, Integer level, Long campaignId) {
         this.name = name;
         this.description = description;
         this.prizeType = prizeType;
@@ -76,6 +79,7 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
         this.messageBalanceEN = messageBalanceEN;
         this.messageBalanceSW = messageBalanceSW;
         this.level = level;
+        this.campaignId = campaignId;
     }
 
     public Long getId() {
@@ -208,6 +212,14 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
         this.level = level;
     }
 
+    public Long getCampaignId() {
+        return campaignId;
+    }
+
+    public void setCampaignId(Long campaignId) {
+        this.campaignId = campaignId;
+    }
+
     @Override
     public String toString() {
         return "Reward{" +
@@ -222,7 +234,8 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
             ", messageWinnerSW='" + messageWinnerSW + '\'' +
             ", messageBalanceEN='" + messageBalanceEN + '\'' +
             ", messageBalanceSW='" + messageBalanceSW + '\'' +
-            ", level='" + level + '\'' +
+            ", level=" + level +
+            ", campaignId=" + campaignId +
             '}';
     }
 }
