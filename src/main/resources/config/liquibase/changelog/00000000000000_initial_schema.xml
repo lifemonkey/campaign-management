@@ -329,7 +329,7 @@
             <column name="message_winner_sw" type="varchar(400)"/>
             <column name="message_balance_en" type="varchar(400)"/>
             <column name="message_balance_sw" type="varchar(400)"/>
-            <column name="level" type="int"/>
+            <column name="reward_level" type="int"/>
             <column name="campaign_id" type="int"/>
 
             <!-- Auditing fields -->

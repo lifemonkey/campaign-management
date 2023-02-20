@@ -57,7 +57,7 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "reward")
     private List<Voucher> vouchers = new ArrayList<>();
 
-    @Column(name = "level")
+    @Column(name = "reward_level")
     private Integer level;
 
     @Column(name = "campaign_id")
