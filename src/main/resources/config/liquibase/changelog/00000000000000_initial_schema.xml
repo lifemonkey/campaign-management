@@ -214,6 +214,12 @@
             <column name="external_id" type="varchar(22)" />
             <column name="first_name" type="varchar(200)"/>
             <column name="last_name" type="varchar(200)"/>
+            <column name="description" type="varchar(200)"/>
+            <column name="phone_number" type="varchar(20)"/>
+            <column name="address" type="varchar(200)"/>
+            <column name="language_id" type="bigint"/>
+            <column name="dob" type="timestamp"/>
+
             <!-- Auditing fields -->
             <column name="created_by" type="varchar(50)">
                 <constraints nullable="false"/>
@@ -339,6 +345,7 @@
             <column name="message_winner_sw" type="varchar(400)"/>
             <column name="message_balance_en" type="varchar(400)"/>
             <column name="message_balance_sw" type="varchar(400)"/>
+            <column name="level" type="int"/>
 
             <!-- constraints -->
             <column name="rule_id" type="bigint"/>

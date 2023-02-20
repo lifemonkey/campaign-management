@@ -88,7 +88,6 @@ public class RewardResource {
      */
     @PostMapping("/reward")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
     public ResponseEntity<RewardDTO> createReward(@RequestBody RewardVM rewardVM) {
         return new ResponseEntity<> (rewardService.createReward(rewardVM), new HttpHeaders(), HttpStatus.OK);
     }
@@ -101,7 +100,6 @@ public class RewardResource {
      */
     @PostMapping("/reward/clone")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
     public ResponseEntity<RewardDTO> cloneReward(@RequestParam Long id) {
         return new ResponseEntity<> (rewardService.cloneReward(id), new HttpHeaders(), HttpStatus.OK);
     }
@@ -114,7 +112,6 @@ public class RewardResource {
      */
     @PutMapping("/reward/{id}")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
     public ResponseEntity<Object> updateReward(@Valid @PathVariable Long id, @RequestBody RewardVM rewardVM) {
         RewardDTO rewardDTO = rewardService.getRewardById(id);
         if (rewardDTO.getId() != null) {
