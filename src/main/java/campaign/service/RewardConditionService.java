@@ -52,8 +52,39 @@ public class RewardConditionService {
     }
 
     @Transactional(readOnly = true)
-    public Page<RewardConditionDTO> getAllRewardConditions(Pageable pageable) {
-        return rewardConditionRepository.findAll(pageable).map(RewardConditionDTO::new);
+    public Page<RewardConditionDTO> getAllRewardConditions(
+        Pageable pageable, Float amountMin, Float amountMax, Integer timesMin, Integer timesMax) {
+        if (amountMin == null && amountMax == null && timesMin == null && timesMax == null) {
+            return rewardConditionRepository.findAll(pageable).map(RewardConditionDTO::new);
+        }
+
+        if (amountMin == null || amountMin < 0.0F) amountMin = 0.0F;
+        if (timesMin == null || timesMin < 0) timesMin = 0;
+
+        if (amountMax == null && timesMax == null) {
+            // find by amountMin and timesMin
+            return rewardConditionRepository.findByAmountMinGreaterThanEqualAndTimesMinGreaterThanEqual(
+                pageable, amountMin, timesMin)
+                .map(RewardConditionDTO::new);
+
+        } else if (amountMax == null && timesMax != null) {
+            // find by amountMin and timesMin and timesMax
+            return rewardConditionRepository.findByAmountMinGreaterThanEqualAndTimesMinGreaterThanEqualAndTimesMaxLessThanEqual(
+                    pageable, amountMin, timesMin, timesMax)
+                .map(RewardConditionDTO::new);
+
+        } else if (amountMax != null && timesMax == null) {
+            // find by amountMin and timesMin and amountMax
+            return rewardConditionRepository.findByAmountMinGreaterThanEqualAndTimesMinGreaterThanEqualAndAmountMaxLessThanEqual(
+                    pageable, amountMin, timesMin, amountMax)
+                .map(RewardConditionDTO::new);
+
+        } else {
+            return rewardConditionRepository
+                .findByAmountMinGreaterThanEqualAndTimesMinGreaterThanEqualAndAmountMaxLessThanEqualAndTimesMaxLessThanEqual(
+                    pageable, amountMin, timesMin, amountMax, timesMax)
+                .map(RewardConditionDTO::new);
+        }
     }
 
     @Transactional(rollbackFor = Exception.class)

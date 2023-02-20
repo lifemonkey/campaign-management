@@ -45,9 +45,9 @@ public class RuleResource {
         Pageable pageable,
         @RequestParam(required = false) String search,
         @RequestParam(required = false) String appliedCampaign,
-        @RequestParam(required = false) Integer type
+        @RequestParam(required = false) Integer campaignType
     ) {
-        Page<RuleDTO> page = ruleService.searchRules(pageable, search, appliedCampaign, type);
+        Page<RuleDTO> page = ruleService.searchRules(pageable, search, appliedCampaign, campaignType);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/rules");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

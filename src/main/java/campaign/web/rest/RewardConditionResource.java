@@ -41,8 +41,15 @@ public class RewardConditionResource {
      */
     @GetMapping("/reward-conditions")
     @Timed
-    public ResponseEntity<List<RewardConditionDTO>> getAllRewardConditions(Pageable pageable) {
-        Page<RewardConditionDTO> page = rewardConditionService.getAllRewardConditions(pageable);
+    public ResponseEntity<List<RewardConditionDTO>> getAllRewardConditions(
+        Pageable pageable,
+        @RequestParam(required = false) Float amountMin,
+        @RequestParam(required = false) Float amountMax,
+        @RequestParam(required = false) Integer timesMin,
+        @RequestParam(required = false) Integer timesMax
+    ) {
+        Page<RewardConditionDTO> page = rewardConditionService.getAllRewardConditions(
+            pageable, amountMin, amountMax, timesMin, timesMax);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/reward-conditions");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
