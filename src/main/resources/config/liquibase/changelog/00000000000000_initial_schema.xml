@@ -88,9 +88,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="last_modified_by" type="varchar(50)" />
-            <column name="last_modified_date" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
-            </column>
+            <column name="last_modified_date" type="timestamp" />
         </createTable>
 
         <createTable tableName="roles">
@@ -122,9 +120,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="last_modified_by" type="varchar(50)" />
-            <column name="last_modified_date" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
-            </column>
+            <column name="last_modified_date" type="timestamp" />
         </createTable>
 
         <createTable tableName="token_black_list">
@@ -164,9 +160,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="last_modified_by" type="varchar(50)" />
-            <column name="last_modified_date" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
-            </column>
+            <column name="last_modified_date" type="timestamp" />
         </createTable>
 
         <createTable tableName="target_list">
@@ -184,9 +178,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="last_modified_by" type="varchar(50)" />
-            <column name="last_modified_date" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
-            </column>
+            <column name="last_modified_date" type="timestamp" />
         </createTable>
 
         <createTable tableName="campaign_target_list">
@@ -228,9 +220,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="last_modified_by" type="varchar(50)" />
-            <column name="last_modified_date" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
-            </column>
+            <column name="last_modified_date" type="timestamp" />
         </createTable>
 
         <createTable tableName="transaction_type">
@@ -247,9 +237,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="last_modified_by" type="varchar(50)" />
-            <column name="last_modified_date" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
-            </column>
+            <column name="last_modified_date" type="timestamp" />
         </createTable>
 
         <createTable tableName="rules">
@@ -274,9 +262,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="last_modified_by" type="varchar(50)" />
-            <column name="last_modified_date" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
-            </column>
+            <column name="last_modified_date" type="timestamp" />
         </createTable>
 
         <createTable tableName="campaign_rule">
@@ -303,9 +289,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="last_modified_by" type="varchar(50)" />
-            <column name="last_modified_date" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
-            </column>
+            <column name="last_modified_date" type="timestamp" />
         </createTable>
 
         <createTable tableName="reward_condition">
@@ -328,9 +312,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="last_modified_by" type="varchar(50)" />
-            <column name="last_modified_date" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
-            </column>
+            <column name="last_modified_date" type="timestamp" />
         </createTable>
 
         <createTable tableName="reward">
@@ -360,9 +342,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="last_modified_by" type="varchar(50)" />
-            <column name="last_modified_date" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
-            </column>
+            <column name="last_modified_date" type="timestamp" />
         </createTable>
 
         <createTable tableName="voucher">
@@ -383,9 +363,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="last_modified_by" type="varchar(50)" />
-            <column name="last_modified_date" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
-            </column>
+            <column name="last_modified_date" type="timestamp" />
         </createTable>
 
         <createTable tableName="files">
@@ -408,9 +386,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="last_modified_by" type="varchar(50)" />
-            <column name="last_modified_date" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
-            </column>
+            <column name="last_modified_date" type="timestamp" />
         </createTable>
 
         <!-- Config relationship -->
