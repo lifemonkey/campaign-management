@@ -1,6 +1,5 @@
 package campaign.web.rest;
 
-import campaign.domain.Rule;
 import campaign.security.AuthoritiesConstants;
 import campaign.service.RuleService;
 import campaign.service.dto.RuleDTO;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -138,6 +136,17 @@ public class RuleResource {
         RuleDTO rule = ruleService.getRuleById(id);
         if (rule.getId() != null) {
             return new ResponseEntity<>(ruleService.updateRule(id, ruleVM), new HttpHeaders(), HttpStatus.OK);
+        }
+
+        // check duplicated name
+        if (ruleVM.getName() != null && !ruleVM.getName().isEmpty() && ruleService.ruleNameExisted(ruleVM.getName())) {
+            return new ResponseEntity<>(
+                new ResponseVM(
+                    ResponseCode.RESPONSE_WRONG_PARAM,
+                    ResponseCode.ERROR_CODE_RULE_NAME_IS_DUPLICATED,
+                    "Rule name is duplicated!"),
+                new HttpHeaders(),
+                HttpStatus.NOT_FOUND);
         }
 
         return new ResponseEntity<>(

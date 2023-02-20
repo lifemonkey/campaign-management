@@ -4,7 +4,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
+import java.util.*;
 
 public class ServiceUtils {
 
@@ -30,5 +30,39 @@ public class ServiceUtils {
         return instantToConvert
             .atZone(ZoneId.systemDefault())
             .toLocalDateTime();
+    }
+
+    public static String clonedCount(String clonedName, List<String> nameList) {
+//        nameList = Arrays.asList("Rule 1-Copy109", "Rule 1", "Rule 1-Copy01", "Rule 1-Copy07", "Rule 1-Copy03", "Rule 1-CopyAA", "Rule 1-Copy06");
+        Optional<Integer> nameOpt = nameList.stream()
+            .filter(name -> isValidName(clonedName, name))
+            .map(name -> Integer.valueOf(name.substring(clonedName.length(), name.length())))
+            .sorted(Comparator.comparingInt(name -> (int) name).reversed())
+            .findFirst();
+
+        if (nameOpt.isPresent()) {
+            if (nameOpt.get() >= 9) {
+                return clonedName + (nameOpt.get() + 1);
+            } else {
+                return clonedName + "0" + (nameOpt.get() + 1);
+            }
+        }
+
+        return clonedName + "01";
+    }
+
+    public static Boolean isValidName(String clonedName, String value) {
+        if (value.startsWith(clonedName)) {
+            try {
+                String lastCount = value.substring(clonedName.length(), value.length());
+                if (Integer.parseInt(lastCount) >= 0) {
+                    return true;
+                }
+            } catch (Exception ex) {
+                return false;
+            }
+        }
+
+        return false;
     }
 }

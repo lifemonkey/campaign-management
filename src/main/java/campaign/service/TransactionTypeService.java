@@ -1,6 +1,7 @@
 package campaign.service;
 
 import campaign.config.Constants;
+import campaign.domain.Rule;
 import campaign.domain.TransactionType;
 import campaign.repository.TransactionTypeRepository;
 import campaign.service.dto.TransactionTypeDTO;
@@ -13,7 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -71,14 +74,18 @@ public class TransactionTypeService {
         Optional<TransactionType> transactionTypeOpt = transactionTypeRepository.findById(id);
         if (!transactionTypeOpt.isPresent()) return null;
 
-        TransactionType toBerInserted = new TransactionType();
+        TransactionType toBeInserted = new TransactionType();
 
         if (transactionTypeOpt.isPresent()) {
-            toBerInserted.setName(transactionTypeOpt.get().getName() + Constants.CLONE_POSTFIX);
-            toBerInserted.setDescription(transactionTypeOpt.get().getDescription());
+            String clonedName = transactionTypeOpt.get().getName() + Constants.CLONE_POSTFIX;
+            List<TransactionType> transactionsByName = transactionTypeRepository.findByNameStartsWithIgnoreCase(clonedName);
+            toBeInserted.setName(ServiceUtils
+                .clonedCount(clonedName, transactionsByName.stream().map(TransactionType::getName).collect(Collectors.toList())));
+            toBeInserted.setName(transactionTypeOpt.get().getName() + Constants.CLONE_POSTFIX);
+            toBeInserted.setDescription(transactionTypeOpt.get().getDescription());
         }
 
-        return transactionTypeMapper.transactionTypeToTransactionTypeDTO(transactionTypeRepository.save(toBerInserted));
+        return transactionTypeMapper.transactionTypeToTransactionTypeDTO(transactionTypeRepository.save(toBeInserted));
     }
 
     @Transactional(rollbackFor = Exception.class)

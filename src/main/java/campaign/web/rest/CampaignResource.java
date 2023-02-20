@@ -146,6 +146,17 @@ public class CampaignResource {
             return new ResponseEntity<>(campaignService.updateCampaign(id, campaignVM), new HttpHeaders(), HttpStatus.OK);
         }
 
+        // check duplicated name
+        if (campaignVM.getName() != null && !campaignVM.getName().isEmpty() && campaignService.campaignNameExisted(campaignVM.getName())) {
+            return new ResponseEntity<>(
+                new ResponseVM(
+                    ResponseCode.RESPONSE_WRONG_PARAM,
+                    ResponseCode.ERROR_CODE_CAMPAIGN_NAME_IS_DUPLICATED,
+                    "Campaign name is duplicated!"),
+                new HttpHeaders(),
+                HttpStatus.NOT_FOUND);
+        }
+
         return new ResponseEntity<>(
             new ResponseVM(
                 ResponseCode.RESPONSE_NOT_FOUND,

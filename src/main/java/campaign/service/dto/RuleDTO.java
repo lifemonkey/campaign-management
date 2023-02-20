@@ -50,7 +50,9 @@ public class RuleDTO {
         this.durationType = rule.getDurationType();
         this.durationValue = rule.getDurationValue();
         this.ruleConfiguration = rule.getRuleConfiguration();
-        this.transactionType = new TransactionTypeDTO(rule.getTransactionType());
+        if (rule.getTransactionType() != null) {
+            this.transactionType = new TransactionTypeDTO(rule.getTransactionType());
+        }
         this.campaignType = rule.getCampaignType();
         this.ruleRewardList = rule.getRewardConditions().stream().map(RuleRewardDTO::new).collect(Collectors.toList());
         this.appliedCampaigns = rule.getCampaignList().stream().map(Campaign::getName).collect(Collectors.toList());

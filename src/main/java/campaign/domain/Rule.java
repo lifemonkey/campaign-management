@@ -21,7 +21,7 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 200)
+    @Column(name = "name", unique = true, nullable = false, length = 200)
     private String name;
 
     @Column(length = 4000)

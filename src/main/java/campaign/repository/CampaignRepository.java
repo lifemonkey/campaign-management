@@ -22,4 +22,6 @@ public interface CampaignRepository extends JpaRepository<Campaign, Long> {
     List<Campaign> findAllByStatus(Status status);
 
     Optional<Campaign> findByNameIgnoreCase(String name);
+
+    List<Campaign> findByNameStartsWithIgnoreCase(String name);
 }

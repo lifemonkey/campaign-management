@@ -172,10 +172,15 @@ public class CampaignService {
     public CampaignWRelDTO cloneCampaign(Long id) {
         Optional<Campaign> clonedCampaignOpt = campaignRepository.findById(id);
         if (!clonedCampaignOpt.isPresent()) return null;
+
         Campaign toBeInserted = new Campaign();
 
         if (clonedCampaignOpt.isPresent()) {
-            toBeInserted.setName(clonedCampaignOpt.get().getName() + Constants.CLONE_POSTFIX);
+            String clonedName = clonedCampaignOpt.get().getName() + Constants.CLONE_POSTFIX;
+            List<Campaign> campaignsByName = campaignRepository.findByNameStartsWithIgnoreCase(clonedName);
+            toBeInserted.setName(ServiceUtils
+                .clonedCount(clonedName, campaignsByName.stream().map(Campaign::getName).collect(Collectors.toList())));
+
             toBeInserted.setDescription(clonedCampaignOpt.get().getDescription());
             toBeInserted.setFromDate(clonedCampaignOpt.get().getFromDate());
             toBeInserted.setEndDate(clonedCampaignOpt.get().getEndDate());

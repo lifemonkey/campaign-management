@@ -142,23 +142,26 @@ public class RuleService {
         Optional<Rule> cloneRuleOpt = ruleRepository.findById(id);
         if (!cloneRuleOpt.isPresent()) return null;
 
-        Rule toBerInserted = new Rule();
+        Rule toBeInserted = new Rule();
 
         if (cloneRuleOpt.isPresent()) {
-            toBerInserted.setName(cloneRuleOpt.get().getName() + Constants.CLONE_POSTFIX);
-            toBerInserted.setDescription(cloneRuleOpt.get().getDescription());
-            toBerInserted.setDurationType(cloneRuleOpt.get().getDurationType());
-            toBerInserted.setDurationValue(cloneRuleOpt.get().getDurationValue());
-            toBerInserted.setCampaignType(cloneRuleOpt.get().getCampaignType());
+            String clonedName = cloneRuleOpt.get().getName() + Constants.CLONE_POSTFIX;
+            List<Rule> rulesByName = ruleRepository.findByNameStartsWithIgnoreCase(clonedName);
+            toBeInserted.setName(ServiceUtils
+                .clonedCount(clonedName, rulesByName.stream().map(Rule::getName).collect(Collectors.toList())));
+            toBeInserted.setDescription(cloneRuleOpt.get().getDescription());
+            toBeInserted.setDurationType(cloneRuleOpt.get().getDurationType());
+            toBeInserted.setDurationValue(cloneRuleOpt.get().getDurationValue());
+            toBeInserted.setCampaignType(cloneRuleOpt.get().getCampaignType());
             // clone reward conditions
             if (cloneRuleOpt.get().getRewardConditions() != null) {
-                toBerInserted.addRewardConditions(cloneRuleOpt.get().getRewardConditions());
+                toBeInserted.addRewardConditions(cloneRuleOpt.get().getRewardConditions());
             }
-            toBerInserted.setRuleConfiguration(cloneRuleOpt.get().getRuleConfiguration());
-            toBerInserted.setTransactionType(cloneRuleOpt.get().getTransactionType());
+            toBeInserted.setRuleConfiguration(cloneRuleOpt.get().getRuleConfiguration());
+            toBeInserted.setTransactionType(cloneRuleOpt.get().getTransactionType());
         }
 
-        return ruleMapper.ruleToRuleDTO(ruleRepository.save(toBerInserted));
+        return ruleMapper.ruleToRuleDTO(ruleRepository.save(toBeInserted));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -209,6 +212,7 @@ public class RuleService {
             // detach campaign
             rule.clearCampaignList();
             rule.clearRewardConditions();
+            rule.setTransactionType(null);
             ruleRepository.save(rule);
             ruleRepository.delete(rule);
         }
