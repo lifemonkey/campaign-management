@@ -92,7 +92,29 @@ public class CampaignResource {
     @PostMapping("/campaign")
     @Timed
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
-    public ResponseEntity<CampaignWRelDTO> createCampaign(@RequestBody CampaignVM campaignVM) {
+    public ResponseEntity<Object> createCampaign(@RequestBody CampaignVM campaignVM) {
+        // validate request params
+        if (campaignVM.getName() == null || campaignVM.getName().isEmpty()) {
+            return new ResponseEntity<>(
+                new ResponseVM(
+                    ResponseCode.RESPONSE_WRONG_PARAM,
+                    ResponseCode.ERROR_CODE_CAMPAIGN_NAME_IS_EMPTY,
+                    "Campaign name is empty!"),
+                new HttpHeaders(),
+                HttpStatus.NOT_FOUND);
+        }
+
+        // check duplicated name
+        if (campaignService.campaignNameExisted(campaignVM.getName())) {
+            return new ResponseEntity<>(
+                new ResponseVM(
+                    ResponseCode.RESPONSE_WRONG_PARAM,
+                    ResponseCode.ERROR_CODE_CAMPAIGN_NAME_IS_DUPLICATED,
+                    "Campaign name is duplicated!"),
+                new HttpHeaders(),
+                HttpStatus.NOT_FOUND);
+        }
+
         return new ResponseEntity<> (campaignService.createCampaign(campaignVM), new HttpHeaders(), HttpStatus.OK);
     }
 

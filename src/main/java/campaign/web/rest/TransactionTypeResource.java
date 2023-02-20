@@ -87,7 +87,18 @@ public class TransactionTypeResource {
     @PostMapping("/transaction-type")
     @Timed
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
-    public ResponseEntity<TransactionTypeDTO> createTransactionType(@RequestBody TransactionTypeVM transactionTypeVM) {
+    public ResponseEntity<Object> createTransactionType(@RequestBody TransactionTypeVM transactionTypeVM) {
+        // validate request params
+        if (transactionTypeVM.getName() == null || transactionTypeVM.getName().isEmpty()) {
+            return new ResponseEntity<>(
+                new ResponseVM(
+                    ResponseCode.RESPONSE_WRONG_PARAM,
+                    ResponseCode.ERROR_CODE_TRANSACTION_TYPE_NAME_IS_EMPTY,
+                    "TransactionType name is empty!"),
+                new HttpHeaders(),
+                HttpStatus.NOT_FOUND);
+        }
+
         return new ResponseEntity<> (transactionTypeService.createTransactionType(transactionTypeVM), new HttpHeaders(), HttpStatus.OK);
     }
 

@@ -89,7 +89,18 @@ public class TargetListResource {
     @PostMapping("/target-list")
     @Timed
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
-    public ResponseEntity<TargetListDTO> createTargetList(@RequestBody TargetListVM targetListVM) {
+    public ResponseEntity<Object> createTargetList(@RequestBody TargetListVM targetListVM) {
+        // validate request params
+        if (targetListVM.getName() == null || targetListVM.getName().isEmpty()) {
+            return new ResponseEntity<>(
+                new ResponseVM(
+                    ResponseCode.RESPONSE_WRONG_PARAM,
+                    ResponseCode.ERROR_CODE_TARGET_LIST_NAME_IS_EMPTY,
+                    "TargetList name is empty!"),
+                new HttpHeaders(),
+                HttpStatus.NOT_FOUND);
+        }
+
         return new ResponseEntity<> (targetListService.createTargetList(targetListVM), new HttpHeaders(), HttpStatus.OK);
     }
 

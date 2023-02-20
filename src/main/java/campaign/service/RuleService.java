@@ -65,6 +65,11 @@ public class RuleService {
     }
 
     @Transactional(readOnly = true)
+    public Boolean ruleNameExisted(String name) {
+        return ruleRepository.findByNameIgnoreCase(name).isPresent();
+    }
+
+    @Transactional(readOnly = true)
     public Page<RuleDTO> searchRules(Pageable pageable, String search, String appliedCampaign, Integer campaignType) {
         Page<Rule> ruleList;
 

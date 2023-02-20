@@ -1,5 +1,6 @@
 package campaign.web.rest;
 
+import campaign.domain.Rule;
 import campaign.security.AuthoritiesConstants;
 import campaign.service.RuleService;
 import campaign.service.dto.RuleDTO;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -84,7 +86,29 @@ public class RuleResource {
     @PostMapping("/rule")
     @Timed
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
-    public ResponseEntity<RuleDTO> createRule(@RequestBody RuleVM ruleVM) {
+    public ResponseEntity<Object> createRule(@RequestBody RuleVM ruleVM) {
+        // validate request params
+        if (ruleVM.getName() == null || ruleVM.getName().isEmpty()) {
+            return new ResponseEntity<>(
+                new ResponseVM(
+                    ResponseCode.RESPONSE_WRONG_PARAM,
+                    ResponseCode.ERROR_CODE_RULE_NAME_IS_EMPTY,
+                    "Rule name is empty!"),
+                new HttpHeaders(),
+                HttpStatus.NOT_FOUND);
+        }
+
+        // check duplicated name
+        if (ruleService.ruleNameExisted(ruleVM.getName())) {
+            return new ResponseEntity<>(
+                new ResponseVM(
+                    ResponseCode.RESPONSE_WRONG_PARAM,
+                    ResponseCode.ERROR_CODE_RULE_NAME_IS_DUPLICATED,
+                    "Rule name is duplicated!"),
+                new HttpHeaders(),
+                HttpStatus.NOT_FOUND);
+        }
+
         return new ResponseEntity<> (ruleService.createRule(ruleVM), new HttpHeaders(), HttpStatus.OK);
     }
 

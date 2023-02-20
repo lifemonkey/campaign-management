@@ -1,6 +1,5 @@
 package campaign.service.dto;
 
-import campaign.domain.Account;
 import campaign.domain.TargetList;
 
 import javax.validation.constraints.NotBlank;

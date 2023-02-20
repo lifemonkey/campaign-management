@@ -86,6 +86,11 @@ public class CampaignService {
     }
 
     @Transactional(readOnly = true)
+    public Boolean campaignNameExisted(String name) {
+        return campaignRepository.findByNameIgnoreCase(name).isPresent();
+    }
+
+    @Transactional(readOnly = true)
     public Page<CampaignDTO> searchCampaigns(Pageable pageable, String search, Integer type) {
         if (search != null && type == null) {
             return campaignRepository.findAllByNameContainingIgnoreCase(search, pageable).map(CampaignDTO::new);

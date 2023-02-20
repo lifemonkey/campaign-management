@@ -2,14 +2,11 @@ package campaign.web.rest;
 
 import campaign.security.AuthoritiesConstants;
 import campaign.service.GeneratedTimeService;
-import campaign.service.RewardService;
 import campaign.service.dto.GeneratedTimeDTO;
-import campaign.service.dto.RewardDTO;
 import campaign.web.rest.util.PaginationUtil;
 import campaign.web.rest.vm.GeneratedTimeVM;
 import campaign.web.rest.vm.ResponseCode;
 import campaign.web.rest.vm.ResponseVM;
-import campaign.web.rest.vm.RewardVM;
 import io.micrometer.core.annotation.Timed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,7 +79,18 @@ public class GeneratedTimeResource {
     @PostMapping("/generated-time")
     @Timed
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
-    public ResponseEntity<GeneratedTimeDTO> createGeneratedTime(@RequestBody GeneratedTimeVM generatedTimeVM) {
+    public ResponseEntity<Object> createGeneratedTime(@RequestBody GeneratedTimeVM generatedTimeVM) {
+        // validate request params
+        if (generatedTimeVM.getStartTime() == null || generatedTimeVM.getEndTime() == null) {
+            return new ResponseEntity<>(
+                new ResponseVM(
+                    ResponseCode.RESPONSE_WRONG_PARAM,
+                    ResponseCode.ERROR_CODE_GENERATED_TIME_IS_EMPTY,
+                    "Generated time start/end time is empty!"),
+                new HttpHeaders(),
+                HttpStatus.NOT_FOUND);
+        }
+
         return new ResponseEntity<> (generatedTimeService.createGeneratedTime(generatedTimeVM), new HttpHeaders(), HttpStatus.OK);
     }
 

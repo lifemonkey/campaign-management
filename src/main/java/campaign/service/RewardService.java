@@ -76,6 +76,11 @@ public class RewardService {
     }
 
     @Transactional(readOnly = true)
+    public Boolean rewardNameExisted(String name) {
+        return rewardRepository.findByNameIgnoreCase(name).isPresent();
+    }
+
+    @Transactional(readOnly = true)
     public Page<RewardDTO> searchRewards(Pageable pageable, String search, Integer type) {
         if (search != null && type == null) {
             return rewardRepository.findAllByNameContainingIgnoreCase(search, pageable).map(RewardDTO::new);

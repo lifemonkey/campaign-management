@@ -44,7 +44,8 @@ public class RewardResource {
     public ResponseEntity<List<RewardDTO>> getAllRewards(
         Pageable pageable,
         @RequestParam(required = false) String search,
-        @RequestParam(required = false) Integer type
+        @RequestParam(required = false) Integer type,
+        @RequestParam(required = false) String appliedCampaign
     ) {
         Page<RewardDTO> page;
 
@@ -88,7 +89,30 @@ public class RewardResource {
      */
     @PostMapping("/reward")
     @Timed
-    public ResponseEntity<RewardDTO> createReward(@RequestBody RewardVM rewardVM) {
+    public ResponseEntity<Object> createReward(@RequestBody RewardVM rewardVM) {
+        // validate request params
+        if (rewardVM.getName() == null || rewardVM.getName().isEmpty()) {
+            return new ResponseEntity<>(
+                new ResponseVM(
+                    ResponseCode.RESPONSE_WRONG_PARAM,
+                    ResponseCode.ERROR_CODE_REWARD_NAME_IS_EMPTY,
+                    "Reward name is empty!"),
+                new HttpHeaders(),
+                HttpStatus.NOT_FOUND);
+        }
+
+        // check duplicated name
+        if (rewardService.rewardNameExisted(rewardVM.getName())) {
+            return new ResponseEntity<>(
+                new ResponseVM(
+                    ResponseCode.RESPONSE_WRONG_PARAM,
+                    ResponseCode.ERROR_CODE_REWARD_NAME_IS_DUPLICATED,
+                    "Reward name is duplicated!"),
+                new HttpHeaders(),
+                HttpStatus.NOT_FOUND);
+        }
+
+
         return new ResponseEntity<> (rewardService.createReward(rewardVM), new HttpHeaders(), HttpStatus.OK);
     }
 
