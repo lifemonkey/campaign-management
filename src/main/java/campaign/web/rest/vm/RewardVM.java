@@ -30,6 +30,8 @@ public class RewardVM {
 
     private String messageBalanceSW;
 
+    private Integer level;
+
     private List<VoucherDTO> voucherCodes;
 
     public Long getId() {
@@ -136,6 +138,14 @@ public class RewardVM {
         this.voucherCodes = voucherCodes;
     }
 
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
     @Override
     public String toString() {
         return "RewardVM{" +
@@ -150,6 +160,7 @@ public class RewardVM {
             ", messageWinnerSW='" + messageWinnerSW + '\'' +
             ", messageBalanceEN='" + messageBalanceEN + '\'' +
             ", messageBalanceSW='" + messageBalanceSW + '\'' +
+            ", level=" + level +
             '}';
     }
 }

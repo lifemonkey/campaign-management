@@ -57,10 +57,13 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "reward")
     private List<Voucher> vouchers = new ArrayList<>();
 
+    @Column(name = "level")
+    private Integer level;
+
     public Reward() {
     }
 
-    public Reward(String name, String description, Integer prizeType, Integer prizeValue, Integer numOfPrize, Integer released, List<File> files, String messageWinnerEN, String messageWinnerSW, String messageBalanceEN, String messageBalanceSW) {
+    public Reward(String name, String description, Integer prizeType, Integer prizeValue, Integer numOfPrize, Integer released, List<File> files, String messageWinnerEN, String messageWinnerSW, String messageBalanceEN, String messageBalanceSW, Integer level) {
         this.name = name;
         this.description = description;
         this.prizeType = prizeType;
@@ -72,6 +75,7 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
         this.messageWinnerSW = messageWinnerSW;
         this.messageBalanceEN = messageBalanceEN;
         this.messageBalanceSW = messageBalanceSW;
+        this.level = level;
     }
 
     public Long getId() {
@@ -196,6 +200,14 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
         this.vouchers.clear();
     }
 
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
     @Override
     public String toString() {
         return "Reward{" +
@@ -210,6 +222,7 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
             ", messageWinnerSW='" + messageWinnerSW + '\'' +
             ", messageBalanceEN='" + messageBalanceEN + '\'' +
             ", messageBalanceSW='" + messageBalanceSW + '\'' +
+            ", level='" + level + '\'' +
             '}';
     }
 }

@@ -118,6 +118,9 @@ public class RewardMapper {
             if (rewardVM.getMessageBalanceSW() != null) {
                 reward.setMessageBalanceSW(rewardVM.getMessageBalanceSW());
             }
+            if (rewardVM.getLevel() != null) {
+                reward.setLevel(rewardVM.getLevel());
+            }
 
             return reward;
         }

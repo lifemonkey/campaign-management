@@ -126,6 +126,8 @@ public class RewardService {
     @Transactional(rollbackFor = Exception.class)
     public RewardDTO cloneReward(Long id) {
         Optional<Reward> rewardOpt = rewardRepository.findById(id);
+        if (!rewardOpt.isPresent()) return null;
+
         Reward toBeInserted = new Reward();
 
         if (rewardOpt.isPresent()) {
@@ -139,6 +141,7 @@ public class RewardService {
             toBeInserted.setMessageWinnerSW(rewardOpt.get().getMessageWinnerSW());
             toBeInserted.setMessageBalanceEN(rewardOpt.get().getMessageBalanceEN());
             toBeInserted.setMessageBalanceSW(rewardOpt.get().getMessageBalanceSW());
+            toBeInserted.setLevel(rewardOpt.get().getLevel());
             rewardRepository.save(toBeInserted);
             // voucher code can not be cloned
             //toBeInserted.setVouchers(rewardOpt.get().getVouchers());

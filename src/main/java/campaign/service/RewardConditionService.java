@@ -84,6 +84,8 @@ public class RewardConditionService {
     @Transactional(rollbackFor = Exception.class)
     public RewardConditionDTO cloneRewardCondition(Long id) {
         Optional<RewardCondition> rewardConditionOpt = rewardConditionRepository.findById(id);
+        if (!rewardConditionOpt.isPresent()) return null;
+
         RewardCondition toBerInserted = new RewardCondition();
 
         if (rewardConditionOpt.isPresent()) {

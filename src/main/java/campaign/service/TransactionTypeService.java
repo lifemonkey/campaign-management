@@ -69,6 +69,8 @@ public class TransactionTypeService {
     @Transactional(rollbackFor = Exception.class)
     public TransactionTypeDTO cloneTransactionType(Long id) {
         Optional<TransactionType> transactionTypeOpt = transactionTypeRepository.findById(id);
+        if (!transactionTypeOpt.isPresent()) return null;
+
         TransactionType toBerInserted = new TransactionType();
 
         if (transactionTypeOpt.isPresent()) {

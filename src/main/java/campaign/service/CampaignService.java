@@ -166,6 +166,7 @@ public class CampaignService {
     @Transactional(rollbackFor = Exception.class)
     public CampaignWRelDTO cloneCampaign(Long id) {
         Optional<Campaign> clonedCampaignOpt = campaignRepository.findById(id);
+        if (!clonedCampaignOpt.isPresent()) return null;
         Campaign toBeInserted = new Campaign();
 
         if (clonedCampaignOpt.isPresent()) {

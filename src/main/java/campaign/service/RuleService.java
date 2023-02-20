@@ -135,6 +135,8 @@ public class RuleService {
     @Transactional(rollbackFor = Exception.class)
     public RuleDTO cloneRule(Long id) {
         Optional<Rule> cloneRuleOpt = ruleRepository.findById(id);
+        if (!cloneRuleOpt.isPresent()) return null;
+
         Rule toBerInserted = new Rule();
 
         if (cloneRuleOpt.isPresent()) {

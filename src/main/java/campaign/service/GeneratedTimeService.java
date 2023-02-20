@@ -58,6 +58,8 @@ public class GeneratedTimeService {
     @Transactional(rollbackFor = Exception.class)
     public GeneratedTimeDTO cloneGeneratedTime(Long id) {
         Optional<GeneratedTime> generatedTimeOpt = generatedTimeRepository.findById(id);
+        if (!generatedTimeOpt.isPresent()) return null;
+
         GeneratedTime toBerInserted = new GeneratedTime();
 
         if (generatedTimeOpt.isPresent()) {

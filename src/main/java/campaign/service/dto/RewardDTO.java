@@ -44,6 +44,10 @@ public class RewardDTO {
 
     private LocalDateTime lastModifiedDate;
 
+    private Integer level;
+
+    private Integer campaignType;
+
     public RewardDTO() {
     }
 
@@ -64,6 +68,7 @@ public class RewardDTO {
         this.messageWinnerSW = reward.getMessageWinnerSW();
         this.messageBalanceEN = reward.getMessageBalanceEN();
         this.messageBalanceSW = reward.getMessageBalanceSW();
+        this.level = reward.getLevel();
         if (reward.getVouchers() != null) {
             this.voucherCodes = reward.getVouchers().stream()
                 .map(VoucherDTO::new)
@@ -169,6 +174,14 @@ public class RewardDTO {
 
     public void setMessageBalanceSW(String messageBalanceSW) {
         this.messageBalanceSW = messageBalanceSW;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 
     public List<VoucherDTO> getVoucherCodes() {
