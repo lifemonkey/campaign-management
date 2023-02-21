@@ -38,7 +38,7 @@ public class CampaignWRelDTO {
 
     private List<FileDTO> fileList = new ArrayList<>();
 
-    private List<RuleDTO> ruleList = new ArrayList<>();
+    private List<CampaignRuleDTO> ruleList = new ArrayList<>();
 
     private List<GeneratedTimeDTO> generatedTimeList = new ArrayList<>();
 
@@ -79,7 +79,7 @@ public class CampaignWRelDTO {
             this.fileList = campaign.getFilesList().stream().map(FileDTO::new).collect(Collectors.toList());
         }
         if (!campaign.getRuleList().isEmpty()) {
-            this.ruleList = campaign.getRuleList().stream().map(RuleDTO::new).collect(Collectors.toList());
+            this.ruleList = campaign.getRuleList().stream().map(CampaignRuleDTO::new).collect(Collectors.toList());
         }
         if (!campaign.getGeneratedTimeList().isEmpty()) {
             this.generatedTimeList = campaign.getGeneratedTimeList().stream().map(GeneratedTimeDTO::new).collect(Collectors.toList());
@@ -187,11 +187,11 @@ public class CampaignWRelDTO {
         this.fileList = fileList;
     }
 
-    public List<RuleDTO> getRuleList() {
+    public List<CampaignRuleDTO> getRuleList() {
         return ruleList;
     }
 
-    public void setRuleList(List<RuleDTO> ruleList) {
+    public void setRuleList(List<CampaignRuleDTO> ruleList) {
         this.ruleList = ruleList;
     }
 

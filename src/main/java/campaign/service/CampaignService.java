@@ -135,13 +135,13 @@ public class CampaignService {
 
             // handle target list
             List<TargetList> targetLists = targetListRepository.findAllById(campaignVM.getTargetListIds());
-            if (targetLists != null && !targetLists.isEmpty()) {
+            if (!targetLists.isEmpty()) {
                 campaign.addTargetLists(targetLists);
             }
 
             // handle rule list
             List<Rule> ruleList = ruleRepository.findAllById(campaignVM.getRuleIds());
-            if(ruleList != null && !ruleList.isEmpty()) {
+            if(!ruleList.isEmpty()) {
                 campaign.addRuleList(ruleList);
             }
             campaignRepository.save(campaign);
@@ -149,7 +149,7 @@ public class CampaignService {
             // handle file list
             List<Long> fileIds = campaignVM.getFiles().stream().map(FileVM::getId).collect(Collectors.toList());
             List<File> fileList = fileRepository.findAllById(fileIds);
-            if (fileList != null && !fileList.isEmpty()) {
+            if (!fileList.isEmpty()) {
                 fileList.stream().forEach(file -> file.setCampaign(campaign));
                 fileRepository.saveAll(fileList);
                 // two ways binding
@@ -158,7 +158,7 @@ public class CampaignService {
 
             // handle generated time list
             List<GeneratedTime> generatedTimes = generatedTimeMapper.generatedTimeVMToGeneratedTimes(campaignVM.getGeneratedTimes());
-            if (generatedTimes != null && !generatedTimes.isEmpty()) {
+            if (!generatedTimes.isEmpty()) {
                 generatedTimes.stream().forEach(generatedTime -> generatedTime.setCampaign(campaign));
                 generatedTimeRepository.saveAll(generatedTimes);
                 // two ways binding
@@ -251,8 +251,7 @@ public class CampaignService {
                     .map(TargetList::clearCampaignList)
                     .collect(Collectors.toList()));
             // add target list to campaign
-            List<TargetList> toBeSaved = targetListRepository.findAllById(targetListIds);
-            campaign.addTargetLists(toBeSaved);
+            campaign.updateTargetLists(targetListRepository.findAllById(targetListIds));
         }
 
         // handle rule list
@@ -266,7 +265,7 @@ public class CampaignService {
                     .map(Rule::clearCampaignList)
                     .collect(Collectors.toList()));
             // add rule list to campaign
-            campaign.addRuleList(ruleRepository.findAllById(ruleIds));
+            campaign.updateRuleList(ruleRepository.findAllById(ruleIds));
         }
 
         // handle file list
@@ -288,24 +287,22 @@ public class CampaignService {
         }
 
         // handle generated time list
-        if (campaignVM.getGeneratedTimes() != null && !campaignVM.getGeneratedTimes().isEmpty()) {
+        if (!campaignVM.getGeneratedTimes().isEmpty()) {
             Set<Long> generatedTimeIds =
                 campaignVM.getGeneratedTimes().stream().map(GeneratedTimeVM::getId).collect(Collectors.toSet());
             // to be detached generated time
             List<GeneratedTime> toBeDetachedGeneratedTimes = campaignOpt.get().getGeneratedTimeList();
-            if (toBeDetachedGeneratedTimes != null && !toBeDetachedGeneratedTimes.isEmpty()) {
-                generatedTimeRepository.saveAll(
-                    toBeDetachedGeneratedTimes.stream()
-                        .filter(gt -> !generatedTimeIds.contains(gt.getId()))
-                        .map(GeneratedTime::removeCampaign)
-                        .collect(Collectors.toList()));
-            }
+            generatedTimeRepository.saveAll(
+                toBeDetachedGeneratedTimes.stream()
+                    .filter(gt -> !generatedTimeIds.contains(gt.getId()))
+                    .map(GeneratedTime::removeCampaign)
+                    .collect(Collectors.toList()));
             // create generated time
             List<GeneratedTime> toBeSavedGeneratedTimes = generatedTimeRepository.saveAll(
                 generatedTimeMapper.generatedTimeVMToGeneratedTimes(campaignVM.getGeneratedTimes()));
             toBeSavedGeneratedTimes.stream().forEach(gt -> gt.setCampaign(campaign));
 //            // two ways binding
-            campaign.addGeneratedTimeList(toBeSavedGeneratedTimes);
+            campaign.updateGeneratedTimeList(toBeSavedGeneratedTimes);
         }
 
         // handle applied campaign
