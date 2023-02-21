@@ -15,6 +15,7 @@ import campaign.web.rest.vm.GeneratedTimeVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -95,14 +96,34 @@ public class CampaignService {
     }
 
     @Transactional(readOnly = true)
-    public Page<CampaignDTO> searchCampaigns(Pageable pageable, String search, Integer type) {
+    public Page<CampaignDTO> searchCampaigns(Pageable pageable, String search, Integer type, Long statusId) {
+        Page<Campaign> campaignList;
+
         if (search != null && type == null) {
-            return campaignRepository.findAllByNameContainingIgnoreCase(search, pageable).map(CampaignDTO::new);
+            campaignList = campaignRepository.findAllByNameContainingIgnoreCase(search, pageable);
         } else if (search == null && type != null) {
-            return campaignRepository.findAllByCampaignType(type, pageable).map(CampaignDTO::new);
+            campaignList = campaignRepository.findAllByCampaignType(type, pageable);
+        } else if (search != null && type != null) {
+            campaignList = campaignRepository.findAllByNameContainingIgnoreCaseAndCampaignType(search, type, pageable);
         } else {
-            return campaignRepository.findAllByNameContainingIgnoreCaseAndCampaignType(search, type, pageable).map(CampaignDTO::new);
+            campaignList = campaignRepository.findAll(pageable);
         }
+
+        if (statusId == null) {
+            return campaignList.map(CampaignDTO::new);
+        }
+
+        // filter campaign by status
+        return new PageImpl<>(
+            campaignList.stream()
+                .filter(campaign -> {
+                    if (campaign.getStatus() != null && campaign.getStatus().getId() == statusId) {
+                        return true;
+                    }
+                    return false;
+                })
+                .collect(Collectors.toList())
+        ).map(CampaignDTO::new);
     }
 
     @Transactional(readOnly = true)

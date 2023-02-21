@@ -96,7 +96,10 @@ public class RuleService {
                     } else {
                         if (rule.getCampaignList().stream()
                             .filter(campaign -> campaign.getName().toLowerCase().contains(appliedCampaign.toLowerCase()))
-                            .findAny().isPresent()) return true;
+                            .findAny().isPresent()
+                        ) {
+                            return true;
+                        }
                     }
                     return false;
                 })
