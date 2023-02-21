@@ -58,9 +58,6 @@ public class RuleMapper {
             if (ruleDTO.getRuleConfiguration() != null) {
                 rule.setRuleConfiguration(ruleDTO.getRuleConfiguration());
             }
-            if (ruleDTO.getTransactionType() != null) {
-                rule.setTransactionType(transactionTypeMapper.transactionTypeDTOToTransactionType(ruleDTO.getTransactionType()));
-            }
 
             rule.setCreatedBy(ruleDTO.getCreatedBy());
             rule.setCreatedDate(ruleDTO.getCreatedDate());

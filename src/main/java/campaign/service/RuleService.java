@@ -111,11 +111,11 @@ public class RuleService {
         if (rule != null) {
             ruleRepository.save(rule);
 
-            // handle transaction type
-            if (ruleVM.getTransactionType() != null) {
-                Optional<TransactionType> transactionTypeOpt = transactionTypeRepository.findById(ruleVM.getTransactionType());
-                if (transactionTypeOpt.isPresent()) {
-                    rule.setTransactionType(transactionTypeOpt.get());
+            // handle transaction types
+            if (ruleVM.getTransactionTypes().size() > 0) {
+                List<TransactionType> transactionTypes = transactionTypeRepository.findAllById(ruleVM.getTransactionTypes());
+                if (!transactionTypes.isEmpty() && transactionTypes.size() == ruleVM.getTransactionTypes().size()) {
+                    rule.addTransactionTypes(transactionTypes);
                 }
             }
 
@@ -158,7 +158,7 @@ public class RuleService {
                 toBeInserted.addRewardConditions(cloneRuleOpt.get().getRewardConditions());
             }
             toBeInserted.setRuleConfiguration(cloneRuleOpt.get().getRuleConfiguration());
-            toBeInserted.setTransactionType(cloneRuleOpt.get().getTransactionType());
+            toBeInserted.addTransactionTypes(cloneRuleOpt.get().getTransactionTypes());
         }
 
         return ruleMapper.ruleToRuleDTO(ruleRepository.save(toBeInserted));
@@ -171,12 +171,18 @@ public class RuleService {
 
         Rule rule = ruleMapper.updateRule(ruleOpt.get(), ruleVM);
 
-        // handle transaction type
-        if (ruleVM.getTransactionType() != null) {
-            Optional<TransactionType> transactionTypeOpt = transactionTypeRepository.findById(ruleVM.getTransactionType());
-            if (transactionTypeOpt.isPresent()) {
-                rule.setTransactionType(transactionTypeOpt.get());
-            }
+        // handle transaction types
+        if (ruleVM.getTransactionTypes().size() > 0) {
+            Set<Long> transactionTypeIds = ruleVM.getTransactionTypes().stream().collect(Collectors.toSet());
+            // detach transaction types
+            List<TransactionType> toBeDetached = ruleOpt.get().getTransactionTypes();
+            transactionTypeRepository.saveAll(
+                toBeDetached.stream()
+                    .filter(tt -> !transactionTypeIds.contains(tt.getId()))
+                    .map(TransactionType::clearRuleList)
+                    .collect(Collectors.toList()));
+            // add transaction type to rule
+            rule.updateTransactionTypes(transactionTypeRepository.findAllById(transactionTypeIds));
         }
 
         // handle reward-conditions
@@ -212,7 +218,7 @@ public class RuleService {
             // detach campaign
             rule.clearCampaignList();
             rule.clearRewardConditions();
-            rule.setTransactionType(null);
+            rule.clearTransactionTypes();
             ruleRepository.save(rule);
             ruleRepository.delete(rule);
         }

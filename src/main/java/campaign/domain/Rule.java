@@ -40,9 +40,11 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
     @Column(name = "campaign_type")
     private Integer campaignType;
 
-    @OneToOne
-    @JoinColumn(name = "transaction_type_id", referencedColumnName = "id")
-    private TransactionType transactionType;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL )
+    @JoinTable(name = "rule_transaction_type",
+        joinColumns = @JoinColumn(name = "rule_id", nullable = false, referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "transaction_type_id", nullable = false, referencedColumnName = "id"))
+    private List<TransactionType> transactionTypes = new ArrayList<>();
 
     @ManyToMany(mappedBy = "ruleList", fetch = FetchType.LAZY)
     private List<Campaign> campaignList = new ArrayList<>();
@@ -98,12 +100,22 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
         this.durationValue = durationValue;
     }
 
-    public TransactionType getTransactionType() {
-        return transactionType;
+    public List<TransactionType> getTransactionTypes() {
+        return transactionTypes;
     }
 
-    public void setTransactionType(TransactionType transactionType) {
-        this.transactionType = transactionType;
+    public void addTransactionTypes(List<TransactionType> transactionTypes) {
+        this.transactionTypes.addAll(transactionTypes);
+    }
+
+    public void updateTransactionTypes(List<TransactionType> transactionTypes) {
+        this.transactionTypes.clear();
+        this.transactionTypes.addAll(transactionTypes);
+    }
+
+    public Rule clearTransactionTypes() {
+        this.transactionTypes.clear();
+        return this;
     }
 
     public Integer getRuleConfiguration() {
@@ -155,7 +167,6 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
             ", description='" + description + '\'' +
             ", durationType=" + durationType +
             ", durationValue='" + durationValue + '\'' +
-            ", transactionType=" + transactionType +
             ", ruleConfiguration=" + ruleConfiguration +
             '}';
     }

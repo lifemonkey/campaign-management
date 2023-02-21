@@ -23,12 +23,11 @@ public class RuleDTO {
 
     private String durationValue;
 
-    private TransactionTypeDTO transactionType;
-
     private Integer ruleConfiguration;
 
     private Integer campaignType;
 
+    private List<TransactionTypeDTO> transactionTypes = new ArrayList<>();
     private List<RuleRewardConditionDTO> ruleRewardList = new ArrayList<>();
 
     private List<String> appliedCampaigns = new ArrayList<>();
@@ -51,9 +50,7 @@ public class RuleDTO {
         this.durationType = rule.getDurationType();
         this.durationValue = rule.getDurationValue();
         this.ruleConfiguration = rule.getRuleConfiguration();
-        if (rule.getTransactionType() != null) {
-            this.transactionType = new TransactionTypeDTO(rule.getTransactionType());
-        }
+        this.transactionTypes = rule.getTransactionTypes().stream().map(TransactionTypeDTO::new).collect(Collectors.toList());
         this.campaignType = rule.getCampaignType();
         this.ruleRewardList = rule.getRewardConditions().stream().map(RuleRewardConditionDTO::new).collect(Collectors.toList());
         this.appliedCampaigns = rule.getCampaignList().stream().map(Campaign::getName).collect(Collectors.toList());
@@ -104,14 +101,6 @@ public class RuleDTO {
         this.durationValue = durationValue;
     }
 
-    public TransactionTypeDTO getTransactionType() {
-        return transactionType;
-    }
-
-    public void setTransactionType(TransactionTypeDTO transactionType) {
-        this.transactionType = transactionType;
-    }
-
     public Integer getRuleConfiguration() {
         return ruleConfiguration;
     }
@@ -126,6 +115,14 @@ public class RuleDTO {
 
     public void setCampaignType(Integer campaignType) {
         this.campaignType = campaignType;
+    }
+
+    public List<TransactionTypeDTO> getTransactionTypes() {
+        return transactionTypes;
+    }
+
+    public void addTransactionTypes(List<TransactionTypeDTO> transactionTypes) {
+        this.transactionTypes = transactionTypes;
     }
 
     public List<RuleRewardConditionDTO> getRuleRewardList() {

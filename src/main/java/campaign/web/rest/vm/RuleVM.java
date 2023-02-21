@@ -2,7 +2,6 @@ package campaign.web.rest.vm;
 
 import campaign.domain.EDuration;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +18,11 @@ public class RuleVM {
 
     private String durationValue;
 
-    private Long transactionType;
-
     private Integer ruleConfiguration;
 
     private Integer campaignType;
+
+    private List<Long> transactionTypes = new ArrayList<>();
 
     private List<RewardConditionVM> rewardConditions = new ArrayList<>();
 
@@ -59,14 +58,6 @@ public class RuleVM {
         this.durationValue = durationValue;
     }
 
-    public Long getTransactionType() {
-        return transactionType;
-    }
-
-    public void setTransactionType(Long transactionType) {
-        this.transactionType = transactionType;
-    }
-
     public Integer getRuleConfiguration() {
         return ruleConfiguration;
     }
@@ -81,6 +72,14 @@ public class RuleVM {
 
     public void setCampaignType(Integer campaignType) {
         this.campaignType = campaignType;
+    }
+
+    public List<Long> getTransactionTypes() {
+        return transactionTypes;
+    }
+
+    public void setTransactionTypes(List<Long> transactionTypes) {
+        this.transactionTypes.addAll(transactionTypes);
     }
 
     public List<RewardConditionVM> getRewardConditions() {
@@ -98,7 +97,6 @@ public class RuleVM {
             ", description='" + description + '\'' +
             ", durationType=" + durationType +
             ", durationValue='" + durationValue + '\'' +
-            ", transactionType='" + transactionType + '\'' +
             ", campaignType='" + campaignType + '\'' +
             ", ruleConfiguration='" + ruleConfiguration + '\'' +
             '}';

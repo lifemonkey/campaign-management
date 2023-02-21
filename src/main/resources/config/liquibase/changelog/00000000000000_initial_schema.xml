@@ -252,7 +252,6 @@
             <column name="duration_value" type="varchar(200)"/>
             <column name="rule_configuration" type="bigint"/>
             <!-- constraints -->
-            <column name="transaction_type_id" type="bigint"/>
             <column name="campaign_type" type="int"/>
             <!-- Auditing fields -->
             <column name="created_by" type="varchar(50)">
@@ -387,6 +386,15 @@
             <column name="last_modified_date" type="timestamp" />
         </createTable>
 
+        <createTable tableName="rule_transaction_type">
+            <column name="rule_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="transaction_type_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
         <!-- Config relationship -->
         <addForeignKeyConstraint baseColumnNames="role_id"
                                  baseTableName="users"
@@ -454,14 +462,6 @@
                                  onUpdate="CASCADE"
                                  onDelete="CASCADE"/>
 
-        <addForeignKeyConstraint baseColumnNames="transaction_type_id"
-                                 baseTableName="rules"
-                                 constraintName="fk_rule_transaction_type_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="transaction_type"
-                                 onUpdate="CASCADE"
-                                 onDelete="CASCADE"/>
-
         <addForeignKeyConstraint baseColumnNames="campaign_id"
                                  baseTableName="generated_time"
                                  constraintName="fk_generated_time_campaign_id"
@@ -491,6 +491,22 @@
                                  constraintName="fk_reward_condition_rule_id"
                                  referencedColumnNames="id"
                                  referencedTableName="rules"
+                                 onUpdate="CASCADE"
+                                 onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint baseColumnNames="rule_id"
+                                 baseTableName="rule_transaction_type"
+                                 constraintName="fk_rule_transaction_type_rule_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="rules"
+                                 onUpdate="CASCADE"
+                                 onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint baseColumnNames="transaction_type_id"
+                                 baseTableName="rule_transaction_type"
+                                 constraintName="fk_rule_transaction_type_transaction_type_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="transaction_type"
                                  onUpdate="CASCADE"
                                  onDelete="CASCADE"/>
 
@@ -542,6 +558,7 @@
         <loadData file="config/liquibase/voucher.csv" separator=";" tableName="voucher"/>
         <loadData file="config/liquibase/campaign_rule.csv" separator=";" tableName="campaign_rule"/>
         <loadData file="config/liquibase/files.csv" separator=";" tableName="files"/>
+        <loadData file="config/liquibase/rule_transaction_type.csv" separator=";" tableName="rule_transaction_type"/>
 
     </changeSet>
 

@@ -6,6 +6,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "transaction_type")
@@ -26,6 +28,9 @@ public class TransactionType extends AbstractAuditingEntity implements Serializa
 
     @Column(name = "description", length = 4000)
     private String description;
+
+    @ManyToMany(mappedBy = "transactionTypes", fetch = FetchType.LAZY)
+    List<Rule> ruleList = new ArrayList<>();
 
     public TransactionType() {
     }
@@ -56,6 +61,19 @@ public class TransactionType extends AbstractAuditingEntity implements Serializa
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<Rule> getRuleList() {
+        return ruleList;
+    }
+
+    public void addRuleList(List<Rule> ruleList) {
+        this.ruleList.addAll(ruleList);
+    }
+
+    public TransactionType clearRuleList() {
+        this.ruleList.clear();
+        return this;
     }
 
     @Override

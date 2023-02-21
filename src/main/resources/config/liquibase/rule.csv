@@ -1,4 +1,4 @@
-id;name;description;duration_type;duration_value;rule_configuration;transaction_type_id;campaign_type;created_by;last_modified_by
-1;Rule 1;Rule 1 description;DURATION_INSTANT;;1;1;1;system;system
-2;Rule 2;Rule 2 description;DURATION_MINUTE;;2;2;2;system;system
-3;Rule 3;Rule 3 description;DURATION_HOUR;;3;3;3;system;system
+id;name;description;duration_type;duration_value;rule_configuration;campaign_type;created_by;last_modified_by
+1;Rule 1;Rule 1 description;DURATION_INSTANT;;1;1;system;system
+2;Rule 2;Rule 2 description;DURATION_MINUTE;;2;2;system;system
+3;Rule 3;Rule 3 description;DURATION_HOUR;;3;3;system;system
