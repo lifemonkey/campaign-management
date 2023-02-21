@@ -177,6 +177,11 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
         this.targetLists.addAll(targetLists);
     }
 
+    public void updateTargetLists(List<TargetList> targetLists) {
+        this.targetLists.clear();
+        this.targetLists.addAll(targetLists);
+    }
+
     public void clearTargetLists() {
         this.targetLists = new ArrayList<>();
     }
@@ -210,11 +215,26 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
         this.ruleList = new ArrayList<>();
     }
 
+    public void updateRuleList(List<Rule> ruleList) {
+        this.ruleList.clear();
+        this.ruleList.addAll(ruleList);
+    }
+
     public List<GeneratedTime> getGeneratedTimeList() {
         return generatedTimeList;
     }
 
     public void addGeneratedTimeList(List<GeneratedTime> generatedTimes) {
+        this.generatedTimeList.addAll(generatedTimes);
+    }
+
+    public void clearGeneratedTimeList(List<GeneratedTime> generatedTimes) {
+        this.generatedTimeList.clear();
+        this.generatedTimeList.addAll(generatedTimes);
+    }
+
+    public void updateGeneratedTimeList(List<GeneratedTime> generatedTimes) {
+        this.generatedTimeList.clear();
         this.generatedTimeList.addAll(generatedTimes);
     }
 
