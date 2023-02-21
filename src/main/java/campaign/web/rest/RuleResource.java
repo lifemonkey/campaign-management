@@ -144,17 +144,6 @@ public class RuleResource {
                 HttpStatus.NOT_FOUND);
         }
 
-        // check duplicated name
-        if (ruleVM.getName() != null && !ruleVM.getName().isEmpty() && ruleService.ruleNameExisted(ruleVM.getName())) {
-            return new ResponseEntity<>(
-                new ResponseVM(
-                    ResponseCode.RESPONSE_WRONG_PARAM,
-                    ResponseCode.ERROR_CODE_RULE_NAME_IS_DUPLICATED,
-                    "Rule name is duplicated!"),
-                new HttpHeaders(),
-                HttpStatus.NOT_FOUND);
-        }
-
         return new ResponseEntity<>(ruleService.updateRule(id, ruleVM), new HttpHeaders(), HttpStatus.OK);
     }
 
