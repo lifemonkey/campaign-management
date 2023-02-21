@@ -140,6 +140,22 @@ public class FileService {
         return null;
     }
 
+    public Resource loadFileAsResource(String fileName) {
+        try {
+            // fileUrl
+            Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
+            Resource resource = new UrlResource(filePath.toUri());
+            if(resource.exists()) {
+                return resource;
+            } else {
+                log.warn("File not found " + filePath.getFileName());
+            }
+        } catch (MalformedURLException ex) {
+            log.error("FileVM is invalid " + fileName, ex);
+        }
+        return null;
+    }
+
     public Resource loadFileAsResource(FileVM fileVM) {
         try {
             String fileName = null;
