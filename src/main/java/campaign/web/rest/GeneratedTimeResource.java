@@ -118,17 +118,17 @@ public class GeneratedTimeResource {
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
     public ResponseEntity<Object> updateGeneratedTime(@Valid @PathVariable Long id, @RequestBody GeneratedTimeVM generatedTimeVM) {
         GeneratedTimeDTO generatedTimeDTO = generatedTimeService.getGeneratedTimeById(id);
-        if (generatedTimeDTO.getId() != null) {
-            return new ResponseEntity<>(generatedTimeService.updateGeneratedTime(id, generatedTimeVM), new HttpHeaders(), HttpStatus.OK);
+        if (generatedTimeDTO.getId() == null) {
+            return new ResponseEntity<>(
+                new ResponseVM(
+                    ResponseCode.RESPONSE_NOT_FOUND,
+                    ResponseCode.ERROR_CODE_GENERATED_TIME_NOT_FOUND,
+                    "Reward Condition ID:" + id + " not found!"),
+                new HttpHeaders(),
+                HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(
-            new ResponseVM(
-                ResponseCode.RESPONSE_NOT_FOUND,
-                ResponseCode.ERROR_CODE_GENERATED_TIME_NOT_FOUND,
-                "Reward Condition ID:" + id + " not found!"),
-            new HttpHeaders(),
-            HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(generatedTimeService.updateGeneratedTime(id, generatedTimeVM), new HttpHeaders(), HttpStatus.OK);
     }
 
     /**

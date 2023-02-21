@@ -132,8 +132,14 @@ public class RewardResource {
     @Timed
     public ResponseEntity<Object> updateReward(@Valid @PathVariable Long id, @RequestBody RewardVM rewardVM) {
         RewardDTO rewardDTO = rewardService.getRewardById(id);
-        if (rewardDTO.getId() != null) {
-            return new ResponseEntity<>(rewardService.updateReward(id, rewardVM), new HttpHeaders(), HttpStatus.OK);
+        if (rewardDTO.getId() == null) {
+            return new ResponseEntity<>(
+                new ResponseVM(
+                    ResponseCode.RESPONSE_NOT_FOUND,
+                    ResponseCode.ERROR_CODE_REWARD_CONDITION_NOT_FOUND,
+                    "Reward ID:" + id + " not found!"),
+                new HttpHeaders(),
+                HttpStatus.NOT_FOUND);
         }
 
         // check duplicated name
@@ -147,13 +153,7 @@ public class RewardResource {
                 HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(
-            new ResponseVM(
-                ResponseCode.RESPONSE_NOT_FOUND,
-                ResponseCode.ERROR_CODE_REWARD_CONDITION_NOT_FOUND,
-                "Reward ID:" + id + " not found!"),
-            new HttpHeaders(),
-            HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(rewardService.updateReward(id, rewardVM), new HttpHeaders(), HttpStatus.OK);
     }
 
     /**

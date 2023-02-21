@@ -142,8 +142,14 @@ public class CampaignResource {
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
     public ResponseEntity<Object> updateCampaign(@Valid @PathVariable Long id, @RequestBody CampaignVM campaignVM) {
         CampaignWRelDTO campaign = campaignService.getCampaignById(id);
-        if (campaign.getId() != null) {
-            return new ResponseEntity<>(campaignService.updateCampaign(id, campaignVM), new HttpHeaders(), HttpStatus.OK);
+        if (campaign.getId() == null) {
+            return new ResponseEntity<>(
+                new ResponseVM(
+                    ResponseCode.RESPONSE_NOT_FOUND,
+                    ResponseCode.ERROR_CODE_CAMPAIGN_NOT_FOUND,
+                    "Campaign ID:" + id + " not found!"),
+                new HttpHeaders(),
+                HttpStatus.NOT_FOUND);
         }
 
         // check duplicated name
@@ -157,13 +163,7 @@ public class CampaignResource {
                 HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(
-            new ResponseVM(
-                ResponseCode.RESPONSE_NOT_FOUND,
-                ResponseCode.ERROR_CODE_CAMPAIGN_NOT_FOUND,
-                "Campaign ID:" + id + " not found!"),
-            new HttpHeaders(),
-            HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(campaignService.updateCampaign(id, campaignVM), new HttpHeaders(), HttpStatus.OK);
     }
 
     /**

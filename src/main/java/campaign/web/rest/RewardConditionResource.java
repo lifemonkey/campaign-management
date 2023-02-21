@@ -114,17 +114,17 @@ public class RewardConditionResource {
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
     public ResponseEntity<Object> updateRewardCondition(@Valid @PathVariable Long id, @RequestBody RewardConditionVM rewardConditionVM) {
         RewardConditionDTO rewardConditionDTO = rewardConditionService.getRewardConditionById(id);
-        if (rewardConditionDTO.getId() != null) {
-            return new ResponseEntity<>(rewardConditionService.updateRewardCondition(id, rewardConditionVM), new HttpHeaders(), HttpStatus.OK);
+        if (rewardConditionDTO.getId() == null) {
+            return new ResponseEntity<>(
+                new ResponseVM(
+                    ResponseCode.RESPONSE_NOT_FOUND,
+                    ResponseCode.ERROR_CODE_REWARD_CONDITION_NOT_FOUND,
+                    "Reward Condition ID:" + id + " not found!"),
+                new HttpHeaders(),
+                HttpStatus.NOT_FOUND);
         }
-
-        return new ResponseEntity<>(
-            new ResponseVM(
-                ResponseCode.RESPONSE_NOT_FOUND,
-                ResponseCode.ERROR_CODE_REWARD_CONDITION_NOT_FOUND,
-                "Reward Condition ID:" + id + " not found!"),
-            new HttpHeaders(),
-            HttpStatus.NOT_FOUND);
+        
+        return new ResponseEntity<>(rewardConditionService.updateRewardCondition(id, rewardConditionVM), new HttpHeaders(), HttpStatus.OK);
     }
 
     /**
