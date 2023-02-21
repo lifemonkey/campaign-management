@@ -129,7 +129,13 @@ public class RewardService {
         // applied campaign: campaign details
         return new PageImpl<>(
             rewardList.stream()
-                .filter(reward -> reward.getCampaignId() != null && appliedCampaigns.containsKey(reward.getCampaignId()))
+                .filter(reward -> {
+                    if (reward.getCampaignId() != null && appliedCampaigns.containsKey(reward.getCampaignId())) {
+                        CampaignDTO rewardCampaign = appliedCampaigns.get(reward.getCampaignId());
+                        return rewardCampaign.getName().toLowerCase().contains(appliedCampaign.toLowerCase());
+                    }
+                    return false;
+                })
                 .collect(Collectors.toList()), rewardList.getPageable(), rewardList.getTotalElements()
         ).map(reward -> {
             RewardDTO rewardDTO = new RewardDTO(reward);
