@@ -1,5 +1,9 @@
 package campaign.service;
 
+import campaign.config.Constants;
+import org.apache.commons.io.FilenameUtils;
+import org.springframework.http.MediaType;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -64,5 +68,15 @@ public class ServiceUtils {
         }
 
         return false;
+    }
+
+    public static boolean isImageType(String fileName) {
+        String fileExt = FilenameUtils. getExtension(fileName);
+        if (fileExt == null && fileExt.isEmpty()) return false;
+
+        return Constants.IMAGE_TYPE_JPEGS.contains(fileExt)
+            || Constants.IMAGE_TYPE_PNG.contains(fileExt)
+            || Constants.IMAGE_TYPE_GIF.contains(fileExt);
+
     }
 }

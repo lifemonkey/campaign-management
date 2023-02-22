@@ -1,5 +1,8 @@
 package campaign.config;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Application constants.
  */
@@ -27,4 +30,9 @@ public final class Constants {
     public static final String CANCEL_CAMPAIGN = "CANCEL";
 
     public static final String CLONE_POSTFIX = "-Copy";
+
+    public static final List<String> IMAGE_TYPE_JPEGS = Arrays.asList("jpg", "jpeg" , "jfif" , "pjpeg" , "pjp");
+    public static final String IMAGE_TYPE_PNG = "png";
+    public static final String IMAGE_TYPE_GIF = "gif";
+
 }

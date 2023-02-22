@@ -1,8 +1,11 @@
 package campaign.web.rest.util;
 
+import campaign.config.Constants;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 /**
  * Utility class for HTTP headers creation.
@@ -41,5 +44,18 @@ public final class HeaderUtil {
         headers.add("X-campaign-management-error", "error." + errorKey);
         headers.add("X-campaign-management-params", entityName);
         return headers;
+    }
+
+    public static MediaType getImageMediaType(String fileName) {
+        String fileExt = FilenameUtils. getExtension(fileName);
+        if (Constants.IMAGE_TYPE_JPEGS.contains(fileExt)) {
+            return MediaType.IMAGE_JPEG;
+        } else if (Constants.IMAGE_TYPE_PNG.contains(fileExt)) {
+            return MediaType.IMAGE_PNG;
+        } else if (Constants.IMAGE_TYPE_GIF.contains(fileExt)) {
+            return MediaType.IMAGE_GIF;
+        }
+
+        return MediaType.IMAGE_PNG;
     }
 }

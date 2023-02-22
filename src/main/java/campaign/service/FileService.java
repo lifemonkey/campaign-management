@@ -96,11 +96,14 @@ public class FileService {
 
     @Transactional(rollbackFor = Exception.class)
     public FileDTO uploadFile(MultipartFile file, String description, Integer type) {
+
         // store file to server dir
-        String fileUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-            .path("/downloadFile/")
-            .path(storeFile(file))
-            .toUriString();
+        String fileUrl = ServiceUtils.isImageType(file.getOriginalFilename())
+            ? ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/file/preview/")
+                .path(storeFile(file))
+                .toUriString()
+            : "";
 
         // get file by fileName from db
         List<File> fileList = fileRepository.findByNameIgnoreCase(StringUtils.cleanPath(file.getOriginalFilename()));
@@ -140,17 +143,11 @@ public class FileService {
         return null;
     }
 
-    public Resource loadFileAsResource(FileVM fileVM) {
+    public Resource loadFileAsResource(String fileName) {
         try {
-            String fileName = null;
-            if (fileVM.getName() != null) {
-                fileName = fileVM.getName();
-            } else if (fileVM.getImageUrl() != null) {
-                fileName = StringUtils.cleanPath(Paths.get(fileVM.getImageUrl()).getFileName().toString());
-            }
-
+            String cleanPath = StringUtils.cleanPath(Paths.get(fileName).getFileName().toString());
             // fileUrl
-            Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
+            Path filePath = this.fileStorageLocation.resolve(cleanPath).normalize();
             Resource resource = new UrlResource(filePath.toUri());
             if(resource.exists()) {
                 return resource;
@@ -158,7 +155,7 @@ public class FileService {
                 log.warn("File not found " + filePath.getFileName());
             }
         } catch (MalformedURLException ex) {
-            log.error("FileVM is invalid " + fileVM, ex);
+            log.error("FileVM is invalid " + fileName, ex);
         }
         return null;
     }
