@@ -34,7 +34,7 @@ public final class ResponseCode {
     public static final Integer ERROR_CODE_GENERATED_TIME_IS_EMPTY = 1702;
     public static final Integer ERROR_CODE_TRANSACTION_TYPE_NOT_FOUND = 1801;
     public static final Integer ERROR_CODE_TRANSACTION_TYPE_NAME_IS_EMPTY = 1802;
-    public static final Integer ERROR_CODE_VOUCHER_CODE_ALREADY_EXISTED = 1902;
+    public static final Integer ERROR_CODE_RECORD_NOT_EXISTED = 1901;
 
     public static final Integer ERROR_CODE_PASSWORD_LENGTH = 2001;
 
