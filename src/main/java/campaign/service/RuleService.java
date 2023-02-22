@@ -16,9 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,12 +37,15 @@ public class RuleService {
 
     private final RewardRepository rewardRepository;
 
+    private final CampaignRepository campaignRepository;
+
     public RuleService(RuleRepository ruleRepository,
                        TransactionTypeRepository transactionTypeRepository,
                        RuleMapper ruleMapper,
                        RewardConditionRepository rewardConditionRepository,
                        RewardConditionMapper rewardConditionMapper,
-                       RewardRepository rewardRepository
+                       RewardRepository rewardRepository,
+                       CampaignRepository campaignRepository
     ) {
         this.ruleRepository = ruleRepository;
         this.transactionTypeRepository = transactionTypeRepository;
@@ -52,6 +53,7 @@ public class RuleService {
         this.rewardConditionRepository = rewardConditionRepository;
         this.rewardConditionMapper = rewardConditionMapper;
         this.rewardRepository = rewardRepository;
+        this.campaignRepository = campaignRepository;
     }
 
     @Transactional(readOnly = true)
@@ -155,18 +157,47 @@ public class RuleService {
             toBeInserted.setCampaignType(cloneRuleOpt.get().getCampaignType());
             toBeInserted.setRuleConfiguration(cloneRuleOpt.get().getRuleConfiguration());
             toBeInserted.addTransactionTypes(cloneRuleOpt.get().getTransactionTypes());
-            // clone reward conditions
-            if (!cloneRuleOpt.get().getRewardConditions().isEmpty()) {
-                toBeInserted.updateRewardConditions(cloneRuleOpt.get().getRewardConditions());
-            }
+            ruleRepository.save(toBeInserted);
+
             // clone campaign rules
             if (!cloneRuleOpt.get().getCampaignList().isEmpty()) {
+                // find campaigns in db
+                List<Campaign> campaignList = campaignRepository.findAllById(
+                    cloneRuleOpt.get().getCampaignList().stream().map(Campaign::getId).collect(Collectors.toList()));
+                // two ways binding, add rule list to campaign
+                campaignRepository.saveAll(campaignList.stream().map(campaign -> {
+                    campaign.addRuleList(Arrays.asList(toBeInserted));
+                    return campaign;
+                }).collect(Collectors.toList()));
                 toBeInserted.updateCampaignList(cloneRuleOpt.get().getCampaignList());
             }
             // clone transaction type
             if (!cloneRuleOpt.get().getTransactionTypes().isEmpty()) {
                 toBeInserted.updateTransactionTypes(cloneRuleOpt.get().getTransactionTypes());
             }
+            
+            // clone reward conditions
+//            if (!cloneRuleOpt.get().getRewardConditions().isEmpty()) {
+////                Map<String, String> rewardConditionRewardIdMap = cloneRuleOpt.get().getRewardConditions()
+////                    .stream().collect(Collectors.toMap(RewardCondition::getRewardName, RewardCondition::hash));
+//
+//                List<Reward> rewardList = cloneRuleOpt.get().getRewardConditions().stream()
+//                    .map(rewardCondition -> {
+//                        Reward reward = rewardCondition.getReward();
+//
+//                    })
+//                    .collect(Collectors.toList());
+//                // clone rewards
+////                rewardRepository.saveAll(rewardList);
+//
+//                // clone reward conditions
+//                List<RewardCondition> rewardConditions = cloneRuleOpt.get().getRewardConditions().stream()
+//                    .map(RewardCondition::removeId).collect(Collectors.toList());
+//                rewardConditionRepository.saveAll(rewardConditions);
+//
+//                // clone rewards
+//                toBeInserted.updateRewardConditions(cloneRuleOpt.get().getRewardConditions());
+//            }
         }
 
         return ruleMapper.ruleToRuleDTO(ruleRepository.save(toBeInserted));
