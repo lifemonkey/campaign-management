@@ -153,12 +153,20 @@ public class RuleService {
             toBeInserted.setDurationType(cloneRuleOpt.get().getDurationType());
             toBeInserted.setDurationValue(cloneRuleOpt.get().getDurationValue());
             toBeInserted.setCampaignType(cloneRuleOpt.get().getCampaignType());
-            // clone reward conditions
-            if (cloneRuleOpt.get().getRewardConditions() != null) {
-                toBeInserted.addRewardConditions(cloneRuleOpt.get().getRewardConditions());
-            }
             toBeInserted.setRuleConfiguration(cloneRuleOpt.get().getRuleConfiguration());
             toBeInserted.addTransactionTypes(cloneRuleOpt.get().getTransactionTypes());
+            // clone reward conditions
+            if (!cloneRuleOpt.get().getRewardConditions().isEmpty()) {
+                toBeInserted.updateRewardConditions(cloneRuleOpt.get().getRewardConditions());
+            }
+            // clone campaign rules
+            if (!cloneRuleOpt.get().getCampaignList().isEmpty()) {
+                toBeInserted.updateCampaignList(cloneRuleOpt.get().getCampaignList());
+            }
+            // clone transaction type
+            if (!cloneRuleOpt.get().getTransactionTypes().isEmpty()) {
+                toBeInserted.updateTransactionTypes(cloneRuleOpt.get().getTransactionTypes());
+            }
         }
 
         return ruleMapper.ruleToRuleDTO(ruleRepository.save(toBeInserted));

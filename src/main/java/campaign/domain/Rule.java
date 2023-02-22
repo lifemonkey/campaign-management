@@ -142,6 +142,11 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
         this.campaignList = campaignList;
     }
 
+    public void updateCampaignList(List<Campaign> campaignList) {
+        this.campaignList.clear();
+        this.campaignList.addAll(campaignList);
+    }
+
     public Rule clearCampaignList() {
         this.campaignList.clear();
         return this;
