@@ -118,7 +118,7 @@ public class RewardService {
         // get applied campaigns
         Map<Long, CampaignDTO> appliedCampaigns = appliedCampaigns(rewardList.toList());
 
-        if (appliedCampaign == null || appliedCampaign.isEmpty()) {
+        if (appliedCampaign == null || appliedCampaign.isEmpty() || appliedCampaign.equalsIgnoreCase("all")) {
             return rewardList.map(reward -> {
                 RewardDTO rewardDTO = new RewardDTO(reward);
                 rewardDTO.setAppliedCampaign(appliedCampaigns.get(reward.getCampaignId()));
@@ -130,10 +130,16 @@ public class RewardService {
         return new PageImpl<>(
             rewardList.stream()
                 .filter(reward -> {
+                    // filter for appliedCampaign is none
+                    if (appliedCampaign.equalsIgnoreCase("none")) {
+                        return reward.getCampaignId() == null;
+                    }
+                    // filter for specific appliedCampaign name
                     if (reward.getCampaignId() != null && appliedCampaigns.containsKey(reward.getCampaignId())) {
                         CampaignDTO rewardCampaign = appliedCampaigns.get(reward.getCampaignId());
                         return rewardCampaign.getName().toLowerCase().contains(appliedCampaign.toLowerCase());
                     }
+
                     return false;
                 })
                 .collect(Collectors.toList()), rewardList.getPageable(), rewardList.getTotalElements()

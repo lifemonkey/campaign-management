@@ -83,7 +83,7 @@ public class RuleService {
             ruleList = ruleRepository.findAll(pageable);
         }
 
-        if (appliedCampaign == null || appliedCampaign.equalsIgnoreCase("all")) {
+        if (appliedCampaign == null || appliedCampaign.isEmpty() || appliedCampaign.equalsIgnoreCase("all")) {
             return ruleList.map(RuleDTO::new);
         }
 
@@ -91,17 +91,14 @@ public class RuleService {
         return new PageImpl<>(
             ruleList.stream()
                 .filter(rule -> {
+                    // filter for appliedCampaign is none
                     if (appliedCampaign.equalsIgnoreCase("none")) {
-                        if (rule.getCampaignList() == null || rule.getCampaignList().isEmpty()) return true;
-                    } else {
-                        if (rule.getCampaignList().stream()
-                            .filter(campaign -> campaign.getName().toLowerCase().contains(appliedCampaign.toLowerCase()))
-                            .findAny().isPresent()
-                        ) {
-                            return true;
-                        }
+                        return rule.getCampaignList().isEmpty();
                     }
-                    return false;
+                    // filter for specific appliedCampaign name
+                    return rule.getCampaignList().stream()
+                        .filter(campaign -> campaign.getName().toLowerCase().contains(appliedCampaign.toLowerCase()))
+                        .findAny().isPresent();
                 })
                 .collect(Collectors.toList()), ruleList.getPageable(), ruleList.getTotalElements()
         ).map(RuleDTO::new);
