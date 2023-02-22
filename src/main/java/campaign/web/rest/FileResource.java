@@ -89,9 +89,9 @@ public class FileResource {
      */
     @PostMapping("/file/download")
     @Timed
-    public ResponseEntity<Object> downloadFile(@PathVariable String fileName) {
+    public ResponseEntity<Object> downloadFile(@RequestParam String name) {
         // Load file as Resource
-        Resource resource = fileService.loadFileAsResource(fileName);
+        Resource resource = fileService.loadFileAsResource(name);
         if (resource != null && resource.exists()) {
             return new ResponseEntity<>(resource, new HttpHeaders(), HttpStatus.OK);
             //HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
@@ -101,7 +101,7 @@ public class FileResource {
             new ResponseVM(
                 ResponseCode.RESPONSE_NOT_FOUND,
                 ResponseCode.ERROR_CODE_FILE_NOT_FOUND,
-                "File name:" + fileName + " not found!"),
+                "File name:" + name + " not found!"),
             new HttpHeaders(),
             HttpStatus.NOT_FOUND);
     }

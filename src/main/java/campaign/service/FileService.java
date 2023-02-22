@@ -96,14 +96,12 @@ public class FileService {
 
     @Transactional(rollbackFor = Exception.class)
     public FileDTO uploadFile(MultipartFile file, String description, Integer type) {
-
+        String filePath = ServiceUtils.isImageType(file.getOriginalFilename()) ? "/file/preview/" : "";
         // store file to server dir
-        String fileUrl = ServiceUtils.isImageType(file.getOriginalFilename())
-            ? ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/file/preview/")
+        String fileUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path(filePath)
                 .path(storeFile(file))
-                .toUriString()
-            : "";
+                .toUriString();
 
         // get file by fileName from db
         List<File> fileList = fileRepository.findByNameIgnoreCase(StringUtils.cleanPath(file.getOriginalFilename()));
@@ -145,9 +143,9 @@ public class FileService {
 
     public Resource loadFileAsResource(String fileName) {
         try {
-            String cleanPath = StringUtils.cleanPath(Paths.get(fileName).getFileName().toString());
+//            String cleanPath = StringUtils.cleanPath(Paths.get(fileName).getFileName().toString());
             // fileUrl
-            Path filePath = this.fileStorageLocation.resolve(cleanPath).normalize();
+            Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
             Resource resource = new UrlResource(filePath.toUri());
             if(resource.exists()) {
                 return resource;
