@@ -87,8 +87,13 @@ public class CampaignWRelDTO {
 
         this.createdBy = campaign.getCreatedBy();
         this.createdDate = campaign.getCreatedDate();
-        this.lastModifiedBy = campaign.getLastModifiedBy();
-        this.lastModifiedDate = campaign.getLastModifiedDate();
+        if (this.lastModifiedDate != null && this.createdDate != null && this.lastModifiedDate.isAfter(this.createdDate)) {
+            this.lastModifiedBy = campaign.getLastModifiedBy();
+            this.lastModifiedDate = campaign.getLastModifiedDate();
+        } else {
+            this.lastModifiedBy = null;
+            this.lastModifiedDate = null;
+        }
     }
 
     public Long getId() {

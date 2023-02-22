@@ -56,8 +56,13 @@ public class RuleDTO {
         this.appliedCampaigns = rule.getCampaignList().stream().map(Campaign::getName).collect(Collectors.toList());
         this.createdBy = rule.getCreatedBy();
         this.createdDate = rule.getCreatedDate();
-        this.lastModifiedBy = rule.getLastModifiedBy();
-        this.lastModifiedDate = rule.getLastModifiedDate();
+        if (this.lastModifiedDate != null && this.createdDate != null && this.lastModifiedDate.isAfter(this.createdDate)) {
+            this.lastModifiedBy = rule.getLastModifiedBy();
+            this.lastModifiedDate = rule.getLastModifiedDate();
+        } else {
+            this.lastModifiedBy = null;
+            this.lastModifiedDate = null;
+        }
     }
 
 

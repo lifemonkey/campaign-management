@@ -48,8 +48,13 @@ public class RuleRewardConditionDTO {
 
         this.createdBy = rewardCondition.getCreatedBy();
         this.createdDate = rewardCondition.getCreatedDate();
-        this.lastModifiedBy = rewardCondition.getLastModifiedBy();
-        this.lastModifiedDate = rewardCondition.getLastModifiedDate();
+        if (this.lastModifiedDate != null && this.createdDate != null && this.lastModifiedDate.isAfter(this.createdDate)) {
+            this.lastModifiedBy = rewardCondition.getLastModifiedBy();
+            this.lastModifiedDate = rewardCondition.getLastModifiedDate();
+        } else {
+            this.lastModifiedBy = null;
+            this.lastModifiedDate = null;
+        }
     }
 
     public Long getId() {

@@ -35,8 +35,13 @@ public class GeneratedTimeDTO {
         }
         this.createdBy = generatedTime.getCreatedBy();
         this.createdDate = generatedTime.getCreatedDate();
-        this.lastModifiedBy = generatedTime.getLastModifiedBy();
-        this.lastModifiedDate = generatedTime.getLastModifiedDate();
+        if (this.lastModifiedDate != null && this.createdDate != null && this.lastModifiedDate.isAfter(this.createdDate)) {
+            this.lastModifiedBy = generatedTime.getLastModifiedBy();
+            this.lastModifiedDate = generatedTime.getLastModifiedDate();
+        } else {
+            this.lastModifiedBy = null;
+            this.lastModifiedDate = null;
+        }
     }
 
     public Long getId() {

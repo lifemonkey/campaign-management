@@ -58,8 +58,13 @@ public class RewardConditionRewardDTO {
         this.level = reward.getLevel();
         this.createdBy = reward.getCreatedBy();
         this.createdDate = reward.getCreatedDate();
-        this.lastModifiedBy = reward.getLastModifiedBy();
-        this.lastModifiedDate = reward.getLastModifiedDate();
+        if (this.lastModifiedDate != null && this.createdDate != null && this.lastModifiedDate.isAfter(this.createdDate)) {
+            this.lastModifiedBy = reward.getLastModifiedBy();
+            this.lastModifiedDate = reward.getLastModifiedDate();
+        } else {
+            this.lastModifiedBy = null;
+            this.lastModifiedDate = null;
+        }
     }
 
     public Long getId() {

@@ -29,8 +29,13 @@ public class TransactionTypeDTO {
         this.description = transactionType.getDescription();
         this.createdBy = transactionType.getCreatedBy();
         this.createdDate = transactionType.getCreatedDate();
-        this.lastModifiedBy = transactionType.getLastModifiedBy();
-        this.lastModifiedDate = transactionType.getLastModifiedDate();
+        if (this.lastModifiedDate != null && this.createdDate != null && this.lastModifiedDate.isAfter(this.createdDate)) {
+            this.lastModifiedBy = transactionType.getLastModifiedBy();
+            this.lastModifiedDate = transactionType.getLastModifiedDate();
+        } else {
+            this.lastModifiedBy = null;
+            this.lastModifiedDate = null;
+        }
     }
 
 

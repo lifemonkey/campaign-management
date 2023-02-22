@@ -34,8 +34,13 @@ public class TargetListCampaignDTO {
 
         this.createdBy = targetList.getCreatedBy();
         this.createdDate = targetList.getCreatedDate();
-        this.lastModifiedBy = targetList.getLastModifiedBy();
-        this.lastModifiedDate = targetList.getLastModifiedDate();
+        if (this.lastModifiedDate != null && this.createdDate != null && this.lastModifiedDate.isAfter(this.createdDate)) {
+            this.lastModifiedBy = targetList.getLastModifiedBy();
+            this.lastModifiedDate = targetList.getLastModifiedDate();
+        } else {
+            this.lastModifiedBy = null;
+            this.lastModifiedDate = null;
+        }
     }
 
     public Long getId() {

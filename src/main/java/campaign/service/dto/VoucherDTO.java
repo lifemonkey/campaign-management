@@ -33,8 +33,13 @@ public class VoucherDTO {
         this.expiredDate = voucher.getExpiredDate();
         this.createdBy = voucher.getCreatedBy();
         this.createdDate = voucher.getCreatedDate();
-        this.lastModifiedBy = voucher.getLastModifiedBy();
-        this.lastModifiedDate = voucher.getLastModifiedDate();
+        if (this.lastModifiedDate != null && this.createdDate != null && this.lastModifiedDate.isAfter(this.createdDate)) {
+            this.lastModifiedBy = voucher.getLastModifiedBy();
+            this.lastModifiedDate = voucher.getLastModifiedDate();
+        } else {
+            this.lastModifiedBy = null;
+            this.lastModifiedDate = null;
+        }
     }
 
     public Long getId() {

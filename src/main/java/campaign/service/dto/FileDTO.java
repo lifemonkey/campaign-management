@@ -46,8 +46,13 @@ public class FileDTO {
         }
         this.createdBy = file.getCreatedBy();
         this.createdDate = file.getCreatedDate();
-        this.lastModifiedBy = file.getLastModifiedBy();
-        this.lastModifiedDate = file.getLastModifiedDate();
+        if (this.lastModifiedDate != null && this.createdDate != null && this.lastModifiedDate.isAfter(this.createdDate)) {
+            this.lastModifiedBy = file.getLastModifiedBy();
+            this.lastModifiedDate = file.getLastModifiedDate();
+        } else {
+            this.lastModifiedBy = null;
+            this.lastModifiedDate = null;
+        }
     }
 
     public Long getId() {

@@ -49,8 +49,13 @@ public class AccountDTO {
         this.dob = account.getDob();
         this.createdBy = account.getCreatedBy();
         this.createdDate = account.getCreatedDate();
-        this.lastModifiedBy = account.getLastModifiedBy();
-        this.lastModifiedDate = account.getLastModifiedDate();
+        if (this.lastModifiedDate != null && this.createdDate != null && this.lastModifiedDate.isAfter(this.createdDate)) {
+            this.lastModifiedBy = account.getLastModifiedBy();
+            this.lastModifiedDate = account.getLastModifiedDate();
+        } else {
+            this.lastModifiedBy = null;
+            this.lastModifiedDate = null;
+        }
     }
 
     public Long getId() {
