@@ -1,6 +1,5 @@
 package campaign.domain;
 
-import campaign.config.Constants;
 import campaign.service.dto.FileDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
@@ -66,16 +65,8 @@ public class File extends AbstractAuditingEntity implements Serializable {
         this.imageUrl = imageUrl;
     }
 
-    public File clone() {
-        String fileName = this.getName();
-        if (this.getName() != null && !this.getName().isEmpty()) {
-            String[] fileNameArr = this.getName().split("\\.");
-            if (fileNameArr.length == 2) {
-                fileName = fileNameArr[0] + Constants.CLONE_POSTFIX + "." + fileNameArr[1];
-            }
-        }
-
-        return new File(fileName, this.getDescription(), this.getFileType(), this.getImageUrl());
+    public File clone(String name) {
+        return new File(name, this.description + " - Copy", this.getFileType(), this.getImageUrl());
     }
 
     public Long getId() {

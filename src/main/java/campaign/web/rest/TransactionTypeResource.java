@@ -105,7 +105,7 @@ public class TransactionTypeResource {
     /**
      * POST /transaction-type : Duplicate existing rule
      *
-     * @RequestParam to be clone transaction-type
+     * @RequestParam to be cloned transaction-type
      * @return the ResponseEntity with status 200 (OK) and with body all users
      */
     @PostMapping("/transaction-type/clone")

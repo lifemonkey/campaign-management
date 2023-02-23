@@ -18,6 +18,8 @@ public interface FileRepository extends JpaRepository<File, Long> {
 
     List<File> findByNameIgnoreCase(String name);
 
+    List<File> findByNameStartsWithIgnoreCase(String name);
+
     Optional<File> findByImageUrl(String imageUrl);
 
     List<File> findByRewardId(Long rewardId);

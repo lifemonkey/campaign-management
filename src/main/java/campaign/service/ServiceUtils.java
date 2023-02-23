@@ -2,7 +2,6 @@ package campaign.service;
 
 import campaign.config.Constants;
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.http.MediaType;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -36,7 +35,7 @@ public class ServiceUtils {
             .toLocalDateTime();
     }
 
-    public static String clonedCount(String clonedName, List<String> nameList) {
+    public static String clonedFileName(String clonedName, List<String> nameList) {
 //        nameList = Arrays.asList("Rule 1-Copy109", "Rule 1", "Rule 1-Copy01", "Rule 1-Copy07", "Rule 1-Copy03", "Rule 1-CopyAA", "Rule 1-Copy06");
         Optional<Integer> nameOpt = nameList.stream()
             .filter(name -> isValidName(clonedName, name))
@@ -53,6 +52,24 @@ public class ServiceUtils {
         }
 
         return clonedName + "01";
+    }
+
+    public static String getFileNameExt(String fileNameWExt) {
+        String[] fileNameArr = fileNameWExt.split("\\.");
+        if (fileNameArr.length == 2) {
+            return "." + fileNameArr[1];
+        }
+
+        return "";
+    }
+
+    public static String getFileName(String fileNameWExt) {
+        String[] fileNameArr = fileNameWExt.split("\\.");
+        if (fileNameArr.length == 2) {
+            return fileNameArr[0] + Constants.CLONE_POSTFIX;
+        }
+
+        return fileNameWExt;
     }
 
     public static Boolean isValidName(String clonedName, String value) {

@@ -32,7 +32,8 @@ public class TargetListService {
     public TargetListService(
         TargetListRepository targetListRepository,
         AccountRepository accountRepository,
-        TargetListMapper targetListMapper) {
+        TargetListMapper targetListMapper
+    ) {
         this.targetListRepository = targetListRepository;
         this.targetListMapper = targetListMapper;
         this.accountRepository = accountRepository;
@@ -54,7 +55,6 @@ public class TargetListService {
         }
     }
 
-
     @Transactional(readOnly = true)
     public TargetListDTO getTargetListById(Long id) {
         Optional<TargetList> targetListOpt = targetListRepository.findById(id);
@@ -72,11 +72,9 @@ public class TargetListService {
             targetListRepository.save(targetList);
 
             // find related accounts
-            List<Account> accountList = targetListVM.getAccountIds() != null
-                ? accountRepository.findByIdIn(targetListVM.getAccountIds())
-                : null;
+            List<Account> accountList = accountRepository.findByIdIn(targetListVM.getAccountIds());
 
-            if (accountList != null) {
+            if (!accountList.isEmpty()) {
                 targetList.addAccountList(accountList);
                 targetListRepository.save(targetList);
             }

@@ -1,7 +1,6 @@
 package campaign.service;
 
 import campaign.config.Constants;
-import campaign.domain.Rule;
 import campaign.domain.TransactionType;
 import campaign.repository.TransactionTypeRepository;
 import campaign.service.dto.TransactionTypeDTO;
@@ -74,16 +73,10 @@ public class TransactionTypeService {
         Optional<TransactionType> transactionTypeOpt = transactionTypeRepository.findById(id);
         if (!transactionTypeOpt.isPresent()) return null;
 
-        TransactionType toBeInserted = new TransactionType();
-
-        if (transactionTypeOpt.isPresent()) {
-            String clonedName = transactionTypeOpt.get().getName() + Constants.CLONE_POSTFIX;
-            List<TransactionType> transactionsByName = transactionTypeRepository.findByNameStartsWithIgnoreCase(clonedName);
-            toBeInserted.setName(ServiceUtils
-                .clonedCount(clonedName, transactionsByName.stream().map(TransactionType::getName).collect(Collectors.toList())));
-            toBeInserted.setName(transactionTypeOpt.get().getName() + Constants.CLONE_POSTFIX);
-            toBeInserted.setDescription(transactionTypeOpt.get().getDescription());
-        }
+        String clonedName = transactionTypeOpt.get().getName() + Constants.CLONE_POSTFIX;
+        List<TransactionType> transactionsByName = transactionTypeRepository.findByNameStartsWithIgnoreCase(clonedName);
+        TransactionType toBeInserted = transactionTypeOpt.get().clone(
+            ServiceUtils.clonedFileName(clonedName, transactionsByName.stream().map(TransactionType::getName).collect(Collectors.toList())));
 
         return transactionTypeMapper.transactionTypeToTransactionTypeDTO(transactionTypeRepository.save(toBeInserted));
     }

@@ -11,7 +11,6 @@ import campaign.repository.RewardRepository;
 import campaign.repository.VoucherRepository;
 import campaign.service.dto.CampaignDTO;
 import campaign.service.dto.RewardDTO;
-import campaign.service.dto.RuleDTO;
 import campaign.service.dto.VoucherDTO;
 import campaign.service.mapper.FileMapper;
 import campaign.service.mapper.RewardMapper;
@@ -27,7 +26,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -211,38 +209,30 @@ public class RewardService {
         Optional<Reward> rewardOpt = rewardRepository.findById(id);
         if (!rewardOpt.isPresent()) return null;
 
-        Reward toBeInserted = new Reward();
+        String clonedName = rewardOpt.get().getName() + Constants.CLONE_POSTFIX;
+        List<Reward> rewardsByName = rewardRepository.findByNameStartsWithIgnoreCase(clonedName);
+        Reward toBeInserted = rewardOpt.get().clone(
+            ServiceUtils
+                .clonedFileName(clonedName, rewardsByName.stream().map(Reward::getName).collect(Collectors.toList())));
+        // set appliedCampaign is null, do not clone voucher code
+        rewardRepository.save(toBeInserted);
 
-        if (rewardOpt.isPresent()) {
-            String clonedName = rewardOpt.get().getName() + Constants.CLONE_POSTFIX;
-            List<Reward> rewardsByName = rewardRepository.findByNameStartsWithIgnoreCase(clonedName);
-            toBeInserted.setName(ServiceUtils
-                .clonedCount(clonedName, rewardsByName.stream().map(Reward::getName).collect(Collectors.toList())));
-            toBeInserted.setName(rewardOpt.get().getName() + Constants.CLONE_POSTFIX);
-            toBeInserted.setDescription(rewardOpt.get().getDescription());
-            toBeInserted.setPrizeType(rewardOpt.get().getPrizeType());
-            toBeInserted.setPrizeValue(rewardOpt.get().getPrizeValue());
-            toBeInserted.setNumOfPrize(rewardOpt.get().getNumOfPrize());
-            toBeInserted.setReleased(rewardOpt.get().getReleased());
-            toBeInserted.setMessageWinnerEN(rewardOpt.get().getMessageWinnerEN());
-            toBeInserted.setMessageWinnerSW(rewardOpt.get().getMessageWinnerSW());
-            toBeInserted.setMessageBalanceEN(rewardOpt.get().getMessageBalanceEN());
-            toBeInserted.setMessageBalanceSW(rewardOpt.get().getMessageBalanceSW());
-            toBeInserted.setLevel(rewardOpt.get().getLevel());
-            rewardRepository.save(toBeInserted);
-            // voucher code can not be cloned
-            //toBeInserted.setVouchers(rewardOpt.get().getVouchers());
-            // clone files
-            if (rewardOpt.get().getFiles() != null) {
-                List<File> toBeCloned = rewardOpt.get().getFiles().stream()
-                    .map(file -> {
-                        File clonedFile = file.clone();
-                        clonedFile.setReward(toBeInserted);
-                        return clonedFile;
-                    })
-                    .collect(Collectors.toList());
-                toBeInserted.addFiles(toBeCloned);
-            }
+        // clone files
+        if (!rewardOpt.get().getFiles().isEmpty()) {
+            List<File> toBeCloned = rewardOpt.get().getFiles().stream()
+                .map(file -> {
+                    String clonedFileName = ServiceUtils.getFileName(file.getName());
+                    List<File> filesByName = fileRepository.findByNameIgnoreCase(clonedFileName);
+                    File clonedFile = file.clone(
+                        ServiceUtils
+                            .clonedFileName(clonedFileName, filesByName.stream().map(File::getName).collect(Collectors.toList()))
+                        + ServiceUtils.getFileNameExt(file.getName()));
+                    clonedFile.setReward(toBeInserted);
+                    return clonedFile;
+                })
+                .collect(Collectors.toList());
+            // two ways binding
+            toBeInserted.addFiles(toBeCloned);
         }
 
         return rewardMapper.rewardToRewardDTO(rewardRepository.save(toBeInserted));
@@ -303,7 +293,7 @@ public class RewardService {
     @Transactional(rollbackFor = Exception.class)
     public void deleteReward(Long id) {
         Optional<Reward> rewardOpt = rewardRepository.findById(id);
-        if (rewardOpt.isPresent()) {
+        if (rewardOpt.isPresent() && rewardOpt.get().getCampaignId() != null) {
             Reward reward = rewardOpt.get();
             rewardRepository.delete(reward);
         }

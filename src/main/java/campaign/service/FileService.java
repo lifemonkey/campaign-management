@@ -143,7 +143,6 @@ public class FileService {
 
     public Resource loadFileAsResource(String fileName) {
         try {
-//            String cleanPath = StringUtils.cleanPath(Paths.get(fileName).getFileName().toString());
             // fileUrl
             Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
             Resource resource = new UrlResource(filePath.toUri());
