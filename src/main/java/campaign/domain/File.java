@@ -145,6 +145,11 @@ public class File extends AbstractAuditingEntity implements Serializable {
         this.campaign = campaign;
     }
 
+    public File addCampaign(Campaign campaign) {
+        this.campaign = campaign;
+        return this;
+    }
+
     public File removeCampaign() {
         this.campaign = null;
         return this;
@@ -156,6 +161,11 @@ public class File extends AbstractAuditingEntity implements Serializable {
 
     public void setReward(Reward reward) {
         this.reward = reward;
+    }
+
+    public File addReward(Reward reward) {
+        this.reward = reward;
+        return this;
     }
 
     public File removeReward() {

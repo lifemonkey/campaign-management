@@ -22,9 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -210,57 +208,81 @@ public class CampaignService {
 
         String clonedName = clonedCampaignOpt.get().getName() + Constants.CLONE_POSTFIX;
         List<Campaign> campaignsByName = campaignRepository.findByNameStartsWithIgnoreCase(clonedName);
-        Campaign toBeInserted = clonedCampaignOpt.get().clone(
+        Campaign toBeInsertedCampaign = clonedCampaignOpt.get().clone(
             ServiceUtils
                 .clonedFileName(clonedName, campaignsByName.stream().map(Campaign::getName).collect(Collectors.toList())));
         // do not clone generatedTime, targetList
         // set status to Pending Approval
         Optional<Status> statusOpt = statusRepository.findByNameIgnoreCase(Constants.PENDING_APPROVE_STATUS);
         if (statusOpt.isPresent()) {
-            toBeInserted.setStatus(statusOpt.get());
+            toBeInsertedCampaign.setStatus(statusOpt.get());
         }
         // save campaign to db
-        campaignRepository.save(toBeInserted);
+        campaignRepository.save(toBeInsertedCampaign);
 
         // clone rule
-        toBeInserted.addRuleList(clonedCampaignOpt.get().getRuleList());
+        toBeInsertedCampaign.addRuleList(clonedCampaignOpt.get().getRuleList());
 
         // clone reward
         List<Reward> toBeClonedReward = rewardRepository.findAllByCampaignId(clonedCampaignOpt.get().getId());
         if (!toBeClonedReward.isEmpty()) {
-            List<Reward> toBeSaved = toBeClonedReward.stream().map(reward -> {
+            Map<String, List<File>> rewardNameFileMap = new HashMap<>();
+            List<Reward> toBeSavedReward = toBeClonedReward.stream().map(reward -> {
                 String rewardClonedName = reward.getName() + Constants.CLONE_POSTFIX;
                 List<Reward> rewardsByName = rewardRepository.findByNameStartsWithIgnoreCase(rewardClonedName);
-                Reward toBeCloned = reward.clone(
-                    ServiceUtils
-                        .clonedFileName(clonedName, rewardsByName.stream().map(Reward::getName).collect(Collectors.toList())));
-                toBeCloned.setCampaignId(toBeInserted.getId());
+                String finalRewardName = ServiceUtils
+                    .clonedFileName(rewardClonedName, rewardsByName.stream().map(Reward::getName).collect(Collectors.toList()));
+                Reward toBeCloned = reward.clone(finalRewardName);
+                toBeCloned.setCampaignId(toBeInsertedCampaign.getId());
+                // add file to be cloned
+                if (rewardNameFileMap.containsKey(finalRewardName)) {
+                    rewardNameFileMap.get(finalRewardName).addAll(reward.getFiles());
+                } else {
+                    rewardNameFileMap.put(finalRewardName, new ArrayList<>(reward.getFiles()));
+                }
                 return toBeCloned;
             }).collect(Collectors.toList());
             // save reward to db
-            rewardRepository.saveAll(toBeSaved);
+            rewardRepository.saveAll(toBeSavedReward);
+            // cloned file of reward
+            List<File> toBeClonedRewardFiles = new ArrayList<>();
+            toBeSavedReward.stream().forEach(r -> {
+                if (rewardNameFileMap.containsKey(r.getName())) {
+                    toBeClonedRewardFiles.addAll(
+                        buildSavedFiles(rewardNameFileMap.get(r.getName())).stream()
+                            .map(file -> file.addReward(r))
+                            .collect(Collectors.toList()));
+                }
+            });
+            // save file to db
+            fileRepository.saveAll(toBeClonedRewardFiles);
         }
 
         // clone files
         if (!clonedCampaignOpt.get().getFilesList().isEmpty()) {
-            List<File> toBeCloned = clonedCampaignOpt.get().getFilesList().stream()
-                .map(file -> {
-                    String clonedFileName = ServiceUtils.getFileName(file.getName());
-                    List<File> filesByName = fileRepository.findByNameIgnoreCase(clonedFileName);
-                    File clonedFile = file.clone(
-                        ServiceUtils
-                            .clonedFileName(clonedFileName, filesByName.stream().map(File::getName).collect(Collectors.toList()))
-                            + ServiceUtils.getFileNameExt(file.getName()));
-                    clonedFile.setCampaign(toBeInserted);
-                    return clonedFile;
-                })
+            List<File> toBeClonedCampaignFiles = buildSavedFiles(clonedCampaignOpt.get().getFilesList()).stream()
+                .map(file -> file.addCampaign(toBeInsertedCampaign))
                 .collect(Collectors.toList());
-            fileRepository.saveAll(toBeCloned);
+            fileRepository.saveAll(toBeClonedCampaignFiles);
             // two ways binding
-            toBeInserted.addFilesList(toBeCloned);
+            toBeInsertedCampaign.addFilesList(toBeClonedCampaignFiles);
         }
 
-        return campaignMapper.campaignToCampaignWRelDTO(campaignRepository.save(toBeInserted));
+        return campaignMapper.campaignToCampaignWRelDTO(campaignRepository.save(toBeInsertedCampaign));
+    }
+
+    private List<File> buildSavedFiles(List<File> fileList) {
+        return fileList.stream()
+            .map(file -> {
+                String clonedFileName = ServiceUtils.getFileName(file.getName());
+                List<File> filesByName = fileRepository.findByNameStartsWithIgnoreCase(clonedFileName);
+                File clonedFile = file.clone(
+                    ServiceUtils
+                        .clonedFileName(clonedFileName, filesByName.stream().map(File::getName).collect(Collectors.toList()))
+                        + ServiceUtils.getFileNameExt(file.getName()));
+                return clonedFile;
+            })
+            .collect(Collectors.toList());
     }
 
     @Transactional(rollbackFor = Exception.class)
