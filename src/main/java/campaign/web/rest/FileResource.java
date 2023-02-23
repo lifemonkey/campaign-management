@@ -130,8 +130,10 @@ public class FileResource {
     @PostMapping("/files/upload")
     @Timed
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
-    public ResponseEntity<List<FileDTO>> uploadFiles(@RequestParam MultipartFile[] files) {
-        return new ResponseEntity<> (fileService.uploadFiles(files), new HttpHeaders(), HttpStatus.OK);
+    public ResponseEntity<List<FileDTO>> uploadFiles(@RequestParam MultipartFile[] files,
+                                                     @RequestParam(required = false) String description,
+                                                     @RequestParam(required = false) Integer type) {
+        return new ResponseEntity<> (fileService.uploadFiles(files, description, type), new HttpHeaders(), HttpStatus.OK);
     }
 
     /**

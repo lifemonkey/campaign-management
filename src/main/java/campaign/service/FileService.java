@@ -88,9 +88,9 @@ public class FileService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public List<FileDTO> uploadFiles(MultipartFile[] files) {
+    public List<FileDTO> uploadFiles(MultipartFile[] files, String description, Integer type) {
         return Arrays.asList(files)
-            .stream().map(file -> uploadFile(file, "", null))
+            .stream().map(file -> uploadFile(file, description, type))
             .collect(Collectors.toList());
     }
 
