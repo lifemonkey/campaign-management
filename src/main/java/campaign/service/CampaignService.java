@@ -208,37 +208,56 @@ public class CampaignService {
         Optional<Campaign> clonedCampaignOpt = campaignRepository.findById(id);
         if (!clonedCampaignOpt.isPresent()) return null;
 
-        Campaign toBeInserted = new Campaign();
+        String clonedName = clonedCampaignOpt.get().getName() + Constants.CLONE_POSTFIX;
+        List<Campaign> campaignsByName = campaignRepository.findByNameStartsWithIgnoreCase(clonedName);
+        Campaign toBeInserted = clonedCampaignOpt.get().clone(
+            ServiceUtils
+                .clonedFileName(clonedName, campaignsByName.stream().map(Campaign::getName).collect(Collectors.toList())));
+        // do not clone generatedTime, targetList
+        // set status to Pending Approval
+        Optional<Status> statusOpt = statusRepository.findByNameIgnoreCase(Constants.PENDING_APPROVE_STATUS);
+        if (statusOpt.isPresent()) {
+            toBeInserted.setStatus(statusOpt.get());
+        }
+        // save campaign to db
+        campaignRepository.save(toBeInserted);
 
-        if (clonedCampaignOpt.isPresent()) {
-            String clonedName = clonedCampaignOpt.get().getName() + Constants.CLONE_POSTFIX;
-            List<Campaign> campaignsByName = campaignRepository.findByNameStartsWithIgnoreCase(clonedName);
-            toBeInserted.setName(ServiceUtils
-                .clonedCount(clonedName, campaignsByName.stream().map(Campaign::getName).collect(Collectors.toList())));
+        // clone rule
+        toBeInserted.addRuleList(clonedCampaignOpt.get().getRuleList());
 
-            toBeInserted.setDescription(clonedCampaignOpt.get().getDescription());
-            toBeInserted.setFromDate(clonedCampaignOpt.get().getFromDate());
-            toBeInserted.setEndDate(clonedCampaignOpt.get().getEndDate());
-            toBeInserted.setCampaignType(clonedCampaignOpt.get().getCampaignType());
-            toBeInserted.setNotes(clonedCampaignOpt.get().getNotes());
-            toBeInserted.setStatus(clonedCampaignOpt.get().getStatus());
-            toBeInserted.setApprovedRejectedBy(clonedCampaignOpt.get().getApprovedRejectedBy());
-            toBeInserted.addTargetLists(clonedCampaignOpt.get().getTargetLists());
-            toBeInserted.addRuleList(clonedCampaignOpt.get().getRuleList());
-            toBeInserted.addGeneratedTimeList(clonedCampaignOpt.get().getGeneratedTimeList());
-            campaignRepository.save(toBeInserted);
+        // clone reward
+        List<Reward> toBeClonedReward = rewardRepository.findAllByCampaignId(clonedCampaignOpt.get().getId());
+        if (!toBeClonedReward.isEmpty()) {
+            List<Reward> toBeSaved = toBeClonedReward.stream().map(reward -> {
+                String rewardClonedName = reward.getName() + Constants.CLONE_POSTFIX;
+                List<Reward> rewardsByName = rewardRepository.findByNameStartsWithIgnoreCase(rewardClonedName);
+                Reward toBeCloned = reward.clone(
+                    ServiceUtils
+                        .clonedFileName(clonedName, rewardsByName.stream().map(Reward::getName).collect(Collectors.toList())));
+                toBeCloned.setCampaignId(toBeInserted.getId());
+                return toBeCloned;
+            }).collect(Collectors.toList());
+            // save reward to db
+            rewardRepository.saveAll(toBeSaved);
+        }
 
-            // clone files
-            if (clonedCampaignOpt.get().getFilesList() != null && !clonedCampaignOpt.get().getFilesList().isEmpty()) {
-                List<File> toBeCloned = clonedCampaignOpt.get().getFilesList().stream()
-                    .map(file -> {
-                        File clonedFile = file.clone();
-                        clonedFile.setCampaign(toBeInserted);
-                        return clonedFile;
-                    })
-                    .collect(Collectors.toList());
-                toBeInserted.addFilesList(toBeCloned);
-            }
+        // clone files
+        if (!clonedCampaignOpt.get().getFilesList().isEmpty()) {
+            List<File> toBeCloned = clonedCampaignOpt.get().getFilesList().stream()
+                .map(file -> {
+                    String clonedFileName = ServiceUtils.getFileName(file.getName());
+                    List<File> filesByName = fileRepository.findByNameIgnoreCase(clonedFileName);
+                    File clonedFile = file.clone(
+                        ServiceUtils
+                            .clonedFileName(clonedFileName, filesByName.stream().map(File::getName).collect(Collectors.toList()))
+                            + ServiceUtils.getFileNameExt(file.getName()));
+                    clonedFile.setCampaign(toBeInserted);
+                    return clonedFile;
+                })
+                .collect(Collectors.toList());
+            fileRepository.saveAll(toBeCloned);
+            // two ways binding
+            toBeInserted.addFilesList(toBeCloned);
         }
 
         return campaignMapper.campaignToCampaignWRelDTO(campaignRepository.save(toBeInserted));

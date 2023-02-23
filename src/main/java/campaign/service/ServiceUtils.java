@@ -69,7 +69,7 @@ public class ServiceUtils {
             return fileNameArr[0] + Constants.CLONE_POSTFIX;
         }
 
-        return fileNameWExt;
+        return fileNameWExt + Constants.CLONE_POSTFIX;
     }
 
     public static Boolean isValidName(String clonedName, String value) {

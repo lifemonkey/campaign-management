@@ -150,7 +150,7 @@ public class RuleService {
             String clonedName = cloneRuleOpt.get().getName() + Constants.CLONE_POSTFIX;
             List<Rule> rulesByName = ruleRepository.findByNameStartsWithIgnoreCase(clonedName);
             toBeInserted.setName(ServiceUtils
-                .clonedCount(clonedName, rulesByName.stream().map(Rule::getName).collect(Collectors.toList())));
+                .clonedFileName(clonedName, rulesByName.stream().map(Rule::getName).collect(Collectors.toList())));
             toBeInserted.setDescription(cloneRuleOpt.get().getDescription());
             toBeInserted.setDurationType(cloneRuleOpt.get().getDurationType());
             toBeInserted.setDurationValue(cloneRuleOpt.get().getDurationValue());
@@ -175,7 +175,7 @@ public class RuleService {
             if (!cloneRuleOpt.get().getTransactionTypes().isEmpty()) {
                 toBeInserted.updateTransactionTypes(cloneRuleOpt.get().getTransactionTypes());
             }
-            
+
             // clone reward conditions
 //            if (!cloneRuleOpt.get().getRewardConditions().isEmpty()) {
 ////                Map<String, String> rewardConditionRewardIdMap = cloneRuleOpt.get().getRewardConditions()

@@ -19,4 +19,6 @@ public interface RewardRepository extends JpaRepository<Reward, Long> {
     Optional<Reward> findByNameIgnoreCase(String name);
 
     List<Reward> findByNameStartsWithIgnoreCase(String name);
+
+    List<Reward> findAllByCampaignId(Long campaignId);
 }
