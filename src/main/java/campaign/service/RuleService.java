@@ -37,7 +37,7 @@ public class RuleService {
 
     private final RewardRepository rewardRepository;
 
-    private final CampaignRepository campaignRepository;
+    private final FileRepository fileRepository;
 
     public RuleService(RuleRepository ruleRepository,
                        TransactionTypeRepository transactionTypeRepository,
@@ -45,7 +45,7 @@ public class RuleService {
                        RewardConditionRepository rewardConditionRepository,
                        RewardConditionMapper rewardConditionMapper,
                        RewardRepository rewardRepository,
-                       CampaignRepository campaignRepository
+                       FileRepository fileRepository
     ) {
         this.ruleRepository = ruleRepository;
         this.transactionTypeRepository = transactionTypeRepository;
@@ -53,7 +53,7 @@ public class RuleService {
         this.rewardConditionRepository = rewardConditionRepository;
         this.rewardConditionMapper = rewardConditionMapper;
         this.rewardRepository = rewardRepository;
-        this.campaignRepository = campaignRepository;
+        this.fileRepository = fileRepository;
     }
 
     @Transactional(readOnly = true)
@@ -146,44 +146,104 @@ public class RuleService {
 
         String clonedName = cloneRuleOpt.get().getName() + Constants.CLONE_POSTFIX;
         List<Rule> rulesByName = ruleRepository.findByNameStartsWithIgnoreCase(clonedName);
-        Rule toBeInserted = cloneRuleOpt.get().clone(
+        Rule toBeInsertedRule = cloneRuleOpt.get().clone(
             ServiceUtils
                 .clonedFileName(clonedName, rulesByName.stream().map(Rule::getName).collect(Collectors.toList())));
         // save rule to db
-        ruleRepository.save(toBeInserted);
+        ruleRepository.save(toBeInsertedRule);
 
         // do not add campaign
         // clone transaction type
         if (!cloneRuleOpt.get().getTransactionTypes().isEmpty()) {
-            toBeInserted.updateTransactionTypes(cloneRuleOpt.get().getTransactionTypes());
+            toBeInsertedRule.updateTransactionTypes(cloneRuleOpt.get().getTransactionTypes());
         }
-/*
 
-        // clone reward conditions and reward
-        if (!cloneRuleOpt.get().getRewardConditions().isEmpty()) {
-//                Map<String, String> rewardConditionRewardIdMap = cloneRuleOpt.get().getRewardConditions()
-//                    .stream().collect(Collectors.toMap(RewardCondition::getRewardName, RewardCondition::hash));
+        // clone reward conditions
+        List<RewardCondition> clonedRewardConditions = cloneRuleOpt.get().getRewardConditions().stream()
+            .map(rewardCondition -> {
+                RewardCondition clonedRewardCondition = rewardCondition.clone();
+                clonedRewardCondition.setRule(toBeInsertedRule);
+                clonedRewardCondition.setReward(rewardCondition.getReward());
+                return clonedRewardCondition;
+            })
+            .collect(Collectors.toList());
 
-            List<Reward> rewardList = cloneRuleOpt.get().getRewardConditions().stream()
+        if (!clonedRewardConditions.isEmpty()) {
+            // two ways binding, add reward conditions to rule
+            rewardConditionRepository.saveAll(clonedRewardConditions);
+            toBeInsertedRule.updateRewardConditions(clonedRewardConditions);
+            Map<Long, String> rewardConditionRewadMap = new HashMap<>();
+
+            // clone reward and re-assign cloned reward to reward conditions
+            Map<String, List<File>> rewardNameFileMap = new HashMap<>();
+            List<Reward> toBeSavedRewards = clonedRewardConditions.stream()
                 .map(rewardCondition -> {
-                    Reward reward = rewardCondition.getReward();
+                    String rewardClonedName = rewardCondition.getReward().getName() + Constants.CLONE_POSTFIX;
+                    List<Reward> rewardsByName = rewardRepository.findByNameStartsWithIgnoreCase(rewardClonedName);
+                    String finalRewardName = ServiceUtils
+                        .clonedFileName(rewardClonedName, rewardsByName.stream().map(Reward::getName).collect(Collectors.toList()));
+                    Reward toBeCloned = rewardCondition.getReward().clone(finalRewardName);
+                    // do not apply campaign
+                    // toBeCloned.setCampaignId(toBeInsertedCampaign.getId());
+                    // TODO add reward to reward conditions;
+                    rewardConditionRewadMap.put(rewardCondition.getId(), finalRewardName);
 
+                    // add file to be cloned
+                    if (rewardNameFileMap.containsKey(finalRewardName)) {
+                        rewardNameFileMap.get(finalRewardName).addAll(rewardCondition.getReward().getFiles());
+                    } else {
+                        rewardNameFileMap.put(finalRewardName, new ArrayList<>(rewardCondition.getReward().getFiles()));
+                    }
+                    return toBeCloned;
                 })
                 .collect(Collectors.toList());
-            // clone rewards
-//                rewardRepository.saveAll(rewardList);
 
-            // clone reward conditions
-            List<RewardCondition> rewardConditions = cloneRuleOpt.get().getRewardConditions().stream()
-                .map(RewardCondition::removeId).collect(Collectors.toList());
-            rewardConditionRepository.saveAll(rewardConditions);
+            // save reward to db
+            rewardRepository.saveAll(toBeSavedRewards);
+            rewardConditionRepository.saveAll(
+                clonedRewardConditions.stream().map(rewardCondition -> {
+                    if (rewardConditionRewadMap.containsKey(rewardCondition.getId())) {
+                        rewardCondition.setReward(toBeSavedRewards.stream()
+                            .filter(reward -> rewardConditionRewadMap.get(rewardCondition.getId()) == reward.getName())
+                            .findFirst().orElse(null));
+                    }
+                    return rewardCondition;
+                }).collect(Collectors.toList()));
 
-            // clone rewards
-            toBeInserted.updateRewardConditions(cloneRuleOpt.get().getRewardConditions());
+            // cloned file of reward
+            if (!toBeSavedRewards.isEmpty()) {
+                List<File> toBeClonedRewardFiles = new ArrayList<>();
+                toBeSavedRewards.stream().forEach(r -> {
+                    if (rewardNameFileMap.containsKey(r.getName())) {
+                        toBeClonedRewardFiles.addAll(
+                            buildSavedFiles(rewardNameFileMap.get(r.getName())).stream()
+                                .map(file -> file.addReward(r))
+                                .collect(Collectors.toList()));
+                    }
+                });
+                // save file to db
+                fileRepository.saveAll(toBeClonedRewardFiles);
+            }
+
+            // save reward conditions after update cloned reward
+            rewardConditionRepository.saveAll(clonedRewardConditions);
         }
-*/
 
-        return ruleMapper.ruleToRuleDTO(ruleRepository.save(toBeInserted));
+        return ruleMapper.ruleToRuleDTO(ruleRepository.save(toBeInsertedRule));
+    }
+
+    private List<File> buildSavedFiles(List<File> fileList) {
+        return fileList.stream()
+            .map(file -> {
+                String clonedFileName = ServiceUtils.getFileName(file.getName());
+                List<File> filesByName = fileRepository.findByNameStartsWithIgnoreCase(clonedFileName);
+                File clonedFile = file.clone(
+                    ServiceUtils
+                        .clonedFileName(clonedFileName, filesByName.stream().map(File::getName).collect(Collectors.toList()))
+                        + ServiceUtils.getFileNameExt(file.getName()));
+                return clonedFile;
+            })
+            .collect(Collectors.toList());
     }
 
     @Transactional(rollbackFor = Exception.class)
