@@ -86,6 +86,7 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
         this.campaignType = campaignType;
         this.notes = notes;
         this.status = status;
+        this.actionReason = actionReason;
         this.approvedRejectedBy = approvedRejectedBy;
     }
 
@@ -236,6 +237,11 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
     public void updateGeneratedTimeList(List<GeneratedTime> generatedTimes) {
         this.generatedTimeList.clear();
         this.generatedTimeList.addAll(generatedTimes);
+    }
+
+    public Campaign clone(String name) {
+        return new Campaign(name, this.description, LocalDateTime.now(), LocalDateTime.now().plusDays(30),
+            this.campaignType, this.notes, this.status, this.actionReason, this.approvedRejectedBy);
     }
 
     @Override

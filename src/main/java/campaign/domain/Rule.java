@@ -52,6 +52,15 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "rule")
     private List<RewardCondition> rewardConditions = new ArrayList<>();
 
+    public Rule(String name, String description, EDuration durationType, String durationValue, Integer ruleConfiguration, Integer campaignType) {
+        this.name = name;
+        this.description = description;
+        this.durationType = durationType;
+        this.durationValue = durationValue;
+        this.ruleConfiguration = ruleConfiguration;
+        this.campaignType = campaignType;
+    }
+
     public Rule() {
         this.name = "Default rule";
     }
@@ -169,6 +178,11 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
         this.rewardConditions.clear();
         return this;
     }
+
+    public Rule clone(String name) {
+        return new Rule(name, this.description, this.durationType, this.durationValue, this.ruleConfiguration, this.campaignType);
+    }
+
     @Override
     public String toString() {
         return "Rule{" +

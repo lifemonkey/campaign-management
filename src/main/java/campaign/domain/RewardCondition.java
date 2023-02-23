@@ -123,6 +123,10 @@ public class RewardCondition extends AbstractAuditingEntity implements Serializa
         this.reward = reward;
     }
 
+    public RewardCondition clone() {
+        return new RewardCondition(this.amountMin, this.amountMax, this.timesMin, this.timesMax, this.numberCodes);
+    }
+
     @Override
     public String toString() {
         return "RewardCondition{" +

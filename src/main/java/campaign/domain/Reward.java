@@ -66,14 +66,13 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
     public Reward() {
     }
 
-    public Reward(String name, String description, Integer prizeType, Integer prizeValue, Integer numOfPrize, Integer released, List<File> files, String messageWinnerEN, String messageWinnerSW, String messageBalanceEN, String messageBalanceSW, Integer level, Long campaignId) {
+    public Reward(String name, String description, Integer prizeType, Integer prizeValue, Integer numOfPrize, Integer released, String messageWinnerEN, String messageWinnerSW, String messageBalanceEN, String messageBalanceSW, Integer level, Long campaignId) {
         this.name = name;
         this.description = description;
         this.prizeType = prizeType;
         this.prizeValue = prizeValue;
         this.numOfPrize = numOfPrize;
         this.released = released;
-        this.files = files;
         this.messageWinnerEN = messageWinnerEN;
         this.messageWinnerSW = messageWinnerSW;
         this.messageBalanceEN = messageBalanceEN;
@@ -218,6 +217,13 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
 
     public void setCampaignId(Long campaignId) {
         this.campaignId = campaignId;
+    }
+
+    public Reward clone(String name) {
+//        List<File> toBeClonedFiles = this.files.stream().map(File::clone).collect(Collectors.toList());
+        return new Reward(name, this.description, this.prizeType, this.prizeValue, this.numOfPrize, this.released,
+            this.messageWinnerEN, this.messageWinnerSW, this.messageBalanceEN, this.messageBalanceSW,
+            this.level, null);
     }
 
     @Override

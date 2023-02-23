@@ -39,6 +39,11 @@ public class TransactionType extends AbstractAuditingEntity implements Serializa
         this.name = name;
     }
 
+    public TransactionType(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public Long getId() {
         return id;
     }
@@ -74,6 +79,10 @@ public class TransactionType extends AbstractAuditingEntity implements Serializa
     public TransactionType clearRuleList() {
         this.ruleList.clear();
         return this;
+    }
+
+    public TransactionType clone(String name) {
+        return new TransactionType(name, this.description);
     }
 
     @Override

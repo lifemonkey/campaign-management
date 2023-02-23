@@ -30,6 +30,17 @@ public class GeneratedTime extends AbstractAuditingEntity implements Serializabl
     @JoinColumn(name = "campaign_id", referencedColumnName = "id")
     private Campaign campaign;
 
+    public GeneratedTime(LocalDateTime startTime, LocalDateTime endTime, Campaign campaign) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.campaign = campaign;
+    }
+
+    public GeneratedTime(LocalDateTime startTime, LocalDateTime endTime) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
     public GeneratedTime() {
     }
 
@@ -68,6 +79,14 @@ public class GeneratedTime extends AbstractAuditingEntity implements Serializabl
     public GeneratedTime removeCampaign() {
         this.campaign = null;
         return this;
+    }
+
+    public GeneratedTime clone() {
+        if (this.campaign != null) {
+            return new GeneratedTime(this.startTime, this.endTime, this.campaign);
+        } else {
+            return new GeneratedTime(this.startTime, this.endTime);
+        }
     }
 
     @Override

@@ -103,6 +103,10 @@ public class TargetList extends AbstractAuditingEntity implements Serializable {
         this.accountList.addAll(accountList);
     }
 
+    public TargetList clone(String name) {
+        return new TargetList(name, this.description, this.targetType);
+    }
+
     @Override
     public String toString() {
         return "TargetList{" +

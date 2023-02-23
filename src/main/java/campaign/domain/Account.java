@@ -66,6 +66,17 @@ public class Account extends AbstractAuditingEntity implements Serializable {
         this.lastname = lastname;
     }
 
+    public Account(String externalId, String firstname, String lastname, String description, String phoneNumber, String address, Integer languageId, LocalDateTime dob) {
+        this.externalId = externalId;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.description = description;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.languageId = languageId;
+        this.dob = dob;
+    }
+
     public Long getId() {
         return id;
     }
@@ -146,6 +157,10 @@ public class Account extends AbstractAuditingEntity implements Serializable {
         this.targetLists = targetLists;
     }
 
+    public Account clone() {
+        return new Account(this.externalId, this.firstname, this.lastname, this.description, this.phoneNumber,
+            this.address, this.languageId, this.dob);
+    }
     @Override
     public String toString() {
         return "Account{" +

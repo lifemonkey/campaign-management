@@ -59,6 +59,12 @@ public class Voucher extends AbstractAuditingEntity implements Serializable {
         this.reward = reward;
     }
 
+    public Voucher(String voucherCode, LocalDateTime startDate, LocalDateTime expiredDate) {
+        this.voucherCode = voucherCode;
+        this.startDate = startDate;
+        this.expiredDate = expiredDate;
+    }
+
     public Long getId() {
         return id;
     }
@@ -102,6 +108,10 @@ public class Voucher extends AbstractAuditingEntity implements Serializable {
     public Voucher removeReward() {
         this.reward = null;
         return this;
+    }
+
+    public Voucher clone() {
+        return new Voucher(this.voucherCode, this.startDate, this.expiredDate);
     }
 
     @Override
