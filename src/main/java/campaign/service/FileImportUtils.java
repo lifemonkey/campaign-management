@@ -1,12 +1,15 @@
 package campaign.service;
 
 import org.apache.commons.csv.CSVFormat;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.time.LocalDateTime;
+import java.util.Iterator;
 
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -52,5 +55,52 @@ public class FileImportUtils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static boolean isCellValueInValid(Iterator<Cell> cellIterator) {
+        boolean isCellInvalid = true;
+
+        while (cellIterator.hasNext()) {
+            Cell cell = cellIterator.next();
+            switch (cell.getColumnIndex()) {
+                case 0:
+                    // No: maximum 10 characters
+                    isCellInvalid = String.valueOf(cell.getNumericCellValue()).length() > 10;
+                    break;
+                case 1:
+                    // Voucher code: Tối đa 10 ký tự
+                    isCellInvalid = cell.getStringCellValue().length() > 10;
+                    break;
+                case 2:
+                case 3:
+                    // Expired date must have format dd/mm/yyyy
+                    // Effective date must have format dd/mm/yyyy
+                    isCellInvalid = !isValidDate(cell.getLocalDateTimeCellValue().toString());
+                    break;
+                case 4:
+                    // Description maximum characters are 200
+                    isCellInvalid = cell.getStringCellValue().length() > 200;
+                    break;
+                default:
+                    break;
+            }
+
+            if (isCellInvalid) break;
+        }
+
+        return isCellInvalid;
+    }
+
+    public static boolean isValidDate(String date) {
+        boolean valid = false;
+        try {
+            LocalDateTime.parse(date);
+            valid = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            valid = false;
+        }
+
+        return valid;
     }
 }

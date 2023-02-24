@@ -13,10 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,6 +53,7 @@ public class FileImportService {
 
     public boolean importExcelFile(MultipartFile multipartFile, boolean overwrite) {
         try {
+            if (!validateExcel(multipartFile.getInputStream())) return false;
             List<Voucher> voucherList = convertVoucherFromWorkBook(multipartFile.getInputStream());
 
             if (!voucherList.isEmpty()) {
@@ -100,7 +98,35 @@ public class FileImportService {
         return null;
     }
 
-   public List<Voucher> convertVoucherFromWorkBook(InputStream inputStream) {
+    public boolean validateExcel(InputStream inputStream) {
+        boolean isValidContent = true;
+        try {
+            // Reading file from local directory
+            XSSFSheet sheet = FileImportUtils.readFile(inputStream);
+
+            // Iterate through each row one by one
+            Iterator<Row> rowIterator = sheet.iterator();
+            // ignore first row
+            if (rowIterator.hasNext()) rowIterator.next();
+            // Till there is an element condition holds true
+            while (rowIterator.hasNext()) {
+                Row row = rowIterator.next();
+                Voucher voucher = new Voucher();
+                // For each row, iterate through all the columns
+                Iterator<Cell> cellIterator = row.cellIterator();
+                if (FileImportUtils.isCellValueInValid(cellIterator)) {
+                    isValidContent = false;
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return isValidContent;
+    }
+
+    public List<Voucher> convertVoucherFromWorkBook(InputStream inputStream) {
 
         try {
             // Reading file from local directory
@@ -109,14 +135,14 @@ public class FileImportService {
             // Iterate through each row one by one
             Iterator<Row> rowIterator = sheet.iterator();
             List<Voucher> voucherList = new ArrayList<>();
-            // Till there is an element condition holds true
+            // ignore first row
             if (rowIterator.hasNext()) rowIterator.next();
+            // Till there is an element condition holds true
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
                 Voucher voucher = new Voucher();
                 // For each row, iterate through all the columns
                 Iterator<Cell> cellIterator = row.cellIterator();
-
                 while (cellIterator.hasNext()) {
                     Cell cell = cellIterator.next();
                     switch (cell.getColumnIndex()) {
@@ -147,6 +173,6 @@ public class FileImportService {
             e.printStackTrace();
         }
 
-        return Arrays.asList();
+        return Collections.emptyList();
     }
 }

@@ -2,6 +2,8 @@ package campaign.web.rest;
 
 import campaign.security.AuthoritiesConstants;
 import campaign.service.FileImportService;
+import campaign.web.rest.vm.ResponseCode;
+import campaign.web.rest.vm.ResponseVM;
 import io.micrometer.core.annotation.Timed;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
@@ -34,9 +36,21 @@ public class FileImportResource {
     @PostMapping("/file/import")
     @Timed
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
-    public ResponseEntity<String> importFile(@RequestParam MultipartFile file,
+    public ResponseEntity<Object> importFile(@RequestParam MultipartFile file,
                                              @RequestParam(required = false) boolean overwrite) {
         String fileExt = FilenameUtils.getExtension(file.getOriginalFilename());
+        if (!fileExt.equalsIgnoreCase("csv")
+            && !fileExt.equalsIgnoreCase("xlsx")
+            && !fileExt.equalsIgnoreCase("xls")
+        ) {
+            return new ResponseEntity<>(new ResponseVM(
+                ResponseCode.RESPONSE_NOT_FOUND,
+                ResponseCode.ERROR_CODE_CAMPAIGN_NOT_FOUND,
+                "File could not be imported. File extension is not supported: " + fileExt),
+                new HttpHeaders(),
+                HttpStatus.OK);
+        }
+
         boolean isImported = false;
         switch (fileExt) {
             case "csv":
@@ -48,7 +62,7 @@ public class FileImportResource {
         }
 
         return new ResponseEntity<> (
-            isImported ? "Import successfully" : "Import failed",
+            isImported ? "Import successfully" : "Invalid format, please check again!",
             new HttpHeaders(),
             HttpStatus.OK);
     }
