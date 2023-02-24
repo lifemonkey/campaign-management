@@ -1,8 +1,6 @@
 package campaign.repository;
 
 import campaign.domain.Rule;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -10,11 +8,11 @@ import java.util.Optional;
 
 public interface RuleRepository extends JpaRepository<Rule, Long> {
 
-    Page<Rule> findAllByNameContainingIgnoreCase(String name, Pageable pageable);
+    List<Rule> findAllByNameContainingIgnoreCase(String name);
 
-    Page<Rule> findAllByCampaignType(Integer campaignType, Pageable pageable);
+    List<Rule> findAllByCampaignType(Integer campaignType);
 
-    Page<Rule> findAllByNameContainingIgnoreCaseAndCampaignType(String name, Integer campaignType, Pageable pageable);
+    List<Rule> findAllByNameContainingIgnoreCaseAndCampaignType(String name, Integer campaignType);
 
     Optional<Rule> findByNameIgnoreCase(String name);
 

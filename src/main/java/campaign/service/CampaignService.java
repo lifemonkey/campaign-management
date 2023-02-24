@@ -95,33 +95,48 @@ public class CampaignService {
 
     @Transactional(readOnly = true)
     public Page<CampaignDTO> searchCampaigns(Pageable pageable, String search, Integer type, Long statusId) {
-        Page<Campaign> campaignList;
+        List<Campaign> campaignList;
 
         if (search != null && type == null) {
-            campaignList = campaignRepository.findAllByNameContainingIgnoreCase(search, pageable);
+            campaignList = campaignRepository.findAllByNameContainingIgnoreCase(search);
         } else if (search == null && type != null) {
-            campaignList = campaignRepository.findAllByCampaignType(type, pageable);
+            campaignList = campaignRepository.findAllByCampaignType(type);
         } else if (search != null && type != null) {
-            campaignList = campaignRepository.findAllByNameContainingIgnoreCaseAndCampaignType(search, type, pageable);
+            campaignList = campaignRepository.findAllByNameContainingIgnoreCaseAndCampaignType(search, type);
         } else {
-            campaignList = campaignRepository.findAll(pageable);
+            campaignList = campaignRepository.findAll();
         }
 
-        if (statusId == null) {
-            return campaignList.map(CampaignDTO::new);
-        }
+        // sort
+        sortResults(pageable, campaignList);
 
         // filter campaign by status
-        return new PageImpl<>(
-            campaignList.stream()
-                .filter(campaign -> {
-                    if (campaign.getStatus() != null && campaign.getStatus().getId() == statusId) {
-                        return true;
-                    }
-                    return false;
-                })
-                .collect(Collectors.toList())
-        ).map(CampaignDTO::new);
+        List<CampaignDTO> filteredList = campaignList.stream()
+            .filter(campaign -> (statusId == null)
+                    || (campaign.getStatus() != null && campaign.getStatus().getId() == statusId))
+            .map(CampaignDTO::new)
+            .collect(Collectors.toList());
+
+        return new PageImpl<>(ServiceUtils.getPageContent(pageable, filteredList), pageable, filteredList.size());
+    }
+
+    private void sortResults(Pageable pageable, List<Campaign> toBeSortedList) {
+        if (pageable.getSort().stream()
+            .filter(sort -> sort.getProperty().toLowerCase() == Constants.SORT_BY_CREATED_DATE).findAny()
+            .isPresent()
+        ) {
+            if (pageable.getSort().stream().filter(sort -> sort.isDescending()).findAny().isPresent()) {
+                Collections.sort(toBeSortedList, Comparator.comparing(Campaign::getCreatedDate).reversed());
+            } else {
+                Collections.sort(toBeSortedList, Comparator.comparing(Campaign::getCreatedDate));
+            }
+        } else {
+            if (pageable.getSort().stream().filter(sort -> sort.isDescending()).findAny().isPresent()) {
+                Collections.sort(toBeSortedList, Comparator.comparing(Campaign::getName).reversed());
+            } else {
+                Collections.sort(toBeSortedList, Comparator.comparing(Campaign::getName));
+            }
+        }
     }
 
     @Transactional(readOnly = true)

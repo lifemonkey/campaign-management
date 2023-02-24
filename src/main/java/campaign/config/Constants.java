@@ -35,4 +35,6 @@ public final class Constants {
     public static final String IMAGE_TYPE_PNG = "png";
     public static final String IMAGE_TYPE_GIF = "gif";
 
+    public static final String SORT_BY_CREATED_DATE = "createddate";
+
 }

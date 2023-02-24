@@ -1,18 +1,11 @@
 package campaign.service;
 
 import campaign.config.Constants;
-import campaign.domain.Campaign;
-import campaign.domain.File;
-import campaign.domain.Reward;
-import campaign.domain.Voucher;
-import campaign.repository.CampaignRepository;
-import campaign.repository.FileRepository;
-import campaign.repository.RewardRepository;
-import campaign.repository.VoucherRepository;
+import campaign.domain.*;
+import campaign.repository.*;
 import campaign.service.dto.CampaignDTO;
 import campaign.service.dto.RewardDTO;
 import campaign.service.dto.VoucherDTO;
-import campaign.service.mapper.FileMapper;
 import campaign.service.mapper.RewardMapper;
 import campaign.service.mapper.VoucherMapper;
 import campaign.web.rest.vm.FileVM;
@@ -40,30 +33,29 @@ public class RewardService {
 
     private final FileRepository fileRepository;
 
-    private final FileMapper fileMapper;
-
     private final VoucherRepository voucherRepository;
 
     private final VoucherMapper voucherMapper;
 
     private final CampaignRepository campaignRepository;
 
+    private final RewardConditionRepository rewardConditionRepository;
+
     public RewardService(RewardRepository rewardRepository,
                          RewardMapper rewardMapper,
                          FileRepository fileRepository,
-                         FileMapper fileMapper,
                          VoucherRepository voucherRepository,
                          VoucherMapper voucherMapper,
-                         CampaignRepository campaignRepository
-    ) {
+                         CampaignRepository campaignRepository,
+                         RewardConditionRepository rewardConditionRepository) {
 
         this.rewardRepository = rewardRepository;
         this.rewardMapper = rewardMapper;
         this.fileRepository = fileRepository;
-        this.fileMapper = fileMapper;
         this.voucherRepository = voucherRepository;
         this.voucherMapper = voucherMapper;
         this.campaignRepository = campaignRepository;
+        this.rewardConditionRepository = rewardConditionRepository;
     }
 
     @Transactional(readOnly = true)
@@ -100,52 +92,77 @@ public class RewardService {
     }
 
     @Transactional(readOnly = true)
-    public Page<RewardDTO> searchRewards(Pageable pageable, String search, Integer type, String appliedCampaign) {
-        Page<Reward> rewardList;
+    public Page<RewardDTO> searchRewards(Pageable pageable, String search, Integer type, String appliedCampaign, boolean appliedRule) {
+        List<Reward> rewardList;
 
         if (search != null && type == null) {
-            rewardList = rewardRepository.findAllByNameContainingIgnoreCase(search, pageable);
+            rewardList = rewardRepository.findAllByNameContainingIgnoreCase(search);
         } else if (search == null && type != null) {
-            rewardList = rewardRepository.findAllByPrizeType(type, pageable);
+            rewardList = rewardRepository.findAllByPrizeType(type);
         } else if (search != null && type != null) {
-            rewardList = rewardRepository.findAllByNameContainingIgnoreCaseAndPrizeType(search, type, pageable);
+            rewardList = rewardRepository.findAllByNameContainingIgnoreCaseAndPrizeType(search, type);
         } else {
-            rewardList = rewardRepository.findAll(pageable);
+            rewardList = rewardRepository.findAll();
         }
 
-        // get applied campaigns
-        Map<Long, CampaignDTO> appliedCampaigns = appliedCampaigns(rewardList.toList());
+        // sort
+        sortResults(pageable, rewardList);
 
-        if (appliedCampaign == null || appliedCampaign.isEmpty() || appliedCampaign.equalsIgnoreCase("all")) {
-            return rewardList.map(reward -> {
+        // get applied campaigns
+        Map<Long, CampaignDTO> appliedCampaigns = appliedCampaigns(rewardList);
+
+        // get list rewards that applied rule
+        Set<Long> rewardAppliedRuleIds = appliedRule
+            ? rewardConditionRepository.findAll().stream().map(rc -> rc.getReward().getId()).collect(Collectors.toSet())
+            : Collections.emptySet();
+
+        List<RewardDTO> filteredList = rewardList.stream()
+            .filter(reward -> {
+                if (appliedCampaign == null || appliedCampaign.isEmpty()
+                    || appliedCampaign.equalsIgnoreCase("all")
+                ) {
+                    return true;
+                }
+
+                // filter for appliedCampaign is none
+                if (appliedCampaign.equalsIgnoreCase("none")) {
+                    return reward.getCampaignId() == null;
+                } else if (reward.getCampaignId() != null && appliedCampaigns.containsKey(reward.getCampaignId())) {
+                    // filter for specific appliedCampaign name
+                    CampaignDTO rewardCampaign = appliedCampaigns.get(reward.getCampaignId());
+                    return rewardCampaign.getName().toLowerCase().contains(appliedCampaign.toLowerCase());
+                }
+
+                return false;
+            }).filter(reward -> rewardAppliedRuleIds.isEmpty() || !rewardAppliedRuleIds.contains(reward.getId()))
+            .map(reward -> {
                 RewardDTO rewardDTO = new RewardDTO(reward);
                 rewardDTO.setAppliedCampaign(appliedCampaigns.get(reward.getCampaignId()));
                 return rewardDTO;
-            });
-        }
+            })
+            .collect(Collectors.toList());
 
         // applied campaign: campaign details
-        return new PageImpl<>(
-            rewardList.stream()
-                .filter(reward -> {
-                    // filter for appliedCampaign is none
-                    if (appliedCampaign.equalsIgnoreCase("none")) {
-                        return reward.getCampaignId() == null;
-                    }
-                    // filter for specific appliedCampaign name
-                    if (reward.getCampaignId() != null && appliedCampaigns.containsKey(reward.getCampaignId())) {
-                        CampaignDTO rewardCampaign = appliedCampaigns.get(reward.getCampaignId());
-                        return rewardCampaign.getName().toLowerCase().contains(appliedCampaign.toLowerCase());
-                    }
+        return new PageImpl<>(ServiceUtils.getPageContent(pageable, filteredList) , pageable, filteredList.size());
+    }
 
-                    return false;
-                })
-                .collect(Collectors.toList()), rewardList.getPageable(), rewardList.getTotalElements()
-        ).map(reward -> {
-            RewardDTO rewardDTO = new RewardDTO(reward);
-            rewardDTO.setAppliedCampaign(appliedCampaigns.get(reward.getCampaignId()));
-            return rewardDTO;
-        });
+    private void sortResults(Pageable pageable, List<Reward> toBeSortedList) {
+        if (pageable.getSort().stream()
+            .filter(sort -> sort.getProperty().toLowerCase() == Constants.SORT_BY_CREATED_DATE).findAny()
+            .isPresent()
+        ) {
+            if (pageable.getSort().stream().filter(sort -> sort.isDescending()).findAny().isPresent()) {
+                Collections.sort(toBeSortedList, Comparator.comparing(Reward::getCreatedDate).reversed());
+            } else {
+                Collections.sort(toBeSortedList, Comparator.comparing(Reward::getCreatedDate));
+            }
+        } else {
+            if (pageable.getSort().stream().filter(sort -> sort.isDescending()).findAny().isPresent()) {
+                Collections.sort(toBeSortedList, Comparator.comparing(Reward::getName).reversed());
+            } else {
+                Collections.sort(toBeSortedList, Comparator.comparing(Reward::getName));
+            }
+        }
     }
 
     private Map<Long, CampaignDTO> appliedCampaigns(List<Reward> rewardList) {

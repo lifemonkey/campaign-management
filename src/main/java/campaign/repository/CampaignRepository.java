@@ -2,8 +2,6 @@ package campaign.repository;
 
 import campaign.domain.Campaign;
 import campaign.domain.Status;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,11 +11,11 @@ import java.util.Optional;
 @Repository
 public interface CampaignRepository extends JpaRepository<Campaign, Long> {
 
-    Page<Campaign> findAllByNameContainingIgnoreCase(String name, Pageable pageable);
+    List<Campaign> findAllByNameContainingIgnoreCase(String name);
 
-    Page<Campaign> findAllByCampaignType(Integer campaignType, Pageable pageable);
+    List<Campaign> findAllByCampaignType(Integer campaignType);
 
-    Page<Campaign> findAllByNameContainingIgnoreCaseAndCampaignType(String name, Integer campaignType, Pageable pageable);
+    List<Campaign> findAllByNameContainingIgnoreCaseAndCampaignType(String name, Integer campaignType);
 
     List<Campaign> findAllByStatus(Status status);
 

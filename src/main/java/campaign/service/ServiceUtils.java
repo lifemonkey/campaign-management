@@ -1,7 +1,9 @@
 package campaign.service;
 
 import campaign.config.Constants;
+import campaign.domain.Reward;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.data.domain.Pageable;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -95,5 +97,18 @@ public class ServiceUtils {
             || Constants.IMAGE_TYPE_PNG.contains(fileExt)
             || Constants.IMAGE_TYPE_GIF.contains(fileExt);
 
+    }
+
+    public static <T> List<T> getPageContent(Pageable pageable, List<T> targetList) {
+
+        // Collections.sort();
+
+        // slice result list
+        int start = (int)pageable.getOffset() * pageable.getPageSize();
+        int end = (targetList.size() > ((pageable.getOffset() + 1) * pageable.getPageSize()))
+            ? pageable.getPageSize()
+            : targetList.size();
+
+        return (end > start) ? targetList.subList(start, end) : Collections.emptyList();
     }
 }

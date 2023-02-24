@@ -45,9 +45,10 @@ public class RewardResource {
         Pageable pageable,
         @RequestParam(required = false) String search,
         @RequestParam(required = false) Integer type,
-        @RequestParam(required = false) String appliedCampaign
+        @RequestParam(required = false) String appliedCampaign,
+        @RequestParam(required = false) boolean appliedRule
     ) {
-        Page<RewardDTO> page = rewardService.searchRewards(pageable, search, type, appliedCampaign);
+        Page<RewardDTO> page = rewardService.searchRewards(pageable, search, type, appliedCampaign, appliedRule);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/reward-conditions");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

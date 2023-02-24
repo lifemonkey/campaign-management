@@ -73,37 +73,63 @@ public class RuleService {
 
     @Transactional(readOnly = true)
     public Page<RuleDTO> searchRules(Pageable pageable, String search, String appliedCampaign, Integer campaignType) {
-        Page<Rule> ruleList;
+        List<Rule> ruleList;
 
         if (search != null && campaignType == null) {
-            ruleList = ruleRepository.findAllByNameContainingIgnoreCase(search, pageable);
+            ruleList = ruleRepository.findAllByNameContainingIgnoreCase(search);
         } else if (search == null && campaignType != null) {
-            ruleList = ruleRepository.findAllByCampaignType(campaignType, pageable);
+            ruleList = ruleRepository.findAllByCampaignType(campaignType);
         } else if (search != null && campaignType != null) {
-            ruleList = ruleRepository.findAllByNameContainingIgnoreCaseAndCampaignType(search, campaignType, pageable);
+            ruleList = ruleRepository.findAllByNameContainingIgnoreCaseAndCampaignType(search, campaignType);
         } else {
-            ruleList = ruleRepository.findAll(pageable);
+            ruleList = ruleRepository.findAll();
         }
 
-        if (appliedCampaign == null || appliedCampaign.isEmpty() || appliedCampaign.equalsIgnoreCase("all")) {
-            return ruleList.map(RuleDTO::new);
-        }
+        // sort
+        sortResults(pageable, ruleList);
 
         // applied campaign: All, None, Campaign-name
-        return new PageImpl<>(
-            ruleList.stream()
-                .filter(rule -> {
-                    // filter for appliedCampaign is none
-                    if (appliedCampaign.equalsIgnoreCase("none")) {
-                        return rule.getCampaignList().isEmpty();
-                    }
+        List<RuleDTO> filteredList = ruleList.stream()
+            .filter(rule -> {
+                if (appliedCampaign == null || appliedCampaign.isEmpty()
+                    | appliedCampaign.equalsIgnoreCase("all")
+                ) {
+                    return true;
+                }
+
+                // filter for appliedCampaign is none
+                if (appliedCampaign.equalsIgnoreCase("none")) {
+                    return rule.getCampaignList().isEmpty();
+                } else {
                     // filter for specific appliedCampaign name
                     return rule.getCampaignList().stream()
                         .filter(campaign -> campaign.getName().toLowerCase().contains(appliedCampaign.toLowerCase()))
                         .findAny().isPresent();
-                })
-                .collect(Collectors.toList()), ruleList.getPageable(), ruleList.getTotalElements()
-        ).map(RuleDTO::new);
+                }
+            })
+            .map(RuleDTO::new)
+            .collect(Collectors.toList());
+
+        return new PageImpl<>(ServiceUtils.getPageContent(pageable, filteredList) , pageable, filteredList.size());
+    }
+
+    private void sortResults(Pageable pageable, List<Rule> toBeSortedList) {
+        if (pageable.getSort().stream()
+            .filter(sort -> sort.getProperty().toLowerCase() == Constants.SORT_BY_CREATED_DATE).findAny()
+            .isPresent()
+        ) {
+            if (pageable.getSort().stream().filter(sort -> sort.isDescending()).findAny().isPresent()) {
+                Collections.sort(toBeSortedList, Comparator.comparing(Rule::getCreatedDate).reversed());
+            } else {
+                Collections.sort(toBeSortedList, Comparator.comparing(Rule::getCreatedDate));
+            }
+        } else {
+            if (pageable.getSort().stream().filter(sort -> sort.isDescending()).findAny().isPresent()) {
+                Collections.sort(toBeSortedList, Comparator.comparing(Rule::getName).reversed());
+            } else {
+                Collections.sort(toBeSortedList, Comparator.comparing(Rule::getName));
+            }
+        }
     }
 
     @Transactional(rollbackFor = Exception.class)
