@@ -155,7 +155,26 @@ public class RewardResource {
     @DeleteMapping("/reward/{id}")
     @Timed
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
-    public ResponseEntity<String> deleteReward(@Valid @PathVariable Long id) {
+    public ResponseEntity<Object> deleteReward(@Valid @PathVariable Long id) {
+        RewardDTO rewardDTO = rewardService.getRewardById(id);
+        if (rewardDTO.getId() == null) {
+            return new ResponseEntity<> (new ResponseVM(
+                ResponseCode.RESPONSE_NOT_FOUND,
+                ResponseCode.ERROR_CODE_REWARD_NOT_FOUND,
+                "Reward ID:" + id + " not found!"),
+                new HttpHeaders(),
+                HttpStatus.OK);
+        }
+        // not allow to delete rule with appliedCampaign
+        if (rewardDTO.getAppliedCampaign() != null || rewardService.hasAppliedRule(id)) {
+            return new ResponseEntity<> (new ResponseVM(
+                ResponseCode.RESPONSE_NOT_FOUND,
+                ResponseCode.ERROR_CODE_REWARD_CANNOT_BE_DELETED,
+                "Could not delete appliedCampaign / appliedRule prizeId:" + id + ""),
+                new HttpHeaders(),
+                HttpStatus.OK);
+        }
+
         rewardService.deleteReward(id);
         return new ResponseEntity<> ("Delete successfully", new HttpHeaders(), HttpStatus.OK);
     }

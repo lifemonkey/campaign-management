@@ -89,6 +89,12 @@ public class CampaignService {
     }
 
     @Transactional(readOnly = true)
+    public boolean isPendingForApproval(Long campaignId) {
+        Optional<Campaign> campaignOpt = campaignRepository.findById(campaignId);
+        return campaignOpt.get().getStatus().getName() == Constants.PENDING_APPROVE_STATUS;
+    }
+
+    @Transactional(readOnly = true)
     public Boolean campaignNameExisted(String name) {
         return campaignRepository.findByNameIgnoreCase(name).isPresent();
     }
@@ -405,7 +411,6 @@ public class CampaignService {
             campaign.setStatus(null);
             campaign.setApprovedRejectedBy(null);
             campaign.clearTargetLists();
-            campaign.clearRuleList();
             campaignRepository.save(campaign);
             campaignRepository.delete(campaign);
         }

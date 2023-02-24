@@ -70,6 +70,14 @@ public class RewardService {
         return new RewardDTO();
     }
 
+    public boolean hasAppliedRule(Long rewardId) {
+        // get list rewards that applied rule
+        Optional<RewardCondition> rewardConditionOpt = rewardConditionRepository.findAll().stream()
+            .filter(rc -> rc.getReward().getId() == rewardId)
+            .findAny();
+        return rewardConditionOpt == null || rewardConditionOpt.isPresent();
+    }
+
     private CampaignDTO appliedCampaign(Reward reward) {
         if (reward.getCampaignId() != null) {
             Optional<Campaign> campaignOpt = campaignRepository.findById(reward.getCampaignId());
@@ -310,7 +318,7 @@ public class RewardService {
     @Transactional(rollbackFor = Exception.class)
     public void deleteReward(Long id) {
         Optional<Reward> rewardOpt = rewardRepository.findById(id);
-        if (rewardOpt.isPresent() && rewardOpt.get().getCampaignId() != null) {
+        if (rewardOpt.isPresent() && rewardOpt.get().getCampaignId() == null) {
             Reward reward = rewardOpt.get();
             rewardRepository.delete(reward);
         }

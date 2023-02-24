@@ -160,7 +160,27 @@ public class CampaignResource {
     @DeleteMapping("/campaign/{id}")
     @Timed
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
-    public ResponseEntity<String> deleteCampaign(@Valid @PathVariable Long id) {
+    public ResponseEntity<Object> deleteCampaign(@Valid @PathVariable Long id) {
+        CampaignWRelDTO campaignDTO = campaignService.getCampaignById(id);
+        if (campaignDTO.getId() == null) {
+            return new ResponseEntity<>(new ResponseVM(
+                ResponseCode.RESPONSE_NOT_FOUND,
+                ResponseCode.ERROR_CODE_CAMPAIGN_NOT_FOUND,
+                "Campaign ID:" + id + " not found!"),
+                new HttpHeaders(),
+                HttpStatus.OK);
+        }
+
+        // only allow to delete campaign with status is Pending Approval
+        if (campaignService.isPendingForApproval(id)) {
+            return new ResponseEntity<>(new ResponseVM(
+                ResponseCode.RESPONSE_NOT_FOUND,
+                ResponseCode.ERROR_CODE_CAMPAIGN_NOT_FOUND,
+                "Only Pending Approval campaign can be deleted. CampaignID:" + id + " could not be deleted!"),
+                new HttpHeaders(),
+                HttpStatus.OK);
+        }
+
         campaignService.deleteCampaign(id);
         return new ResponseEntity<> ("Delete successfully", new HttpHeaders(), HttpStatus.OK);
     }

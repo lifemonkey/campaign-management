@@ -1,5 +1,6 @@
 package campaign.web.rest;
 
+import campaign.domain.Rule;
 import campaign.security.AuthoritiesConstants;
 import campaign.service.RuleService;
 import campaign.service.dto.RuleDTO;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -156,7 +158,27 @@ public class RuleResource {
     @DeleteMapping("/rule/{id}")
     @Timed
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
-    public ResponseEntity<String> deleteRule(@Valid @PathVariable Long id) {
+    public ResponseEntity<Object> deleteRule(@Valid @PathVariable Long id) {
+        RuleDTO rule = ruleService.getRuleById(id);
+        if (rule.getId() == null) {
+            return new ResponseEntity<> (new ResponseVM(
+                ResponseCode.RESPONSE_NOT_FOUND,
+                ResponseCode.ERROR_CODE_RULE_NOT_FOUND,
+                "Rule ID:" + id + " not found!"),
+                new HttpHeaders(),
+                HttpStatus.OK);
+        }
+
+        // not allow to delete rule with appliedCampaign
+        if (!rule.getAppliedCampaigns().isEmpty()) {
+            return new ResponseEntity<> (new ResponseVM(
+                ResponseCode.RESPONSE_WRONG_PARAM,
+                ResponseCode.ERROR_CODE_RULE_CANNOT_BE_DELETED,
+                "Could not delete appliedCampaign ruleId:" + id + ""),
+                new HttpHeaders(),
+                HttpStatus.OK);
+        }
+
         ruleService.deleteRule(id);
         return new ResponseEntity<> ("Delete successfully", new HttpHeaders(), HttpStatus.OK);
     }
