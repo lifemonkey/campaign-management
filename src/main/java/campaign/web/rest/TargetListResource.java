@@ -88,7 +88,7 @@ public class TargetListResource {
      */
     @PostMapping("/target-list")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<Object> createTargetList(@RequestBody TargetListVM targetListVM) {
         // validate request params
         if (targetListVM.getName() == null || targetListVM.getName().isEmpty()) {
@@ -112,7 +112,7 @@ public class TargetListResource {
      */
     @PutMapping("/target-list/{id}")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<Object> updateTargetList(@Validated @PathVariable Long id, @RequestBody TargetListVM targetListVM) {
         TargetListDTO targetList = targetListService.getTargetListById(id);
         if (targetList.getId() != null) {
@@ -136,7 +136,7 @@ public class TargetListResource {
      */
     @DeleteMapping("/target-list/{id}")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<String> updateTargetList(@Validated @PathVariable Long id) {
         targetListService.deleteTargetList(id);
         return new ResponseEntity<> ("Delete successfully", new HttpHeaders(), HttpStatus.OK);

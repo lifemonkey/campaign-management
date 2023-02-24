@@ -87,7 +87,7 @@ public class CampaignResource {
      */
     @PostMapping("/campaign")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<Object> createCampaign(@RequestBody CampaignVM campaignVM) {
         // validate request params
         if (campaignVM.getName() == null || campaignVM.getName().isEmpty()) {
@@ -122,7 +122,7 @@ public class CampaignResource {
      */
     @PostMapping("/campaign/clone")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<CampaignWRelDTO> cloneCampaign(@RequestParam Long id) {
         return new ResponseEntity<> (campaignService.cloneCampaign(id), new HttpHeaders(), HttpStatus.OK);
     }
@@ -135,7 +135,7 @@ public class CampaignResource {
      */
     @PutMapping("/campaign/{id}")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<Object> updateCampaign(@Valid @PathVariable Long id, @RequestBody CampaignVM campaignVM) {
         CampaignWRelDTO campaign = campaignService.getCampaignById(id);
         if (campaign.getId() == null) {
@@ -159,7 +159,7 @@ public class CampaignResource {
      */
     @DeleteMapping("/campaign/{id}")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<String> deleteCampaign(@Valid @PathVariable Long id) {
         campaignService.deleteCampaign(id);
         return new ResponseEntity<> ("Delete successfully", new HttpHeaders(), HttpStatus.OK);
@@ -199,7 +199,7 @@ public class CampaignResource {
      */
     @PostMapping("/campaign/{id}/toggle-on")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<String> toggleOnCampaign(@Valid @PathVariable Long id) {
         return new ResponseEntity<> (campaignService.toggleOnCampaign(id), new HttpHeaders(), HttpStatus.OK);
     }
@@ -216,7 +216,7 @@ public class CampaignResource {
      */
     @PostMapping("/campaign/{id}/toggle-off")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<String> toggleOffCampaign(@Valid @PathVariable Long id, @RequestBody ActionCampaignVM actionCampaignVM) {
         return new ResponseEntity<> (campaignService.toggleOffCampaign(id, actionCampaignVM), new HttpHeaders(), HttpStatus.OK);
     }

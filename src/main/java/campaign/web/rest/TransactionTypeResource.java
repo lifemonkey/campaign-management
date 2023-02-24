@@ -86,7 +86,7 @@ public class TransactionTypeResource {
      */
     @PostMapping("/transaction-type")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<Object> createTransactionType(@RequestBody TransactionTypeVM transactionTypeVM) {
         // validate request params
         if (transactionTypeVM.getName() == null || transactionTypeVM.getName().isEmpty()) {
@@ -110,7 +110,7 @@ public class TransactionTypeResource {
      */
     @PostMapping("/transaction-type/clone")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<TransactionTypeDTO> cloneTransactionType(@RequestParam Long id) {
         return new ResponseEntity<> (transactionTypeService.cloneTransactionType(id), new HttpHeaders(), HttpStatus.OK);
     }
@@ -123,7 +123,7 @@ public class TransactionTypeResource {
      */
     @PutMapping("/transaction-type/{id}")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<Object> updateTransactionType(@Valid @PathVariable Long id, @RequestBody TransactionTypeVM transactionTypeVM) {
         TransactionTypeDTO transactionType = transactionTypeService.getTransactionById(id);
         if (transactionType.getId() != null) {
@@ -147,7 +147,7 @@ public class TransactionTypeResource {
      */
     @DeleteMapping("/transaction-type/{id}")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<String> deleteRule(@Valid @PathVariable Long id) {
         transactionTypeService.deleteTransactionType(id);
         return new ResponseEntity<> ("Delete successfully", new HttpHeaders(), HttpStatus.OK);

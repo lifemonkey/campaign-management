@@ -114,7 +114,7 @@ public class FileResource {
      */
     @PostMapping("/file/upload")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<FileDTO> uploadFile(@RequestParam MultipartFile file,
                                              @RequestParam(required = false) String description,
                                              @RequestParam(required = false) Integer type) {
@@ -129,7 +129,7 @@ public class FileResource {
      */
     @PostMapping("/files/upload")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<List<FileDTO>> uploadFiles(@RequestParam MultipartFile[] files,
                                                      @RequestParam(required = false) String description,
                                                      @RequestParam(required = false) Integer type) {
@@ -145,7 +145,7 @@ public class FileResource {
      */
     @PutMapping("/file/{id}/campaign/{campaignId}")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<FileDTO> updateFileCampaign(@Valid @PathVariable Long id, @Valid @PathVariable Long campaignId) {
         return new ResponseEntity<> (fileService.updateFileCampaign(id, campaignId), new HttpHeaders(), HttpStatus.OK);
     }
@@ -159,7 +159,7 @@ public class FileResource {
      */
     @PutMapping("/file/{id}/reward/{rewardId}")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<FileDTO> updateFileReward(@Valid @PathVariable Long id, @Valid @PathVariable Long rewardId) {
         return new ResponseEntity<> (fileService.updateFileReward(id, rewardId), new HttpHeaders(), HttpStatus.OK);
     }
@@ -172,7 +172,7 @@ public class FileResource {
      */
     @DeleteMapping("/file/{id}")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<String> deleteFile(@Valid @PathVariable Long id) {
         fileService.deleteFile(id);
         return new ResponseEntity<> ("Delete successfully", new HttpHeaders(), HttpStatus.OK);

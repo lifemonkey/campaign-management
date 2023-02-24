@@ -78,7 +78,7 @@ public class GeneratedTimeResource {
      */
     @PostMapping("/generated-time")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<Object> createGeneratedTime(@RequestBody GeneratedTimeVM generatedTimeVM) {
         // validate request params
         if (generatedTimeVM.getStartTime() == null || generatedTimeVM.getEndTime() == null) {
@@ -102,7 +102,7 @@ public class GeneratedTimeResource {
      */
     @PostMapping("/generated-time/clone")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<GeneratedTimeDTO> cloneGeneratedTime(@RequestParam Long id) {
         return new ResponseEntity<> (generatedTimeService.cloneGeneratedTime(id), new HttpHeaders(), HttpStatus.OK);
     }
@@ -115,7 +115,7 @@ public class GeneratedTimeResource {
      */
     @PutMapping("/generated-time/{id}")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<Object> updateGeneratedTime(@Valid @PathVariable Long id, @RequestBody GeneratedTimeVM generatedTimeVM) {
         GeneratedTimeDTO generatedTimeDTO = generatedTimeService.getGeneratedTimeById(id);
         if (generatedTimeDTO.getId() == null) {

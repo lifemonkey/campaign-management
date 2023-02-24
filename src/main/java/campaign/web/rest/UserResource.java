@@ -41,7 +41,7 @@ public class UserResource {
      */
     @GetMapping("/users")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<List<UserDTO>> getAllUsers(
         Pageable pageable,
         @RequestParam(required = false) String search
@@ -64,7 +64,7 @@ public class UserResource {
      */
     @GetMapping("/user/{id}")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<Object> getUserById(@Valid @PathVariable Long id) {
         UserDTO user = userService.getUserById(id);
         if (user != null) {
@@ -85,7 +85,7 @@ public class UserResource {
      */
     @GetMapping("/users/roles")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public List<String> getRoles() {
         return userService.getRoles();
     }

@@ -83,7 +83,7 @@ public class RuleResource {
      */
     @PostMapping("/rule")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<Object> createRule(@RequestBody RuleVM ruleVM) {
         // validate request params
         if (ruleVM.getName() == null || ruleVM.getName().isEmpty()) {
@@ -118,7 +118,7 @@ public class RuleResource {
      */
     @PostMapping("/rule/clone")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<RuleDTO> cloneRule(@RequestParam Long id) {
         return new ResponseEntity<> (ruleService.cloneRule(id), new HttpHeaders(), HttpStatus.OK);
     }
@@ -131,7 +131,7 @@ public class RuleResource {
      */
     @PutMapping("/rule/{id}")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<Object> updateCampaign(@Valid @PathVariable Long id, @RequestBody RuleVM ruleVM) {
         RuleDTO rule = ruleService.getRuleById(id);
         if (rule.getId() == null) {
@@ -155,7 +155,7 @@ public class RuleResource {
      */
     @DeleteMapping("/rule/{id}")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<String> deleteRule(@Valid @PathVariable Long id) {
         ruleService.deleteRule(id);
         return new ResponseEntity<> ("Delete successfully", new HttpHeaders(), HttpStatus.OK);

@@ -85,7 +85,7 @@ public class RewardConditionResource {
      */
     @PostMapping("/reward-condition")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<RewardConditionDTO> createRewardCondition(@RequestBody RewardConditionVM rewardConditionVM) {
         return new ResponseEntity<> (rewardConditionService.createRewardCondition(rewardConditionVM), new HttpHeaders(), HttpStatus.OK);
     }
@@ -98,7 +98,7 @@ public class RewardConditionResource {
      */
     @PostMapping("/reward-condition/clone")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<RewardConditionDTO> cloneRewardCondition(@RequestParam Long id) {
         return new ResponseEntity<> (rewardConditionService.cloneRewardCondition(id), new HttpHeaders(), HttpStatus.OK);
     }
@@ -111,7 +111,7 @@ public class RewardConditionResource {
      */
     @PutMapping("/reward-condition/{id}")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.FIN_STAFF + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<Object> updateRewardCondition(@Valid @PathVariable Long id, @RequestBody RewardConditionVM rewardConditionVM) {
         RewardConditionDTO rewardConditionDTO = rewardConditionService.getRewardConditionById(id);
         if (rewardConditionDTO.getId() == null) {
@@ -123,7 +123,7 @@ public class RewardConditionResource {
                 new HttpHeaders(),
                 HttpStatus.NOT_FOUND);
         }
-        
+
         return new ResponseEntity<>(rewardConditionService.updateRewardCondition(id, rewardConditionVM), new HttpHeaders(), HttpStatus.OK);
     }
 
@@ -135,7 +135,7 @@ public class RewardConditionResource {
      */
     @DeleteMapping("/reward-condition/{id}")
     @Timed
-    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "')")
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<String> deleteRewardCondition(@Valid @PathVariable Long id) {
         rewardConditionService.deleteRewardCondition(id);
         return new ResponseEntity<> ("Delete successfully", new HttpHeaders(), HttpStatus.OK);
