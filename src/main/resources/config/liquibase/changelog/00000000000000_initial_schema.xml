@@ -150,7 +150,7 @@
             <column name="notes" type="varchar(4000)"/>
             <column name="action_reason" type="varchar(400)"/>
             <column name="is_template" type="boolean" defaultValueBoolean="false"/>
-            
+
             <!-- constraints -->
             <column name="status_id" type="bigint"/>
             <column name="approved_rejected_by" type="bigint"/>
@@ -231,6 +231,11 @@
             </column>
             <column name="name" type="varchar(200)" />
             <column name="description" type="varchar(4000)"/>
+            <column name="external_id" type="varchar(200)"/>
+            <column name="status" type="bigint" />
+            <column name="trans_type_english" type="varchar(200)" />
+            <column name="trans_type_swahili" type="varchar(200)" />
+
             <!-- Auditing fields -->
             <column name="created_by" type="varchar(50)">
                 <constraints nullable="false"/>

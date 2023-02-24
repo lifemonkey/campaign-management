@@ -29,6 +29,18 @@ public class TransactionType extends AbstractAuditingEntity implements Serializa
     @Column(name = "description", length = 4000)
     private String description;
 
+    @Column(name = "external_id", length = 25)
+    private String externalId;
+
+    @Column(name = "status", length = 25)
+    private Integer status;
+
+    @Column(name = "trans_type_english", length = 200)
+    private String transTypeEN;
+
+    @Column(name = "trans_type_swahili", length = 200)
+    private String transTypeSW;
+
     @ManyToMany(mappedBy = "transactionTypes", fetch = FetchType.LAZY)
     List<Rule> ruleList = new ArrayList<>();
 
@@ -39,9 +51,13 @@ public class TransactionType extends AbstractAuditingEntity implements Serializa
         this.name = name;
     }
 
-    public TransactionType(String name, String description) {
+    public TransactionType(String name, String description, String externalId, Integer status, String transTypeEN, String transTypeSW) {
         this.name = name;
         this.description = description;
+        this.externalId = externalId;
+        this.status = status;
+        this.transTypeEN = transTypeEN;
+        this.transTypeSW = transTypeSW;
     }
 
     public Long getId() {
@@ -68,6 +84,38 @@ public class TransactionType extends AbstractAuditingEntity implements Serializa
         this.description = description;
     }
 
+    public String getExternalId() {
+        return externalId;
+    }
+
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getTransTypeEN() {
+        return transTypeEN;
+    }
+
+    public void setTransTypeEN(String transTypeEN) {
+        this.transTypeEN = transTypeEN;
+    }
+
+    public String getTransTypeSW() {
+        return transTypeSW;
+    }
+
+    public void setTransTypeSW(String transTypeSW) {
+        this.transTypeSW = transTypeSW;
+    }
+
     public List<Rule> getRuleList() {
         return ruleList;
     }
@@ -82,7 +130,7 @@ public class TransactionType extends AbstractAuditingEntity implements Serializa
     }
 
     public TransactionType clone(String name) {
-        return new TransactionType(name, this.description);
+        return new TransactionType(name, this.description, this.externalId, this.status, this.transTypeEN, this.transTypeSW);
     }
 
     @Override
@@ -91,6 +139,10 @@ public class TransactionType extends AbstractAuditingEntity implements Serializa
             "id=" + id +
             ", name='" + name + '\'' +
             ", description='" + description + '\'' +
+            ", externalId='" + externalId + '\'' +
+            ", status=" + status +
+            ", transTypeEN='" + transTypeEN + '\'' +
+            ", transTypeSW='" + transTypeSW + '\'' +
             '}';
     }
 }

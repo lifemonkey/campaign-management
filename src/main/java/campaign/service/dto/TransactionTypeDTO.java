@@ -12,6 +12,14 @@ public class TransactionTypeDTO {
 
     private String description;
 
+    private String externalId;
+
+    private Integer status;
+
+    private String transTypeEN;
+
+    private String transTypeSW;
+
     private String createdBy;
 
     private LocalDateTime createdDate;
@@ -27,6 +35,11 @@ public class TransactionTypeDTO {
         this.id = transactionType.getId();
         this.name = transactionType.getName();
         this.description = transactionType.getDescription();
+        this.externalId = transactionType.getExternalId();
+        this.status = transactionType.getStatus();
+        this.transTypeEN = transactionType.getTransTypeEN();
+        this.transTypeSW = transactionType.getTransTypeSW();
+
         this.createdBy = transactionType.getCreatedBy();
         this.createdDate = transactionType.getCreatedDate();
         if (this.lastModifiedDate != null && this.createdDate != null && this.lastModifiedDate.isAfter(this.createdDate)) {
@@ -95,12 +108,48 @@ public class TransactionTypeDTO {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+    public String getExternalId() {
+        return externalId;
+    }
+
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getTransTypeEN() {
+        return transTypeEN;
+    }
+
+    public void setTransTypeEN(String transTypeEN) {
+        this.transTypeEN = transTypeEN;
+    }
+
+    public String getTransTypeSW() {
+        return transTypeSW;
+    }
+
+    public void setTransTypeSW(String transTypeSW) {
+        this.transTypeSW = transTypeSW;
+    }
+
     @Override
     public String toString() {
         return "TransactionTypeDTO{" +
             "id=" + id +
             ", name='" + name + '\'' +
             ", description='" + description + '\'' +
+            ", externalId='" + externalId + '\'' +
+            ", status=" + status +
+            ", transTypeEN='" + transTypeEN + '\'' +
+            ", transTypeSW='" + transTypeSW + '\'' +
             ", createdBy='" + createdBy + '\'' +
             ", createdDate=" + createdDate +
             ", lastModifiedBy='" + lastModifiedBy + '\'' +

@@ -1,10 +1,7 @@
 package campaign.service.mapper;
 
-import campaign.domain.Rule;
 import campaign.domain.TransactionType;
-import campaign.service.dto.RuleDTO;
 import campaign.service.dto.TransactionTypeDTO;
-import campaign.web.rest.vm.RuleVM;
 import campaign.web.rest.vm.TransactionTypeVM;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +35,10 @@ public class TransactionTypeMapper {
             transactionType.setId(transactionTypeDTO.getId());
             transactionType.setName(transactionTypeDTO.getName());
             transactionType.setDescription(transactionTypeDTO.getDescription());
+            transactionType.setExternalId(transactionTypeDTO.getExternalId());
+            transactionType.setStatus(transactionType.getStatus());
+            transactionType.setTransTypeEN(transactionType.getTransTypeEN());
+            transactionType.setTransTypeSW(transactionTypeDTO.getTransTypeSW());
 
             transactionType.setCreatedBy(transactionTypeDTO.getCreatedBy());
             transactionType.setCreatedDate(transactionTypeDTO.getCreatedDate());
