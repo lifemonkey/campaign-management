@@ -1,4 +1,4 @@
-id;name;description;external_id;status;trans_type_english;trans_type_swahilicreated_by;last_modified_by
-1;Agent activate service;Agent activate service;1,Agent activate service;Wakala kuwezesha huduma;system;system
-2;Bo phan kinh doanh them Merchant,Bo phan kinh doanh them Merchant,1,Business unit adds merchant,Kitengo cha blashara kuongeza mfanyablashara wa jumla;system;system
-3;Bo phan kinh doanh them KHDN,Bo phan kinh doanh them KHDN,1,Business unit adds business customer,Kitengo cha blashara kuongeza Mteja wa blashara;system;system
+id;name;description;external_id;status;trans_type_english;trans_type_swahili;created_by;last_modified_by
+1;Agent activate service;Agent activate service;1;1;Agent activate service;Wakala kuwezesha huduma;system;system
+2;Bo phan kinh doanh them Merchant;Bo phan kinh doanh them Merchant;2;1;Business unit adds merchant;Kitengo cha blashara kuongeza mfanyablashara wa jumla;system;system
+3;Bo phan kinh doanh them KHDN;Bo phan kinh doanh them KHDN;3;1;Business unit adds business customer;Kitengo cha blashara kuongeza Mteja wa blashara;system;system
