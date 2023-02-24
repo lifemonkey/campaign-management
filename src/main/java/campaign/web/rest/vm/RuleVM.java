@@ -22,6 +22,8 @@ public class RuleVM {
 
     private Integer campaignType;
 
+    private boolean isTemplate;
+
     private List<Long> transactionTypes = new ArrayList<>();
 
     private List<RewardConditionVM> rewardConditions = new ArrayList<>();
@@ -88,6 +90,14 @@ public class RuleVM {
 
     public void addRewardConditions(List<RewardConditionVM> rewardConditions) {
         this.rewardConditions.addAll(rewardConditions);
+    }
+
+    public boolean isTemplate() {
+        return isTemplate;
+    }
+
+    public void setTemplate(boolean template) {
+        isTemplate = template;
     }
 
     @Override

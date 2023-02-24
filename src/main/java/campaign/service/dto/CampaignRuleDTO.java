@@ -23,6 +23,8 @@ public class CampaignRuleDTO {
 
     private Integer campaignType;
 
+    private boolean isTemplate;
+
     private String createdBy;
 
     private LocalDateTime createdDate;
@@ -42,6 +44,7 @@ public class CampaignRuleDTO {
         this.durationValue = rule.getDurationValue();
         this.ruleConfiguration = rule.getRuleConfiguration();
         this.campaignType = rule.getCampaignType();
+        this.isTemplate = rule.isTemplate();
         this.createdBy = rule.getCreatedBy();
         this.createdDate = rule.getCreatedDate();
         if (this.lastModifiedDate != null && this.createdDate != null && this.lastModifiedDate.isAfter(this.createdDate)) {
@@ -108,6 +111,14 @@ public class CampaignRuleDTO {
 
     public void setCampaignType(Integer campaignType) {
         this.campaignType = campaignType;
+    }
+
+    public boolean isTemplate() {
+        return isTemplate;
+    }
+
+    public void setTemplate(boolean template) {
+        isTemplate = template;
     }
 
     public String getCreatedBy() {

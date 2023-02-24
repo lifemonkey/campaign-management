@@ -23,6 +23,7 @@ public class CampaignVM {
     private String notes;
 
     private String actionReason;
+    private boolean isTemplate;
 
     private Long statusId;
 
@@ -148,6 +149,14 @@ public class CampaignVM {
 
     public void addGeneratedTimes(List<GeneratedTimeVM> generatedTimes) {
         this.generatedTimes.addAll(generatedTimes);
+    }
+
+    public boolean isTemplate() {
+        return isTemplate;
+    }
+
+    public void setTemplate(boolean template) {
+        isTemplate = template;
     }
 
     @Override

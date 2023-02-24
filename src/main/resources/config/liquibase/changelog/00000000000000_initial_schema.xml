@@ -149,6 +149,8 @@
             <column name="campaign_type" type="int"/>
             <column name="notes" type="varchar(4000)"/>
             <column name="action_reason" type="varchar(400)"/>
+            <column name="is_template" type="boolean" defaultValueBoolean="false"/>
+            
             <!-- constraints -->
             <column name="status_id" type="bigint"/>
             <column name="approved_rejected_by" type="bigint"/>
@@ -251,6 +253,8 @@
             <column name="duration_type" type="varchar(200)"/>
             <column name="duration_value" type="varchar(200)"/>
             <column name="rule_configuration" type="bigint"/>
+            <column name="is_template" type="boolean" defaultValueBoolean="false"/>
+
             <!-- constraints -->
             <column name="campaign_type" type="int"/>
             <!-- Auditing fields -->
@@ -330,6 +334,7 @@
             <column name="message_balance_sw" type="varchar(400)"/>
             <column name="reward_level" type="int"/>
             <column name="campaign_id" type="int"/>
+            <column name="is_template" type="boolean" defaultValueBoolean="false"/>
 
             <!-- Auditing fields -->
             <column name="created_by" type="varchar(50)">

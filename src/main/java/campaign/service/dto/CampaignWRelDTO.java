@@ -30,6 +30,8 @@ public class CampaignWRelDTO {
 
     private String actionReason;
 
+    private boolean isTemplate;
+
     private String status;
 
     private UserDTO approvedRejectedBy;
@@ -50,6 +52,14 @@ public class CampaignWRelDTO {
 
     private LocalDateTime lastModifiedDate;
 
+    public boolean isTemplate() {
+        return isTemplate;
+    }
+
+    public void setTemplate(boolean template) {
+        isTemplate = template;
+    }
+
     public CampaignWRelDTO() {
     }
 
@@ -66,6 +76,7 @@ public class CampaignWRelDTO {
         this.campaignType = campaign.getCampaignType();
         this.notes = campaign.getNotes();
         this.actionReason = campaign.getActionReason();
+        this.isTemplate = campaign.isTemplate();
         if (campaign.getStatus() != null) {
             this.status = campaign.getStatus().getName();
         }

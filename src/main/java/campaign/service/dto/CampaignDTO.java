@@ -27,6 +27,8 @@ public class CampaignDTO {
 
     private String actionReason;
 
+    private boolean isTemplate;
+
     private String status;
 
     private Long approvedRejectedBy;
@@ -55,6 +57,7 @@ public class CampaignDTO {
         this.campaignType = campaign.getCampaignType();
         this.notes = campaign.getNotes();
         this.actionReason = campaign.getActionReason();
+        this.isTemplate = campaign.isTemplate();
         if (campaign.getStatus() != null) {
             this.status = campaign.getStatus().getName();
         }
@@ -135,6 +138,14 @@ public class CampaignDTO {
 
     public void setActionReason(String actionReason) {
         this.actionReason = actionReason;
+    }
+
+    public boolean isTemplate() {
+        return isTemplate;
+    }
+
+    public void setTemplate(boolean template) {
+        isTemplate = template;
     }
 
     public String getStatus() {

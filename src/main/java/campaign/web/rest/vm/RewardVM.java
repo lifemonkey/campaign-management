@@ -20,6 +20,8 @@ public class RewardVM {
 
     private Integer released;
 
+    private boolean isTemplate;
+
     private List<FileVM> files;
 
     private String messageWinnerEN;
@@ -96,6 +98,14 @@ public class RewardVM {
 
     public void setFiles(List<FileVM> files) {
         this.files = files;
+    }
+
+    public boolean isTemplate() {
+        return isTemplate;
+    }
+
+    public void setTemplate(boolean template) {
+        isTemplate = template;
     }
 
     public String getMessageWinnerEN() {

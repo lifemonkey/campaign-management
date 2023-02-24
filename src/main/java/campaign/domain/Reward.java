@@ -39,6 +39,9 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
     @Column(name = "released")
     private Integer released;
 
+    @Column(name = "is_template")
+    private boolean isTemplate;
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "reward")
     private List<File> files = new ArrayList<>();
 
@@ -66,7 +69,7 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
     public Reward() {
     }
 
-    public Reward(String name, String description, Integer prizeType, Integer prizeValue, Integer numOfPrize, Integer released, String messageWinnerEN, String messageWinnerSW, String messageBalanceEN, String messageBalanceSW, Integer level, Long campaignId) {
+    public Reward(String name, String description, Integer prizeType, Integer prizeValue, Integer numOfPrize, Integer released, String messageWinnerEN, String messageWinnerSW, String messageBalanceEN, String messageBalanceSW, Integer level, Long campaignId, boolean isTemplate) {
         this.name = name;
         this.description = description;
         this.prizeType = prizeType;
@@ -79,6 +82,7 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
         this.messageBalanceSW = messageBalanceSW;
         this.level = level;
         this.campaignId = campaignId;
+        this.isTemplate = isTemplate;
     }
 
     public Long getId() {
@@ -220,10 +224,17 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
     }
 
     public Reward clone(String name) {
-//        List<File> toBeClonedFiles = this.files.stream().map(File::clone).collect(Collectors.toList());
         return new Reward(name, this.description, this.prizeType, this.prizeValue, this.numOfPrize, this.released,
             this.messageWinnerEN, this.messageWinnerSW, this.messageBalanceEN, this.messageBalanceSW,
-            this.level, null);
+            this.level, null, isTemplate);
+    }
+
+    public boolean isTemplate() {
+        return isTemplate;
+    }
+
+    public void setTemplate(boolean template) {
+        isTemplate = template;
     }
 
     @Override

@@ -40,6 +40,9 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
     @Column(name = "campaign_type")
     private Integer campaignType;
 
+    @Column(name = "is_template")
+    private boolean isTemplate;
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL )
     @JoinTable(name = "rule_transaction_type",
         joinColumns = @JoinColumn(name = "rule_id", nullable = false, referencedColumnName = "id"),
@@ -52,13 +55,14 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "rule")
     private List<RewardCondition> rewardConditions = new ArrayList<>();
 
-    public Rule(String name, String description, EDuration durationType, String durationValue, Integer ruleConfiguration, Integer campaignType) {
+    public Rule(String name, String description, EDuration durationType, String durationValue, Integer ruleConfiguration, Integer campaignType, boolean isTemplate) {
         this.name = name;
         this.description = description;
         this.durationType = durationType;
         this.durationValue = durationValue;
         this.ruleConfiguration = ruleConfiguration;
         this.campaignType = campaignType;
+        this.isTemplate = isTemplate;
     }
 
     public Rule() {
@@ -127,6 +131,14 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
+    public boolean isTemplate() {
+        return isTemplate;
+    }
+
+    public void setTemplate(boolean template) {
+        isTemplate = template;
+    }
+
     public Integer getRuleConfiguration() {
         return ruleConfiguration;
     }
@@ -180,7 +192,7 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
     }
 
     public Rule clone(String name) {
-        return new Rule(name, this.description, this.durationType, this.durationValue, this.ruleConfiguration, this.campaignType);
+        return new Rule(name, this.description, this.durationType, this.durationValue, this.ruleConfiguration, this.campaignType, this.isTemplate);
     }
 
     @Override

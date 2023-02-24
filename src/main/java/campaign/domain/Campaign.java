@@ -48,6 +48,9 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
     @Column(name = "notes", length = 4000)
     private String notes;
 
+    @Column(name = "is_template")
+    private boolean isTemplate;
+
     @OneToOne
     @JoinColumn(name = "status_id", referencedColumnName = "id")
     private Status status;
@@ -78,7 +81,7 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
         this.name = "Default Campaign";
     }
 
-    public Campaign(String name, String description, LocalDateTime fromDate, LocalDateTime endDate, Integer campaignType, String notes, Status status, String actionReason, User approvedRejectedBy) {
+    public Campaign(String name, String description, LocalDateTime fromDate, LocalDateTime endDate, Integer campaignType, String notes, Status status, String actionReason, User approvedRejectedBy, boolean isTemplate) {
         this.name = name;
         this.description = description;
         this.fromDate = fromDate;
@@ -88,6 +91,7 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
         this.status = status;
         this.actionReason = actionReason;
         this.approvedRejectedBy = approvedRejectedBy;
+        this.isTemplate = isTemplate;
     }
 
     public Long getId() {
@@ -241,7 +245,15 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
 
     public Campaign clone(String name) {
         return new Campaign(name, this.description, LocalDateTime.now(), LocalDateTime.now().plusDays(30),
-            this.campaignType, this.notes, this.status, this.actionReason, this.approvedRejectedBy);
+            this.campaignType, this.notes, this.status, this.actionReason, this.approvedRejectedBy, this.isTemplate);
+    }
+
+    public boolean isTemplate() {
+        return isTemplate;
+    }
+
+    public void setTemplate(boolean template) {
+        isTemplate = template;
     }
 
     @Override

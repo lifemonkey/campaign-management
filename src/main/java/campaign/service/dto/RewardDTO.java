@@ -34,6 +34,8 @@ public class RewardDTO {
 
     private String messageBalanceSW;
 
+    private boolean isTemplate;
+
     private List<VoucherDTO> voucherCodes;
 
     private String createdBy;
@@ -69,6 +71,7 @@ public class RewardDTO {
         this.messageBalanceEN = reward.getMessageBalanceEN();
         this.messageBalanceSW = reward.getMessageBalanceSW();
         this.level = reward.getLevel();
+        this.isTemplate = reward.isTemplate();
         if (reward.getVouchers() != null) {
             this.voucherCodes = reward.getVouchers().stream()
                 .map(VoucherDTO::new)
@@ -187,6 +190,14 @@ public class RewardDTO {
 
     public void setLevel(Integer level) {
         this.level = level;
+    }
+
+    public boolean isTemplate() {
+        return isTemplate;
+    }
+
+    public void setTemplate(boolean template) {
+        isTemplate = template;
     }
 
     public List<VoucherDTO> getVoucherCodes() {

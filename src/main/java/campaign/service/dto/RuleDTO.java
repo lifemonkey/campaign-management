@@ -27,7 +27,10 @@ public class RuleDTO {
 
     private Integer campaignType;
 
+    private boolean isTemplate;
+
     private List<TransactionTypeDTO> transactionTypes = new ArrayList<>();
+
     private List<RuleRewardConditionDTO> ruleRewardList = new ArrayList<>();
 
     private List<String> appliedCampaigns = new ArrayList<>();
@@ -54,6 +57,7 @@ public class RuleDTO {
         this.campaignType = rule.getCampaignType();
         this.ruleRewardList = rule.getRewardConditions().stream().map(RuleRewardConditionDTO::new).collect(Collectors.toList());
         this.appliedCampaigns = rule.getCampaignList().stream().map(Campaign::getName).collect(Collectors.toList());
+        this.isTemplate = rule.isTemplate();
         this.createdBy = rule.getCreatedBy();
         this.createdDate = rule.getCreatedDate();
         if (this.lastModifiedDate != null && this.createdDate != null && this.lastModifiedDate.isAfter(this.createdDate)) {
@@ -64,7 +68,6 @@ public class RuleDTO {
             this.lastModifiedDate = null;
         }
     }
-
 
     public Long getId() {
         return id;
@@ -176,6 +179,14 @@ public class RuleDTO {
 
     public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public boolean isTemplate() {
+        return isTemplate;
+    }
+
+    public void setTemplate(boolean template) {
+        isTemplate = template;
     }
 
     @Override
