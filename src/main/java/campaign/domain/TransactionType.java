@@ -60,6 +60,36 @@ public class TransactionType extends AbstractAuditingEntity implements Serializa
         this.transTypeSW = transTypeSW;
     }
 
+    public TransactionType name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public TransactionType description(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public TransactionType externalId(String externalId) {
+        this.externalId = externalId;
+        return this;
+    }
+
+    public TransactionType status(Integer status) {
+        this.status = status;
+        return this;
+    }
+
+    public TransactionType transTypeEN(String transTypeEN) {
+        this.transTypeEN = transTypeEN;
+        return this;
+    }
+
+    public TransactionType transTypeSW(String transTypeSW) {
+        this.transTypeSW = transTypeSW;
+        return this;
+    }
+
     public Long getId() {
         return id;
     }
