@@ -43,6 +43,7 @@ public class RewardMapper {
             reward.setMessageWinnerSW(rewardDTO.getMessageWinnerSW());
             reward.setMessageBalanceEN(rewardDTO.getMessageBalanceEN());
             reward.setMessageBalanceSW(rewardDTO.getMessageBalanceSW());
+            reward.setTemplate(rewardDTO.isTemplate());
 
             reward.setCreatedBy(rewardDTO.getCreatedBy());
             reward.setCreatedDate(rewardDTO.getCreatedDate());
@@ -77,6 +78,7 @@ public class RewardMapper {
             reward.setMessageWinnerSW(rewardVM.getMessageWinnerSW());
             reward.setMessageBalanceEN(rewardVM.getMessageBalanceEN());
             reward.setMessageBalanceSW(rewardVM.getMessageBalanceSW());
+            reward.setTemplate(rewardVM.isTemplate());
 
             return reward;
         }
@@ -121,6 +123,7 @@ public class RewardMapper {
             if (rewardVM.getLevel() != null) {
                 reward.setLevel(rewardVM.getLevel());
             }
+            reward.setTemplate(rewardVM.isTemplate());
 
             return reward;
         }

@@ -55,6 +55,7 @@ public class CampaignMapper {
 
             campaign.setCampaignType(campaignWRelDTO.getCampaignType());
             campaign.setNotes(campaignWRelDTO.getNotes());
+            campaign.setTemplate(campaignWRelDTO.isTemplate());
             campaign.setCreatedBy(campaignWRelDTO.getCreatedBy());
             campaign.setCreatedDate(campaignWRelDTO.getCreatedDate());
             campaign.setLastModifiedBy(campaignWRelDTO.getLastModifiedBy());
@@ -88,6 +89,7 @@ public class CampaignMapper {
             if (campaignVM.getNotes() != null) {
                 campaign.setNotes(campaignVM.getNotes());
             }
+            campaign.setTemplate(campaignVM.isTemplate());
 
             return campaign;
         }
@@ -117,6 +119,8 @@ public class CampaignMapper {
             if (campaignVM.getNotes() != null) {
                 campaign.setNotes(campaignVM.getNotes());
             }
+
+            campaign.setTemplate(campaignVM.isTemplate());
 
             return campaign;
         }

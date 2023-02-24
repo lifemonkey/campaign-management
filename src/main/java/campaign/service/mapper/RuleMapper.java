@@ -59,6 +59,7 @@ public class RuleMapper {
                 rule.setRuleConfiguration(ruleDTO.getRuleConfiguration());
             }
 
+            rule.setTemplate(ruleDTO.isTemplate());
             rule.setCreatedBy(ruleDTO.getCreatedBy());
             rule.setCreatedDate(ruleDTO.getCreatedDate());
             rule.setLastModifiedBy(ruleDTO.getLastModifiedBy());
@@ -100,6 +101,7 @@ public class RuleMapper {
             if (ruleVM.getRuleConfiguration() != null) {
                 rule.setRuleConfiguration(ruleVM.getRuleConfiguration());
             }
+            rule.setTemplate(ruleVM.isTemplate());
 
             return rule;
         }
@@ -130,6 +132,8 @@ public class RuleMapper {
             if (ruleVM.getRuleConfiguration() != null) {
                 rule.setRuleConfiguration(ruleVM.getRuleConfiguration());
             }
+
+            rule.setTemplate(ruleVM.isTemplate());
 
             return rule;
         }
