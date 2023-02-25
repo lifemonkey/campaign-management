@@ -1,0 +1,42 @@
+[
+  {
+    "Voucher":
+    [
+      {
+        "excelHeader": "No",
+        "excelIndex": 0,
+        "excelColType": "Integer",
+        "excelValue": null,
+        "pojoAttribute": ""
+      },
+      {
+        "excelHeader": "Voucher code",
+        "excelIndex": 1,
+        "excelColType": "String",
+        "excelValue": null,
+        "pojoAttribute": "voucherCode"
+      },
+      {
+        "excelHeader": "Effective date",
+        "excelIndex": 2,
+        "excelColType": "Date",
+        "excelValue": null,
+        "pojoAttribute": "startDate"
+      },
+      {
+        "excelHeader": "Expired date",
+        "excelIndex": 3,
+        "excelColType": "Date",
+        "excelValue": null,
+        "pojoAttribute": "expiredDate"
+      },
+      {
+        "excelHeader": "Description",
+        "excelIndex": 4,
+        "excelColType": "String",
+        "excelValue": null,
+        "pojoAttribute": ""
+      }
+    ]
+  }
+]
