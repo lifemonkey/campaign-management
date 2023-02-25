@@ -17,13 +17,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api")
-public class FileImportResource {
+public class ImportExportResource {
 
-    private final Logger log = LoggerFactory.getLogger(FileImportResource.class);
+    private final Logger log = LoggerFactory.getLogger(ImportExportResource.class);
 
     private final FileImportService fileImportService;
 
-    public FileImportResource(FileImportService fileImportService) {
+    public ImportExportResource(FileImportService fileImportService) {
         this.fileImportService = fileImportService;
     }
 
@@ -57,6 +57,7 @@ public class FileImportResource {
                 isImported = fileImportService.importCsvFile(file, overwrite);
                 break;
             case "xlsx":
+            case "xls":
                 isImported = fileImportService.importExcelFile(file, overwrite);
                 break;
         }

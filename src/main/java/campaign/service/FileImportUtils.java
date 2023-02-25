@@ -58,37 +58,37 @@ public class FileImportUtils {
     }
 
     public static boolean isCellValueInValid(Iterator<Cell> cellIterator) {
-        boolean isCellInvalid = true;
+        boolean cellInvalid = true;
 
         while (cellIterator.hasNext()) {
             Cell cell = cellIterator.next();
             switch (cell.getColumnIndex()) {
                 case 0:
                     // No: maximum 10 characters
-                    isCellInvalid = String.valueOf(cell.getNumericCellValue()).length() > 10;
+                    cellInvalid = String.valueOf(cell.getNumericCellValue()).length() > 10;
                     break;
                 case 1:
                     // Voucher code: Tối đa 10 ký tự
-                    isCellInvalid = cell.getStringCellValue().length() > 10;
+                    cellInvalid = cell.getStringCellValue().length() > 10;
                     break;
                 case 2:
                 case 3:
                     // Expired date must have format dd/mm/yyyy
                     // Effective date must have format dd/mm/yyyy
-                    isCellInvalid = !isValidDate(cell.getLocalDateTimeCellValue().toString());
+                    cellInvalid = !isValidDate(cell.getLocalDateTimeCellValue().toString());
                     break;
                 case 4:
                     // Description maximum characters are 200
-                    isCellInvalid = cell.getStringCellValue().length() > 200;
+                    cellInvalid = cell.getStringCellValue().length() > 200;
                     break;
                 default:
                     break;
             }
 
-            if (isCellInvalid) break;
+            if (cellInvalid) break;
         }
 
-        return isCellInvalid;
+        return cellInvalid;
     }
 
     public static boolean isValidDate(String date) {

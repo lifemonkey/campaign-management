@@ -53,7 +53,7 @@ public class FileImportService {
 
     public boolean importExcelFile(MultipartFile multipartFile, boolean overwrite) {
         try {
-            if (!validateExcel(multipartFile.getInputStream())) return false;
+            if (!validateExcelVoucher(multipartFile.getInputStream())) return false;
             List<Voucher> voucherList = convertVoucherFromWorkBook(multipartFile.getInputStream());
 
             if (!voucherList.isEmpty()) {
@@ -98,12 +98,11 @@ public class FileImportService {
         return null;
     }
 
-    public boolean validateExcel(InputStream inputStream) {
+    public boolean validateExcelVoucher(InputStream inputStream) {
         boolean isValidContent = true;
         try {
             // Reading file from local directory
             XSSFSheet sheet = FileImportUtils.readFile(inputStream);
-
             // Iterate through each row one by one
             Iterator<Row> rowIterator = sheet.iterator();
             // ignore first row
