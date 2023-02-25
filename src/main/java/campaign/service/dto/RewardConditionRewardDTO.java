@@ -40,7 +40,7 @@ public class RewardConditionRewardDTO {
 
     private Integer level;
 
-    private boolean isTemplate = false;
+    private Boolean isTemplate = false;
 
     public RewardConditionRewardDTO() {
     }
@@ -126,11 +126,11 @@ public class RewardConditionRewardDTO {
         this.released = released;
     }
 
-    public boolean isTemplate() {
+    public Boolean isTemplate() {
         return isTemplate;
     }
 
-    public void setTemplate(boolean template) {
+    public void setTemplate(Boolean template) {
         isTemplate = template;
     }
 

@@ -34,7 +34,7 @@ public class RewardDTO {
 
     private String messageBalanceSW;
 
-    private boolean isTemplate = false;
+    private Boolean isTemplate;
 
     private List<VoucherDTO> voucherCodes;
 
@@ -192,11 +192,11 @@ public class RewardDTO {
         this.level = level;
     }
 
-    public boolean isTemplate() {
+    public Boolean isTemplate() {
         return isTemplate;
     }
 
-    public void setTemplate(boolean template) {
+    public void setTemplate(Boolean template) {
         isTemplate = template;
     }
 

@@ -81,7 +81,7 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
         this.name = "Default Campaign";
     }
 
-    public Campaign(String name, String description, LocalDateTime fromDate, LocalDateTime endDate, Integer campaignType, String notes, Status status, String actionReason, User approvedRejectedBy, boolean isTemplate) {
+    public Campaign(String name, String description, LocalDateTime fromDate, LocalDateTime endDate, Integer campaignType, String notes, Status status, String actionReason, User approvedRejectedBy, Boolean isTemplate) {
         this.name = name;
         this.description = description;
         this.fromDate = fromDate;

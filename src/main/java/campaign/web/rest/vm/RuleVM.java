@@ -22,7 +22,7 @@ public class RuleVM {
 
     private Integer campaignType;
 
-    private boolean isTemplate = false;
+    private Boolean isTemplate;
 
     private List<Long> transactionTypes = new ArrayList<>();
 
@@ -92,11 +92,11 @@ public class RuleVM {
         this.rewardConditions.addAll(rewardConditions);
     }
 
-    public boolean isTemplate() {
+    public Boolean isTemplate() {
         return isTemplate;
     }
 
-    public void setTemplate(boolean template) {
+    public void setTemplate(Boolean template) {
         isTemplate = template;
     }
 

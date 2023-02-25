@@ -23,7 +23,7 @@ public class CampaignRuleDTO {
 
     private Integer campaignType;
 
-    private boolean isTemplate = false;
+    private Boolean isTemplate;
 
     private String createdBy;
 
@@ -113,11 +113,11 @@ public class CampaignRuleDTO {
         this.campaignType = campaignType;
     }
 
-    public boolean isTemplate() {
+    public Boolean isTemplate() {
         return isTemplate;
     }
 
-    public void setTemplate(boolean template) {
+    public void setTemplate(Boolean template) {
         isTemplate = template;
     }
 

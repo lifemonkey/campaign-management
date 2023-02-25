@@ -30,7 +30,7 @@ public class CampaignWRelDTO {
 
     private String actionReason;
 
-    private boolean isTemplate = false;
+    private Boolean isTemplate = false;
 
     private String status;
 
@@ -52,11 +52,11 @@ public class CampaignWRelDTO {
 
     private LocalDateTime lastModifiedDate;
 
-    public boolean isTemplate() {
+    public Boolean isTemplate() {
         return isTemplate;
     }
 
-    public void setTemplate(boolean template) {
+    public void setTemplate(Boolean template) {
         isTemplate = template;
     }
 

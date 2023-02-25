@@ -20,7 +20,7 @@ public class RewardVM {
 
     private Integer released;
 
-    private boolean isTemplate = false;
+    private Boolean isTemplate;
 
     private List<FileVM> files;
 
@@ -100,11 +100,11 @@ public class RewardVM {
         this.files = files;
     }
 
-    public boolean isTemplate() {
+    public Boolean isTemplate() {
         return isTemplate;
     }
 
-    public void setTemplate(boolean template) {
+    public void setTemplate(Boolean template) {
         isTemplate = template;
     }
 
