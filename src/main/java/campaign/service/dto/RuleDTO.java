@@ -27,7 +27,7 @@ public class RuleDTO {
 
     private Integer campaignType;
 
-    private boolean isTemplate;
+    private boolean isTemplate = false;
 
     private List<TransactionTypeDTO> transactionTypes = new ArrayList<>();
 

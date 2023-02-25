@@ -40,7 +40,7 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
     @Column(name = "campaign_type")
     private Integer campaignType;
 
-    @Column(name = "is_template")
+    @Column(name = "is_template", nullable = false)
     private boolean isTemplate;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL )

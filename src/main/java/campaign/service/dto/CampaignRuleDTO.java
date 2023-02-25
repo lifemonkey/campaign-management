@@ -23,7 +23,7 @@ public class CampaignRuleDTO {
 
     private Integer campaignType;
 
-    private boolean isTemplate;
+    private boolean isTemplate = false;
 
     private String createdBy;
 

@@ -34,7 +34,7 @@ public class RewardDTO {
 
     private String messageBalanceSW;
 
-    private boolean isTemplate;
+    private boolean isTemplate = false;
 
     private List<VoucherDTO> voucherCodes;
 

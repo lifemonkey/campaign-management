@@ -40,6 +40,8 @@ public class RewardConditionRewardDTO {
 
     private Integer level;
 
+    private boolean isTemplate = false;
+
     public RewardConditionRewardDTO() {
     }
 
@@ -56,6 +58,7 @@ public class RewardConditionRewardDTO {
         this.messageBalanceEN = reward.getMessageBalanceEN();
         this.messageBalanceSW = reward.getMessageBalanceSW();
         this.level = reward.getLevel();
+        this.isTemplate = reward.isTemplate();
         this.createdBy = reward.getCreatedBy();
         this.createdDate = reward.getCreatedDate();
         if (this.lastModifiedDate != null && this.createdDate != null && this.lastModifiedDate.isAfter(this.createdDate)) {
@@ -121,6 +124,14 @@ public class RewardConditionRewardDTO {
 
     public void setReleased(Integer released) {
         this.released = released;
+    }
+
+    public boolean isTemplate() {
+        return isTemplate;
+    }
+
+    public void setTemplate(boolean template) {
+        isTemplate = template;
     }
 
     public String getMessageWinnerEN() {

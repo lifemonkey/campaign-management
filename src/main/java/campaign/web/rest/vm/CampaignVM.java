@@ -23,7 +23,7 @@ public class CampaignVM {
     private String notes;
 
     private String actionReason;
-    private boolean isTemplate;
+    private boolean isTemplate = false;
 
     private Long statusId;
 

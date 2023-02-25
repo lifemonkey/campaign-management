@@ -30,7 +30,7 @@ public class CampaignWRelDTO {
 
     private String actionReason;
 
-    private boolean isTemplate;
+    private boolean isTemplate = false;
 
     private String status;
 

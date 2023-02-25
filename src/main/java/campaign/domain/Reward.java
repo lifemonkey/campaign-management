@@ -39,7 +39,7 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
     @Column(name = "released")
     private Integer released;
 
-    @Column(name = "is_template")
+    @Column(name = "is_template", nullable = false)
     private boolean isTemplate;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "reward")

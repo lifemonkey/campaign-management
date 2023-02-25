@@ -22,7 +22,7 @@ public class RuleVM {
 
     private Integer campaignType;
 
-    private boolean isTemplate;
+    private boolean isTemplate = false;
 
     private List<Long> transactionTypes = new ArrayList<>();
 

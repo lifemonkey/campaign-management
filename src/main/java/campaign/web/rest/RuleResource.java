@@ -1,6 +1,5 @@
 package campaign.web.rest;
 
-import campaign.domain.Rule;
 import campaign.security.AuthoritiesConstants;
 import campaign.service.RuleService;
 import campaign.service.dto.RuleDTO;

@@ -48,7 +48,7 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
     @Column(name = "notes", length = 4000)
     private String notes;
 
-    @Column(name = "is_template")
+    @Column(name = "is_template", nullable = false)
     private boolean isTemplate;
 
     @OneToOne

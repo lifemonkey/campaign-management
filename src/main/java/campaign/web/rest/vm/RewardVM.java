@@ -20,7 +20,7 @@ public class RewardVM {
 
     private Integer released;
 
-    private boolean isTemplate;
+    private boolean isTemplate = false;
 
     private List<FileVM> files;
 
