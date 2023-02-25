@@ -49,7 +49,7 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
     private String notes;
 
     @Column(name = "is_template", nullable = false)
-    private boolean isTemplate;
+    private Boolean isTemplate;
 
     @OneToOne
     @JoinColumn(name = "status_id", referencedColumnName = "id")
@@ -248,11 +248,11 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
             this.campaignType, this.notes, this.status, this.actionReason, this.approvedRejectedBy, this.isTemplate);
     }
 
-    public boolean isTemplate() {
+    public Boolean isTemplate() {
         return isTemplate;
     }
 
-    public void setTemplate(boolean template) {
+    public void setTemplate(Boolean template) {
         isTemplate = template;
     }
 

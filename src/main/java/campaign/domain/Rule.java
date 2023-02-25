@@ -41,7 +41,7 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
     private Integer campaignType;
 
     @Column(name = "is_template", nullable = false)
-    private boolean isTemplate;
+    private Boolean isTemplate;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL )
     @JoinTable(name = "rule_transaction_type",
@@ -55,7 +55,7 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "rule")
     private List<RewardCondition> rewardConditions = new ArrayList<>();
 
-    public Rule(String name, String description, EDuration durationType, String durationValue, Integer ruleConfiguration, Integer campaignType, boolean isTemplate) {
+    public Rule(String name, String description, EDuration durationType, String durationValue, Integer ruleConfiguration, Integer campaignType, Boolean isTemplate) {
         this.name = name;
         this.description = description;
         this.durationType = durationType;
@@ -131,11 +131,11 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
         return this;
     }
 
-    public boolean isTemplate() {
+    public Boolean isTemplate() {
         return isTemplate;
     }
 
-    public void setTemplate(boolean template) {
+    public void setTemplate(Boolean template) {
         isTemplate = template;
     }
 

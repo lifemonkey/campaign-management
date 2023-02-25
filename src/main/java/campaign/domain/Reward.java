@@ -40,7 +40,7 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
     private Integer released;
 
     @Column(name = "is_template", nullable = false)
-    private boolean isTemplate;
+    private Boolean isTemplate;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "reward")
     private List<File> files = new ArrayList<>();
@@ -69,7 +69,7 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
     public Reward() {
     }
 
-    public Reward(String name, String description, Integer prizeType, Integer prizeValue, Integer numOfPrize, Integer released, String messageWinnerEN, String messageWinnerSW, String messageBalanceEN, String messageBalanceSW, Integer level, Long campaignId, boolean isTemplate) {
+    public Reward(String name, String description, Integer prizeType, Integer prizeValue, Integer numOfPrize, Integer released, String messageWinnerEN, String messageWinnerSW, String messageBalanceEN, String messageBalanceSW, Integer level, Long campaignId, Boolean isTemplate) {
         this.name = name;
         this.description = description;
         this.prizeType = prizeType;
@@ -229,11 +229,11 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
             this.level, null, isTemplate);
     }
 
-    public boolean isTemplate() {
+    public Boolean isTemplate() {
         return isTemplate;
     }
 
-    public void setTemplate(boolean template) {
+    public void setTemplate(Boolean template) {
         isTemplate = template;
     }
 
