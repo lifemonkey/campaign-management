@@ -56,6 +56,9 @@ public class CampaignMapper {
             campaign.setCampaignType(campaignWRelDTO.getCampaignType());
             campaign.setNotes(campaignWRelDTO.getNotes());
             campaign.setTemplate(campaignWRelDTO.isTemplate());
+            campaign.setUnlimitedLuckyCode(campaignWRelDTO.getUnlimitedLuckyCode());
+            campaign.setUnlimitedPrize(campaignWRelDTO.getUnlimitedPrize());
+
             campaign.setCreatedBy(campaignWRelDTO.getCreatedBy());
             campaign.setCreatedDate(campaignWRelDTO.getCreatedDate());
             campaign.setLastModifiedBy(campaignWRelDTO.getLastModifiedBy());
@@ -89,7 +92,9 @@ public class CampaignMapper {
             if (campaignVM.getNotes() != null) {
                 campaign.setNotes(campaignVM.getNotes());
             }
-            campaign.setTemplate(campaignVM.isTemplate());
+            campaign.setTemplate((campaignVM.isTemplate() != null) ? campaignVM.isTemplate() : false);
+            campaign.setUnlimitedLuckyCode((campaignVM.getUnlimitedLuckyCode() != null) ? campaignVM.getUnlimitedLuckyCode() : false);
+            campaign.setUnlimitedPrize((campaignVM.getUnlimitedPrize() != null) ? campaignVM.getUnlimitedPrize() : false);
 
             return campaign;
         }
@@ -120,7 +125,9 @@ public class CampaignMapper {
                 campaign.setNotes(campaignVM.getNotes());
             }
 
-            campaign.setTemplate(campaignVM.isTemplate());
+            campaign.setTemplate((campaignVM.isTemplate() != null) ? campaignVM.isTemplate() : false);
+            campaign.setUnlimitedLuckyCode((campaignVM.getUnlimitedLuckyCode() != null) ? campaignVM.getUnlimitedLuckyCode() : false);
+            campaign.setUnlimitedPrize((campaignVM.getUnlimitedPrize() != null) ? campaignVM.getUnlimitedPrize() : false);
 
             return campaign;
         }

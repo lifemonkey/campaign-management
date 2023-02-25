@@ -26,6 +26,10 @@ public class CampaignVM {
 
     private Boolean isTemplate;
 
+    private Boolean unlimitedLuckyCode;
+
+    private Boolean unlimitedPrize;
+
     private Long statusId;
 
     private Long approvedRejectedBy;
@@ -158,6 +162,22 @@ public class CampaignVM {
 
     public void setTemplate(Boolean template) {
         isTemplate = template;
+    }
+
+    public Boolean getUnlimitedLuckyCode() {
+        return unlimitedLuckyCode;
+    }
+
+    public void setUnlimitedLuckyCode(Boolean unlimitedLuckyCode) {
+        this.unlimitedLuckyCode = unlimitedLuckyCode;
+    }
+
+    public Boolean getUnlimitedPrize() {
+        return unlimitedPrize;
+    }
+
+    public void setUnlimitedPrize(Boolean unlimitedPrize) {
+        this.unlimitedPrize = unlimitedPrize;
     }
 
     @Override

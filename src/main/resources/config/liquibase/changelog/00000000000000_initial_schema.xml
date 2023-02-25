@@ -150,6 +150,8 @@
             <column name="notes" type="varchar(4000)"/>
             <column name="action_reason" type="varchar(400)"/>
             <column name="is_template" type="boolean" defaultValueBoolean="false"/>
+            <column name="unlimited_lucky_code" type="boolean" defaultValueBoolean="false"/>
+            <column name="unlimited_prize" type="boolean" defaultValueBoolean="false"/>
 
             <!-- constraints -->
             <column name="status_id" type="bigint"/>

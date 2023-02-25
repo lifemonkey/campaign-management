@@ -51,6 +51,12 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
     @Column(name = "is_template", nullable = false)
     private Boolean isTemplate;
 
+    @Column(name = "unlimited_lucky_code", nullable = false)
+    private Boolean unlimitedLuckyCode;
+
+    @Column(name = "unlimited_prize", nullable = false)
+    private Boolean unlimitedPrize;
+
     @OneToOne
     @JoinColumn(name = "status_id", referencedColumnName = "id")
     private Status status;
@@ -81,7 +87,10 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
         this.name = "Default Campaign";
     }
 
-    public Campaign(String name, String description, LocalDateTime fromDate, LocalDateTime endDate, Integer campaignType, String notes, Status status, String actionReason, User approvedRejectedBy, Boolean isTemplate) {
+    public Campaign(String name, String description, LocalDateTime fromDate, LocalDateTime endDate,
+                    Integer campaignType, String notes, Status status, String actionReason, User approvedRejectedBy,
+                    Boolean isTemplate, Boolean unlimitedLuckyCode, Boolean unlimitedPrize
+    ) {
         this.name = name;
         this.description = description;
         this.fromDate = fromDate;
@@ -92,6 +101,8 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
         this.actionReason = actionReason;
         this.approvedRejectedBy = approvedRejectedBy;
         this.isTemplate = isTemplate;
+        this.unlimitedLuckyCode = unlimitedLuckyCode;
+        this.unlimitedPrize = unlimitedPrize;
     }
 
     public Long getId() {
@@ -245,7 +256,8 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
 
     public Campaign clone(String name) {
         return new Campaign(name, this.description, LocalDateTime.now(), LocalDateTime.now().plusDays(30),
-            this.campaignType, this.notes, this.status, this.actionReason, this.approvedRejectedBy, false);
+            this.campaignType, this.notes, this.status, this.actionReason, this.approvedRejectedBy, false,
+            this.unlimitedLuckyCode, this.unlimitedPrize);
     }
 
     public Boolean isTemplate() {
@@ -254,6 +266,22 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
 
     public void setTemplate(Boolean template) {
         isTemplate = template;
+    }
+
+    public Boolean getUnlimitedLuckyCode() {
+        return unlimitedLuckyCode;
+    }
+
+    public void setUnlimitedLuckyCode(Boolean unlimitedLuckyCode) {
+        this.unlimitedLuckyCode = unlimitedLuckyCode;
+    }
+
+    public Boolean getUnlimitedPrize() {
+        return unlimitedPrize;
+    }
+
+    public void setUnlimitedPrize(Boolean unlimitedPrize) {
+        this.unlimitedPrize = unlimitedPrize;
     }
 
     @Override

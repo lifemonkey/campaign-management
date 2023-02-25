@@ -30,7 +30,11 @@ public class CampaignWRelDTO {
 
     private String actionReason;
 
-    private Boolean isTemplate = false;
+    private Boolean isTemplate;
+
+    private Boolean unlimitedLuckyCode;
+
+    private Boolean unlimitedPrize;
 
     private String status;
 
@@ -52,14 +56,6 @@ public class CampaignWRelDTO {
 
     private LocalDateTime lastModifiedDate;
 
-    public Boolean isTemplate() {
-        return isTemplate;
-    }
-
-    public void setTemplate(Boolean template) {
-        isTemplate = template;
-    }
-
     public CampaignWRelDTO() {
     }
 
@@ -77,6 +73,8 @@ public class CampaignWRelDTO {
         this.notes = campaign.getNotes();
         this.actionReason = campaign.getActionReason();
         this.isTemplate = campaign.isTemplate();
+        this.unlimitedLuckyCode = campaign.getUnlimitedLuckyCode();
+        this.unlimitedPrize = campaign.getUnlimitedPrize();
         if (campaign.getStatus() != null) {
             this.status = campaign.getStatus().getName();
         }
@@ -169,6 +167,30 @@ public class CampaignWRelDTO {
 
     public void setActionReason(String actionReason) {
         this.actionReason = actionReason;
+    }
+
+    public Boolean isTemplate() {
+        return isTemplate;
+    }
+
+    public void setTemplate(Boolean template) {
+        isTemplate = template;
+    }
+
+    public Boolean getUnlimitedLuckyCode() {
+        return unlimitedLuckyCode;
+    }
+
+    public void setUnlimitedLuckyCode(Boolean unlimitedLuckyCode) {
+        this.unlimitedLuckyCode = unlimitedLuckyCode;
+    }
+
+    public Boolean getUnlimitedPrize() {
+        return unlimitedPrize;
+    }
+
+    public void setUnlimitedPrize(Boolean unlimitedPrize) {
+        this.unlimitedPrize = unlimitedPrize;
     }
 
     public String getStatus() {

@@ -29,6 +29,10 @@ public class CampaignDTO {
 
     private Boolean isTemplate;
 
+    private Boolean unlimitedLuckyCode;
+
+    private Boolean unlimitedPrize;
+
     private String status;
 
     private Long approvedRejectedBy;
@@ -58,6 +62,8 @@ public class CampaignDTO {
         this.notes = campaign.getNotes();
         this.actionReason = campaign.getActionReason();
         this.isTemplate = campaign.isTemplate();
+        this.unlimitedLuckyCode = campaign.getUnlimitedLuckyCode();
+        this.unlimitedPrize = campaign.getUnlimitedPrize();
         if (campaign.getStatus() != null) {
             this.status = campaign.getStatus().getName();
         }
@@ -146,6 +152,22 @@ public class CampaignDTO {
 
     public void setTemplate(Boolean template) {
         isTemplate = template;
+    }
+
+    public Boolean getUnlimitedLuckyCode() {
+        return unlimitedLuckyCode;
+    }
+
+    public void setUnlimitedLuckyCode(Boolean unlimitedLuckyCode) {
+        this.unlimitedLuckyCode = unlimitedLuckyCode;
+    }
+
+    public Boolean getUnlimitedPrize() {
+        return unlimitedPrize;
+    }
+
+    public void setUnlimitedPrize(Boolean unlimitedPrize) {
+        this.unlimitedPrize = unlimitedPrize;
     }
 
     public String getStatus() {
