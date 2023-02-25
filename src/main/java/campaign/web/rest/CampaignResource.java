@@ -49,9 +49,10 @@ public class CampaignResource {
         Pageable pageable,
         @RequestParam(required = false) String search,
         @RequestParam(required = false) Integer type,
-        @RequestParam(required = false) Long statusId
+        @RequestParam(required = false) Long statusId,
+        @RequestParam(required = false) boolean showTemplate
     ) {
-        Page<CampaignDTO> page = campaignService.searchCampaigns(pageable, search, type, statusId);
+        Page<CampaignDTO> page = campaignService.searchCampaigns(pageable, search, type, statusId, showTemplate);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/campaigns");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

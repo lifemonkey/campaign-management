@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -46,9 +45,10 @@ public class RuleResource {
         Pageable pageable,
         @RequestParam(required = false) String search,
         @RequestParam(required = false) String appliedCampaign,
-        @RequestParam(required = false) Integer campaignType
+        @RequestParam(required = false) Integer campaignType,
+        @RequestParam(required = false) boolean showTemplate
     ) {
-        Page<RuleDTO> page = ruleService.searchRules(pageable, search, appliedCampaign, campaignType);
+        Page<RuleDTO> page = ruleService.searchRules(pageable, search, appliedCampaign, campaignType, showTemplate);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/rules");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

@@ -46,9 +46,10 @@ public class RewardResource {
         @RequestParam(required = false) String search,
         @RequestParam(required = false) Integer type,
         @RequestParam(required = false) String appliedCampaign,
-        @RequestParam(required = false) boolean appliedRule
+        @RequestParam(required = false) boolean appliedRule,
+        @RequestParam(required = false) boolean showTemplate
     ) {
-        Page<RewardDTO> page = rewardService.searchRewards(pageable, search, type, appliedCampaign, appliedRule);
+        Page<RewardDTO> page = rewardService.searchRewards(pageable, search, type, appliedCampaign, appliedRule, showTemplate);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/reward-conditions");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -144,6 +145,29 @@ public class RewardResource {
         }
 
         return new ResponseEntity<>(rewardService.updateReward(id, rewardVM), new HttpHeaders(), HttpStatus.OK);
+    }
+
+    /**
+     * PUT /reward : Set reward as template
+     *
+     * @RequestBody reward information to be updated
+     * @return the ResponseEntity with status 200 (OK) and with body all users
+     */
+    @PutMapping("/reward/set-as-template/{id}")
+    @Timed
+    public ResponseEntity<Object> setAsTemplate(@Valid @PathVariable Long id) {
+        RewardDTO rewardDTO = rewardService.getRewardById(id);
+        if (rewardDTO.getId() == null) {
+            return new ResponseEntity<>(
+                new ResponseVM(
+                    ResponseCode.RESPONSE_NOT_FOUND,
+                    ResponseCode.ERROR_CODE_REWARD_CONDITION_NOT_FOUND,
+                    "Reward ID:" + id + " not found!"),
+                new HttpHeaders(),
+                HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(rewardService.setAsTemplate(id), new HttpHeaders(), HttpStatus.OK);
     }
 
     /**

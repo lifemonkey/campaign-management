@@ -100,7 +100,7 @@ public class RewardService {
     }
 
     @Transactional(readOnly = true)
-    public Page<RewardDTO> searchRewards(Pageable pageable, String search, Integer type, String appliedCampaign, boolean appliedRule) {
+    public Page<RewardDTO> searchRewards(Pageable pageable, String search, Integer type, String appliedCampaign, boolean appliedRule, boolean showTemplate) {
         List<Reward> rewardList;
 
         if (search != null && type == null) {
@@ -142,7 +142,9 @@ public class RewardService {
                 }
 
                 return false;
-            }).filter(reward -> rewardAppliedRuleIds.isEmpty() || !rewardAppliedRuleIds.contains(reward.getId()))
+            })
+            .filter(reward -> rewardAppliedRuleIds.isEmpty() || !rewardAppliedRuleIds.contains(reward.getId()))
+            .filter(reward -> showTemplate || !reward.isTemplate())
             .map(reward -> {
                 RewardDTO rewardDTO = new RewardDTO(reward);
                 rewardDTO.setAppliedCampaign(appliedCampaigns.get(reward.getCampaignId()));
@@ -312,6 +314,20 @@ public class RewardService {
             reward.updateVouchers(toBeSavedVouchers);
         }
 
+        return rewardMapper.rewardToRewardDTO(rewardRepository.save(reward));
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public RewardDTO setAsTemplate(Long id) {
+        Optional<Reward> rewardOpt = rewardRepository.findById(id);
+        // check if reward is existed
+        if (!rewardOpt.isPresent()) return null;
+
+        // convert rewardVM input to reward to be saved
+        RewardVM rewardVM = new RewardVM();
+        rewardVM.setTemplate(true);
+        Reward reward = rewardMapper.updateReward(rewardOpt.get(), rewardVM);
+        reward.setId(id);
         return rewardMapper.rewardToRewardDTO(rewardRepository.save(reward));
     }
 

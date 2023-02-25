@@ -72,7 +72,7 @@ public class RuleService {
     }
 
     @Transactional(readOnly = true)
-    public Page<RuleDTO> searchRules(Pageable pageable, String search, String appliedCampaign, Integer campaignType) {
+    public Page<RuleDTO> searchRules(Pageable pageable, String search, String appliedCampaign, Integer campaignType, boolean showTemplate) {
         List<Rule> ruleList;
 
         if (search != null && campaignType == null) {
@@ -107,6 +107,7 @@ public class RuleService {
                         .findAny().isPresent();
                 }
             })
+            .filter(rule -> showTemplate || !rule.isTemplate())
             .map(RuleDTO::new)
             .collect(Collectors.toList());
 

@@ -100,7 +100,7 @@ public class CampaignService {
     }
 
     @Transactional(readOnly = true)
-    public Page<CampaignDTO> searchCampaigns(Pageable pageable, String search, Integer type, Long statusId) {
+    public Page<CampaignDTO> searchCampaigns(Pageable pageable, String search, Integer type, Long statusId, boolean showTemplate) {
         List<Campaign> campaignList;
 
         if (search != null && type == null) {
@@ -120,6 +120,7 @@ public class CampaignService {
         List<CampaignDTO> filteredList = campaignList.stream()
             .filter(campaign -> (statusId == null)
                     || (campaign.getStatus() != null && campaign.getStatus().getId() == statusId))
+            .filter(campaign -> showTemplate || !campaign.isTemplate())
             .map(CampaignDTO::new)
             .collect(Collectors.toList());
 
