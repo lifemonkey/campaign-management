@@ -161,8 +161,20 @@ public class RewardResource {
             return new ResponseEntity<>(
                 new ResponseVM(
                     ResponseCode.RESPONSE_NOT_FOUND,
-                    ResponseCode.ERROR_CODE_REWARD_CONDITION_NOT_FOUND,
+                    ResponseCode.ERROR_CODE_REWARD_NOT_FOUND,
                     "Reward ID:" + id + " not found!"),
+                new HttpHeaders(),
+                HttpStatus.NOT_FOUND);
+        }
+
+        if (rewardService.hasAppliedRule(id)
+            ||rewardDTO.getAppliedCampaign() != null || rewardDTO.getAppliedCampaign().getId() != null
+        ) {
+            return new ResponseEntity<>(
+                new ResponseVM(
+                    ResponseCode.RESPONSE_NOT_FOUND,
+                    ResponseCode.ERROR_CODE_REWARD_TEMPLATE_CANNOT_BE_CLONED,
+                    "Reward has applied campaign OR rule. Reward ID:" + id + " could not set as template!"),
                 new HttpHeaders(),
                 HttpStatus.NOT_FOUND);
         }

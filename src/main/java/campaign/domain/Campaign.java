@@ -245,7 +245,7 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
 
     public Campaign clone(String name) {
         return new Campaign(name, this.description, LocalDateTime.now(), LocalDateTime.now().plusDays(30),
-            this.campaignType, this.notes, this.status, this.actionReason, this.approvedRejectedBy, this.isTemplate);
+            this.campaignType, this.notes, this.status, this.actionReason, this.approvedRejectedBy, false);
     }
 
     public Boolean isTemplate() {

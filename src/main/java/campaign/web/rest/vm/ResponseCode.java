@@ -21,6 +21,7 @@ public final class ResponseCode {
     public static final Integer ERROR_CODE_RULE_NAME_IS_EMPTY = 1102;
     public static final Integer ERROR_CODE_RULE_NAME_IS_DUPLICATED = 1103;
     public static final Integer ERROR_CODE_RULE_CANNOT_BE_DELETED = 1104;
+    public static final Integer ERROR_CODE_RULE_TEMPLATE_CANNOT_BE_CLONED = 1105;
     public static final Integer ERROR_CODE_CAMPAIGN_NOT_FOUND = 1201;
     public static final Integer ERROR_CODE_CAMPAIGN_NAME_IS_EMPTY = 1202;
     public static final Integer ERROR_CODE_CAMPAIGN_NAME_IS_DUPLICATED = 1203;
@@ -31,6 +32,7 @@ public final class ResponseCode {
     public static final Integer  ERROR_CODE_REWARD_NAME_IS_EMPTY = 1502;
     public static final Integer  ERROR_CODE_REWARD_NAME_IS_DUPLICATED = 1503;
     public static final Integer ERROR_CODE_REWARD_CANNOT_BE_DELETED = 1504;
+    public static final Integer ERROR_CODE_REWARD_TEMPLATE_CANNOT_BE_CLONED = 1505;
     public static final Integer ERROR_CODE_REWARD_CONDITION_NOT_FOUND = 1601;
     public static final Integer ERROR_CODE_GENERATED_TIME_NOT_FOUND = 1701;
     public static final Integer ERROR_CODE_GENERATED_TIME_IS_EMPTY = 1702;

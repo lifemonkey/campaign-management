@@ -323,12 +323,11 @@ public class RewardService {
         // check if reward is existed
         if (!rewardOpt.isPresent()) return null;
 
-        // convert rewardVM input to reward to be saved
-        RewardVM rewardVM = new RewardVM();
-        rewardVM.setTemplate(true);
-        Reward reward = rewardMapper.updateReward(rewardOpt.get(), rewardVM);
-        reward.setId(id);
-        return rewardMapper.rewardToRewardDTO(rewardRepository.save(reward));
+        // remove constraint and set reward as a template
+        Reward toBeSaved = rewardOpt.get();
+        toBeSaved.setTemplate(true);
+        toBeSaved.setCampaignId(null);
+        return rewardMapper.rewardToRewardDTO(rewardRepository.save(toBeSaved));
     }
 
     @Transactional(rollbackFor = Exception.class)

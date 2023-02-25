@@ -192,7 +192,7 @@ public class Rule extends AbstractAuditingEntity implements Serializable {
     }
 
     public Rule clone(String name) {
-        return new Rule(name, this.description, this.durationType, this.durationValue, this.ruleConfiguration, this.campaignType, this.isTemplate);
+        return new Rule(name, this.description, this.durationType, this.durationValue, this.ruleConfiguration, this.campaignType, false);
     }
 
     @Override

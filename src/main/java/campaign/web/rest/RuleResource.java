@@ -148,6 +148,40 @@ public class RuleResource {
         return new ResponseEntity<>(ruleService.updateRule(id, ruleVM), new HttpHeaders(), HttpStatus.OK);
     }
 
+
+    /**
+     * PUT /rule : Set rule as template
+     *
+     * @RequestBody rule information to be updated
+     * @return the ResponseEntity with status 200 (OK) and with body all users
+     */
+    @PutMapping("/rule/set-as-template/{id}")
+    @Timed
+    public ResponseEntity<Object> setAsTemplate(@Valid @PathVariable Long id) {
+        RuleDTO ruleDTO = ruleService.getRuleById(id);
+        if (ruleDTO.getId() == null) {
+            return new ResponseEntity<>(
+                new ResponseVM(
+                    ResponseCode.RESPONSE_NOT_FOUND,
+                    ResponseCode.ERROR_CODE_RULE_NOT_FOUND,
+                    "Rule ID:" + id + " not found!"),
+                new HttpHeaders(),
+                HttpStatus.NOT_FOUND);
+        }
+
+        if (!ruleDTO.getAppliedCampaigns().isEmpty()) {
+            return new ResponseEntity<>(
+                new ResponseVM(
+                    ResponseCode.RESPONSE_NOT_FOUND,
+                    ResponseCode.ERROR_CODE_RULE_TEMPLATE_CANNOT_BE_CLONED,
+                    "Rule has applied campaign. Rule ID:" + id + " could not set as template!"),
+                new HttpHeaders(),
+                HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(ruleService.setAsTemplate(id), new HttpHeaders(), HttpStatus.OK);
+    }
+
     /**
      * DELETE /rule : Delete rule
      *

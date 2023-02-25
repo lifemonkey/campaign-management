@@ -226,7 +226,7 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
     public Reward clone(String name) {
         return new Reward(name, this.description, this.prizeType, this.prizeValue, this.numOfPrize, this.released,
             this.messageWinnerEN, this.messageWinnerSW, this.messageBalanceEN, this.messageBalanceSW,
-            this.level, null, isTemplate);
+            this.level, null, false);
     }
 
     public Boolean isTemplate() {

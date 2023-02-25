@@ -404,6 +404,19 @@ public class CampaignService {
     }
 
     @Transactional(rollbackFor = Exception.class)
+    public CampaignWRelDTO setAsTemplate(Long id) {
+        Optional<Campaign> campaignOpt = campaignRepository.findById(id);
+        // check if campaign is existed
+        if (!campaignOpt.isPresent()) return null;
+
+        // remove constraint and set rule as a template
+        Campaign toBeSaved = campaignOpt.get();
+        toBeSaved.setTemplate(true);
+        toBeSaved.clearRuleList();
+        return campaignMapper.campaignToCampaignWRelDTO(campaignRepository.save(toBeSaved));
+    }
+
+    @Transactional(rollbackFor = Exception.class)
     public void deleteCampaign(Long id) {
         Optional<Campaign> campaignOpt = campaignRepository.findById(id);
         if (campaignOpt.isPresent()) {

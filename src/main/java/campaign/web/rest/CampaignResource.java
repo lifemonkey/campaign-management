@@ -153,6 +153,29 @@ public class CampaignResource {
     }
 
     /**
+     * PUT /campaign : Set campaign as template
+     *
+     * @RequestBody campaign information to be updated
+     * @return the ResponseEntity with status 200 (OK) and with body all users
+     */
+    @PutMapping("/campaign/set-as-template/{id}")
+    @Timed
+    public ResponseEntity<Object> setAsTemplate(@Valid @PathVariable Long id) {
+        CampaignWRelDTO campaignWRelDTO = campaignService.getCampaignById(id);
+        if (campaignWRelDTO.getId() == null) {
+            return new ResponseEntity<>(
+                new ResponseVM(
+                    ResponseCode.RESPONSE_NOT_FOUND,
+                    ResponseCode.ERROR_CODE_CAMPAIGN_NOT_FOUND,
+                    "Campaign ID:" + id + " not found!"),
+                new HttpHeaders(),
+                HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(campaignService.setAsTemplate(id), new HttpHeaders(), HttpStatus.OK);
+    }
+
+    /**
      * DELETE /campaign : Update target list
      *
      * @PathVariable id of campaign

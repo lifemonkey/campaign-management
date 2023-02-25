@@ -319,6 +319,19 @@ public class RuleService {
     }
 
     @Transactional(rollbackFor = Exception.class)
+    public RuleDTO setAsTemplate(Long id) {
+        Optional<Rule> ruleOpt = ruleRepository.findById(id);
+        // check if rule is existed
+        if (!ruleOpt.isPresent()) return null;
+
+        // remove constraint and set rule as a template
+        Rule toBeSaved = ruleOpt.get();
+        toBeSaved.setTemplate(true);
+        toBeSaved.clearCampaignList();
+        return ruleMapper.ruleToRuleDTO(ruleRepository.save(toBeSaved));
+    }
+
+    @Transactional(rollbackFor = Exception.class)
     public void deleteRule(Long id) {
         Optional<Rule> ruleOpt = ruleRepository.findById(id);
         if (ruleOpt.isPresent()) {
