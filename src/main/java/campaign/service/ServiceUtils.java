@@ -105,8 +105,8 @@ public class ServiceUtils {
 
         // slice result list
         int start = (int)pageable.getOffset();
-        int end = (targetList.size() > (pageable.getOffset() + pageable.getPageSize()))
-            ? pageable.getPageSize()
+        int end = (targetList.size() > ((int)pageable.getOffset() + pageable.getPageSize()))
+            ? ((int)pageable.getOffset() + pageable.getPageSize())
             : targetList.size();
 
         return (end > start) ? targetList.subList(start, end) : Collections.emptyList();

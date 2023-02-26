@@ -35,7 +35,7 @@ public class GeneratedTimeDTO {
         }
         this.createdBy = generatedTime.getCreatedBy();
         this.createdDate = generatedTime.getCreatedDate();
-        if (this.lastModifiedDate != null && this.createdDate != null && this.lastModifiedDate.isAfter(this.createdDate)) {
+        if (generatedTime.getLastModifiedDate() != null && generatedTime.getLastModifiedDate().isAfter(generatedTime.getCreatedDate())) {
             this.lastModifiedBy = generatedTime.getLastModifiedBy();
             this.lastModifiedDate = generatedTime.getLastModifiedDate();
         } else {

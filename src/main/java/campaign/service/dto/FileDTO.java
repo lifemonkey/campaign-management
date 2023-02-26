@@ -46,7 +46,7 @@ public class FileDTO {
         }
         this.createdBy = file.getCreatedBy();
         this.createdDate = file.getCreatedDate();
-        if (this.lastModifiedDate != null && this.createdDate != null && this.lastModifiedDate.isAfter(this.createdDate)) {
+        if (file.getLastModifiedDate() != null && file.getLastModifiedDate().isAfter(file.getCreatedDate())) {
             this.lastModifiedBy = file.getLastModifiedBy();
             this.lastModifiedDate = file.getLastModifiedDate();
         } else {

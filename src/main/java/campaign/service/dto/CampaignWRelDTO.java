@@ -96,7 +96,7 @@ public class CampaignWRelDTO {
 
         this.createdBy = campaign.getCreatedBy();
         this.createdDate = campaign.getCreatedDate();
-        if (this.lastModifiedDate != null && this.createdDate != null && this.lastModifiedDate.isAfter(this.createdDate)) {
+        if (campaign.getLastModifiedDate() != null && campaign.getLastModifiedDate().isAfter(campaign.getCreatedDate())) {
             this.lastModifiedBy = campaign.getLastModifiedBy();
             this.lastModifiedDate = campaign.getLastModifiedDate();
         } else {

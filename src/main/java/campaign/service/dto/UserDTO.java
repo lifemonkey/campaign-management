@@ -62,7 +62,7 @@ public class UserDTO {
         }
         this.createdBy = user.getCreatedBy();
         this.createdDate = user.getCreatedDate();
-        if (this.lastModifiedDate != null && this.createdDate != null && this.lastModifiedDate.isAfter(this.createdDate)) {
+        if (user.getLastModifiedDate() != null && user.getLastModifiedDate().isAfter(user.getCreatedDate())) {
             this.lastModifiedBy = user.getLastModifiedBy();
             this.lastModifiedDate = user.getLastModifiedDate();
         } else {

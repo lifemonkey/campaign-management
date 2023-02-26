@@ -60,7 +60,7 @@ public class RuleDTO {
         this.isTemplate = rule.isTemplate();
         this.createdBy = rule.getCreatedBy();
         this.createdDate = rule.getCreatedDate();
-        if (this.lastModifiedDate != null && this.createdDate != null && this.lastModifiedDate.isAfter(this.createdDate)) {
+        if (rule.getLastModifiedDate() != null && rule.getLastModifiedDate().isAfter(rule.getCreatedDate())) {
             this.lastModifiedBy = rule.getLastModifiedBy();
             this.lastModifiedDate = rule.getLastModifiedDate();
         } else {

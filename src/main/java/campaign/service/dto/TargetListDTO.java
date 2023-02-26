@@ -47,7 +47,7 @@ public class TargetListDTO {
 
         this.createdBy = targetList.getCreatedBy();
         this.createdDate = targetList.getCreatedDate();
-        if (this.lastModifiedDate != null && this.createdDate != null && this.lastModifiedDate.isAfter(this.createdDate)) {
+        if (targetList.getLastModifiedDate() != null && targetList.getLastModifiedDate().isAfter(targetList.getCreatedDate())) {
             this.lastModifiedBy = targetList.getLastModifiedBy();
             this.lastModifiedDate = targetList.getLastModifiedDate();
         } else {

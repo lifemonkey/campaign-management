@@ -49,7 +49,7 @@ public class AccountDTO {
         this.dob = account.getDob();
         this.createdBy = account.getCreatedBy();
         this.createdDate = account.getCreatedDate();
-        if (this.lastModifiedDate != null && this.createdDate != null && this.lastModifiedDate.isAfter(this.createdDate)) {
+        if (account.getLastModifiedDate() != null && account.getLastModifiedDate().isAfter(account.getCreatedDate())) {
             this.lastModifiedBy = account.getLastModifiedBy();
             this.lastModifiedDate = account.getLastModifiedDate();
         } else {

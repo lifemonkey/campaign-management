@@ -61,7 +61,7 @@ public class RewardConditionRewardDTO {
         this.isTemplate = reward.isTemplate();
         this.createdBy = reward.getCreatedBy();
         this.createdDate = reward.getCreatedDate();
-        if (this.lastModifiedDate != null && this.createdDate != null && this.lastModifiedDate.isAfter(this.createdDate)) {
+        if (reward.getLastModifiedDate() != null && reward.getLastModifiedDate().isAfter(reward.getCreatedDate())) {
             this.lastModifiedBy = reward.getLastModifiedBy();
             this.lastModifiedDate = reward.getLastModifiedDate();
         } else {

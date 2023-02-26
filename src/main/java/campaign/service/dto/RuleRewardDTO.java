@@ -46,7 +46,7 @@ public class RuleRewardDTO {
 
         this.createdBy = rewardCondition.getCreatedBy();
         this.createdDate = rewardCondition.getCreatedDate();
-        if (this.lastModifiedDate != null && this.createdDate != null && this.lastModifiedDate.isAfter(this.createdDate)) {
+        if (rewardCondition.getLastModifiedDate() != null && rewardCondition.getLastModifiedDate().isAfter(rewardCondition.getCreatedDate())) {
             this.lastModifiedBy = rewardCondition.getLastModifiedBy();
             this.lastModifiedDate = rewardCondition.getLastModifiedDate();
         } else {
