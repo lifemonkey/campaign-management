@@ -1,8 +1,8 @@
-id;name;description;from_date;end_date;campaign_type;notes;status_id;approved_rejected_by;is_template;unlimited_lucky_code;unlimited_prize;created_by;last_modified_by
-1;Campaign 1;Campaign 1 description;2022-10-23T01:54:50;2022-11-23T01:54:50;1;Note for campaign 1;1;1;false;false;false;system;system
-2;Campaign 2;Campaign 2 description;2022-11-20T01:54:50;2022-11-30T01:54:50;1;Note for campaign 2;1;2;false;false;false;system;system
-3;Campaign 3;Campaign 3 description;2022-11-13T01:54:50;2022-12-23T01:54:50;1;Note for campaign 3;2;2;false;false;false;system;system
-4;Campaign 4;Campaign 4 description;2022-09-13T01:54:50;2022-12-03T01:54:50;2;Note for campaign 4;2;2;false;false;false;system;system
-5;Campaign 5;Campaign 5 description;2022-12-11T01:54:50;2023-01-12T01:54:50;2;Note for campaign 5;3;3;false;false;false;system;system
-6;Campaign 6;Template Campaign 6 description;2022-12-11T01:54:50;2023-01-12T01:54:50;2;Note for campaign 6;2;2;true;false;false;system;system
-7;Campaign 7;Template Campaign 7 description;2022-12-11T01:54:50;2023-01-12T01:54:50;2;Note for campaign 7;3;3;true;false;false;system;system
+id;name;description;from_date;end_date;campaign_type;notes;status_id;approved_rejected_by;is_template;unlimited_lucky_code;unlimited_prize;created_by;last_modified_by;created_date
+1;Campaign 1;Campaign 1 description;2022-10-23T01:54:50;2022-11-23T01:54:50;1;Note for campaign 1;1;1;false;false;false;system;system;2023-02-26T00:28:23.396
+2;Campaign 2;Campaign 2 description;2022-11-20T01:54:50;2022-11-30T01:54:50;1;Note for campaign 2;1;2;false;false;false;system;system;2023-02-26T11:28:23.396
+3;Campaign 3;Campaign 3 description;2022-11-13T01:54:50;2022-12-23T01:54:50;1;Note for campaign 3;2;2;false;false;false;system;system;2023-02-25T12:28:23.396
+4;Campaign 4;Campaign 4 description;2022-09-13T01:54:50;2022-12-03T01:54:50;2;Note for campaign 4;2;2;false;false;false;system;system;2023-02-25T14:48:56.232
+5;Campaign 5;Campaign 5 description;2022-12-11T01:54:50;2023-01-12T01:54:50;2;Note for campaign 5;3;3;false;false;false;system;system;2023-02-25T15:48:56.232
+6;Campaign 6;Template Campaign 6 description;2022-12-11T01:54:50;2023-01-12T01:54:50;2;Note for campaign 6;2;2;true;false;false;system;system;2023-02-26T21:48:56.232
+7;Campaign 7;Template Campaign 7 description;2022-12-11T01:54:50;2023-01-12T01:54:50;2;Note for campaign 7;3;3;true;false;false;system;system;2023-02-25T14:38:56.232

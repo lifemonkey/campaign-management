@@ -158,7 +158,7 @@ public class RewardService {
 
     private void sortResults(Pageable pageable, List<Reward> toBeSortedList) {
         if (pageable.getSort().stream()
-            .filter(sort -> sort.getProperty().toLowerCase() == Constants.SORT_BY_CREATED_DATE).findAny()
+            .filter(sort -> sort.getProperty().equalsIgnoreCase(Constants.SORT_BY_CREATED_DATE)).findAny()
             .isPresent()
         ) {
             if (pageable.getSort().stream().filter(sort -> sort.isDescending()).findAny().isPresent()) {

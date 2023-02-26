@@ -1,6 +1,8 @@
-id;name;description;prize_type;prize_value;number_of_prize;released;message_winner_en;message_winner_sw;message_balance_en;message_balance_sw;reward_level;campaign_id;is_template;created_by;last_modified_by
-1;Reward 1;Reward 1 description;1;1;1;1;message_winner_en;message_winner_sw;message_balance_en;message_balance_sw;1;1;false;system;system
-2;Reward 2;Reward 2 description;2;2;2;2;message_winner_en;message_winner_sw;message_balance_en;message_balance_sw;1;2;false;system;system
-3;Reward 3;Reward 3 description;3;2;3;3;message_winner_en;message_winner_sw;message_balance_en;message_balance_sw;2;3;false;system;system
-4;Reward 4;Template Reward 4 description;3;2;3;3;message_winner_en;message_winner_sw;message_balance_en;message_balance_sw;2;;true;system;system
-5;Reward 5;Template Reward 5 description;3;2;3;3;message_winner_en;message_winner_sw;message_balance_en;message_balance_sw;2;;true;system;system
+id;name;description;prize_type;prize_value;number_of_prize;released;message_winner_en;message_winner_sw;message_balance_en;message_balance_sw;reward_level;campaign_id;is_template;created_by;last_modified_by;created_date
+1;Reward 1;Reward 1 description;1;1;1;1;message_winner_en;message_winner_sw;message_balance_en;message_balance_sw;1;1;false;system;system;2023-02-25T22:33:31.752
+2;Reward 2;Reward 2 description;2;2;2;2;message_winner_en;message_winner_sw;message_balance_en;message_balance_sw;1;2;false;system;system;2023-02-26T19:37:39.125
+3;Reward 3;Reward 3 description;3;2;3;3;message_winner_en;message_winner_sw;message_balance_en;message_balance_sw;2;3;false;system;system;2023-02-25T16:37:18.676
+4;Reward 4;Template Reward 4 description;3;2;3;3;message_winner_en;message_winner_sw;message_balance_en;message_balance_sw;2;;true;system;system;2023-02-25T23:41:11.037
+5;Reward 5;Template Reward 5 description;3;2;3;3;message_winner_en;message_winner_sw;message_balance_en;message_balance_sw;2;;true;system;system;2023-02-25T22:48:34.566
+6;Reward 6;Template Reward 6 description;3;2;3;3;message_winner_en;message_winner_sw;message_balance_en;message_balance_sw;2;;true;system;system;2023-02-25T22:45:20.532
+7;Reward 7;Template Reward 7 description;3;2;3;3;message_winner_en;message_winner_sw;message_balance_en;message_balance_sw;2;;true;system;system;2023-02-26T00:28:23.396
