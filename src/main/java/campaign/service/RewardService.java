@@ -153,7 +153,8 @@ public class RewardService {
             .collect(Collectors.toList());
 
         // applied campaign: campaign details
-        return new PageImpl<>(ServiceUtils.getPageContent(pageable, filteredList) , pageable, filteredList.size());
+        List<RewardDTO> results = ServiceUtils.getPageContent(pageable, filteredList);
+        return new PageImpl<>(results, pageable, results.size());
     }
 
     private void sortResults(Pageable pageable, List<Reward> toBeSortedList) {
@@ -268,12 +269,8 @@ public class RewardService {
     @Transactional(rollbackFor = Exception.class)
     public RewardDTO updateReward(Long id, RewardVM rewardVM) {
         Optional<Reward> rewardOpt = rewardRepository.findById(id);
-        // check if reward is existed
-        if (!rewardOpt.isPresent()) return null;
-
         // convert rewardVM input to reward to be saved
         Reward reward = rewardMapper.updateReward(rewardOpt.get(), rewardVM);
-        reward.setId(id);
 
         // handle files
         if (rewardVM.getFiles() != null && !rewardVM.getFiles().isEmpty()) {

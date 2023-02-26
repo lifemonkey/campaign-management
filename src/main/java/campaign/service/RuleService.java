@@ -111,7 +111,8 @@ public class RuleService {
             .map(RuleDTO::new)
             .collect(Collectors.toList());
 
-        return new PageImpl<>(ServiceUtils.getPageContent(pageable, filteredList) , pageable, filteredList.size());
+        List<RuleDTO> results = ServiceUtils.getPageContent(pageable, filteredList);
+        return new PageImpl<>(results , pageable, results.size());
     }
 
     private void sortResults(Pageable pageable, List<Rule> toBeSortedList) {
@@ -276,8 +277,6 @@ public class RuleService {
     @Transactional(rollbackFor = Exception.class)
     public RuleDTO updateRule(Long id, RuleVM ruleVM) {
         Optional<Rule> ruleOpt = ruleRepository.findById(id);
-        if (!ruleOpt.isPresent()) return null;
-
         Rule rule = ruleMapper.updateRule(ruleOpt.get(), ruleVM);
 
         // handle transaction types

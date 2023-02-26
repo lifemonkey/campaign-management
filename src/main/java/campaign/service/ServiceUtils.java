@@ -104,8 +104,8 @@ public class ServiceUtils {
         // Collections.sort();
 
         // slice result list
-        int start = (int)pageable.getOffset() * pageable.getPageSize();
-        int end = (targetList.size() > ((pageable.getOffset() + 1) * pageable.getPageSize()))
+        int start = (int)pageable.getOffset();
+        int end = (targetList.size() > (pageable.getOffset() + pageable.getPageSize()))
             ? pageable.getPageSize()
             : targetList.size();
 

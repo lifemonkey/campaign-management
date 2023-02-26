@@ -133,7 +133,7 @@ public class RuleResource {
     @PutMapping("/rule/{id}")
     @Timed
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
-    public ResponseEntity<Object> updateCampaign(@Valid @PathVariable Long id, @RequestBody RuleVM ruleVM) {
+    public ResponseEntity<Object> updateRule(@Valid @PathVariable Long id, @RequestBody RuleVM ruleVM) {
         RuleDTO rule = ruleService.getRuleById(id);
         if (rule.getId() == null) {
             return new ResponseEntity<>(
@@ -141,6 +141,17 @@ public class RuleResource {
                     ResponseCode.RESPONSE_NOT_FOUND,
                     ResponseCode.ERROR_CODE_RULE_NOT_FOUND,
                     "Rule ID:" + id + " not found!"),
+                new HttpHeaders(),
+                HttpStatus.NOT_FOUND);
+        }
+
+        // check duplicated name
+        if (ruleService.ruleNameExisted(ruleVM.getName())) {
+            return new ResponseEntity<>(
+                new ResponseVM(
+                    ResponseCode.RESPONSE_WRONG_PARAM,
+                    ResponseCode.ERROR_CODE_RULE_NAME_IS_DUPLICATED,
+                    "Rule name is duplicated!"),
                 new HttpHeaders(),
                 HttpStatus.NOT_FOUND);
         }

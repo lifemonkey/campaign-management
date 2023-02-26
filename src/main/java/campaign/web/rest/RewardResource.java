@@ -108,7 +108,6 @@ public class RewardResource {
                 HttpStatus.NOT_FOUND);
         }
 
-
         return new ResponseEntity<> (rewardService.createReward(rewardVM), new HttpHeaders(), HttpStatus.OK);
     }
 
@@ -140,6 +139,17 @@ public class RewardResource {
                     ResponseCode.RESPONSE_NOT_FOUND,
                     ResponseCode.ERROR_CODE_REWARD_CONDITION_NOT_FOUND,
                     "Reward ID:" + id + " not found!"),
+                new HttpHeaders(),
+                HttpStatus.NOT_FOUND);
+        }
+
+        // check duplicated name
+        if (rewardService.rewardNameExisted(rewardVM.getName())) {
+            return new ResponseEntity<>(
+                new ResponseVM(
+                    ResponseCode.RESPONSE_WRONG_PARAM,
+                    ResponseCode.ERROR_CODE_REWARD_NAME_IS_DUPLICATED,
+                    "Reward name is duplicated!"),
                 new HttpHeaders(),
                 HttpStatus.NOT_FOUND);
         }

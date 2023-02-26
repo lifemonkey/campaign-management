@@ -124,7 +124,8 @@ public class CampaignService {
             .map(CampaignDTO::new)
             .collect(Collectors.toList());
 
-        return new PageImpl<>(ServiceUtils.getPageContent(pageable, filteredList), pageable, filteredList.size());
+        List<CampaignDTO> results = ServiceUtils.getPageContent(pageable, filteredList);
+        return new PageImpl<>(results, pageable, results.size());
     }
 
     private void sortResults(Pageable pageable, List<Campaign> toBeSortedList) {
@@ -310,9 +311,6 @@ public class CampaignService {
     @Transactional(rollbackFor = Exception.class)
     public CampaignWRelDTO updateCampaign(Long id, CampaignVM campaignVM) {
         Optional<Campaign> campaignOpt = campaignRepository.findById(id);
-        // check if campaign is existed
-        if (!campaignOpt.isPresent()) return null;
-
         // convert campaignVM input to campaign to be saved
         Campaign campaign = campaignMapper.updateCampaign(campaignOpt.get(), campaignVM);
 
