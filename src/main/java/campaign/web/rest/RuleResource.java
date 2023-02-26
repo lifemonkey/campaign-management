@@ -151,7 +151,7 @@ public class RuleResource {
                 new ResponseVM(
                     ResponseCode.RESPONSE_WRONG_PARAM,
                     ResponseCode.ERROR_CODE_RULE_NAME_IS_DUPLICATED,
-                    "Rule name is duplicated!"),
+                    "Rule name is already existing!"),
                 new HttpHeaders(),
                 HttpStatus.NOT_FOUND);
         }
