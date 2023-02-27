@@ -3,7 +3,6 @@ package campaign.web.rest;
 import campaign.security.AuthoritiesConstants;
 import campaign.service.CampaignService;
 import campaign.service.dto.CampaignDTO;
-import campaign.service.dto.CampaignWRelDTO;
 import campaign.web.rest.util.PaginationUtil;
 import campaign.web.rest.vm.ActionCampaignVM;
 import campaign.web.rest.vm.CampaignVM;
@@ -66,7 +65,7 @@ public class CampaignResource {
     @GetMapping("/campaign/{id}")
     @Timed
     public ResponseEntity<Object> getCampaignById(@Valid @PathVariable Long id) {
-        CampaignWRelDTO campaign = campaignService.getCampaignById(id);
+        CampaignDTO campaign = campaignService.getCampaignById(id);
         if (campaign != null) {
             return new ResponseEntity<>(campaign, new HttpHeaders(), HttpStatus.OK);
         }
@@ -124,7 +123,7 @@ public class CampaignResource {
     @PostMapping("/campaign/clone")
     @Timed
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
-    public ResponseEntity<CampaignWRelDTO> cloneCampaign(@RequestParam Long id) {
+    public ResponseEntity<CampaignDTO> cloneCampaign(@RequestParam Long id) {
         return new ResponseEntity<> (campaignService.cloneCampaign(id), new HttpHeaders(), HttpStatus.OK);
     }
 
@@ -138,7 +137,7 @@ public class CampaignResource {
     @Timed
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<Object> updateCampaign(@Valid @PathVariable Long id, @RequestBody CampaignVM campaignVM) {
-        CampaignWRelDTO campaign = campaignService.getCampaignById(id);
+        CampaignDTO campaign = campaignService.getCampaignById(id);
         if (campaign.getId() == null) {
             return new ResponseEntity<>(
                 new ResponseVM(
@@ -172,8 +171,8 @@ public class CampaignResource {
     @PutMapping("/campaign/set-as-template/{id}")
     @Timed
     public ResponseEntity<Object> setAsTemplate(@Valid @PathVariable Long id) {
-        CampaignWRelDTO campaignWRelDTO = campaignService.getCampaignById(id);
-        if (campaignWRelDTO.getId() == null) {
+        CampaignDTO campaignDTO = campaignService.getCampaignById(id);
+        if (campaignDTO.getId() == null) {
             return new ResponseEntity<>(
                 new ResponseVM(
                     ResponseCode.RESPONSE_NOT_FOUND,
@@ -196,7 +195,7 @@ public class CampaignResource {
     @Timed
     @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
     public ResponseEntity<Object> deleteCampaign(@Valid @PathVariable Long id) {
-        CampaignWRelDTO campaignDTO = campaignService.getCampaignById(id);
+        CampaignDTO campaignDTO = campaignService.getCampaignById(id);
         if (campaignDTO.getId() == null) {
             return new ResponseEntity<>(new ResponseVM(
                 ResponseCode.RESPONSE_NOT_FOUND,

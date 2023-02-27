@@ -4,7 +4,6 @@ import campaign.config.Constants;
 import campaign.domain.*;
 import campaign.repository.*;
 import campaign.service.dto.CampaignDTO;
-import campaign.service.dto.CampaignWRelDTO;
 import campaign.service.mapper.CampaignMapper;
 import campaign.service.mapper.FileMapper;
 import campaign.service.mapper.GeneratedTimeMapper;
@@ -79,13 +78,13 @@ public class CampaignService {
     }
 
     @Transactional(readOnly = true)
-    public CampaignWRelDTO getCampaignById(Long campaignId) {
+    public CampaignDTO getCampaignById(Long campaignId) {
         Optional<Campaign> campaignOpt = campaignRepository.findById(campaignId);
         if (campaignOpt.isPresent()) {
             return campaignMapper.campaignToCampaignWRelDTO(campaignOpt.get());
         }
 
-        return new CampaignWRelDTO();
+        return new CampaignDTO();
     }
 
     @Transactional(readOnly = true)
@@ -153,7 +152,7 @@ public class CampaignService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public CampaignWRelDTO createCampaign(CampaignVM campaignVM) {
+    public CampaignDTO createCampaign(CampaignVM campaignVM) {
         Campaign campaign = campaignMapper.campaignVMToCampaign(campaignVM);
 
         if (campaign != null) {
@@ -221,11 +220,11 @@ public class CampaignService {
             return campaignMapper.campaignToCampaignWRelDTO(campaign);
         }
 
-        return new CampaignWRelDTO();
+        return new CampaignDTO();
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public CampaignWRelDTO cloneCampaign(Long id) {
+    public CampaignDTO cloneCampaign(Long id) {
         Optional<Campaign> clonedCampaignOpt = campaignRepository.findById(id);
         if (!clonedCampaignOpt.isPresent()) return null;
 
@@ -309,7 +308,7 @@ public class CampaignService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public CampaignWRelDTO updateCampaign(Long id, CampaignVM campaignVM) {
+    public CampaignDTO updateCampaign(Long id, CampaignVM campaignVM) {
         Optional<Campaign> campaignOpt = campaignRepository.findById(id);
         // convert campaignVM input to campaign to be saved
         Campaign campaign = campaignMapper.updateCampaign(campaignOpt.get(), campaignVM);
@@ -402,7 +401,7 @@ public class CampaignService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public CampaignWRelDTO setAsTemplate(Long id) {
+    public CampaignDTO setAsTemplate(Long id) {
         Optional<Campaign> campaignOpt = campaignRepository.findById(id);
         // check if campaign is existed
         if (!campaignOpt.isPresent()) return null;
@@ -429,7 +428,7 @@ public class CampaignService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public CampaignWRelDTO approveOrRejectCampaign(Long id, boolean isApprove) {
+    public CampaignDTO approveOrRejectCampaign(Long id, boolean isApprove) {
         Optional<Campaign> campaignOpt = campaignRepository.findById(id);
         if (campaignOpt.isPresent()) {
             Optional<Status> statusOpt = statusRepository.findByNameIgnoreCase(
@@ -439,7 +438,7 @@ public class CampaignService {
             return campaignMapper.campaignToCampaignWRelDTO(campaignRepository.save(campaign));
         }
 
-        return new CampaignWRelDTO();
+        return new CampaignDTO();
     }
 
     /**

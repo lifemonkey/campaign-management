@@ -48,7 +48,7 @@ public class RewardDTO {
 
     private Integer level;
 
-    private CampaignDTO appliedCampaign;
+    private RewardCampaignDTO appliedCampaign;
 
     public RewardDTO() {
     }
@@ -240,11 +240,11 @@ public class RewardDTO {
         this.lastModifiedDate = lastModifiedDate;
     }
 
-    public CampaignDTO getAppliedCampaign() {
+    public RewardCampaignDTO getAppliedCampaign() {
         return appliedCampaign;
     }
 
-    public void setAppliedCampaign(CampaignDTO appliedCampaign) {
+    public void setAppliedCampaign(RewardCampaignDTO appliedCampaign) {
         this.appliedCampaign = appliedCampaign;
     }
 

@@ -1,7 +1,7 @@
 package campaign.service.mapper;
 
 import campaign.domain.Campaign;
-import campaign.service.dto.CampaignWRelDTO;
+import campaign.service.dto.CampaignDTO;
 import campaign.web.rest.vm.CampaignVM;
 import org.springframework.stereotype.Service;
 
@@ -27,42 +27,42 @@ public class CampaignMapper {
         this.ruleMapper = ruleMapper;
     }
 
-    public CampaignWRelDTO campaignToCampaignWRelDTO(Campaign campaign) {
-        return new CampaignWRelDTO(campaign);
+    public CampaignDTO campaignToCampaignWRelDTO(Campaign campaign) {
+        return new CampaignDTO(campaign);
     }
 
-    public List<CampaignWRelDTO> campaignToCampaignWRelDTOs(List<Campaign> campaignList) {
+    public List<CampaignDTO> campaignToCampaignWRelDTOs(List<Campaign> campaignList) {
         return campaignList.stream()
             .filter(Objects::nonNull)
             .map(this::campaignToCampaignWRelDTO)
             .collect(Collectors.toList());
     }
 
-    public Campaign campaignDTOToCampaign(CampaignWRelDTO campaignWRelDTO) {
-        if (campaignWRelDTO == null) {
+    public Campaign campaignDTOToCampaign(CampaignDTO campaignDTO) {
+        if (campaignDTO == null) {
             return null;
         } else {
             Campaign campaign = new Campaign();
-            campaign.setId(campaignWRelDTO.getId());
-            campaign.setName(campaignWRelDTO.getName());
-            campaign.setDescription(campaignWRelDTO.getDescription());
-            if (campaignWRelDTO.getFromDate() != null) {
-                campaign.setFromDate(campaignWRelDTO.getFromDate());
+            campaign.setId(campaignDTO.getId());
+            campaign.setName(campaignDTO.getName());
+            campaign.setDescription(campaignDTO.getDescription());
+            if (campaignDTO.getFromDate() != null) {
+                campaign.setFromDate(campaignDTO.getFromDate());
             }
-            if (campaignWRelDTO.getEndDate() != null) {
-                campaign.setEndDate(campaignWRelDTO.getEndDate());
+            if (campaignDTO.getEndDate() != null) {
+                campaign.setEndDate(campaignDTO.getEndDate());
             }
 
-            campaign.setCampaignType(campaignWRelDTO.getCampaignType());
-            campaign.setNotes(campaignWRelDTO.getNotes());
-            campaign.setTemplate(campaignWRelDTO.isTemplate());
-            campaign.setUnlimitedLuckyCode(campaignWRelDTO.getUnlimitedLuckyCode());
-            campaign.setUnlimitedPrize(campaignWRelDTO.getUnlimitedPrize());
+            campaign.setCampaignType(campaignDTO.getCampaignType());
+            campaign.setNotes(campaignDTO.getNotes());
+            campaign.setTemplate(campaignDTO.isTemplate());
+            campaign.setUnlimitedLuckyCode(campaignDTO.getUnlimitedLuckyCode());
+            campaign.setUnlimitedPrize(campaignDTO.getUnlimitedPrize());
 
-            campaign.setCreatedBy(campaignWRelDTO.getCreatedBy());
-            campaign.setCreatedDate(campaignWRelDTO.getCreatedDate());
-            campaign.setLastModifiedBy(campaignWRelDTO.getLastModifiedBy());
-            campaign.setLastModifiedDate(campaignWRelDTO.getLastModifiedDate());
+            campaign.setCreatedBy(campaignDTO.getCreatedBy());
+            campaign.setCreatedDate(campaignDTO.getCreatedDate());
+            campaign.setLastModifiedBy(campaignDTO.getLastModifiedBy());
+            campaign.setLastModifiedDate(campaignDTO.getLastModifiedDate());
 
             return campaign;
         }

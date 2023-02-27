@@ -4,6 +4,7 @@ import campaign.config.Constants;
 import campaign.domain.*;
 import campaign.repository.*;
 import campaign.service.dto.CampaignDTO;
+import campaign.service.dto.RewardCampaignDTO;
 import campaign.service.dto.RewardDTO;
 import campaign.service.dto.VoucherDTO;
 import campaign.service.mapper.RewardMapper;
@@ -78,11 +79,11 @@ public class RewardService {
         return rewardConditionOpt == null || rewardConditionOpt.isPresent();
     }
 
-    private CampaignDTO appliedCampaign(Reward reward) {
+    private RewardCampaignDTO appliedCampaign(Reward reward) {
         if (reward.getCampaignId() != null) {
             Optional<Campaign> campaignOpt = campaignRepository.findById(reward.getCampaignId());
             if (campaignOpt.isPresent()) {
-                return new CampaignDTO(campaignOpt.get());
+                return new RewardCampaignDTO(campaignOpt.get());
             }
         }
 
@@ -100,7 +101,8 @@ public class RewardService {
     }
 
     @Transactional(readOnly = true)
-    public Page<RewardDTO> searchRewards(Pageable pageable, String search, Integer type, String appliedCampaign, boolean appliedRule, boolean showTemplate) {
+    public Page<RewardDTO> searchRewards(Pageable pageable, String search, Integer type, String appliedCampaign,
+                                         Integer campaignType, boolean appliedRule, boolean showTemplate) {
         List<Reward> rewardList;
 
         if (search != null && type == null) {
@@ -117,7 +119,7 @@ public class RewardService {
         sortResults(pageable, rewardList);
 
         // get applied campaigns
-        Map<Long, CampaignDTO> appliedCampaigns = appliedCampaigns(rewardList);
+        Map<Long, RewardCampaignDTO> appliedCampaigns = appliedCampaigns(rewardList, campaignType);
 
         // get list rewards that applied rule
         Set<Long> rewardAppliedRuleIds = appliedRule
@@ -137,7 +139,7 @@ public class RewardService {
                     return reward.getCampaignId() == null;
                 } else if (reward.getCampaignId() != null && appliedCampaigns.containsKey(reward.getCampaignId())) {
                     // filter for specific appliedCampaign name
-                    CampaignDTO rewardCampaign = appliedCampaigns.get(reward.getCampaignId());
+                    RewardCampaignDTO rewardCampaign = appliedCampaigns.get(reward.getCampaignId());
                     return rewardCampaign.getName().toLowerCase().contains(appliedCampaign.toLowerCase());
                 }
 
@@ -176,19 +178,20 @@ public class RewardService {
         }
     }
 
-    private Map<Long, CampaignDTO> appliedCampaigns(List<Reward> rewardList) {
+    private Map<Long, RewardCampaignDTO> appliedCampaigns(List<Reward> rewardList, Integer campaignType) {
         List<Long> appliedCampaignIds = rewardList.stream()
             .filter(reward -> reward.getCampaignId() != null)
             .map(Reward::getCampaignId)
             .collect(Collectors.toList());
 
-        Map<Long, CampaignDTO> appliedCampaigns = new HashMap<>();
+        Map<Long, RewardCampaignDTO> appliedCampaigns = new HashMap<>();
 
         if (!appliedCampaignIds.isEmpty()) {
             List<Campaign> campaignList = campaignRepository.findAllById(appliedCampaignIds);
             if (!campaignList.isEmpty()) {
-                campaignList.stream().forEach(campaign ->
-                    appliedCampaigns.put(campaign.getId(), new CampaignDTO(campaign)));
+                appliedCampaigns.putAll(campaignList.stream()
+                    .filter(campaign -> campaignType == null || campaign.getCampaignType() == campaignType)
+                    .collect(Collectors.toMap(Campaign::getId, campaign -> new RewardCampaignDTO(campaign))));
             }
         }
 

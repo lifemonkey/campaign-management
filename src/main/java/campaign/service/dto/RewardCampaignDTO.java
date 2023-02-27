@@ -1,15 +1,12 @@
 package campaign.service.dto;
 
-import campaign.domain.*;
+import campaign.domain.Campaign;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
-public class CampaignWRelDTO {
+public class RewardCampaignDTO {
 
     private Long id;
 
@@ -40,14 +37,6 @@ public class CampaignWRelDTO {
 
     private UserDTO approvedRejectedBy;
 
-    private List<TargetListCampaignDTO> targetListList = new ArrayList<>();
-
-    private List<FileDTO> fileList = new ArrayList<>();
-
-    private List<CampaignRuleDTO> ruleList = new ArrayList<>();
-
-    private List<GeneratedTimeDTO> generatedTimeList = new ArrayList<>();
-
     private String createdBy;
 
     private LocalDateTime createdDate;
@@ -56,10 +45,7 @@ public class CampaignWRelDTO {
 
     private LocalDateTime lastModifiedDate;
 
-    public CampaignWRelDTO() {
-    }
-
-    public CampaignWRelDTO(Campaign campaign) {
+    public RewardCampaignDTO(Campaign campaign) {
         this.id = campaign.getId();
         this.name = campaign.getName();
         this.description = campaign.getDescription();
@@ -80,18 +66,6 @@ public class CampaignWRelDTO {
         }
         if (campaign.getApprovedRejectedBy() != null) {
             this.approvedRejectedBy = new UserDTO(campaign.getApprovedRejectedBy());
-        }
-        if (!campaign.getTargetLists().isEmpty()) {
-            this.targetListList = campaign.getTargetLists().stream().map(TargetListCampaignDTO::new).collect(Collectors.toList());
-        }
-        if (!campaign.getFilesList().isEmpty()) {
-            this.fileList = campaign.getFilesList().stream().map(FileDTO::new).collect(Collectors.toList());
-        }
-        if (!campaign.getRuleList().isEmpty()) {
-            this.ruleList = campaign.getRuleList().stream().map(CampaignRuleDTO::new).collect(Collectors.toList());
-        }
-        if (!campaign.getGeneratedTimeList().isEmpty()) {
-            this.generatedTimeList = campaign.getGeneratedTimeList().stream().map(GeneratedTimeDTO::new).collect(Collectors.toList());
         }
 
         this.createdBy = campaign.getCreatedBy();
@@ -169,7 +143,7 @@ public class CampaignWRelDTO {
         this.actionReason = actionReason;
     }
 
-    public Boolean isTemplate() {
+    public Boolean getTemplate() {
         return isTemplate;
     }
 
@@ -209,38 +183,6 @@ public class CampaignWRelDTO {
         this.approvedRejectedBy = approvedRejectedBy;
     }
 
-    public List<TargetListCampaignDTO> getTargetListList() {
-        return targetListList;
-    }
-
-    public void setTargetListList(List<TargetListCampaignDTO> targetListList) {
-        this.targetListList = targetListList;
-    }
-
-    public List<FileDTO> getFileList() {
-        return fileList;
-    }
-
-    public void setFileList(List<FileDTO> fileList) {
-        this.fileList = fileList;
-    }
-
-    public List<CampaignRuleDTO> getRuleList() {
-        return ruleList;
-    }
-
-    public void setRuleList(List<CampaignRuleDTO> ruleList) {
-        this.ruleList = ruleList;
-    }
-
-    public List<GeneratedTimeDTO> getGeneratedTimeList() {
-        return generatedTimeList;
-    }
-
-    public void setGeneratedTimeList(List<GeneratedTimeDTO> generatedTimeList) {
-        this.generatedTimeList = generatedTimeList;
-    }
-
     public String getCreatedBy() {
         return createdBy;
     }
@@ -271,22 +213,5 @@ public class CampaignWRelDTO {
 
     public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
-    }
-
-    @Override
-    public String toString() {
-        return "CampaignDTO{" +
-            "id=" + id +
-            ", name='" + name + '\'' +
-            ", description='" + description + '\'' +
-            ", fromDate=" + fromDate +
-            ", endDate=" + endDate +
-            ", campaignType=" + campaignType +
-            ", notes='" + notes + '\'' +
-            ", status=" + status +
-//            ", approvedRejectedBy='" + approvedRejectedBy + '\'' +
-//            ", targetLists=" + targetLists +
-//            ", filesList=" + filesList +
-            '}';
     }
 }
