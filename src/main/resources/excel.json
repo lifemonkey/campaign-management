@@ -7,35 +7,40 @@
         "excelIndex": 0,
         "excelColType": "Integer",
         "excelValue": null,
-        "pojoAttribute": ""
+        "pojoAttribute": "",
+        "required": true
       },
       {
         "excelHeader": "Voucher code",
         "excelIndex": 1,
         "excelColType": "String",
         "excelValue": null,
-        "pojoAttribute": "voucherCode"
+        "pojoAttribute": "voucherCode",
+        "required": true
       },
       {
         "excelHeader": "Effective date",
         "excelIndex": 2,
-        "excelColType": "Date",
+        "excelColType": "DateTime",
         "excelValue": null,
-        "pojoAttribute": "startDate"
+        "pojoAttribute": "startDate",
+        "required": true
       },
       {
         "excelHeader": "Expired date",
         "excelIndex": 3,
-        "excelColType": "Date",
+        "excelColType": "DateTime",
         "excelValue": null,
-        "pojoAttribute": "expiredDate"
+        "pojoAttribute": "expiredDate",
+        "required": true
       },
       {
         "excelHeader": "Description",
         "excelIndex": 4,
         "excelColType": "String",
         "excelValue": null,
-        "pojoAttribute": ""
+        "pojoAttribute": "",
+        "required": false
       }
     ]
   }

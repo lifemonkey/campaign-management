@@ -1,46 +1,54 @@
 package campaign.excel;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class ExcelFileReader {
+public class ExcelReader {
 
     final static SimpleDateFormat dtf = new SimpleDateFormat("dd-MM-yyyy");
 
-    private ExcelFileReader() {
+    private ExcelReader() {
     }
 
-    public static Workbook readExcel(final String fullFilePath)
-        throws EncryptedDocumentException, InvalidFormatException, IOException {
-        Workbook wb = null;
+    public static XSSFSheet readInputStream(InputStream file, String ...sheetName) {
+        // Try block to check for exceptions
         try {
-            wb = WorkbookFactory.create(new File(fullFilePath));
-        } catch (InvalidFormatException e) {
+            // Create Workbook instance holding reference to .xlsx file
+            XSSFWorkbook workbook = new XSSFWorkbook(file);
+            // Get first/desired sheet from the workbook
+            XSSFSheet sheet = null;
+
+            if (sheetName.length > 0 && sheetName[0] != null) {
+                sheet = workbook.getSheet(sheetName[0]);
+            }
+
+            if (sheet == null) {
+                sheet = workbook.getSheetAt(0);
+            }
+
+            return sheet;
+
+        } catch (Exception e) { // Catch block to handle exceptions
+            // Display the exception along with line number using printStackTrace() method
             e.printStackTrace();
+            return null;
         }
-        return wb;
     }
 
-    public static Map<String, List<ExcelField[]>> getExcelRowValues(final Sheet sheet) {
+    public static Map<String, List<ExcelField[]>> getExcelRowValues(final XSSFSheet sheet) {
         Map<String, List<ExcelField[]>> excelMap = new HashMap<>();
         Map<String, ExcelField[]> excelSectionHeaders = getExcelHeaderSections();
         int totalRows = sheet.getLastRowNum();
@@ -59,6 +67,7 @@ public class ExcelFileReader {
                     excelField.setExcelHeader(ehc.getExcelHeader());
                     excelField.setExcelIndex(ehc.getExcelIndex());
                     excelField.setPojoAttribute(ehc.getPojoAttribute());
+                    excelField.setRequired(ehc.isRequired());
                     if (FieldType.STRING.getValue().equalsIgnoreCase(cellType)) {
                         excelField.setExcelValue(cell.getStringCellValue());
                     } else if (FieldType.DOUBLE.getValue().equalsIgnoreCase(cellType)

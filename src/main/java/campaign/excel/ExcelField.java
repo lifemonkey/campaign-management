@@ -7,6 +7,7 @@ public class ExcelField {
     private String excelColType;
     private String excelValue;
     private String pojoAttribute;
+    private boolean required;
 
     public String getExcelHeader() {
         return excelHeader;
@@ -46,5 +47,13 @@ public class ExcelField {
 
     public void setPojoAttribute(String pojoAttribute) {
         this.pojoAttribute = pojoAttribute;
+    }
+
+    public boolean isRequired() {
+        return required;
+    }
+
+    public void setRequired(boolean required) {
+        this.required = required;
     }
 }

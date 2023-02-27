@@ -2,14 +2,14 @@ package campaign.excel;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ExcelFieldMapper {
 
-    final static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    final static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:MM:ss");
 
     public static <T> List<T> getPojos(List<ExcelField[]> excelFields, Class<T> clazz) {
 
@@ -42,7 +42,7 @@ public class ExcelFieldMapper {
                             } else if (FieldType.INTEGER.getValue().equalsIgnoreCase(evc[i].getExcelColType())) {
                                 field.set(t, Double.valueOf(evc[i].getExcelValue()).intValue());
                             } else if (FieldType.DATE.getValue().equalsIgnoreCase(evc[i].getExcelColType())) {
-                                field.set(t, LocalDate.parse(evc[i].getExcelValue(), dtf));
+                                field.set(t, LocalDateTime.parse(evc[i].getExcelValue(), dtf));
                             }
                         } catch (IllegalArgumentException | IllegalAccessException e) {
                             e.printStackTrace();
