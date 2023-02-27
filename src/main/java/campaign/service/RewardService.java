@@ -156,7 +156,7 @@ public class RewardService {
 
         // applied campaign: campaign details
         List<RewardDTO> results = ServiceUtils.getPageContent(pageable, filteredList);
-        return new PageImpl<>(results, pageable, results.size());
+        return new PageImpl<>(results, pageable, filteredList.size());
     }
 
     private void sortResults(Pageable pageable, List<Reward> toBeSortedList) {

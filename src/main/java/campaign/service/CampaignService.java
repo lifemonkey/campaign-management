@@ -124,7 +124,7 @@ public class CampaignService {
             .collect(Collectors.toList());
 
         List<CampaignDTO> results = ServiceUtils.getPageContent(pageable, filteredList);
-        return new PageImpl<>(results, pageable, results.size());
+        return new PageImpl<>(results, pageable, filteredList.size());
     }
 
     private void sortResults(Pageable pageable, List<Campaign> toBeSortedList) {

@@ -101,8 +101,6 @@ public class ServiceUtils {
 
     public static <T> List<T> getPageContent(Pageable pageable, List<T> targetList) {
 
-        // Collections.sort();
-
         // slice result list
         int start = (int)pageable.getOffset();
         int end = (targetList.size() > ((int)pageable.getOffset() + pageable.getPageSize()))
