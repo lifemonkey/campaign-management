@@ -128,8 +128,8 @@ public class RewardService {
 
         List<RewardDTO> filteredList = rewardList.stream()
             .filter(reward -> {
-                if (appliedCampaign == null || appliedCampaign.isEmpty()
-                    || appliedCampaign.equalsIgnoreCase("all")
+                if ((appliedCampaign == null || appliedCampaign.isEmpty() || appliedCampaign.equalsIgnoreCase("all"))
+                    && (campaignType == null || appliedCampaigns.containsKey(reward.getCampaignId()))
                 ) {
                     return true;
                 }
