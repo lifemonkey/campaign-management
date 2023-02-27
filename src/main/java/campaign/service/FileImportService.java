@@ -2,7 +2,7 @@ package campaign.service;
 
 import campaign.domain.TransactionType;
 import campaign.domain.Voucher;
-import campaign.excel.ExcelReaderService;
+import campaign.excel.ExcelService;
 import campaign.repository.TransactionTypeRepository;
 import campaign.repository.VoucherRepository;
 import org.apache.commons.csv.CSVRecord;
@@ -31,7 +31,7 @@ public class FileImportService {
         try {
             List<TransactionType> transactionTypes = convertTransTypeFromCsv(multipartFile.getInputStream());
             if (!transactionTypes.isEmpty()) {
-                // if overwrite, delete all records then saveAll
+                // if overwritten, delete all records then saveAll
                 if (overwrite) {
                     List<TransactionType> toBeDeleted = transactionTypeRepository.findAll();
                     transactionTypeRepository.saveAll(
@@ -51,7 +51,7 @@ public class FileImportService {
 
     public boolean importExcelFile(MultipartFile multipartFile, boolean overwrite) {
         try {
-            List<Voucher> voucherList = ExcelReaderService.readVoucher(multipartFile.getInputStream(), null);
+            List<Voucher> voucherList = ExcelService.readVoucher(multipartFile.getInputStream(), null);
             if (voucherList.isEmpty()) return false;
 
             // if overwritten, delete all records then saveAll

@@ -11,11 +11,10 @@ import org.apache.poi.EncryptedDocumentException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 
-public class ExcelReaderService {
+public class ExcelService {
 
     public static List<Voucher> readVoucher(InputStream inputStream, String sheetName) throws InvalidFormatException {
         try {
-//            Workbook workbook = ExcelFileReader.readExcel("/Users/duncan/Downloads/template_voucher.xlsx");
             XSSFSheet sheet = ExcelReader.readInputStream(inputStream, sheetName);
             Map<String, List<ExcelField[]>> excelRowValuesMap = ExcelReader.getExcelRowValues(sheet);
             List<ExcelField[]> excelFields = excelRowValuesMap.get(ExcelSection.VOUCHERS.getValue());

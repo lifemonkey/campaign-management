@@ -1,6 +1,7 @@
 package campaign.web.rest;
 
 import campaign.security.AuthoritiesConstants;
+import campaign.service.FileExportService;
 import campaign.service.FileImportService;
 import campaign.web.rest.vm.ResponseCode;
 import campaign.web.rest.vm.ResponseVM;
@@ -8,6 +9,7 @@ import io.micrometer.core.annotation.Timed;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +25,11 @@ public class ImportExportResource {
 
     private final FileImportService fileImportService;
 
-    public ImportExportResource(FileImportService fileImportService) {
+    private final FileExportService fileExportService;
+
+    public ImportExportResource(FileImportService fileImportService, FileExportService fileExportService) {
         this.fileImportService = fileImportService;
+        this.fileExportService = fileExportService;
     }
 
     /**
@@ -66,6 +71,31 @@ public class ImportExportResource {
             isImported ? "Import successfully" : "Invalid format, please check again!",
             new HttpHeaders(),
             HttpStatus.OK);
+    }
+
+    /**
+     * POST /file/export : export a file
+     *
+     * @RequestBody file data to be imported
+     * @return the ResponseEntity with status 200 (OK) and with body all users
+     */
+    @PostMapping("/file/export")
+    @Timed
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
+    public ResponseEntity<Object> exportFile(@RequestParam String name,
+                                             @RequestParam(required = false) String type) {
+        Resource resource = fileExportService.exportFileAsResource(name, type);
+        if (resource != null) {
+            return new ResponseEntity<>(resource, new HttpHeaders(), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(
+            new ResponseVM(
+                ResponseCode.RESPONSE_NOT_FOUND,
+                ResponseCode.ERROR_CODE_FILE_EXPORT_FAILED,
+                "Could not export file name:" + name + " type:" + type),
+            new HttpHeaders(),
+            HttpStatus.NOT_FOUND);
     }
 
 }

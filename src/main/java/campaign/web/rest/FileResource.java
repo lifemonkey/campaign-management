@@ -94,7 +94,6 @@ public class FileResource {
         Resource resource = fileService.loadFileAsResource(name);
         if (resource != null && resource.exists()) {
             return new ResponseEntity<>(resource, new HttpHeaders(), HttpStatus.OK);
-            //HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
         }
 
         return new ResponseEntity<>(
