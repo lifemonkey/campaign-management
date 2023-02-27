@@ -162,8 +162,7 @@ public class FileService {
         File file = fileMapper.fileVMToFile(fileVM);
         file.setId(id);
 
-        fileRepository.save(file);
-        return fileMapper.fileToFileDTO(file);
+        return fileMapper.fileToFileDTO(fileRepository.saveAndFlush(file));
     }
 
     @Transactional(rollbackFor = Exception.class)

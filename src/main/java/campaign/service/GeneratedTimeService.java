@@ -77,8 +77,7 @@ public class GeneratedTimeService {
         if (!generatedTimeOpt.isPresent()) return null;
 
         GeneratedTime generatedTime = generatedTimeMapper.updateGeneratedTime(generatedTimeOpt.get(), generatedTimeVM);
-        generatedTimeRepository.save(generatedTime);
-        return generatedTimeMapper.generatedTimeToGeneratedTimeDTO(generatedTime);
+        return generatedTimeMapper.generatedTimeToGeneratedTimeDTO(generatedTimeRepository.saveAndFlush(generatedTime));
     }
 
     @Transactional(rollbackFor = Exception.class)

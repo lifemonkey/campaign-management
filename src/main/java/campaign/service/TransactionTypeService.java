@@ -87,8 +87,7 @@ public class TransactionTypeService {
         if (!transactionTypeOpt.isPresent()) return null;
 
         TransactionType transactionType = transactionTypeMapper.updateTransactionType(transactionTypeOpt.get(), transactionTypeVM);
-        transactionTypeRepository.save(transactionType);
-        return transactionTypeMapper.transactionTypeToTransactionTypeDTO(transactionType);
+        return transactionTypeMapper.transactionTypeToTransactionTypeDTO(transactionTypeRepository.saveAndFlush(transactionType));
     }
 
     @Transactional(rollbackFor = Exception.class)

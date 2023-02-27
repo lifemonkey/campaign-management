@@ -396,8 +396,7 @@ public class CampaignService {
             }
         }
 
-        campaignRepository.save(campaign);
-        return campaignMapper.campaignToCampaignWRelDTO(campaign);
+        return campaignMapper.campaignToCampaignWRelDTO(campaignRepository.saveAndFlush(campaign));
     }
 
     @Transactional(rollbackFor = Exception.class)

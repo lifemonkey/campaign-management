@@ -314,7 +314,7 @@ public class RewardService {
             reward.updateVouchers(toBeSavedVouchers);
         }
 
-        return rewardMapper.rewardToRewardDTO(rewardRepository.save(reward));
+        return rewardMapper.rewardToRewardDTO(rewardRepository.saveAndFlush(reward));
     }
 
     @Transactional(rollbackFor = Exception.class)

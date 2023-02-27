@@ -91,8 +91,7 @@ public class TargetListService {
         if (!targetListOpt.isPresent()) return null;
 
         TargetList targetList = targetListMapper.updateTargetList(targetListOpt.get(), targetListVM);
-        targetListRepository.save(targetList);
-        return targetListMapper.targetListToTargetListDTO(targetList);
+        return targetListMapper.targetListToTargetListDTO(targetListRepository.saveAndFlush(targetList));
     }
 
     @Transactional(rollbackFor = Exception.class)

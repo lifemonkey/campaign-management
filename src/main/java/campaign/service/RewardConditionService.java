@@ -161,8 +161,7 @@ public class RewardConditionService {
             }
         }
 
-        rewardConditionRepository.save(rewardCondition);
-        return rewardConditionMapper.rewardConditionToRewardConditionDTO(rewardCondition);
+        return rewardConditionMapper.rewardConditionToRewardConditionDTO(rewardConditionRepository.saveAndFlush(rewardCondition));
     }
 
     @Transactional(rollbackFor = Exception.class)

@@ -257,7 +257,7 @@ public class RuleService {
             rewardConditionRepository.saveAll(clonedRewardConditions);
         }
 
-        return ruleMapper.ruleToRuleDTO(ruleRepository.save(toBeInsertedRule));
+        return ruleMapper.ruleToRuleDTO(ruleRepository.saveAndFlush(toBeInsertedRule));
     }
 
     private List<File> buildSavedFiles(List<File> fileList) {
