@@ -67,8 +67,12 @@ public class RuleService {
     }
 
     @Transactional(readOnly = true)
-    public Boolean ruleNameExisted(Long id, String name) {
-        return ruleRepository.findByNameIgnoreCase(name).filter(rule -> id == null || rule.getId() != id).isPresent();
+    public boolean ruleNameExisted(Long id, String name) {
+        Optional<Rule> ruleOpt = ruleRepository.findByNameIgnoreCase(name);
+        if (ruleOpt.isPresent()) {
+            return id == null || !ruleOpt.get().getId().equals(id);
+        }
+        return false;
     }
 
     @Transactional(readOnly = true)
@@ -92,7 +96,7 @@ public class RuleService {
         List<RuleDTO> filteredList = ruleList.stream()
             .filter(rule -> {
                 if (appliedCampaign == null || appliedCampaign.isEmpty()
-                    | appliedCampaign.equalsIgnoreCase("all")
+                    || appliedCampaign.equalsIgnoreCase("all")
                 ) {
                     return true;
                 }

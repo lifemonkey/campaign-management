@@ -94,8 +94,12 @@ public class CampaignService {
     }
 
     @Transactional(readOnly = true)
-    public Boolean campaignNameExisted(Long id, String name) {
-        return campaignRepository.findByNameIgnoreCase(name).filter(campaign -> id == null || campaign.getId() != id).isPresent();
+    public boolean campaignNameExisted(Long id, String name) {
+        Optional<Campaign> campaignOpt = campaignRepository.findByNameIgnoreCase(name);
+        if (campaignOpt.isPresent()) {
+            return id == null || !campaignOpt.get().getId().equals(id);
+        }
+        return false;
     }
 
     @Transactional(readOnly = true)
@@ -118,7 +122,7 @@ public class CampaignService {
         // filter campaign by status
         List<CampaignDTO> filteredList = campaignList.stream()
             .filter(campaign -> (statusId == null)
-                    || (campaign.getStatus() != null && campaign.getStatus().getId() == statusId))
+                    || (campaign.getStatus() != null && campaign.getStatus().getId().equals(statusId)))
             .filter(campaign -> showTemplate || !campaign.isTemplate())
             .map(CampaignDTO::new)
             .collect(Collectors.toList());

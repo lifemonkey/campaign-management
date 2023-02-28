@@ -74,7 +74,7 @@ public class RewardService {
     public boolean hasAppliedRule(Long rewardId) {
         // get list rewards that applied rule
         Optional<RewardCondition> rewardConditionOpt = rewardConditionRepository.findAll().stream()
-            .filter(rc -> rc.getReward().getId() == rewardId)
+            .filter(rc -> rc.getReward().getId() .equals(rewardId))
             .findAny();
         return rewardConditionOpt == null || rewardConditionOpt.isPresent();
     }
@@ -96,8 +96,12 @@ public class RewardService {
     }
 
     @Transactional(readOnly = true)
-    public Boolean rewardNameExisted(Long id, String name) {
-        return rewardRepository.findByNameIgnoreCase(name).filter(reward -> id == null || reward.getId() != id).isPresent();
+    public boolean rewardNameExisted(Long id, String name) {
+        Optional<Reward> rewardOpt = rewardRepository.findByNameIgnoreCase(name);
+        if (rewardOpt.isPresent()) {
+            return id == null || !rewardOpt.get().getId().equals(id);
+        }
+        return false;
     }
 
     @Transactional(readOnly = true)
