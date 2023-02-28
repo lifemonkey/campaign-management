@@ -81,7 +81,7 @@ public class CampaignService {
     public CampaignDTO getCampaignById(Long campaignId) {
         Optional<Campaign> campaignOpt = campaignRepository.findById(campaignId);
         if (campaignOpt.isPresent()) {
-            return campaignMapper.campaignToCampaignWRelDTO(campaignOpt.get());
+            return campaignMapper.campaignToCampaignDTO(campaignOpt.get());
         }
 
         return new CampaignDTO();
@@ -217,7 +217,7 @@ public class CampaignService {
             }
 
             campaignRepository.save(campaign);
-            return campaignMapper.campaignToCampaignWRelDTO(campaign);
+            return campaignMapper.campaignToCampaignDTO(campaign);
         }
 
         return new CampaignDTO();
@@ -290,7 +290,7 @@ public class CampaignService {
             toBeInsertedCampaign.addFilesList(toBeClonedCampaignFiles);
         }
 
-        return campaignMapper.campaignToCampaignWRelDTO(campaignRepository.save(toBeInsertedCampaign));
+        return campaignMapper.campaignToCampaignDTO(campaignRepository.save(toBeInsertedCampaign));
     }
 
     private List<File> buildSavedFiles(List<File> fileList) {
@@ -396,7 +396,7 @@ public class CampaignService {
             }
         }
 
-        return campaignMapper.campaignToCampaignWRelDTO(campaignRepository.saveAndFlush(campaign));
+        return campaignMapper.campaignToCampaignDTO(campaignRepository.saveAndFlush(campaign));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -409,7 +409,7 @@ public class CampaignService {
         Campaign toBeSaved = campaignOpt.get();
         toBeSaved.setTemplate(true);
         toBeSaved.clearRuleList();
-        return campaignMapper.campaignToCampaignWRelDTO(campaignRepository.save(toBeSaved));
+        return campaignMapper.campaignToCampaignDTO(campaignRepository.save(toBeSaved));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -434,7 +434,7 @@ public class CampaignService {
                 isApprove ? Constants.APPROVED_STATUS : Constants.REJECTED_STATUS);
             Campaign campaign = campaignOpt.get();
             campaign.setStatus(statusOpt.orElse(null));
-            return campaignMapper.campaignToCampaignWRelDTO(campaignRepository.save(campaign));
+            return campaignMapper.campaignToCampaignDTO(campaignRepository.save(campaign));
         }
 
         return new CampaignDTO();

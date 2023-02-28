@@ -60,10 +60,6 @@ public class RuleMapper {
             }
 
             rule.setTemplate(ruleDTO.isTemplate());
-            rule.setCreatedBy(ruleDTO.getCreatedBy());
-            rule.setCreatedDate(ruleDTO.getCreatedDate());
-            rule.setLastModifiedBy(ruleDTO.getLastModifiedBy());
-            rule.setLastModifiedDate(ruleDTO.getLastModifiedDate());
 
             return rule;
         }

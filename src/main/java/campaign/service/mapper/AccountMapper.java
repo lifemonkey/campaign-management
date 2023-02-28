@@ -31,10 +31,6 @@ public class AccountMapper {
             account.setExternalId(accountDTO.getExternalId());
             account.setFirstname(accountDTO.getFirstName());
             account.setLastname(accountDTO.getLastName());
-            account.setCreatedBy(accountDTO.getCreatedBy());
-            account.setCreatedDate(accountDTO.getCreatedDate());
-            account.setLastModifiedBy(accountDTO.getLastModifiedBy());
-            account.setLastModifiedDate(accountDTO.getLastModifiedDate());
 
             return account;
         }

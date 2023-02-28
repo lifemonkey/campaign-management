@@ -33,10 +33,6 @@ public class FileMapper {
             file.setDescription(fileDTO.getDescription());
             file.setFileType(fileDTO.getFileType());
             file.setImageUrl(fileDTO.getImageUrl());
-            file.setCreatedBy(fileDTO.getCreatedBy());
-            file.setCreatedDate(fileDTO.getCreatedDate());
-            file.setLastModifiedBy(fileDTO.getLastModifiedBy());
-            file.setLastModifiedDate(fileDTO.getLastModifiedDate());
 
             return file;
         }

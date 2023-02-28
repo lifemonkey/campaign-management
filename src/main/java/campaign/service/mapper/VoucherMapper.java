@@ -29,11 +29,7 @@ public class VoucherMapper {
             Voucher voucher = new Voucher();
             voucher.setId(voucherDTO.getId());
             voucher.setVoucherCode(voucherDTO.getVoucherCode());
-            voucher.setCreatedBy(voucherDTO.getCreatedBy());
-            voucher.setCreatedDate(voucherDTO.getCreatedDate());
-            voucher.setLastModifiedBy(voucherDTO.getLastModifiedBy());
-            voucher.setLastModifiedDate(voucherDTO.getLastModifiedDate());
-
+            
             return voucher;
         }
     }

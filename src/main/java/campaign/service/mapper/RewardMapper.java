@@ -45,11 +45,6 @@ public class RewardMapper {
             reward.setMessageBalanceSW(rewardDTO.getMessageBalanceSW());
             reward.setTemplate(rewardDTO.isTemplate());
 
-            reward.setCreatedBy(rewardDTO.getCreatedBy());
-            reward.setCreatedDate(rewardDTO.getCreatedDate());
-            reward.setLastModifiedBy(rewardDTO.getLastModifiedBy());
-            reward.setLastModifiedDate(rewardDTO.getLastModifiedDate());
-
             return reward;
         }
     }

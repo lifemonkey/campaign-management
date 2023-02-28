@@ -37,7 +37,6 @@ public class GeneratedTimeMapper {
             generatedTime.setId(generatedTimeDTO.getId());
             generatedTime.setStartTime(generatedTimeDTO.getStartTime());
             generatedTime.setEndTime(generatedTimeDTO.getEndTime());
-//            generatedTime.setCampaign(generatedTimeDTO.getCampaignId());
 
             return generatedTime;
         }

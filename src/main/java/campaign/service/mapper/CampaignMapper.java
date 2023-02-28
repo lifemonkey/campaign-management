@@ -27,14 +27,14 @@ public class CampaignMapper {
         this.ruleMapper = ruleMapper;
     }
 
-    public CampaignDTO campaignToCampaignWRelDTO(Campaign campaign) {
+    public CampaignDTO campaignToCampaignDTO(Campaign campaign) {
         return new CampaignDTO(campaign);
     }
 
-    public List<CampaignDTO> campaignToCampaignWRelDTOs(List<Campaign> campaignList) {
+    public List<CampaignDTO> campaignToCampaignDTOs(List<Campaign> campaignList) {
         return campaignList.stream()
             .filter(Objects::nonNull)
-            .map(this::campaignToCampaignWRelDTO)
+            .map(this::campaignToCampaignDTO)
             .collect(Collectors.toList());
     }
 
@@ -58,11 +58,6 @@ public class CampaignMapper {
             campaign.setTemplate(campaignDTO.isTemplate());
             campaign.setUnlimitedLuckyCode(campaignDTO.getUnlimitedLuckyCode());
             campaign.setUnlimitedPrize(campaignDTO.getUnlimitedPrize());
-
-            campaign.setCreatedBy(campaignDTO.getCreatedBy());
-            campaign.setCreatedDate(campaignDTO.getCreatedDate());
-            campaign.setLastModifiedBy(campaignDTO.getLastModifiedBy());
-            campaign.setLastModifiedDate(campaignDTO.getLastModifiedDate());
 
             return campaign;
         }

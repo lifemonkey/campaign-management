@@ -44,10 +44,6 @@ public class RewardConditionMapper {
             rewardCondition.setTimesMin(rewardConditionDTO.getTimesMin());
             rewardCondition.setTimesMax(rewardConditionDTO.getTimesMax());
             rewardCondition.setNumberCodes(rewardConditionDTO.getNumberCodes());
-            rewardCondition.setCreatedBy(rewardConditionDTO.getCreatedBy());
-            rewardCondition.setCreatedDate(rewardConditionDTO.getCreatedDate());
-            rewardCondition.setLastModifiedBy(rewardConditionDTO.getLastModifiedBy());
-            rewardCondition.setLastModifiedDate(rewardConditionDTO.getLastModifiedDate());
 
             return rewardCondition;
         }

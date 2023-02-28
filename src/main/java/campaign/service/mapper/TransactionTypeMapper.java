@@ -40,11 +40,6 @@ public class TransactionTypeMapper {
             transactionType.setTransTypeEN(transactionType.getTransTypeEN());
             transactionType.setTransTypeSW(transactionTypeDTO.getTransTypeSW());
 
-            transactionType.setCreatedBy(transactionTypeDTO.getCreatedBy());
-            transactionType.setCreatedDate(transactionTypeDTO.getCreatedDate());
-            transactionType.setLastModifiedBy(transactionTypeDTO.getLastModifiedBy());
-            transactionType.setLastModifiedDate(transactionTypeDTO.getLastModifiedDate());
-
             return transactionType;
         }
     }

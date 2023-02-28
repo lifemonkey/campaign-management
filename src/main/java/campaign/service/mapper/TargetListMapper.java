@@ -38,10 +38,6 @@ public class TargetListMapper {
             targetList.setName(targetListDTO.getName());
             targetList.setDescription(targetListDTO.getDescription());
             targetList.setTargetType(targetListDTO.getTargetType());
-            targetList.setCreatedBy(targetListDTO.getCreatedBy());
-            targetList.setCreatedDate(targetListDTO.getCreatedDate());
-            targetList.setLastModifiedBy(targetListDTO.getLastModifiedBy());
-            targetList.setLastModifiedDate(targetListDTO.getLastModifiedDate());
 
             return targetList;
         }
