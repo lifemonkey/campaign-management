@@ -205,6 +205,7 @@ public class RuleService {
             // clone reward and re-assign cloned reward to reward conditions
             Map<String, List<File>> rewardNameFileMap = new HashMap<>();
             List<Reward> toBeSavedRewards = clonedRewardConditions.stream()
+                .filter(rewardCondition -> rewardCondition.getReward() != null)
                 .map(rewardCondition -> {
                     String rewardClonedName = rewardCondition.getReward().getName() + Constants.CLONE_POSTFIX;
                     List<Reward> rewardsByName = rewardRepository.findByNameStartsWithIgnoreCase(rewardClonedName);
