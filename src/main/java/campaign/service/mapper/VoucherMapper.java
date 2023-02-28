@@ -29,7 +29,7 @@ public class VoucherMapper {
             Voucher voucher = new Voucher();
             voucher.setId(voucherDTO.getId());
             voucher.setVoucherCode(voucherDTO.getVoucherCode());
-            
+
             return voucher;
         }
     }

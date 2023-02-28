@@ -151,7 +151,7 @@ public class RewardResource {
                 new ResponseVM(
                     ResponseCode.RESPONSE_WRONG_PARAM,
                     ResponseCode.ERROR_CODE_REWARD_NAME_IS_DUPLICATED,
-                    "Reward name is duplicated!"),
+                    ResponseCode.RESPONSE_REWARD_NAME_IS_DUPLICATED),
                 new HttpHeaders(),
                 HttpStatus.NOT_FOUND);
         }

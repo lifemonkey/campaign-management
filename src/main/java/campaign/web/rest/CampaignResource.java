@@ -106,7 +106,7 @@ public class CampaignResource {
                 new ResponseVM(
                     ResponseCode.RESPONSE_WRONG_PARAM,
                     ResponseCode.ERROR_CODE_CAMPAIGN_NAME_IS_DUPLICATED,
-                    "Campaign name is duplicated!"),
+                    ResponseCode.RESPONSE_CAMPAIGN_NAME_IS_DUPLICATED),
                 new HttpHeaders(),
                 HttpStatus.NOT_FOUND);
         }
