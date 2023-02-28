@@ -96,8 +96,8 @@ public class RewardService {
     }
 
     @Transactional(readOnly = true)
-    public Boolean rewardNameExisted(String name) {
-        return rewardRepository.findByNameIgnoreCase(name).isPresent();
+    public Boolean rewardNameExisted(Long id, String name) {
+        return rewardRepository.findByNameIgnoreCase(name).filter(reward -> id == null || reward.getId() != id).isPresent();
     }
 
     @Transactional(readOnly = true)

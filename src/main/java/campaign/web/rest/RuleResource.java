@@ -98,7 +98,7 @@ public class RuleResource {
         }
 
         // check duplicated name
-        if (ruleService.ruleNameExisted(ruleVM.getName())) {
+        if (ruleService.ruleNameExisted(null, ruleVM.getName())) {
             return new ResponseEntity<>(
                 new ResponseVM(
                     ResponseCode.RESPONSE_WRONG_PARAM,
@@ -146,7 +146,7 @@ public class RuleResource {
         }
 
         // check duplicated name
-        if (ruleService.ruleNameExisted(ruleVM.getName())) {
+        if (ruleService.ruleNameExisted(id, ruleVM.getName())) {
             return new ResponseEntity<>(
                 new ResponseVM(
                     ResponseCode.RESPONSE_WRONG_PARAM,

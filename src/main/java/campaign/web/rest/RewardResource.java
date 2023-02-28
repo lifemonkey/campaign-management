@@ -100,7 +100,7 @@ public class RewardResource {
         }
 
         // check duplicated name
-        if (rewardService.rewardNameExisted(rewardVM.getName())) {
+        if (rewardService.rewardNameExisted(null, rewardVM.getName())) {
             return new ResponseEntity<>(
                 new ResponseVM(
                     ResponseCode.RESPONSE_WRONG_PARAM,
@@ -146,7 +146,7 @@ public class RewardResource {
         }
 
         // check duplicated name
-        if (rewardService.rewardNameExisted(rewardVM.getName())) {
+        if (rewardService.rewardNameExisted(id, rewardVM.getName())) {
             return new ResponseEntity<>(
                 new ResponseVM(
                     ResponseCode.RESPONSE_WRONG_PARAM,

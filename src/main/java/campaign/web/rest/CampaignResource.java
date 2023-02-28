@@ -101,7 +101,7 @@ public class CampaignResource {
         }
 
         // check duplicated name
-        if (campaignService.campaignNameExisted(campaignVM.getName())) {
+        if (campaignService.campaignNameExisted(null, campaignVM.getName())) {
             return new ResponseEntity<>(
                 new ResponseVM(
                     ResponseCode.RESPONSE_WRONG_PARAM,
@@ -149,7 +149,7 @@ public class CampaignResource {
         }
 
         // check duplicated name
-        if (campaignService.campaignNameExisted(campaignVM.getName())) {
+        if (campaignService.campaignNameExisted(id, campaignVM.getName())) {
             return new ResponseEntity<>(
                 new ResponseVM(
                     ResponseCode.RESPONSE_WRONG_PARAM,

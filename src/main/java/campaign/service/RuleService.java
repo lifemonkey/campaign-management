@@ -67,8 +67,8 @@ public class RuleService {
     }
 
     @Transactional(readOnly = true)
-    public Boolean ruleNameExisted(String name) {
-        return ruleRepository.findByNameIgnoreCase(name).isPresent();
+    public Boolean ruleNameExisted(Long id, String name) {
+        return ruleRepository.findByNameIgnoreCase(name).filter(rule -> id == null || rule.getId() != id).isPresent();
     }
 
     @Transactional(readOnly = true)

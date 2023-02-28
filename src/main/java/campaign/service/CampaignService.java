@@ -94,8 +94,8 @@ public class CampaignService {
     }
 
     @Transactional(readOnly = true)
-    public Boolean campaignNameExisted(String name) {
-        return campaignRepository.findByNameIgnoreCase(name).isPresent();
+    public Boolean campaignNameExisted(Long id, String name) {
+        return campaignRepository.findByNameIgnoreCase(name).filter(campaign -> id == null || campaign.getId() != id).isPresent();
     }
 
     @Transactional(readOnly = true)
