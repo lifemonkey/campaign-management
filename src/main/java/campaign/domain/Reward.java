@@ -66,6 +66,9 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
     @Column(name = "campaign_id")
     private Long campaignId;
 
+    @OneToOne(mappedBy = "reward")
+    private RewardCondition rewardCondition;
+
     public Reward() {
     }
 
@@ -221,6 +224,14 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
 
     public void setCampaignId(Long campaignId) {
         this.campaignId = campaignId;
+    }
+
+    public RewardCondition getRewardCondition() {
+        return rewardCondition;
+    }
+
+    public void setRewardCondition(RewardCondition rewardCondition) {
+        this.rewardCondition = rewardCondition;
     }
 
     public Reward clone(String name) {

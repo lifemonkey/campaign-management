@@ -74,7 +74,7 @@ public class RewardService {
     public boolean hasAppliedRule(Long rewardId) {
         // get list rewards that applied rule
         Optional<RewardCondition> rewardConditionOpt = rewardConditionRepository.findAll().stream()
-            .filter(rc -> rc.getReward().getId() .equals(rewardId))
+            .filter(rc -> rc.getReward().getId().equals(rewardId))
             .findAny();
         return rewardConditionOpt == null || rewardConditionOpt.isPresent();
     }
