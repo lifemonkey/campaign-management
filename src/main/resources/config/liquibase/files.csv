@@ -1,8 +1,10 @@
 id;name;description;file_type;image_url;campaign_id;reward_id;created_by;last_modified_by
 1;File 1;File for campaign 1;1;https://google.com/image_1;1;;system;system
 2;File 2;File for campaign 2;1;https://google.com/image_2;2;;system;system
-3;File 3;File for campaign 3;1;https://google.com/image_3;3;;system;system
+3;File 3;File for campaign 3;1;https://google.ccom/image_3;3;;system;system
 4;File 4;File for campaign 4;3;https://google.com/image_4;4;;system;system
 5;File 5;File for campaign 5;2;https://google.com/image_5;5;;system;system
 6;File 6;File for reward 1;2;https://google.com/image_6;;1;system;system
 7;File 7;File for reward 2;2;https://google.com/image_7;;2;system;system
+8;File 8;File for reward 8;2;https://google.com/image_8;;8;system;system
+9;File 9;File for reward 9;2;https://google.com/image_9;;9;system;system

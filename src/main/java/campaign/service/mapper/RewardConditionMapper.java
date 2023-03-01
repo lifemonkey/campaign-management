@@ -95,7 +95,7 @@ public class RewardConditionMapper {
             .filter(Objects::nonNull)
             .map(rewardConditionVM -> {
                 Reward reward = rewardList.stream()
-                    .filter(r -> rewardConditionVM.getRewardId().equals(r.getId()))
+                    .filter(r -> rewardConditionVM.getRewardId() != null && rewardConditionVM.getRewardId().equals(r.getId()))
                     .findFirst().orElse(null);
                 return this.rewardConditionVMToRewardCondition(rewardConditionVM, rule, reward);
             }).collect(Collectors.toList());

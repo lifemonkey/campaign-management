@@ -5,3 +5,4 @@ id;name;description;duration_type;duration_value;rule_configuration;campaign_typ
 4;Rule 4;TemplateRule 4 description;DURATION_HOUR;;1;1;true;system;system;2023-02-24T14:18:56.232
 5;Rule 5;TemplateRule 5 description;DURATION_HOUR;;2;2;true;system;system;2023-02-24T21:48:56.232
 6;Rule 6;TemplateRule 6 description;DURATION_HOUR;;3;3;true;system;system;2023-02-22T03:48:56.232
+7;Rule 7;Description: test delete rule;DURATION_HOUR;;3;3;false;system;system;2023-03-01T09:25:56.232
