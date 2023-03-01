@@ -40,15 +40,12 @@ public class RewardService {
 
     private final CampaignRepository campaignRepository;
 
-    private final RewardConditionRepository rewardConditionRepository;
-
     public RewardService(RewardRepository rewardRepository,
                          RewardMapper rewardMapper,
                          FileRepository fileRepository,
                          VoucherRepository voucherRepository,
                          VoucherMapper voucherMapper,
-                         CampaignRepository campaignRepository,
-                         RewardConditionRepository rewardConditionRepository) {
+                         CampaignRepository campaignRepository) {
 
         this.rewardRepository = rewardRepository;
         this.rewardMapper = rewardMapper;
@@ -56,7 +53,6 @@ public class RewardService {
         this.voucherRepository = voucherRepository;
         this.voucherMapper = voucherMapper;
         this.campaignRepository = campaignRepository;
-        this.rewardConditionRepository = rewardConditionRepository;
     }
 
     @Transactional(readOnly = true)
@@ -73,10 +69,11 @@ public class RewardService {
 
     public boolean hasAppliedRule(Long rewardId) {
         // get list rewards that applied rule
-        Optional<RewardCondition> rewardConditionOpt = rewardConditionRepository.findAll().stream()
-            .filter(rc -> rc.getReward().getId().equals(rewardId))
-            .findAny();
-        return rewardConditionOpt == null || rewardConditionOpt.isPresent();
+        Optional<Reward> rewardOpt = rewardRepository.findById(rewardId);
+        if (rewardOpt.isPresent() && rewardOpt.get().getRewardCondition() != null) {
+            return true;
+        }
+        return false;
     }
 
     private RewardCampaignDTO appliedCampaign(Reward reward) {
@@ -88,11 +85,6 @@ public class RewardService {
         }
 
         return null;
-    }
-
-    @Transactional(readOnly = true)
-    public Page<RewardDTO> getAllRewards(Pageable pageable) {
-        return rewardRepository.findAll(pageable).map(RewardDTO::new);
     }
 
     @Transactional(readOnly = true)
@@ -126,9 +118,9 @@ public class RewardService {
         Map<Long, RewardCampaignDTO> appliedCampaigns = appliedCampaigns(rewardList, campaignType);
 
         // get list rewards that applied rule
-        Set<Long> rewardAppliedRuleIds = appliedRule
-            ? rewardConditionRepository.findAll().stream().map(rc -> rc.getReward().getId()).collect(Collectors.toSet())
-            : Collections.emptySet();
+//        Set<Long> rewardAppliedRuleIds = appliedRule
+//            ? rewardConditionRepository.findAll().stream().map(rc -> rc.getReward().getId()).collect(Collectors.toSet())
+//            : Collections.emptySet();
 
         List<RewardDTO> filteredList = rewardList.stream()
             .filter(reward -> {
@@ -149,7 +141,7 @@ public class RewardService {
 
                 return false;
             })
-            .filter(reward -> rewardAppliedRuleIds.isEmpty() || !rewardAppliedRuleIds.contains(reward.getId()))
+            .filter(reward -> reward.getRewardCondition() != null)
             .filter(reward -> showTemplate || !reward.isTemplate())
             .map(reward -> {
                 RewardDTO rewardDTO = new RewardDTO(reward);
