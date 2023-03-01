@@ -38,9 +38,8 @@ public class RewardCondition extends AbstractAuditingEntity implements Serializa
     @JoinColumn(name = "rule_id", referencedColumnName = "id")
     private Rule rule;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "reward_id", referencedColumnName = "id")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Reward reward;
 
     public RewardCondition() {

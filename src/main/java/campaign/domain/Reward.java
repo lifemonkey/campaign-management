@@ -66,8 +66,8 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
     @Column(name = "campaign_id")
     private Long campaignId;
 
-    @OneToOne(mappedBy = "reward")
-    private RewardCondition rewardCondition;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "reward")
+    private List<RewardCondition> rewardConditions = new ArrayList<>();
 
     public Reward() {
     }
@@ -226,12 +226,17 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
         this.campaignId = campaignId;
     }
 
-    public RewardCondition getRewardCondition() {
-        return rewardCondition;
+    public List<RewardCondition> getRewardConditions() {
+        return rewardConditions;
     }
 
-    public void setRewardCondition(RewardCondition rewardCondition) {
-        this.rewardCondition = rewardCondition;
+    public void addRewardConditions(List<RewardCondition> rewardConditions) {
+        this.rewardConditions = rewardConditions;
+    }
+
+    public Reward clearRewardConditions() {
+        this.rewardConditions.clear();
+        return this;
     }
 
     public Reward clone(String name) {

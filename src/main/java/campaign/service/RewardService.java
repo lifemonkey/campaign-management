@@ -70,7 +70,7 @@ public class RewardService {
     public boolean hasAppliedRule(Long rewardId) {
         // get list rewards that applied rule
         Optional<Reward> rewardOpt = rewardRepository.findById(rewardId);
-        if (rewardOpt.isPresent() && rewardOpt.get().getRewardCondition() != null) {
+        if (rewardOpt.isPresent() && !rewardOpt.get().getRewardConditions().isEmpty()) {
             return true;
         }
         return false;
@@ -117,11 +117,6 @@ public class RewardService {
         // get applied campaigns
         Map<Long, RewardCampaignDTO> appliedCampaigns = appliedCampaigns(rewardList, campaignType);
 
-        // get list rewards that applied rule
-//        Set<Long> rewardAppliedRuleIds = appliedRule
-//            ? rewardConditionRepository.findAll().stream().map(rc -> rc.getReward().getId()).collect(Collectors.toSet())
-//            : Collections.emptySet();
-
         List<RewardDTO> filteredList = rewardList.stream()
             .filter(reward -> {
                 if ((appliedCampaign == null || appliedCampaign.isEmpty() || appliedCampaign.equalsIgnoreCase("all"))
@@ -141,7 +136,7 @@ public class RewardService {
 
                 return false;
             })
-            .filter(reward -> reward.getRewardCondition() != null)
+            .filter(reward -> !appliedRule || !reward.getRewardConditions().isEmpty())
             .filter(reward -> showTemplate || !reward.isTemplate())
             .map(reward -> {
                 RewardDTO rewardDTO = new RewardDTO(reward);
