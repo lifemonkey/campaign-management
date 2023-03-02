@@ -110,6 +110,17 @@ public class RewardResource {
                 HttpStatus.NOT_FOUND);
         }
 
+        // validate voucher
+        if (rewardService.isRewardVouchersValid(rewardVM.getVoucherCodes())) {
+            return new ResponseEntity<>(
+                new ResponseVM(
+                    ResponseCode.RESPONSE_WRONG_PARAM,
+                    ResponseCode.ERROR_CODE_REWARD_VOUCHER_INVALID,
+                    ResponseCode.RESPONSE_REWARD_VOUCHER_INVALID),
+                new HttpHeaders(),
+                HttpStatus.BAD_REQUEST);
+        }
+
         return new ResponseEntity<> (rewardService.createReward(rewardVM), new HttpHeaders(), HttpStatus.OK);
     }
 
@@ -154,6 +165,17 @@ public class RewardResource {
                     ResponseCode.RESPONSE_REWARD_NAME_IS_DUPLICATED),
                 new HttpHeaders(),
                 HttpStatus.NOT_FOUND);
+        }
+
+        // validate voucher
+        if (rewardService.isRewardVouchersValid(rewardVM.getVoucherCodes())) {
+            return new ResponseEntity<>(
+                new ResponseVM(
+                    ResponseCode.RESPONSE_WRONG_PARAM,
+                    ResponseCode.ERROR_CODE_REWARD_VOUCHER_INVALID,
+                    ResponseCode.RESPONSE_REWARD_VOUCHER_INVALID),
+                new HttpHeaders(),
+                HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<>(rewardService.updateReward(id, rewardVM), new HttpHeaders(), HttpStatus.OK);

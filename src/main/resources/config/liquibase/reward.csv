@@ -7,4 +7,4 @@ id;name;description;prize_type;prize_value;number_of_prize;released;message_winn
 6;Reward 6;Template Reward 6 description;3;2;3;3;message_winner_en;message_winner_sw;message_balance_en;message_balance_sw;2;;true;system;system;2023-02-25T22:45:20.532
 7;Reward 7;Template Reward 7 description;3;2;3;3;message_winner_en;message_winner_sw;message_balance_en;message_balance_sw;2;;true;system;system;2023-02-26T00:28:23.396
 8;Reward 8 for Rule 7;Template Reward 8 description;3;2;3;3;message_winner_en;message_winner_sw;;;2;;false;system;system;2023-03-01T00:09:24.396
-9;Reward 9 for Rule 7;Template Reward 9 description;3;2;3;3;message_winner_en;message_winner_sw;;;2;;false;system;system;2023-03-01T00:09:24.396
+9;Reward 9 for Rule 7;Template Reward 9 description;3;999999999;999999999;3;message_winner_en;message_winner_sw;;;2;;false;system;system;2023-03-01T00:09:24.396

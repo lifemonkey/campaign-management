@@ -24,11 +24,11 @@ public class Voucher extends AbstractAuditingEntity implements Serializable {
     private Long id;
 
     @NotBlank
-    @Column(name = "voucher_code", length = 200, unique = true)
+    @Column(name = "voucher_code", length = 10, unique = true)
     private String voucherCode;
 
 
-    @Column(name = "description", length = 4000)
+    @Column(name = "description", length = 200)
     private String description;
 
     @Column(name = "is_import")

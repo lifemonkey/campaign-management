@@ -4,10 +4,10 @@ public final class ResponseCode {
 
     public static final String RESPONSE_NOT_FOUND = "Not Found";
     public static final String RESPONSE_WRONG_PARAM = "Param invalid";
-
     public static final String RESPONSE_RULE_NAME_IS_DUPLICATED = "Rule name is duplicated. Please enter a new name!";
     public static final String RESPONSE_CAMPAIGN_NAME_IS_DUPLICATED = "Campaign name is duplicated. Please enter a new name!";
     public static final String RESPONSE_REWARD_NAME_IS_DUPLICATED = "Reward name is duplicated. Please enter a new name!";
+    public static final String RESPONSE_REWARD_VOUCHER_INVALID = "Voucher code value is invalid!";
 
     /**
      * Error code
@@ -36,6 +36,7 @@ public final class ResponseCode {
     public static final Integer ERROR_CODE_REWARD_NAME_IS_DUPLICATED = 1503;
     public static final Integer ERROR_CODE_REWARD_CANNOT_BE_DELETED = 1504;
     public static final Integer ERROR_CODE_REWARD_TEMPLATE_CANNOT_BE_CLONED = 1505;
+    public static final Integer ERROR_CODE_REWARD_VOUCHER_INVALID = 1506;
     public static final Integer ERROR_CODE_REWARD_CONDITION_NOT_FOUND = 1601;
     public static final Integer ERROR_CODE_GENERATED_TIME_NOT_FOUND = 1701;
     public static final Integer ERROR_CODE_GENERATED_TIME_IS_EMPTY = 1702;

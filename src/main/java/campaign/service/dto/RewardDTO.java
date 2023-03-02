@@ -18,9 +18,9 @@ public class RewardDTO {
 
     private Integer prizeType;
 
-    private Float prizeValue;
+    private Long prizeValue;
 
-    private Float numOfPrize;
+    private Long numOfPrize;
 
     private Integer released;
 
@@ -120,19 +120,19 @@ public class RewardDTO {
         this.prizeType = prizeType;
     }
 
-    public Float getPrizeValue() {
+    public Long getPrizeValue() {
         return prizeValue;
     }
 
-    public void setPrizeValue(Float prizeValue) {
+    public void setPrizeValue(Long prizeValue) {
         this.prizeValue = prizeValue;
     }
 
-    public Float getNumOfPrize() {
+    public Long getNumOfPrize() {
         return numOfPrize;
     }
 
-    public void setNumOfPrize(Float numOfPrize) {
+    public void setNumOfPrize(Long numOfPrize) {
         this.numOfPrize = numOfPrize;
     }
 

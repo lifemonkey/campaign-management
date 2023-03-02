@@ -2,6 +2,7 @@ package campaign.service.dto;
 
 import campaign.domain.Voucher;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 public class VoucherDTO {
@@ -28,6 +29,11 @@ public class VoucherDTO {
     private LocalDateTime lastModifiedDate;
 
     public VoucherDTO() {
+    }
+
+    public boolean isValidVoucher() {
+        return (this.voucherCode != null && this.voucherCode.length() <= 10)
+            && (this.description == null || this.description.length() <= 200);
     }
 
     public VoucherDTO(Voucher voucher) {

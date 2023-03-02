@@ -225,6 +225,11 @@ public class RewardService {
         return new RewardDTO();
     }
 
+    public boolean isRewardVouchersValid(List<VoucherDTO> vouchers) {
+        if (vouchers.isEmpty()) return true;
+        return vouchers.stream().filter(voucher -> !voucher.isValidVoucher()).findAny().isPresent();
+    }
+
     @Transactional(rollbackFor = Exception.class)
     public RewardDTO cloneReward(Long id) {
         Optional<Reward> rewardOpt = rewardRepository.findById(id);

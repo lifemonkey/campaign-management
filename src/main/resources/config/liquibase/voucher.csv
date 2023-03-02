@@ -1,10 +1,10 @@
 id;voucher_code;description;is_import;start_date;expired_date;reward_id;created_by;last_modified_by
-1;Reward_1_Voucher_code_001;;false;;;1;system;system
-2;Reward_1_Voucher_code_002;;false;;;1;system;system
-3;Reward_1_Voucher_code_003;;false;;;1;system;system
-4;Reward_2_Voucher_code_001;;false;;;2;system;system
-5;Reward_2_Voucher_code_002;;false;;;2;system;system
-6;Reward_3_Voucher_code_001;;false;;;8;system;system
-7;Reward_8_Voucher_code_001;;false;;;8;system;system
-8;Reward_8_Voucher_code_002;;false;;;8;system;system
+1;Voucher001;;false;;;1;system;system
+2;Voucher002;;false;;;1;system;system
+3;Voucher003;;false;;;1;system;system
+4;Voucher004;;false;;;2;system;system
+5;Voucher005;;false;;;2;system;system
+6;Voucher006;;false;;;8;system;system
+7;Voucher007;;false;;;8;system;system
+8;Voucher008;;false;;;8;system;system
 
