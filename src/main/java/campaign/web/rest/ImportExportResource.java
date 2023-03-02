@@ -3,6 +3,7 @@ package campaign.web.rest;
 import campaign.security.AuthoritiesConstants;
 import campaign.service.FileExportService;
 import campaign.service.FileImportService;
+import campaign.service.dto.VoucherDTO;
 import campaign.web.rest.vm.ResponseCode;
 import campaign.web.rest.vm.ResponseVM;
 import io.micrometer.core.annotation.Timed;
@@ -16,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -74,6 +77,39 @@ public class ImportExportResource {
     }
 
     /**
+     * POST /file/read : read a file a return list
+     *
+     * @RequestBody file data to be read
+     * @return the ResponseEntity with status 200 (OK) and with body all users
+     */
+    @PostMapping("/file/read")
+    @Timed
+    @PreAuthorize("hasAuthority('" + AuthoritiesConstants.ADMIN + "') or hasAuthority('" + AuthoritiesConstants.BO_STAFF + "')")
+    public ResponseEntity<Object> readFile(@RequestParam MultipartFile file) {
+        String fileExt = FilenameUtils.getExtension(file.getOriginalFilename());
+        if (!fileExt.equalsIgnoreCase("xlsx") && !fileExt.equalsIgnoreCase("xls")) {
+            return new ResponseEntity<>(new ResponseVM(
+                ResponseCode.RESPONSE_NOT_FOUND,
+                ResponseCode.ERROR_CODE_CAMPAIGN_NOT_FOUND,
+                "File could not be read. File extension is not supported: " + fileExt),
+                new HttpHeaders(),
+                HttpStatus.OK);
+        }
+
+        List<VoucherDTO> voucherList = fileImportService.readExcelFile(file);
+        if (voucherList.isEmpty()) {
+            return new ResponseEntity<>(new ResponseVM(
+                ResponseCode.RESPONSE_NOT_FOUND,
+                ResponseCode.ERROR_CODE_CAMPAIGN_NOT_FOUND,
+                "File is empty OR could not read file content, file name: " + file.getOriginalFilename()),
+                new HttpHeaders(),
+                HttpStatus.OK);
+        }
+
+        return new ResponseEntity<> (voucherList, new HttpHeaders(), HttpStatus.OK);
+    }
+
+    /**
      * POST /file/export : export a file
      *
      * @RequestBody file data to be imported
@@ -93,7 +129,7 @@ public class ImportExportResource {
             new ResponseVM(
                 ResponseCode.RESPONSE_NOT_FOUND,
                 ResponseCode.ERROR_CODE_FILE_EXPORT_FAILED,
-                "Could not export file name:" + name + " type:" + type),
+                "Could not export file name:" + name + " type:" + type + ". Reason: this feature is not supported yet"),
             new HttpHeaders(),
             HttpStatus.NOT_FOUND);
     }

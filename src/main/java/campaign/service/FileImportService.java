@@ -5,6 +5,7 @@ import campaign.domain.Voucher;
 import campaign.excel.ExcelService;
 import campaign.repository.TransactionTypeRepository;
 import campaign.repository.VoucherRepository;
+import campaign.service.dto.VoucherDTO;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +48,18 @@ public class FileImportService {
         }
 
         return false;
+    }
+
+    public List<VoucherDTO> readExcelFile(MultipartFile multipartFile) {
+        try {
+            return ExcelService.readVoucher(multipartFile.getInputStream(), null)
+                .stream().map(VoucherDTO::new)
+                .collect(Collectors.toList());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
     }
 
     public boolean importExcelFile(MultipartFile multipartFile, boolean overwrite) {
