@@ -66,7 +66,7 @@ public class File extends AbstractAuditingEntity implements Serializable {
     }
 
     public File clone(String name) {
-        return new File(name, this.description + " - Copy", this.getFileType(), this.getImageUrl());
+        return new File(name, this.description, this.getFileType(), this.getImageUrl());
     }
 
     public Long getId() {

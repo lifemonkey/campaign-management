@@ -300,13 +300,14 @@ public class CampaignService {
     private List<File> buildSavedFiles(List<File> fileList) {
         return fileList.stream()
             .map(file -> {
-                String clonedFileName = ServiceUtils.getFileName(file.getName());
-                List<File> filesByName = fileRepository.findByNameStartsWithIgnoreCase(clonedFileName);
-                File clonedFile = file.clone(
-                    ServiceUtils
-                        .clonedFileName(clonedFileName, filesByName.stream().map(File::getName).collect(Collectors.toList()))
-                        + ServiceUtils.getFileNameExt(file.getName()));
-                return clonedFile;
+//                String clonedFileName = ServiceUtils.getFileName(file.getName());
+//                List<File> filesByName = fileRepository.findByNameStartsWithIgnoreCase(clonedFileName);
+//                File clonedFile = file.clone(
+//                    ServiceUtils
+//                        .clonedFileName(clonedFileName, filesByName.stream().map(File::getName).collect(Collectors.toList()))
+//                        + ServiceUtils.getFileNameExt(file.getName()));
+//                return clonedFile;
+                return file.clone(file.getName());
             })
             .collect(Collectors.toList());
     }

@@ -55,7 +55,7 @@ public class CampaignMapper {
 
             campaign.setCampaignType(campaignDTO.getCampaignType());
             campaign.setNotes(campaignDTO.getNotes());
-            campaign.setTemplate(campaignDTO.isTemplate());
+            campaign.setTemplate((campaignDTO.isTemplate() != null) ? campaignDTO.isTemplate() : false);
             campaign.setUnlimitedLuckyCode(campaignDTO.getUnlimitedLuckyCode());
             campaign.setUnlimitedPrize(campaignDTO.getUnlimitedPrize());
 

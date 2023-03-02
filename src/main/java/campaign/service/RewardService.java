@@ -266,16 +266,12 @@ public class RewardService {
         if (!rewardOpt.get().getFiles().isEmpty()) {
             List<File> toBeCloned = rewardOpt.get().getFiles().stream()
                 .map(file -> {
-                    String clonedFileName = ServiceUtils.getFileName(file.getName());
-                    List<File> filesByName = fileRepository.findByNameStartsWithIgnoreCase(clonedFileName);
-                    File clonedFile = file.clone(
-                        ServiceUtils
-                            .clonedFileName(clonedFileName, filesByName.stream().map(File::getName).collect(Collectors.toList()))
-                        + ServiceUtils.getFileNameExt(file.getName()));
+                    File clonedFile = file.clone(file.getName());
                     clonedFile.setReward(toBeInserted);
                     return clonedFile;
                 })
                 .collect(Collectors.toList());
+            fileRepository.saveAll(toBeCloned);
             // two ways binding
             toBeInserted.addFiles(toBeCloned);
         }

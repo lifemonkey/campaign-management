@@ -96,7 +96,7 @@ public class FileService {
 
     @Transactional(rollbackFor = Exception.class)
     public FileDTO uploadFile(MultipartFile file, String description, Integer type) {
-        String filePath = ServiceUtils.isImageType(file.getOriginalFilename()) ? "/file/preview/" : "";
+        String filePath = ServiceUtils.isImageType(file.getOriginalFilename()) ? "/file/preview/" : "/file/download/";
         // store file to server dir
         String fileUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(filePath)
@@ -106,18 +106,20 @@ public class FileService {
         // get file by fileName from db
         List<File> fileList = fileRepository.findByNameIgnoreCase(StringUtils.cleanPath(file.getOriginalFilename()));
 
-        File toBeSaved = new File();
+        File uploadedFile = new File();
         if (fileList != null && fileList.size() > 0) {
-            toBeSaved = fileList.get(0);
-            toBeSaved.description(description).type(type);
+            List<File> filesToBeSaved = fileList.stream().map(toBeSaved -> toBeSaved.description(description).type(type)).collect(Collectors.toList());
+            fileRepository.saveAll(filesToBeSaved);
+            uploadedFile = filesToBeSaved.get(0);
         } else {
-            toBeSaved.name(StringUtils.cleanPath(file.getOriginalFilename()))
+            uploadedFile.name(StringUtils.cleanPath(file.getOriginalFilename()))
                 .description(description)
                 .type(type)
-                .url(fileUrl);
+                .url(ServiceUtils.isImageType(file.getOriginalFilename()) ? fileUrl : "");
+            fileRepository.save(uploadedFile);
         }
         // save file and convert to DTO
-        return fileMapper.fileToFileDTO(fileRepository.save(toBeSaved));
+        return fileMapper.fileToFileDTO(uploadedFile);
     }
 
     public String storeFile(MultipartFile file) {
@@ -146,7 +148,7 @@ public class FileService {
             // fileUrl
             Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
             Resource resource = new UrlResource(filePath.toUri());
-            if(resource.exists()) {
+            if (resource.exists()) {
                 return resource;
             } else {
                 log.warn("File not found " + filePath.getFileName());

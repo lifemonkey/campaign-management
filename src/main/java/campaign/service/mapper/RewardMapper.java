@@ -43,7 +43,7 @@ public class RewardMapper {
             reward.setMessageWinnerSW(rewardDTO.getMessageWinnerSW());
             reward.setMessageBalanceEN(rewardDTO.getMessageBalanceEN());
             reward.setMessageBalanceSW(rewardDTO.getMessageBalanceSW());
-            reward.setTemplate(rewardDTO.isTemplate());
+            reward.setTemplate((rewardDTO.isTemplate() != null) ? rewardDTO.isTemplate() : false);
 
             return reward;
         }
@@ -73,7 +73,7 @@ public class RewardMapper {
             reward.setMessageWinnerSW(rewardVM.getMessageWinnerSW());
             reward.setMessageBalanceEN(rewardVM.getMessageBalanceEN());
             reward.setMessageBalanceSW(rewardVM.getMessageBalanceSW());
-            reward.setTemplate(rewardVM.isTemplate());
+            reward.setTemplate((rewardVM.isTemplate() != null) ? rewardVM.isTemplate() : false);
 
             return reward;
         }
@@ -118,7 +118,7 @@ public class RewardMapper {
             if (rewardVM.getLevel() != null) {
                 reward.setLevel(rewardVM.getLevel());
             }
-            reward.setTemplate(rewardVM.isTemplate());
+            reward.setTemplate((rewardVM.isTemplate() != null) ? rewardVM.isTemplate() : false);
 
             return reward;
         }

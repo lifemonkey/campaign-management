@@ -34,6 +34,7 @@ public class VoucherMapper {
             voucher.setVoucherCode(voucherDTO.getVoucherCode());
             voucher.setDescription(voucherDTO.getDescription());
             voucher.setImport(voucherDTO.getImport());
+            voucher.setImport((voucherDTO.getImport() != null) ? voucherDTO.getImport() : false);
             voucher.setStartDate(voucherDTO.getStartDate());
             voucher.setExpiredDate(voucherDTO.getExpiredDate());
 
