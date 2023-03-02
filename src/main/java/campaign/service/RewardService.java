@@ -225,9 +225,29 @@ public class RewardService {
         return new RewardDTO();
     }
 
-    public boolean isRewardVouchersValid(List<VoucherDTO> vouchers) {
-        if (vouchers.isEmpty()) return true;
+    public boolean validateVouchers(List<VoucherDTO> vouchers) {
         return vouchers.stream().filter(voucher -> !voucher.isValidVoucher()).findAny().isPresent();
+    }
+
+    public boolean hasExistingVouchers(List<VoucherDTO> vouchers) {
+        boolean hasDuplicated = false;
+        Set<String> vouchersName = new HashSet<>();
+        for (VoucherDTO voucher : vouchers) {
+            if (vouchersName.contains(voucher.getVoucherCode())) {
+                hasDuplicated = true;
+                break;
+            }
+            vouchersName.add(voucher.getVoucherCode());
+        }
+
+        if (hasDuplicated) return true;
+
+        List<Voucher> vouchersInDb = voucherRepository.findByVoucherCodeIn(vouchersName);
+        if (!vouchersInDb.isEmpty()) {
+            return true;
+        }
+
+        return false;
     }
 
     @Transactional(rollbackFor = Exception.class)

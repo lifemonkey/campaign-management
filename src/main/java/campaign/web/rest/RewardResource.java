@@ -110,15 +110,28 @@ public class RewardResource {
                 HttpStatus.NOT_FOUND);
         }
 
-        // validate voucher
-        if (rewardService.isRewardVouchersValid(rewardVM.getVoucherCodes())) {
-            return new ResponseEntity<>(
-                new ResponseVM(
-                    ResponseCode.RESPONSE_WRONG_PARAM,
-                    ResponseCode.ERROR_CODE_REWARD_VOUCHER_INVALID,
-                    ResponseCode.RESPONSE_REWARD_VOUCHER_INVALID),
-                new HttpHeaders(),
-                HttpStatus.BAD_REQUEST);
+        if (!rewardVM.getVoucherCodes().isEmpty()) {
+            // check duplicated vouchers
+            if (rewardService.hasExistingVouchers(rewardVM.getVoucherCodes())) {
+                return new ResponseEntity<>(
+                    new ResponseVM(
+                        ResponseCode.RESPONSE_WRONG_PARAM,
+                        ResponseCode.ERROR_CODE_REWARD_VOUCHER_IS_DUPLICATED,
+                        ResponseCode.RESPONSE_REWARD_VOUCHER_IS_DUPLICATED),
+                    new HttpHeaders(),
+                    HttpStatus.BAD_REQUEST);
+            }
+
+            // validate voucher
+            if (rewardService.validateVouchers(rewardVM.getVoucherCodes())) {
+                return new ResponseEntity<>(
+                    new ResponseVM(
+                        ResponseCode.RESPONSE_WRONG_PARAM,
+                        ResponseCode.ERROR_CODE_REWARD_VOUCHER_INVALID,
+                        ResponseCode.RESPONSE_REWARD_VOUCHER_INVALID),
+                    new HttpHeaders(),
+                    HttpStatus.BAD_REQUEST);
+            }
         }
 
         return new ResponseEntity<> (rewardService.createReward(rewardVM), new HttpHeaders(), HttpStatus.OK);
@@ -167,8 +180,19 @@ public class RewardResource {
                 HttpStatus.NOT_FOUND);
         }
 
+        // check duplicated vouchers
+        if (rewardService.hasExistingVouchers(rewardVM.getVoucherCodes())) {
+            return new ResponseEntity<>(
+                new ResponseVM(
+                    ResponseCode.RESPONSE_WRONG_PARAM,
+                    ResponseCode.ERROR_CODE_REWARD_VOUCHER_IS_DUPLICATED,
+                    ResponseCode.RESPONSE_REWARD_VOUCHER_IS_DUPLICATED),
+                new HttpHeaders(),
+                HttpStatus.BAD_REQUEST);
+        }
+
         // validate voucher
-        if (rewardService.isRewardVouchersValid(rewardVM.getVoucherCodes())) {
+        if (rewardService.validateVouchers(rewardVM.getVoucherCodes())) {
             return new ResponseEntity<>(
                 new ResponseVM(
                     ResponseCode.RESPONSE_WRONG_PARAM,
