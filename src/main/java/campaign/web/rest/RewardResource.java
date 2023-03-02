@@ -110,7 +110,7 @@ public class RewardResource {
                 HttpStatus.NOT_FOUND);
         }
 
-        if (!rewardVM.getVoucherCodes().isEmpty()) {
+        if (rewardVM.getVoucherCodes() != null && !rewardVM.getVoucherCodes().isEmpty()) {
             // check duplicated vouchers
             if (rewardService.hasExistingVouchers(rewardVM.getVoucherCodes())) {
                 return new ResponseEntity<>(
@@ -180,7 +180,7 @@ public class RewardResource {
                 HttpStatus.NOT_FOUND);
         }
 
-        if (!rewardVM.getVoucherCodes().isEmpty()) {
+        if (rewardVM.getVoucherCodes() != null && !rewardVM.getVoucherCodes().isEmpty()) {
             // check duplicated vouchers
             if (rewardService.hasExistingVouchers(rewardVM.getVoucherCodes())) {
                 return new ResponseEntity<>(
