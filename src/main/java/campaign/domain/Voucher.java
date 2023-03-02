@@ -27,6 +27,13 @@ public class Voucher extends AbstractAuditingEntity implements Serializable {
     @Column(name = "voucher_code", length = 200, unique = true)
     private String voucherCode;
 
+
+    @Column(name = "description", length = 4000)
+    private String description;
+
+    @Column(name = "is_import")
+    private Boolean isImport;
+
     @Column(name = "start_date", columnDefinition = "TIMESTAMP")
     @JsonIgnore
     private LocalDateTime startDate = LocalDateTime.now();
@@ -47,20 +54,26 @@ public class Voucher extends AbstractAuditingEntity implements Serializable {
             this.id = voucherCode.getId();
         }
         this.voucherCode = voucherCode.getVoucherCode();
+        this.description = voucherCode.getDescription();
+        this.isImport = voucherCode.getImport();
         this.startDate = voucherCode.getStartDate();
         this.expiredDate = voucherCode.getExpiredDate();
         this.reward = reward;
     }
 
-    public Voucher(String voucherCode, LocalDateTime startDate, LocalDateTime expiredDate, Reward reward) {
+    public Voucher(String voucherCode, String description, Boolean isImport, LocalDateTime startDate, LocalDateTime expiredDate, Reward reward) {
         this.voucherCode = voucherCode;
+        this.description = description;
+        this.isImport = isImport;
         this.startDate = startDate;
         this.expiredDate = expiredDate;
         this.reward = reward;
     }
 
-    public Voucher(String voucherCode, LocalDateTime startDate, LocalDateTime expiredDate) {
+    public Voucher(String voucherCode, String description, Boolean isImport, LocalDateTime startDate, LocalDateTime expiredDate) {
         this.voucherCode = voucherCode;
+        this.description = description;
+        this.isImport = isImport;
         this.startDate = startDate;
         this.expiredDate = expiredDate;
     }
@@ -79,6 +92,22 @@ public class Voucher extends AbstractAuditingEntity implements Serializable {
 
     public void setVoucherCode(String voucherCode) {
         this.voucherCode = voucherCode;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Boolean getImport() {
+        return isImport;
+    }
+
+    public void setImport(Boolean anImport) {
+        isImport = anImport;
     }
 
     public LocalDateTime getStartDate() {
@@ -111,7 +140,7 @@ public class Voucher extends AbstractAuditingEntity implements Serializable {
     }
 
     public Voucher clone() {
-        return new Voucher(this.voucherCode, this.startDate, this.expiredDate);
+        return new Voucher(this.voucherCode, this.description, false, this.startDate, this.expiredDate);
     }
 
     @Override
@@ -119,6 +148,8 @@ public class Voucher extends AbstractAuditingEntity implements Serializable {
         return "Voucher{" +
             "id=" + id +
             ", voucherCode='" + voucherCode + '\'' +
+            ", voucherCode='" + voucherCode + '\'' +
+            ", isImport=" + isImport +
             ", startDate=" + startDate +
             ", expiredDate=" + expiredDate +
             '}';

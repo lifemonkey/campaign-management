@@ -16,9 +16,9 @@ public class RewardConditionRewardDTO {
 
     private Integer prizeType;
 
-    private Integer prizeValue;
+    private Float prizeValue;
 
-    private Integer numOfPrize;
+    private Float numOfPrize;
 
     private Integer released;
 
@@ -102,19 +102,19 @@ public class RewardConditionRewardDTO {
         this.prizeType = prizeType;
     }
 
-    public Integer getPrizeValue() {
+    public Float getPrizeValue() {
         return prizeValue;
     }
 
-    public void setPrizeValue(Integer prizeValue) {
+    public void setPrizeValue(Float prizeValue) {
         this.prizeValue = prizeValue;
     }
 
-    public Integer getNumOfPrize() {
+    public Float getNumOfPrize() {
         return numOfPrize;
     }
 
-    public void setNumOfPrize(Integer numOfPrize) {
+    public void setNumOfPrize(Float numOfPrize) {
         this.numOfPrize = numOfPrize;
     }
 

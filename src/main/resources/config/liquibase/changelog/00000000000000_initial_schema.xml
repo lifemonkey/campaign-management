@@ -331,9 +331,9 @@
             </column>
             <column name="name" type="varchar(400)"/>
             <column name="description" type="varchar(400)"/>
-            <column name="prize_type" type="int"/>
-            <column name="prize_value" type="int"/>
-            <column name="number_of_prize" type="int"/>
+            <column name="prize_type" type="float"/>
+            <column name="prize_value" type="float"/>
+            <column name="number_of_prize" type="float"/>
             <column name="released" type="int"/>
             <column name="message_winner_en" type="varchar(400)"/>
             <column name="message_winner_sw" type="varchar(400)"/>
@@ -359,6 +359,8 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="voucher_code" type="varchar(400)"/>
+            <column name="description" type="varchar(400)"/>
+            <column name="is_import" type="boolean" defaultValueBoolean="false"/>
             <column name="start_date" type="timestamp" defaultValueDate="${now}"/>
             <column name="expired_date" type="timestamp"/>
 

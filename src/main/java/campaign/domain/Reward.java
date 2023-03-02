@@ -31,10 +31,10 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
     private Integer prizeType;
 
     @Column(name = "prize_value")
-    private Integer prizeValue;
+    private Float prizeValue;
 
     @Column(name = "number_of_prize")
-    private Integer numOfPrize;
+    private Float numOfPrize;
 
     @Column(name = "released")
     private Integer released;
@@ -72,7 +72,7 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
     public Reward() {
     }
 
-    public Reward(String name, String description, Integer prizeType, Integer prizeValue, Integer numOfPrize, Integer released, String messageWinnerEN, String messageWinnerSW, String messageBalanceEN, String messageBalanceSW, Integer level, Long campaignId, Boolean isTemplate) {
+    public Reward(String name, String description, Integer prizeType, Float prizeValue, Float numOfPrize, Integer released, String messageWinnerEN, String messageWinnerSW, String messageBalanceEN, String messageBalanceSW, Integer level, Long campaignId, Boolean isTemplate) {
         this.name = name;
         this.description = description;
         this.prizeType = prizeType;
@@ -120,19 +120,19 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
         this.prizeType = prizeType;
     }
 
-    public Integer getPrizeValue() {
+    public Float getPrizeValue() {
         return prizeValue;
     }
 
-    public void setPrizeValue(Integer prizeValue) {
+    public void setPrizeValue(Float prizeValue) {
         this.prizeValue = prizeValue;
     }
 
-    public Integer getNumOfPrize() {
+    public Float getNumOfPrize() {
         return numOfPrize;
     }
 
-    public void setNumOfPrize(Integer numOfPrize) {
+    public void setNumOfPrize(Float numOfPrize) {
         this.numOfPrize = numOfPrize;
     }
 

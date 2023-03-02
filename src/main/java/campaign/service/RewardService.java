@@ -3,7 +3,6 @@ package campaign.service;
 import campaign.config.Constants;
 import campaign.domain.*;
 import campaign.repository.*;
-import campaign.service.dto.CampaignDTO;
 import campaign.service.dto.RewardCampaignDTO;
 import campaign.service.dto.RewardDTO;
 import campaign.service.dto.VoucherDTO;

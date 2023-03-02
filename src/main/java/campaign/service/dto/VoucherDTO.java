@@ -11,11 +11,15 @@ public class VoucherDTO {
     @NotBlank
     private String voucherCode;
 
-    private String createdBy;
+    private String description;
+
+    private Boolean isImport;
 
     private LocalDateTime startDate;
 
     private LocalDateTime expiredDate;
+
+    private String createdBy;
 
     private LocalDateTime createdDate;
 
@@ -29,6 +33,8 @@ public class VoucherDTO {
     public VoucherDTO(Voucher voucher) {
         this.id = voucher.getId();
         this.voucherCode = voucher.getVoucherCode();
+        this.description = voucher.getDescription();
+        this.isImport = voucher.getImport();
         this.startDate = voucher.getStartDate();
         this.expiredDate = voucher.getExpiredDate();
         this.createdBy = voucher.getCreatedBy();
@@ -56,6 +62,22 @@ public class VoucherDTO {
 
     public void setVoucherCode(String voucherCode) {
         this.voucherCode = voucherCode;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Boolean getImport() {
+        return isImport;
+    }
+
+    public void setImport(Boolean anImport) {
+        isImport = anImport;
     }
 
     public String getCreatedBy() {
