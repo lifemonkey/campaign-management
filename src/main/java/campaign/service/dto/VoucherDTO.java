@@ -2,12 +2,13 @@ package campaign.service.dto;
 
 import campaign.domain.Voucher;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 public class VoucherDTO {
 
     private Long id;
+
+    private Long voucherNumber;
 
     @NotBlank
     private String voucherCode;
@@ -38,6 +39,7 @@ public class VoucherDTO {
 
     public VoucherDTO(Voucher voucher) {
         this.id = voucher.getId();
+        this.voucherNumber = voucher.getVoucherNumber();
         this.voucherCode = voucher.getVoucherCode();
         this.description = voucher.getDescription();
         this.isImport = voucher.getImport();
@@ -60,6 +62,14 @@ public class VoucherDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getVoucherNumber() {
+        return voucherNumber;
+    }
+
+    public void setVoucherNumber(Long voucherNumber) {
+        this.voucherNumber = voucherNumber;
     }
 
     public String getVoucherCode() {

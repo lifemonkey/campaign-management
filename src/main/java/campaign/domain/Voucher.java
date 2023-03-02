@@ -23,6 +23,10 @@ public class Voucher extends AbstractAuditingEntity implements Serializable {
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+    @Column(name = "voucher_number", length = 10)
+    private Long voucherNumber;
+
     @NotBlank
     @Column(name = "voucher_code", length = 10, unique = true)
     private String voucherCode;
@@ -53,6 +57,7 @@ public class Voucher extends AbstractAuditingEntity implements Serializable {
         if (voucherCode.getId() != null) {
             this.id = voucherCode.getId();
         }
+        this.voucherNumber = voucherCode.getVoucherNumber();
         this.voucherCode = voucherCode.getVoucherCode();
         this.description = voucherCode.getDescription();
         this.isImport = voucherCode.getImport();
@@ -61,7 +66,8 @@ public class Voucher extends AbstractAuditingEntity implements Serializable {
         this.reward = reward;
     }
 
-    public Voucher(String voucherCode, String description, Boolean isImport, LocalDateTime startDate, LocalDateTime expiredDate, Reward reward) {
+    public Voucher(Long voucherNumber, String voucherCode, String description, Boolean isImport, LocalDateTime startDate, LocalDateTime expiredDate, Reward reward) {
+        this.voucherNumber = voucherNumber;
         this.voucherCode = voucherCode;
         this.description = description;
         this.isImport = isImport;
@@ -70,7 +76,8 @@ public class Voucher extends AbstractAuditingEntity implements Serializable {
         this.reward = reward;
     }
 
-    public Voucher(String voucherCode, String description, Boolean isImport, LocalDateTime startDate, LocalDateTime expiredDate) {
+    public Voucher(Long voucherNumber, String voucherCode, String description, Boolean isImport, LocalDateTime startDate, LocalDateTime expiredDate) {
+        this.voucherNumber = voucherNumber;
         this.voucherCode = voucherCode;
         this.description = description;
         this.isImport = isImport;
@@ -84,6 +91,14 @@ public class Voucher extends AbstractAuditingEntity implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getVoucherNumber() {
+        return voucherNumber;
+    }
+
+    public void setVoucherNumber(Long voucherNumber) {
+        this.voucherNumber = voucherNumber;
     }
 
     public String getVoucherCode() {
@@ -140,7 +155,7 @@ public class Voucher extends AbstractAuditingEntity implements Serializable {
     }
 
     public Voucher clone() {
-        return new Voucher(this.voucherCode, this.description, false, this.startDate, this.expiredDate);
+        return new Voucher(this.voucherNumber, this.voucherCode, this.description, false, this.startDate, this.expiredDate);
     }
 
     @Override

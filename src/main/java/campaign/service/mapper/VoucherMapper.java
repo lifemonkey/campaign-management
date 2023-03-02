@@ -27,9 +27,10 @@ public class VoucherMapper {
             return null;
         } else {
             Voucher voucher = new Voucher();
-            if (voucher.getId() != null) {
+            if (voucherDTO.getId() != null) {
                 voucher.setId(voucherDTO.getId());
             }
+            voucher.setVoucherNumber(voucherDTO.getVoucherNumber());
             voucher.setVoucherCode(voucherDTO.getVoucherCode());
             voucher.setDescription(voucherDTO.getDescription());
             voucher.setImport(voucherDTO.getImport());

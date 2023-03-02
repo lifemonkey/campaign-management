@@ -7,7 +7,7 @@
         "excelIndex": 0,
         "excelColType": "Integer",
         "excelValue": null,
-        "pojoAttribute": "",
+        "pojoAttribute": "voucherNumber",
         "required": true
       },
       {

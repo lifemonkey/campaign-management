@@ -199,7 +199,6 @@ public class RewardService {
             List<Long> fileIds = rewardVM.getFiles().stream().map(FileVM::getId).collect(Collectors.toList());
             List<File> fileList = fileRepository.findAllById(fileIds);
             if (fileList != null && !fileList.isEmpty()) {
-
                 fileList.stream().forEach(file -> file.setReward(reward));
                 fileRepository.saveAll(fileList);
                 // two ways binding
@@ -312,14 +311,16 @@ public class RewardService {
         if (rewardVM.getVoucherCodes() != null && !rewardVM.getVoucherCodes().isEmpty()) {
             // remove existing vouchers
             Set<Long> voucherIds =
-                rewardVM.getVoucherCodes().stream().map(VoucherDTO::getId).collect(Collectors.toSet());
-            List<Voucher> toBeDetachedVouchers = rewardOpt.get().getVouchers();
-            if (toBeDetachedVouchers != null && !toBeDetachedVouchers.isEmpty()) {
-                voucherRepository.saveAll(
-                    toBeDetachedVouchers.stream()
-                        .filter(voucher -> !voucherIds.contains(voucher.getId()))
-                        .map(Voucher::removeReward)
-                        .collect(Collectors.toList()));
+                rewardVM.getVoucherCodes().stream().filter(voucher -> voucher.getId() != null)
+                    .map(VoucherDTO::getId).collect(Collectors.toSet());
+            List<Voucher> voucherList = rewardOpt.get().getVouchers();
+            if (voucherList != null && !voucherList.isEmpty()) {
+                List<Voucher> toBeDetachedVouchers = voucherList.stream()
+                    .filter(voucher -> !voucherIds.contains(voucher.getId()))
+                    .map(Voucher::removeReward)
+                    .collect(Collectors.toList())  ;
+                voucherRepository.saveAll(toBeDetachedVouchers);
+                voucherRepository.deleteAll(toBeDetachedVouchers);
             }
             // create vouchers code
             List<Voucher> toBeSavedVouchers = voucherRepository.saveAll(
