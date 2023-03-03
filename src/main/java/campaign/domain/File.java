@@ -24,7 +24,7 @@ public class File extends AbstractAuditingEntity implements Serializable {
     private Long id;
 
     @NotBlank
-    @Column(name = "name", length = 200, unique = true)
+    @Column(name = "name", length = 200)
     private String name;
 
     @Column(name = "description", length = 4000)
