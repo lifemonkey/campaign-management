@@ -8,7 +8,7 @@
         "excelColType": "Integer",
         "excelValue": null,
         "pojoAttribute": "voucherNumber",
-        "required": true
+        "required": false
       },
       {
         "excelHeader": "Voucher code",
@@ -24,7 +24,7 @@
         "excelColType": "DateTime",
         "excelValue": null,
         "pojoAttribute": "startDate",
-        "required": true
+        "required": false
       },
       {
         "excelHeader": "Expired date",
@@ -32,7 +32,7 @@
         "excelColType": "DateTime",
         "excelValue": null,
         "pojoAttribute": "expiredDate",
-        "required": true
+        "required": false
       },
       {
         "excelHeader": "Description",
