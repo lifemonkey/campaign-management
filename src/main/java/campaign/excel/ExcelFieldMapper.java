@@ -38,9 +38,9 @@ public class ExcelFieldMapper {
                             if (FieldType.STRING.getValue().equalsIgnoreCase(evc[i].getExcelColType())) {
                                 field.set(t, evc[i].getExcelValue());
                             } else if (FieldType.DOUBLE.getValue().equalsIgnoreCase(evc[i].getExcelColType())) {
-                                field.set(t, Long.valueOf(evc[i].getExcelValue()));
+                                field.set(t, Double.valueOf(evc[i].getExcelValue()));
                             } else if (FieldType.INTEGER.getValue().equalsIgnoreCase(evc[i].getExcelColType())) {
-                                field.set(t, Integer.valueOf(evc[i].getExcelValue()));
+                                field.set(t, Double.valueOf(evc[i].getExcelValue()).longValue());
                             } else if (FieldType.DATE.getValue().equalsIgnoreCase(evc[i].getExcelColType())) {
                                 field.set(t, LocalDateTime.parse(evc[i].getExcelValue(), dtf));
                             }
