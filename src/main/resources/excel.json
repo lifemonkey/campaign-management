@@ -39,7 +39,7 @@
         "excelIndex": 4,
         "excelColType": "String",
         "excelValue": null,
-        "pojoAttribute": "",
+        "pojoAttribute": "description",
         "required": false
       }
     ]

@@ -241,7 +241,12 @@ public class RewardService {
 
         if (hasDuplicated) return true;
 
-        List<Voucher> vouchersInDb = voucherRepository.findByVoucherCodeIn(vouchersName);
+        List<Voucher> vouchersInDb = voucherRepository.findByVoucherCodeIn(
+            vouchers.stream()
+                .filter(voucher -> voucher.getId() == null)
+                .map(VoucherDTO::getVoucherCode)
+                .collect(Collectors.toSet()));
+
         if (!vouchersInDb.isEmpty()) {
             return true;
         }
