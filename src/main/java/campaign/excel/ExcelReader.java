@@ -71,6 +71,7 @@ public class ExcelReader {
                     excelField.setExcelIndex(ehc.getExcelIndex());
                     excelField.setPojoAttribute(ehc.getPojoAttribute());
                     excelField.setRequired(ehc.isRequired());
+                    excelField.setMaxLength(ehc.getMaxLength());
                     if (FieldType.STRING.getValue().equalsIgnoreCase(cellType)) {
                         excelField.setExcelValue(cell.getStringCellValue());
                     } else if (FieldType.DOUBLE.getValue().equalsIgnoreCase(cellType)
@@ -121,7 +122,7 @@ public class ExcelReader {
         try {
 //            String jsonConfig = new String(
 //                Files.readAllBytes(Paths.get(ExcelReader.class.getClassLoader().getResource("classpath:excel.json").getFile())));
-            String jsonConfig = "[{\"Voucher\":[{\"excelHeader\":\"No\",\"excelIndex\":0,\"excelColType\":\"Integer\",\"excelValue\":null,\"pojoAttribute\":\"voucherNumber\",\"required\":false},{\"excelHeader\":\"Voucher code\",\"excelIndex\":1,\"excelColType\":\"String\",\"excelValue\":null,\"pojoAttribute\":\"voucherCode\",\"required\":true},{\"excelHeader\":\"Effective date\",\"excelIndex\":2,\"excelColType\":\"DateTime\",\"excelValue\":null,\"pojoAttribute\":\"startDate\",\"required\":false},{\"excelHeader\":\"Expired date\",\"excelIndex\":3,\"excelColType\":\"DateTime\",\"excelValue\":null,\"pojoAttribute\":\"expiredDate\",\"required\":false},{\"excelHeader\":\"Description\",\"excelIndex\":4,\"excelColType\":\"String\",\"excelValue\":null,\"pojoAttribute\":\"description\",\"required\":false}]}]";
+            String jsonConfig = "[{\"Voucher\":[{\"excelHeader\":\"No\",\"excelIndex\":0,\"excelColType\":\"Integer\",\"excelValue\":null,\"pojoAttribute\":\"voucherNumber\",\"required\":false,\"maxLength\":10},{\"excelHeader\":\"Voucher code\",\"excelIndex\":1,\"excelColType\":\"String\",\"excelValue\":null,\"pojoAttribute\":\"voucherCode\",\"required\":true,\"maxLength\":10},{\"excelHeader\":\"Effective date\",\"excelIndex\":2,\"excelColType\":\"DateTime\",\"excelValue\":null,\"pojoAttribute\":\"startDate\",\"required\":false,\"maxLength\":0},{\"excelHeader\":\"Expired date\",\"excelIndex\":3,\"excelColType\":\"DateTime\",\"excelValue\":null,\"pojoAttribute\":\"expiredDate\",\"required\":false,\"maxLength\":0},{\"excelHeader\":\"Description\",\"excelIndex\":4,\"excelColType\":\"String\",\"excelValue\":null,\"pojoAttribute\":\"description\",\"required\":false,\"maxLength\":200}]}]";
             jsonMap = objectMapper.readValue(jsonConfig, new TypeReference<List<Map<String, List<ExcelField>>>>() {
             });
         } catch (IOException e) {

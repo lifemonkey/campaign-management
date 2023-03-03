@@ -8,6 +8,7 @@ public class ExcelField {
     private String excelValue;
     private String pojoAttribute;
     private boolean required;
+    private int maxLength;
 
     public String getExcelHeader() {
         return excelHeader;
@@ -55,5 +56,13 @@ public class ExcelField {
 
     public void setRequired(boolean required) {
         this.required = required;
+    }
+
+    public int getMaxLength() {
+        return maxLength;
+    }
+
+    public void setMaxLength(int maxLength) {
+        this.maxLength = maxLength;
     }
 }

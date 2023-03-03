@@ -4,7 +4,7 @@ public enum FieldType {
     DOUBLE("Double"), //
     INTEGER("Integer"), //
     STRING("String"), //
-    DATE("Date");
+    DATETIME("DateTime");
 
     final String typeValue;
 

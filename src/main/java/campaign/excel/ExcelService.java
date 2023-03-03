@@ -32,7 +32,7 @@ public class ExcelService {
     private static boolean validateResults(List<ExcelField[]> excelFields){
         return !excelFields.stream()
             .filter(efs -> Arrays.stream(efs)
-                .filter(ef -> ef.isRequired() && ef.getExcelValue().isEmpty())
+                .filter(ef -> ef.isRequired() && (ef.getExcelValue().isEmpty() || ef.getExcelValue().length() > ef.getMaxLength()))
                 .findAny().isPresent())
             .findAny().isPresent();
     }
