@@ -269,16 +269,16 @@ public class RewardService {
 
         // clone files
         if (!rewardOpt.get().getFiles().isEmpty()) {
-            List<File> toBeCloned = rewardOpt.get().getFiles().stream()
+            List<File> filesToBeCloned = rewardOpt.get().getFiles().stream()
                 .map(file -> {
                     File clonedFile = file.clone(file.getName());
                     clonedFile.setReward(toBeInserted);
                     return clonedFile;
                 })
                 .collect(Collectors.toList());
-            fileRepository.saveAll(toBeCloned);
+            fileRepository.saveAll(filesToBeCloned);
             // two ways binding
-            toBeInserted.addFiles(toBeCloned);
+            toBeInserted.addFiles(filesToBeCloned);
         }
 
         return rewardMapper.rewardToRewardDTO(rewardRepository.save(toBeInserted));
