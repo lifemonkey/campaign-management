@@ -291,13 +291,13 @@ public class RewardService {
         Reward reward = rewardMapper.updateReward(rewardOpt.get(), rewardVM);
 
         // handle files
-        if (rewardVM.getFiles() != null && !rewardVM.getFiles().isEmpty()) {
+        if (rewardVM.getFiles() != null) {
             // to be detached files
             Set<Long> fileIds = rewardVM.getFiles().stream().map(FileVM::getId).collect(Collectors.toSet());
             List<File> toBeDetachedFiles = rewardOpt.get().getFiles();
             fileRepository.saveAll(
                 toBeDetachedFiles.stream()
-                    .filter(file -> !fileIds.contains(file.getId()))
+                    .filter(file -> fileIds.isEmpty() || !fileIds.contains(file.getId()))
                     .map(File::removeReward)
                     .collect(Collectors.toList()));
 
@@ -309,15 +309,15 @@ public class RewardService {
         }
 
         // handle voucher
-        if (rewardVM.getVoucherCodes() != null && !rewardVM.getVoucherCodes().isEmpty()) {
+        if (rewardVM.getVoucherCodes() != null) {
             // remove existing vouchers
-            Set<Long> voucherIds =
-                rewardVM.getVoucherCodes().stream().filter(voucher -> voucher.getId() != null)
-                    .map(VoucherDTO::getId).collect(Collectors.toSet());
+            Set<Long> voucherIds = rewardVM.getVoucherCodes().stream().filter(voucher -> voucher.getId() != null)
+                .map(VoucherDTO::getId)
+                .collect(Collectors.toSet());
             List<Voucher> voucherList = rewardOpt.get().getVouchers();
             if (voucherList != null && !voucherList.isEmpty()) {
                 List<Voucher> toBeDetachedVouchers = voucherList.stream()
-                    .filter(voucher -> !voucherIds.contains(voucher.getId()))
+                    .filter(voucher -> voucherIds.isEmpty() || !voucherIds.contains(voucher.getId()))
                     .map(Voucher::removeReward)
                     .collect(Collectors.toList())  ;
                 voucherRepository.saveAll(toBeDetachedVouchers);
