@@ -1,7 +1,9 @@
 package campaign.excel;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
@@ -15,6 +17,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.core.io.ClassPathResource;
 
 public class ExcelReader {
 
@@ -116,12 +119,12 @@ public class ExcelReader {
         List<Map<String, List<ExcelField>>> jsonMap = null;
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            String jsonConfig = new String(
-                Files.readAllBytes(Paths.get(ClassLoader.getSystemResource("excel.json").toURI())));
-
+//            String jsonConfig = new String(
+//                Files.readAllBytes(Paths.get(ExcelReader.class.getClassLoader().getResource("classpath:excel.json").getFile())));
+            String jsonConfig = "[{\"Voucher\":[{\"excelHeader\":\"No\",\"excelIndex\":0,\"excelColType\":\"Integer\",\"excelValue\":null,\"pojoAttribute\":\"voucherNumber\",\"required\":false},{\"excelHeader\":\"Voucher code\",\"excelIndex\":1,\"excelColType\":\"String\",\"excelValue\":null,\"pojoAttribute\":\"voucherCode\",\"required\":true},{\"excelHeader\":\"Effective date\",\"excelIndex\":2,\"excelColType\":\"DateTime\",\"excelValue\":null,\"pojoAttribute\":\"startDate\",\"required\":false},{\"excelHeader\":\"Expired date\",\"excelIndex\":3,\"excelColType\":\"DateTime\",\"excelValue\":null,\"pojoAttribute\":\"expiredDate\",\"required\":false},{\"excelHeader\":\"Description\",\"excelIndex\":4,\"excelColType\":\"String\",\"excelValue\":null,\"pojoAttribute\":\"description\",\"required\":false}]}]";
             jsonMap = objectMapper.readValue(jsonConfig, new TypeReference<List<Map<String, List<ExcelField>>>>() {
             });
-        } catch (IOException | URISyntaxException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return jsonMap;
