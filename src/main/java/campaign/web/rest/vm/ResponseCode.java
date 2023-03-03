@@ -33,7 +33,9 @@ public final class ResponseCode {
     public static final Integer ERROR_CODE_FILE_NOT_FOUND = 1401;
     public static final Integer ERROR_CODE_FILE_EXPORT_FAILED = 1402;
     public static final Integer ERROR_CODE_FILE_EXTENSION_INVALID = 1403;
-    public static final Integer ERROR_CODE_FILE_CONTENT_INVALID = 1404;
+    public static final Integer ERROR_CODE_FILE_CONTENT_EMPTY = 1404;
+    public static final Integer ERROR_CODE_FILE_CONTENT_REQUIRED_FIELD_MISSING = 1405;
+    public static final Integer ERROR_CODE_FILE_CONTENT_FIELD_LENGTH_LIMIT = 1406;
     public static final Integer ERROR_CODE_REWARD_NOT_FOUND = 1501;
     public static final Integer ERROR_CODE_REWARD_NAME_IS_EMPTY = 1502;
     public static final Integer ERROR_CODE_REWARD_NAME_IS_DUPLICATED = 1503;

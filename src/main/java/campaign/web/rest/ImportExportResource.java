@@ -1,9 +1,9 @@
 package campaign.web.rest;
 
+import campaign.excel.ExcelField;
 import campaign.security.AuthoritiesConstants;
 import campaign.service.FileExportService;
 import campaign.service.FileImportService;
-import campaign.service.dto.VoucherDTO;
 import campaign.web.rest.vm.ResponseCode;
 import campaign.web.rest.vm.ResponseVM;
 import io.micrometer.core.annotation.Timed;
@@ -96,17 +96,36 @@ public class ImportExportResource {
                 HttpStatus.OK);
         }
 
-        List<VoucherDTO> voucherList = fileImportService.readExcelFile(file);
-        if (voucherList.isEmpty()) {
+        List<ExcelField[]> excelFields = fileImportService.getExcelFields(file);
+        if (excelFields.isEmpty()) {
             return new ResponseEntity<>(new ResponseVM(
                 ResponseCode.RESPONSE_NOT_FOUND,
-                ResponseCode.ERROR_CODE_FILE_CONTENT_INVALID,
+                ResponseCode.ERROR_CODE_FILE_CONTENT_EMPTY,
                 "File is empty OR could not read file content, file name: " + file.getOriginalFilename()),
                 new HttpHeaders(),
                 HttpStatus.OK);
         }
 
-        return new ResponseEntity<> (voucherList, new HttpHeaders(), HttpStatus.OK);
+        if (fileImportService.requireFieldMissing(excelFields)) {
+            return new ResponseEntity<>(new ResponseVM(
+                ResponseCode.RESPONSE_NOT_FOUND,
+                ResponseCode.ERROR_CODE_FILE_CONTENT_REQUIRED_FIELD_MISSING,
+                "File is empty OR could not read file content, file name: " + file.getOriginalFilename()),
+                new HttpHeaders(),
+                HttpStatus.OK);
+        }
+
+        if (fileImportService.fieldLengthTooLong(excelFields)) {
+            return new ResponseEntity<>(new ResponseVM(
+                ResponseCode.RESPONSE_NOT_FOUND,
+                ResponseCode.ERROR_CODE_FILE_CONTENT_FIELD_LENGTH_LIMIT,
+                "File is empty OR could not read file content, file name: " + file.getOriginalFilename()),
+                new HttpHeaders(),
+                HttpStatus.OK);
+        }
+
+
+        return new ResponseEntity<> (fileImportService.convertToVoucherList(excelFields), new HttpHeaders(), HttpStatus.OK);
     }
 
     /**

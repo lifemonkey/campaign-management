@@ -2,15 +2,18 @@ package campaign.service;
 
 import campaign.domain.TransactionType;
 import campaign.domain.Voucher;
-import campaign.excel.ExcelService;
+import campaign.excel.*;
 import campaign.repository.TransactionTypeRepository;
 import campaign.repository.VoucherRepository;
 import campaign.service.dto.VoucherDTO;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -50,21 +53,51 @@ public class FileImportService {
         return false;
     }
 
-    public List<VoucherDTO> readExcelFile(MultipartFile multipartFile) {
+    public List<ExcelField[]> getExcelFields(MultipartFile multipartFile) {
         try {
-            return ExcelService.readVoucher(multipartFile.getInputStream(), null)
-                .stream().map(VoucherDTO::new)
-                .collect(Collectors.toList());
-        } catch (Exception e) {
+            XSSFSheet sheet = ExcelReader.readInputStream(multipartFile.getInputStream());
+            Map<String, List<ExcelField[]>> excelRowValuesMap = ExcelReader.getExcelRowValues(sheet);
+            return excelRowValuesMap.get(ExcelSection.VOUCHERS.getValue());
+        } catch (EncryptedDocumentException | IOException e) {
             e.printStackTrace();
         }
 
-        return Collections.emptyList();
+        return Arrays.asList();
+    }
+
+    public List<VoucherDTO> convertToVoucherList(List<ExcelField[]> excelFields) {
+        if (excelFields.isEmpty()) return Arrays.asList();
+
+        return ExcelFieldMapper.getPojos(excelFields, Voucher.class).stream()
+            .map(VoucherDTO::new)
+            .collect(Collectors.toList());
+    }
+
+    public boolean requireFieldMissing(List<ExcelField[]> excelFields){
+        return !excelFields.stream()
+            .filter(efs -> Arrays.stream(efs)
+                .filter(ef -> ef.isRequired() && ef.getExcelValue().isEmpty())
+                .findAny().isPresent())
+            .findAny().isPresent();
+    }
+
+    public boolean fieldLengthTooLong(List<ExcelField[]> excelFields){
+        return !excelFields.stream()
+            .filter(efs -> Arrays.stream(efs)
+                .filter(ef -> !ef.getExcelValue().isEmpty() && ef.getExcelValue().length() > ef.getMaxLength())
+                .findAny().isPresent())
+            .findAny().isPresent();
     }
 
     public boolean importExcelFile(MultipartFile multipartFile, boolean overwrite) {
         try {
-            List<Voucher> voucherList = ExcelService.readVoucher(multipartFile.getInputStream(), null);
+            XSSFSheet sheet = ExcelReader.readInputStream(multipartFile.getInputStream());
+            Map<String, List<ExcelField[]>> excelRowValuesMap = ExcelReader.getExcelRowValues(sheet);
+            List<ExcelField[]> excelFields = excelRowValuesMap.get(ExcelSection.VOUCHERS.getValue());
+            List<Voucher> voucherList = new ArrayList<>();
+            if (requireFieldMissing(excelFields) || fieldLengthTooLong(excelFields)) {
+                voucherList = ExcelFieldMapper.getPojos(excelFields, Voucher.class);
+            }
             if (voucherList.isEmpty()) return false;
 
             // if overwritten, delete all records then saveAll
