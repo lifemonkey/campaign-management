@@ -74,10 +74,25 @@ public class ExcelReader {
                         || FieldType.INTEGER.getValue().equalsIgnoreCase(cellType)) {
                         excelField.setExcelValue(String.valueOf(cell.getNumericCellValue()));
                     } else if (DateUtil.isCellDateFormatted(cell)) {
-                        excelField.setExcelValue(String.valueOf(dtf.format(cell.getDateCellValue())));
+                        excelField.setExcelValue(dtf.format(cell.getDateCellValue()));
                     }
                     excelFieldArr[k++] = excelField;
                 }
+                // check if entire row is empty, then ignore next row
+                boolean rowHasContent = Arrays.stream(excelFieldArr)
+                    .filter(excelField -> {
+                        if (FieldType.DOUBLE.getValue().equalsIgnoreCase(excelField.getExcelColType())
+                            || FieldType.INTEGER.getValue().equalsIgnoreCase(excelField.getExcelColType())
+                        ) {
+                            return !excelField.getExcelValue().equalsIgnoreCase("0.0");
+                        } else {
+                            return excelField.getExcelValue() != null && !excelField.getExcelValue().isEmpty();
+                        }
+                    })
+                    .findAny().isPresent();
+
+                if (!rowHasContent) break;
+                // add row to list if it is valid
                 excelFieldList.add(excelFieldArr);
             }
             excelMap.put(section, excelFieldList);
