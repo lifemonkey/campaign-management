@@ -115,11 +115,12 @@ public class ImportExportResource {
                 HttpStatus.OK);
         }
 
-        if (fileImportService.fieldLengthTooLong(excelFields)) {
+        ExcelField excelField = fileImportService.fieldLengthTooLong(excelFields);
+        if (excelField != null) {
             return new ResponseEntity<>(new ResponseVM(
                 ResponseCode.RESPONSE_NOT_FOUND,
                 ResponseCode.ERROR_CODE_FILE_CONTENT_FIELD_LENGTH_LIMIT,
-                "File is empty OR could not read file content, file name: " + file.getOriginalFilename()),
+                "Column " + excelField.getExcelHeader() + " has value " + excelField.getExcelValue() + " which has length greater than " + excelField.getMaxLength()),
                 new HttpHeaders(),
                 HttpStatus.OK);
         }

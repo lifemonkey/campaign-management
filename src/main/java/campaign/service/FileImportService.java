@@ -74,19 +74,25 @@ public class FileImportService {
     }
 
     public boolean requireFieldMissing(List<ExcelField[]> excelFields){
-        return !excelFields.stream()
+        return excelFields.stream()
             .filter(efs -> Arrays.stream(efs)
                 .filter(ef -> ef.isRequired() && ef.getExcelValue().isEmpty())
                 .findAny().isPresent())
             .findAny().isPresent();
     }
 
-    public boolean fieldLengthTooLong(List<ExcelField[]> excelFields){
-        return !excelFields.stream()
-            .filter(efs -> Arrays.stream(efs)
-                .filter(ef -> !ef.getExcelValue().isEmpty() && ef.getExcelValue().length() > ef.getMaxLength())
-                .findAny().isPresent())
-            .findAny().isPresent();
+    public ExcelField fieldLengthTooLong(List<ExcelField[]> excelFieldsList){
+        ExcelField excelField = null;
+        for (ExcelField[] excelFields : excelFieldsList) {
+            for (ExcelField ef : excelFields) {
+                if (ef.getMaxLength() > 0 && !ef.getExcelValue().isEmpty() && ef.getExcelValue().length() > ef.getMaxLength()) {
+                    excelField = ef;
+                    break;
+                }
+            }
+        }
+
+        return excelField;
     }
 
     public boolean importExcelFile(MultipartFile multipartFile, boolean overwrite) {
@@ -95,7 +101,7 @@ public class FileImportService {
             Map<String, List<ExcelField[]>> excelRowValuesMap = ExcelReader.getExcelRowValues(sheet);
             List<ExcelField[]> excelFields = excelRowValuesMap.get(ExcelSection.VOUCHERS.getValue());
             List<Voucher> voucherList = new ArrayList<>();
-            if (requireFieldMissing(excelFields) || fieldLengthTooLong(excelFields)) {
+            if (requireFieldMissing(excelFields) || fieldLengthTooLong(excelFields) == null) {
                 voucherList = ExcelFieldMapper.getPojos(excelFields, Voucher.class);
             }
             if (voucherList.isEmpty()) return false;
