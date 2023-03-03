@@ -53,7 +53,7 @@ public class ImportExportResource {
         ) {
             return new ResponseEntity<>(new ResponseVM(
                 ResponseCode.RESPONSE_NOT_FOUND,
-                ResponseCode.ERROR_CODE_CAMPAIGN_NOT_FOUND,
+                ResponseCode.ERROR_CODE_FILE_EXTENSION_INVALID,
                 "File could not be imported. File extension is not supported: " + fileExt),
                 new HttpHeaders(),
                 HttpStatus.OK);
@@ -90,7 +90,7 @@ public class ImportExportResource {
         if (!fileExt.equalsIgnoreCase("xlsx") && !fileExt.equalsIgnoreCase("xls")) {
             return new ResponseEntity<>(new ResponseVM(
                 ResponseCode.RESPONSE_NOT_FOUND,
-                ResponseCode.ERROR_CODE_CAMPAIGN_NOT_FOUND,
+                ResponseCode.ERROR_CODE_FILE_EXTENSION_INVALID,
                 "File could not be read. File extension is not supported: " + fileExt),
                 new HttpHeaders(),
                 HttpStatus.OK);
@@ -100,7 +100,7 @@ public class ImportExportResource {
         if (voucherList.isEmpty()) {
             return new ResponseEntity<>(new ResponseVM(
                 ResponseCode.RESPONSE_NOT_FOUND,
-                ResponseCode.ERROR_CODE_CAMPAIGN_NOT_FOUND,
+                ResponseCode.ERROR_CODE_FILE_CONTENT_INVALID,
                 "File is empty OR could not read file content, file name: " + file.getOriginalFilename()),
                 new HttpHeaders(),
                 HttpStatus.OK);
