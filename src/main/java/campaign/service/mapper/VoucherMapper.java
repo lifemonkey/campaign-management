@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,14 +23,11 @@ public class VoucherMapper {
             .collect(Collectors.toList());
     }
 
-    public Voucher voucherDTOToVoucher(VoucherDTO voucherDTO) {
+    public Voucher voucherDTOToVoucher(Voucher voucherInDb, VoucherDTO voucherDTO) {
         if (voucherDTO == null) {
             return null;
         } else {
-            Voucher voucher = new Voucher();
-            if (voucherDTO.getId() != null) {
-                voucher.setId(voucherDTO.getId());
-            }
+            Voucher voucher = voucherInDb != null ? voucherInDb : new Voucher();
             voucher.setVoucherNumber(voucherDTO.getVoucherNumber());
             voucher.setVoucherCode(voucherDTO.getVoucherCode());
             voucher.setDescription(voucherDTO.getDescription());
@@ -42,10 +40,13 @@ public class VoucherMapper {
         }
     }
 
-    public List<Voucher> voucherDTOToVouchers(List<VoucherDTO> voucherDTOs) {
+    public List<Voucher> voucherDTOToVouchers(List<Voucher> voucherList, List<VoucherDTO> voucherDTOs) {
         return voucherDTOs.stream()
             .filter(Objects::nonNull)
-            .map(this::voucherDTOToVoucher)
+            .map(voucherDTO -> {
+                Optional<Voucher> voucherOpt = voucherList.stream().filter(v -> v.getId().equals(voucherDTO.getId())).findFirst();
+                return voucherDTOToVoucher(voucherOpt.orElse(null), voucherDTO);
+            })
             .collect(Collectors.toList());
     }
 

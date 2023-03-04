@@ -319,12 +319,12 @@ public class RewardService {
                 List<Voucher> toBeDetachedVouchers = voucherList.stream()
                     .filter(voucher -> voucherIds.isEmpty() || !voucherIds.contains(voucher.getId()))
                     .map(Voucher::removeReward)
-                    .collect(Collectors.toList())  ;
+                    .collect(Collectors.toList());
                 voucherRepository.saveAll(toBeDetachedVouchers);
                 voucherRepository.deleteAll(toBeDetachedVouchers);
             }
             // create vouchers code
-            List<Voucher> toBeSavedVouchers = voucherMapper.voucherDTOToVouchers(rewardVM.getVoucherCodes());
+            List<Voucher> toBeSavedVouchers = voucherMapper.voucherDTOToVouchers(voucherList, rewardVM.getVoucherCodes());
             toBeSavedVouchers.stream().forEach(voucher -> voucher.setReward(reward));
             voucherRepository.saveAll(toBeSavedVouchers);
             // save vouchers
