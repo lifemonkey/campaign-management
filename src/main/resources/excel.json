@@ -9,7 +9,8 @@
         "excelValue": null,
         "pojoAttribute": "voucherNumber",
         "required": false,
-        "maxLength": 10
+        "maxLength": 10,
+        "cellFormat": null
       },
       {
         "excelHeader": "Voucher code",
@@ -18,7 +19,8 @@
         "excelValue": null,
         "pojoAttribute": "voucherCode",
         "required": true,
-        "maxLength": 10
+        "maxLength": 10,
+        "cellFormat": null
       },
       {
         "excelHeader": "Effective date",
@@ -27,7 +29,8 @@
         "excelValue": null,
         "pojoAttribute": "startDate",
         "required": false,
-        "maxLength": 0
+        "maxLength": 0,
+        "cellFormat": "dd/MM/yyyy"
       },
       {
         "excelHeader": "Expired date",
@@ -36,7 +39,8 @@
         "excelValue": null,
         "pojoAttribute": "expiredDate",
         "required": false,
-        "maxLength": 0
+        "maxLength": 0,
+        "cellFormat": "dd/MM/yyyy"
       },
       {
         "excelHeader": "Description",
@@ -45,7 +49,8 @@
         "excelValue": null,
         "pojoAttribute": "description",
         "required": false,
-        "maxLength": 200
+        "maxLength": 200,
+        "cellFormat": null
       }
     ]
   }

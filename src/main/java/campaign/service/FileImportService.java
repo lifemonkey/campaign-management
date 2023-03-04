@@ -1,5 +1,6 @@
 package campaign.service;
 
+import campaign.config.Constants;
 import campaign.domain.TransactionType;
 import campaign.domain.Voucher;
 import campaign.excel.*;
@@ -15,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -79,6 +82,31 @@ public class FileImportService {
                 .filter(ef -> ef.isRequired() && ef.getExcelValue().isEmpty())
                 .findAny().isPresent())
             .findAny().isPresent();
+    }
+
+    public ExcelField invalidateDateFormat(List<ExcelField[]> excelFieldsList){
+        ExcelField excelField = null;
+        for (ExcelField[] excelFields : excelFieldsList) {
+            for (ExcelField ef : excelFields) {
+                if (FieldType.DATETIME.getValue().equalsIgnoreCase(ef.getExcelColType())
+                    && !Constants.DATE_FORMAT_DD_MM_YYY.equalsIgnoreCase(ef.getCellFormat())
+                ) {
+                    excelField = ef;
+                    break;
+                }
+            }
+        }
+        return excelField;
+    }
+
+    public boolean isValidDateFormat(SimpleDateFormat sdf, String dateValue) {
+        try {
+            sdf.parse(dateValue);
+            return true;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public ExcelField fieldLengthTooLong(List<ExcelField[]> excelFieldsList){

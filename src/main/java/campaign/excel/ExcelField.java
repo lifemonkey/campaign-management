@@ -9,6 +9,7 @@ public class ExcelField {
     private String pojoAttribute;
     private boolean required;
     private int maxLength;
+    private String cellFormat;
 
     public String getExcelHeader() {
         return excelHeader;
@@ -64,5 +65,13 @@ public class ExcelField {
 
     public void setMaxLength(int maxLength) {
         this.maxLength = maxLength;
+    }
+
+    public String getCellFormat() {
+        return cellFormat;
+    }
+
+    public void setCellFormat(String cellFormat) {
+        this.cellFormat = cellFormat;
     }
 }

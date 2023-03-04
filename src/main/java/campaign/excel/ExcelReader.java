@@ -1,27 +1,23 @@
 package campaign.excel;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import campaign.config.Constants;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.core.io.ClassPathResource;
 
 public class ExcelReader {
 
-    final static SimpleDateFormat dtf = new SimpleDateFormat("dd-MM-yyyy");
+    final static SimpleDateFormat dtf = new SimpleDateFormat(Constants.DATE_FORMAT_DD_MM_YYY);
 
     private ExcelReader() {
     }
@@ -78,6 +74,8 @@ public class ExcelReader {
                         || FieldType.INTEGER.getValue().equalsIgnoreCase(cellType)) {
                         excelField.setExcelValue(String.valueOf(cell.getNumericCellValue()));
                     } else if (DateUtil.isCellDateFormatted(cell)) {
+                        // add cell style for date field
+                        excelField.setCellFormat(cell.getCellStyle().getDataFormatString());
                         excelField.setExcelValue(dtf.format(cell.getDateCellValue()));
                     }
                     excelFieldArr[k++] = excelField;
@@ -122,7 +120,7 @@ public class ExcelReader {
         try {
 //            String jsonConfig = new String(
 //                Files.readAllBytes(Paths.get(ExcelReader.class.getClassLoader().getResource("classpath:excel.json").getFile())));
-            String jsonConfig = "[{\"Voucher\":[{\"excelHeader\":\"No\",\"excelIndex\":0,\"excelColType\":\"Integer\",\"excelValue\":null,\"pojoAttribute\":\"voucherNumber\",\"required\":false,\"maxLength\":10},{\"excelHeader\":\"Voucher code\",\"excelIndex\":1,\"excelColType\":\"String\",\"excelValue\":null,\"pojoAttribute\":\"voucherCode\",\"required\":true,\"maxLength\":10},{\"excelHeader\":\"Effective date\",\"excelIndex\":2,\"excelColType\":\"DateTime\",\"excelValue\":null,\"pojoAttribute\":\"startDate\",\"required\":false,\"maxLength\":0},{\"excelHeader\":\"Expired date\",\"excelIndex\":3,\"excelColType\":\"DateTime\",\"excelValue\":null,\"pojoAttribute\":\"expiredDate\",\"required\":false,\"maxLength\":0},{\"excelHeader\":\"Description\",\"excelIndex\":4,\"excelColType\":\"String\",\"excelValue\":null,\"pojoAttribute\":\"description\",\"required\":false,\"maxLength\":200}]}]";
+            String jsonConfig = "[{\"Voucher\":[{\"excelHeader\":\"No\",\"excelIndex\":0,\"excelColType\":\"Integer\",\"excelValue\":null,\"pojoAttribute\":\"voucherNumber\",\"required\":false,\"maxLength\":10,\"cellFormat\":null},{\"excelHeader\":\"Voucher code\",\"excelIndex\":1,\"excelColType\":\"String\",\"excelValue\":null,\"pojoAttribute\":\"voucherCode\",\"required\":true,\"maxLength\":10,\"cellFormat\":null},{\"excelHeader\":\"Effective date\",\"excelIndex\":2,\"excelColType\":\"DateTime\",\"excelValue\":null,\"pojoAttribute\":\"startDate\",\"required\":false,\"maxLength\":0,\"cellFormat\":\"dd/MM/yyyy\"},{\"excelHeader\":\"Expired date\",\"excelIndex\":3,\"excelColType\":\"DateTime\",\"excelValue\":null,\"pojoAttribute\":\"expiredDate\",\"required\":false,\"maxLength\":0,\"cellFormat\":\"dd/MM/yyyy\"},{\"excelHeader\":\"Description\",\"excelIndex\":4,\"excelColType\":\"String\",\"excelValue\":null,\"pojoAttribute\":\"description\",\"required\":false,\"maxLength\":200,\"cellFormat\":null}]}]";
             jsonMap = objectMapper.readValue(jsonConfig, new TypeReference<List<Map<String, List<ExcelField>>>>() {
             });
         } catch (IOException e) {

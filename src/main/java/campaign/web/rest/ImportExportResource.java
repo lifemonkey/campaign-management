@@ -1,5 +1,6 @@
 package campaign.web.rest;
 
+import campaign.config.Constants;
 import campaign.excel.ExcelField;
 import campaign.security.AuthoritiesConstants;
 import campaign.service.FileExportService;
@@ -115,7 +116,19 @@ public class ImportExportResource {
                 HttpStatus.OK);
         }
 
-        ExcelField excelField = fileImportService.fieldLengthTooLong(excelFields);
+        ExcelField excelField = fileImportService.invalidateDateFormat(excelFields);
+        if (excelField != null) {
+            return new ResponseEntity<>(new ResponseVM(
+                ResponseCode.RESPONSE_NOT_FOUND,
+                ResponseCode.ERROR_CODE_FILE_CONTENT_DATE_FIELD_WRONG_FORMAT,
+                "Column " + excelField.getExcelHeader() + " has has wrong format. "
+                    + "Current format is " + excelField.getCellFormat() + " "
+                    + "Expectation is " + Constants.DATE_FORMAT_DD_MM_YYY),
+                new HttpHeaders(),
+                HttpStatus.OK);
+        }
+
+        excelField = fileImportService.fieldLengthTooLong(excelFields);
         if (excelField != null) {
             return new ResponseEntity<>(new ResponseVM(
                 ResponseCode.RESPONSE_NOT_FOUND,
