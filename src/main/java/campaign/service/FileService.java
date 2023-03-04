@@ -108,7 +108,12 @@ public class FileService {
 
         File uploadedFile = new File();
         if (fileList != null && fileList.size() > 0) {
-            List<File> filesToBeSaved = fileList.stream().map(toBeSaved -> toBeSaved.description(description).type(type)).collect(Collectors.toList());
+            List<File> filesToBeSaved = fileList.stream()
+                .map(toBeSaved -> toBeSaved
+                    .description(description)
+                    .type(type)
+                    .url(ServiceUtils.isImageType(file.getOriginalFilename()) ? fileUrl : ""))
+                .collect(Collectors.toList());
             fileRepository.saveAll(filesToBeSaved);
             uploadedFile = filesToBeSaved.get(0);
         } else {

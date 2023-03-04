@@ -1,7 +1,6 @@
 package campaign.service;
 
 import campaign.config.Constants;
-import campaign.domain.Reward;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.data.domain.Pageable;
 
@@ -90,12 +89,12 @@ public class ServiceUtils {
     }
 
     public static boolean isImageType(String fileName) {
-        String fileExt = FilenameUtils. getExtension(fileName);
+        String fileExt = FilenameUtils.getExtension(fileName);
         if (fileExt == null && fileExt.isEmpty()) return false;
 
-        return Constants.IMAGE_TYPE_JPEGS.contains(fileExt)
-            || Constants.IMAGE_TYPE_PNG.contains(fileExt)
-            || Constants.IMAGE_TYPE_GIF.contains(fileExt);
+        return Constants.IMAGE_TYPE_JPEGS.contains(fileExt.toLowerCase())
+            || Constants.IMAGE_TYPE_PNG.contains(fileExt.toLowerCase())
+            || Constants.IMAGE_TYPE_GIF.contains(fileExt.toLowerCase());
 
     }
 
