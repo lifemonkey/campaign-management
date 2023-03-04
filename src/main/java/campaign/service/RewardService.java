@@ -324,9 +324,9 @@ public class RewardService {
                 voucherRepository.deleteAll(toBeDetachedVouchers);
             }
             // create vouchers code
-            List<Voucher> toBeSavedVouchers = voucherRepository.saveAll(
-                voucherMapper.voucherDTOToVouchers(rewardVM.getVoucherCodes()));
+            List<Voucher> toBeSavedVouchers = voucherMapper.voucherDTOToVouchers(rewardVM.getVoucherCodes());
             toBeSavedVouchers.stream().forEach(voucher -> voucher.setReward(reward));
+            voucherRepository.saveAll(toBeSavedVouchers);
             // save vouchers
             reward.updateVouchers(toBeSavedVouchers);
         }
