@@ -241,13 +241,29 @@ public class RewardService {
 
         if (hasDuplicated) return true;
 
-        List<Voucher> vouchersInDb = voucherRepository.findByVoucherCodeIn(
+        // verify for to be inserted voucher code
+        List<Voucher> toBeInserted = voucherRepository.findByVoucherCodeIn(
             vouchers.stream()
                 .filter(voucher -> voucher.getId() == null)
                 .map(VoucherDTO::getVoucherCode)
                 .collect(Collectors.toSet()));
 
-        if (!vouchersInDb.isEmpty()) {
+        if (!toBeInserted.isEmpty()) {
+            return true;
+        }
+
+        // verify for to be update voucher code
+        Map<Long, String> voucherIdNameMap = vouchers.stream()
+            .filter(voucher -> voucher.getId() != null)
+            .collect(Collectors.toMap(VoucherDTO::getId, VoucherDTO::getVoucherCode));
+
+        List<Voucher> toBeUpdated = voucherRepository.findAllById(voucherIdNameMap.keySet());
+        // check if name are mixed up
+        if (toBeUpdated.stream()
+            .filter(voucher -> voucherIdNameMap.containsKey(voucher.getId())
+                && !voucherIdNameMap.get(voucher.getId()).equalsIgnoreCase(voucher.getVoucherCode()))
+            .findAny().isPresent()
+        ) {
             return true;
         }
 
