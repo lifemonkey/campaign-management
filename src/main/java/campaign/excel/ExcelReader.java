@@ -1,8 +1,10 @@
 package campaign.excel;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
+import campaign.config.Constants;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
@@ -12,6 +14,8 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelReader {
+
+    final static SimpleDateFormat dtf = new SimpleDateFormat(Constants.DATE_FORMAT_DD_MM_YYY);
 
     private ExcelReader() {
     }
@@ -74,7 +78,7 @@ public class ExcelReader {
                             if (FieldType.STRING.getValue().equalsIgnoreCase(cell.getCellType().toString())) {
                                 excelField.setExcelValue(cell.getStringCellValue());
                             } else {
-                                excelField.setExcelValue(cell.getDateCellValue().toString());
+                                excelField.setExcelValue(dtf.format(cell.getDateCellValue()));
                             }
                         } catch (Exception e) {
                             excelField.setExcelValue(null);
