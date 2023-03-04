@@ -1,23 +1,17 @@
 package campaign.excel;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
-import campaign.config.Constants;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelReader {
-
-    final static SimpleDateFormat dtf = new SimpleDateFormat(Constants.DATE_FORMAT_DD_MM_YYY);
 
     private ExcelReader() {
     }
@@ -73,10 +67,19 @@ public class ExcelReader {
                     } else if (FieldType.DOUBLE.getValue().equalsIgnoreCase(cellType)
                         || FieldType.INTEGER.getValue().equalsIgnoreCase(cellType)) {
                         excelField.setExcelValue(String.valueOf(cell.getNumericCellValue()));
-                    } else if (DateUtil.isCellDateFormatted(cell)) {
+                    } else if (FieldType.DATETIME.getValue().equalsIgnoreCase(cellType)) {
                         // add cell style for date field
                         excelField.setCellFormat(cell.getCellStyle().getDataFormatString());
-                        excelField.setExcelValue(dtf.format(cell.getDateCellValue()));
+                        try {
+                            if (FieldType.STRING.getValue().equalsIgnoreCase(cell.getCellType().toString())) {
+                                excelField.setExcelValue(cell.getStringCellValue());
+                            } else {
+                                excelField.setExcelValue(cell.getDateCellValue().toString());
+                            }
+                        } catch (Exception e) {
+                            excelField.setExcelValue(null);
+                        }
+
                     }
                     excelFieldArr[k++] = excelField;
                 }

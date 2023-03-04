@@ -90,6 +90,7 @@ public class FileImportService {
             for (ExcelField ef : excelFields) {
                 if (FieldType.DATETIME.getValue().equalsIgnoreCase(ef.getExcelColType())
                     && !Constants.DATE_FORMAT_DD_MM_YYY.equalsIgnoreCase(ef.getCellFormat())
+                    && !isValidDateString(ef.getExcelValue())
                 ) {
                     excelField = ef;
                     break;
@@ -97,6 +98,14 @@ public class FileImportService {
             }
         }
         return excelField;
+    }
+
+    private boolean isValidDateString(String dateValue) {
+        String[] splittedDate = dateValue.split("/");
+        if (splittedDate.length == 3 && splittedDate[0].length() == 2 && splittedDate[1].length() == 2 && splittedDate[2].length() == 4) {
+            return true;
+        }
+        return false;
     }
 
     public boolean isValidDateFormat(SimpleDateFormat sdf, String dateValue) {

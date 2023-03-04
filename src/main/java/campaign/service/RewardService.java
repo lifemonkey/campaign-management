@@ -257,7 +257,7 @@ public class RewardService {
             .filter(voucher -> voucher.getId() != null)
             .collect(Collectors.toMap(VoucherDTO::getId, VoucherDTO::getVoucherCode));
 
-        List<Voucher> toBeUpdated = voucherRepository.findAllById(voucherIdNameMap.keySet());
+        List<Voucher> toBeUpdated = voucherRepository.findByVoucherCodeIn(voucherIdNameMap.values().stream().collect(Collectors.toSet()));
         // check if name are mixed up
         if (toBeUpdated.stream()
             .filter(voucher -> voucherIdNameMap.containsKey(voucher.getId())

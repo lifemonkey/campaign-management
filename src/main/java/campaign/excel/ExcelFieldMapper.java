@@ -1,16 +1,17 @@
 package campaign.excel;
 
+import campaign.config.Constants;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ExcelFieldMapper {
 
-    final static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    final static DateTimeFormatter dtf = DateTimeFormatter.ofPattern(Constants.DATE_FORMAT_DD_MM_YYY);
 
     public static <T> List<T> getPojos(List<ExcelField[]> excelFields, Class<T> clazz) {
 
