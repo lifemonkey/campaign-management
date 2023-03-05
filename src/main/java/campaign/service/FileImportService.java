@@ -85,12 +85,13 @@ public class FileImportService {
     }
 
     public ExcelField invalidateDateFormat(List<ExcelField[]> excelFieldsList){
+        SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT_DD_MM_YYY);
         ExcelField excelField = null;
         for (ExcelField[] excelFields : excelFieldsList) {
             for (ExcelField ef : excelFields) {
                 if (FieldType.DATETIME.getValue().equalsIgnoreCase(ef.getExcelColType())
                     && !Constants.DATE_FORMAT_DD_MM_YYY.equalsIgnoreCase(ef.getCellFormat())
-                    && !isValidDateString(ef.getExcelValue())
+                    && !isValidDateFormat(sdf, ef.getExcelValue())
                 ) {
                     excelField = ef;
                     break;
@@ -100,20 +101,12 @@ public class FileImportService {
         return excelField;
     }
 
-    private boolean isValidDateString(String dateValue) {
-        String[] splittedDate = dateValue.split("/");
-        if (splittedDate.length == 3 && splittedDate[0].length() == 2 && splittedDate[1].length() == 2 && splittedDate[2].length() == 4) {
-            return true;
-        }
-        return false;
-    }
-
     public boolean isValidDateFormat(SimpleDateFormat sdf, String dateValue) {
+        sdf.setLenient(false);
         try {
             sdf.parse(dateValue);
-            return true;
+            return dateValue.matches("\\d{2}/\\d{2}/\\d{4}");
         } catch (ParseException e) {
-            e.printStackTrace();
             return false;
         }
     }

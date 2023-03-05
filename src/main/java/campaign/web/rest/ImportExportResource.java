@@ -5,6 +5,7 @@ import campaign.excel.ExcelField;
 import campaign.security.AuthoritiesConstants;
 import campaign.service.FileExportService;
 import campaign.service.FileImportService;
+import campaign.service.dto.VoucherDTO;
 import campaign.web.rest.vm.ResponseCode;
 import campaign.web.rest.vm.ResponseVM;
 import io.micrometer.core.annotation.Timed;
@@ -19,6 +20,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -128,6 +130,7 @@ public class ImportExportResource {
                 HttpStatus.OK);
         }
 
+        // validate field length
         excelField = fileImportService.fieldLengthTooLong(excelFields);
         if (excelField != null) {
             return new ResponseEntity<>(new ResponseVM(
@@ -138,8 +141,24 @@ public class ImportExportResource {
                 HttpStatus.OK);
         }
 
+        // validate effective date and expired date
+        List<VoucherDTO> voucherList = fileImportService.convertToVoucherList(excelFields);
+        if (voucherList.stream().filter(voucher -> inValidVoucher(voucher)).findAny().isPresent()) {
+            return new ResponseEntity<>(new ResponseVM(
+                ResponseCode.RESPONSE_NOT_FOUND,
+                ResponseCode.ERROR_CODE_FILE_CONTENT_DATE_FIELD_WRONG_FORMAT,
+                "Effective date greater than Expired date OR less than today"),
+                new HttpHeaders(),
+                HttpStatus.OK);
+        }
 
-        return new ResponseEntity<> (fileImportService.convertToVoucherList(excelFields), new HttpHeaders(), HttpStatus.OK);
+        return new ResponseEntity<> (voucherList, new HttpHeaders(), HttpStatus.OK);
+    }
+
+    private boolean inValidVoucher(VoucherDTO voucher) {
+        return voucher.getStartDate().isBefore(LocalDateTime.now())
+            || voucher.getExpiredDate().isBefore(LocalDateTime.now())
+            || voucher.getExpiredDate().isBefore(voucher.getStartDate());
     }
 
     /**

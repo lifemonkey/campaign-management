@@ -1,6 +1,7 @@
 package campaign.excel;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -70,7 +71,7 @@ public class ExcelReader {
                         excelField.setExcelValue(cell.getStringCellValue());
                     } else if (FieldType.DOUBLE.getValue().equalsIgnoreCase(cellType)
                         || FieldType.INTEGER.getValue().equalsIgnoreCase(cellType)) {
-                        excelField.setExcelValue(String.valueOf(cell.getNumericCellValue()));
+                        excelField.setExcelValue(String.valueOf(BigDecimal.valueOf(cell.getNumericCellValue())));
                     } else if (FieldType.DATETIME.getValue().equalsIgnoreCase(cellType)) {
                         // add cell style for date field
                         excelField.setCellFormat(cell.getCellStyle().getDataFormatString());
