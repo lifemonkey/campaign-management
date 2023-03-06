@@ -28,7 +28,7 @@
         "excelColType": "DateTime",
         "excelValue": null,
         "pojoAttribute": "startDate",
-        "required": false,
+        "required": true,
         "maxLength": 0,
         "cellFormat": "dd/MM/yyyy"
       },
@@ -38,7 +38,7 @@
         "excelColType": "DateTime",
         "excelValue": null,
         "pojoAttribute": "expiredDate",
-        "required": false,
+        "required": true,
         "maxLength": 0,
         "cellFormat": "dd/MM/yyyy"
       },
