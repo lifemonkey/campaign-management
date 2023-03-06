@@ -34,7 +34,8 @@ public class VoucherDTO {
 
     public boolean isValidVoucher() {
         return (this.voucherCode != null && this.voucherCode.length() <= 10)
-            && (this.description == null || this.description.length() <= 200);
+            && (this.description == null || this.description.length() <= 200)
+            && this.startDate != null && this.expiredDate != null;
     }
 
     public VoucherDTO(Voucher voucher) {
