@@ -21,7 +21,7 @@ public class Reward extends AbstractAuditingEntity implements Serializable {
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", length = 400)
+    @Column(name = "name", length = 400, unique = true)
     private String name;
 
     @Column(name = "description", length = 4000)

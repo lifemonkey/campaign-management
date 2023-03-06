@@ -25,7 +25,7 @@ public class Campaign extends AbstractAuditingEntity implements Serializable {
     private Long id;
 
     @NotBlank
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     @Column(name = "description", length = 4000)
